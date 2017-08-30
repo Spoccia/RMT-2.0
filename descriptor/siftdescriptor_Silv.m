@@ -138,8 +138,8 @@ Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
 %           float mod   = *(pt + dxi*xo + dyi*yo + 0           ) ; //MODULO  DEL PUNTO NELLA SCALA
 %           float angle = *(pt + dxi*xo + dyi*yo + buffer_size ) ; // ANGOLO DEL PUNTO NELLA SCALA
 % 2 is because  in matlab westart from 1 
-        for dxi = max(-W_Depd,2-xi): min(+W_Depd, N-1-xi) % VARIATE to do the preincrement we can start  with a +1
-            for dyi = max(-W_Time,2-yi): min(+W_Time, M-1-yi) %TIME
+        for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincrement we can start  with a +1
+            for dyi = max(-W_Time,1-yi): min(+W_Time, M-2-yi) %TIME
                 mod = Gradient_Scale(yi+dyi,xi+dxi);
                 angle=Angles(yi+dyi,xi+dxi);
                 
@@ -147,6 +147,73 @@ Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
                 if(loweCompatible==1)
 %                     float theta = fast_mod(-angle + theta0) ;// FUNCTION FASTMOD MOVE THE ANGLE IN THE INTERVAL 0-2PI GRECO
                      theta = normalizeTheta(-angle + theta0);
+                end
+%                 /* Get the fractional displacement. */
+%           float dx = ((float)(xi+dxi)) - x;
+%           float dy = ((float)(yi+dyi)) - y;
+                dx= xi+dxi - x;
+                dy= yi+dyi - y;
+%           /* Get the displacement normalized w.r.t. the keypoint orientation  and extension. */
+%           float nx = ( ct0 * dx + st0 * dy) / SBP ;
+%           float ny = (-st0 * dx + ct0 * dy) / SBP ; 
+%           float nt = NBO * theta / (2*M_PI) ;  
+            nx = ( ct0 * dx + st0 * dy) / SBP_Depd; % modul against dependency
+            ny = (-st0 * dx + ct0 * dy) / SBP_Time ; %modul against  time  
+            nt = NBO * theta / (2*pi) ; % angle in radiant
+%           /* Get the gaussian weight of the sample. The gaussian window
+%            * has a standard deviation of NBP/2. Note that dx and dy are in
+%            * the normalized frame, so that -NBP/2 <= dx <= NBP/2. */
+%           const float wsigma = NBP/2 ;
+%           float win =  expf(-(nx*nx + ny*ny)/(2.0 * wsigma * wsigma)) ;
+            wsigma_Time = NBP_Time /2;  
+            wsigma_Depd = NBP_Depd /2;
+%             win =  expf(-(nx*nx + ny*ny)/(2.0 * wsigma_Time * wsigma_Depd)) ;
+%            win =  expf(-(nx*nx + ny*ny)/(2.0 * wsigma_Time * wsigma_Time)) * expf(-(nx*nx + ny*ny)/(2.0 * wsigma_Depd * wsigma_Depd)) ;
+            win_Time = exp( - (nx*nx + ny*ny) / (2*wsigma_Time * wsigma_Time));
+            win_Depd = exp( - (nx*nx + ny*ny) / (2*wsigma_Depd * wsigma_Depd));
+            
+            %win = sqrt(win_Time^2 + win_Depd^2)/sqrt(2);
+            win = sqrt(win_Time*win_Depd);
+            
+%             /* The sample will be distributed in 8 adijacient bins. 
+%            * Now we get the ``lower-left'' bin. */
+%           int binx = fast_floor( nx - 0.5 ) ;
+%           int biny = fast_floor( ny - 0.5 ) ;      
+%           int bint = fast_floor( nt ) ;
+%           float rbinx = nx - (binx+0.5) ;
+%           float rbiny = ny - (biny+0.5) ;
+%           float rbint = nt - bint ;
+              binx = floor( nx - 0.5 );
+              biny = floor( ny - 0.5 );
+              bint = floor(nt);
+              rbinx = nx - (binx+0.5) ;
+              rbiny = ny - (biny+0.5) ;
+              rbint = nt - bint ;
+              
+%%               /* Distribute the current sample into the 8 adijacient bins. */
+%             for(dbinx = 0 ; dbinx < 2 ; ++dbinx) {
+%                 for(dbiny = 0 ; dbiny < 2 ; ++dbiny) {
+%                     for(dbint = 0 ; dbint < 2 ; ++dbint) {
+                for dbinx =1:2
+                    for dbiny =1:2
+                        for dbint =1:2
+                           if( binx+dbinx >= -(NBP/2) &...
+                              binx+dbinx  <   (NBP/2) &...
+                              biny+dbiny  >= -(NBP/2) &...
+                              biny+dbiny  <   (NBP/2) )
+%                           float weight = win 
+%                                         * mod 
+%                                         * fabsf(1 - dbinx - rbinx)
+%                                         * fabsf(1 - dbiny - rbiny)
+%                                         * fabsf(1 - dbint - rbint) ;
+                            float weight = win... 
+                                           * mod... 
+                                           * abs(1 - dbinx - rbinx)...
+                                           * abs(1 - dbiny - rbiny)...
+                                           * abs(1 - dbint - rbint) ;
+                           end
+                        end
+                    end
                 end
             end
         end
