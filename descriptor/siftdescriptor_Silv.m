@@ -1,4 +1,4 @@
-function sd = siftdescriptor(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minSt,minSd, magnif,NBP_Time,NBP_Depd, NBO) 
+function sd = siftdescriptor_Silv(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minSt,minSd, magnif,NBP_Time,NBP_Depd, NBO) 
 % smoothedScale: smoothed scale of the specific image in the octave(downsampled) in the specific scale time and dependency
 % frame:  Frame(1,1)= Dependency variate the feature in the octave representation
 %         Frame(2,1)= Time index of the feature in the octave representation
@@ -17,10 +17,10 @@ function sd = siftdescriptor(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minSt,min
 % NBO: Number of Bin for orientation (8 is used in Lowe) 
 
 
-  magnif = 3.0;  %/* Spatial bin extension factor. */
-  NBP_Time = 4 ;      %/* Number of bins for one spatial direction (even). */
-  NBP_Depd = 4;
-  NBO = 8 ;      %/* Number of bins for the ortientation. */
+%   magnif = 3;  %/* Spatial bin extension factor. */
+%   NBP_Time = 4 ;      %/* Number of bins for one spatial direction (even). */
+%   NBP_Depd = 4;
+%   NBO = 8 ;      %/* Number of bins for the ortientation. */
   mode = 'NOSCALESPACE' ; % We pass just thte specific scale space of the feature
   loweCompatible =0; % loweCompatible=0 then no Lowe compatible
                      % loweCompatible=1 then Lowe compatible 
@@ -30,22 +30,34 @@ function sd = siftdescriptor(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minSt,min
   featureInfo= size(frame,1); %K in the original code++
   
  %%    Compute the gradient 
-%DERIVATE  ACROSS X DIMENTION 
-Dx = 0.5 *(smoothedScale(2:end,:)-smoothedScale(1:end-1,:));
-%DERIVATE  ACROSS Y DIMENTION 
-Dy =0.5 * (smoothedScale(:,2:end)-smoothedScale(:,1:end-1));
+% %DERIVATE  ACROSS X DIMENTION 
+% DxM = 0.5 *(smoothedScale(2:end,2:end)-smoothedScale(1:end-1,2:end));
+% %DERIVATE  ACROSS Y DIMENTION 
+% DyM =0.5 * (smoothedScale(2:end,2:end)-smoothedScale(2:end,1:end-1));
+% 
 % Dx1=[];
 % Dy1=[];
-%       for x = 2 : N-1 % // FOR  EACH ROW 
-%         for y = 1: M  % // FOR EACH COLUMN
+%       for x = 2 : M-1 % // FOR  EACH ROW 
+%         for y = 2: N-1  % // FOR EACH COLUMN
 %           %DERIVATE  ACROSS X DIMENTION 
-%            Dx(x,y) = 0.5 * ( smoothedScale(x+1,y) - smoothedScale(x-1,y) ) ; %//DERIVATE  ACROSS X DIMENTION 
-%            Dy(x,y) = 0.5 * ( smoothedScale(x,y+1) - smoothedScale(x,y-1) ) ; %// DERIVATE ACROSS Y DIMENTION
+%            Dx1(x,y) = 0.5 * ( smoothedScale(x+1,y) - smoothedScale(x-1,y) ) ; %//DERIVATE  ACROSS X DIMENTION 
+%            Dy1(x,y) = 0.5 * ( smoothedScale(x,y+1) - smoothedScale(x,y-1) ) ; %// DERIVATE ACROSS Y DIMENTION
 %         end
 %       end
- 
+ [FX,FY] = gradient(smoothedScale);
+ Dx=FX;
+ Dy=FY;
+ [mexGradientDx,mexGradientDy]= gradient_mex(...
+     smoothedScale, ...
+      frame, ...
+      sigmaT0, ...
+      St, ...
+      minSt, ...
+      'Magnif', magnif, ...
+      'NumSpatialBins', NBP_Time, ...
+      'NumOrientBins', NBO);
  %% /* Compute angles and modules of all the points in the scale*/ 
-Gradient_Scale=  sqrt(Dx*Dx + Dy*Dy) ;% //GRADIENT OF THE POINT
+Gradient_Scale=  sqrt(Dx.*Dx + Dy.*Dy) ;% //GRADIENT OF THE POINT
 Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
 
 %% Create descriptor forthe feature i
@@ -71,7 +83,7 @@ Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
      binto = 1 ;
      binyo = NBO * NBP_Time ; 
      binxo = NBO ;
-     bino  = NBP_Depd * NBP_Time * NBP ;
+     bino  = NBP_Depd * NBP_Time * NBO ;
 
 %      for(p = 0 ; p < K ; ++p, descr_pt += bino) {
 %      for p=1:K % this should be the numebr of features hen in our case K=1 
@@ -100,19 +112,19 @@ Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
 %        const int si = (int) floor(s+0.5) - smin ;
        xi= floor(0.5+x);
        yi= floor(0.5+y);
-       si=s; % wepass just one scale because we pass just one feature
+       %si=s; wepass just one scale because we pass just one feature
        % comute the sigma for the scale where we identified the feature       
        %const float sigma = sigma0 * powf(2, s / S) ;
-       sigma_Time = sigmaT0 * (2^ st0 /St) ;
-       sigma_Depd = sigmad0 * (2^ sd0 /Sd) ;
+       sigma_Time = sigmaT0 * (2^ (st /St)) ;
+       sigma_Depd = sigmaD0 * (2^ (sd /Sd)) ;
        
        %const float SBP = magnif * sigma ; // IN GENERAL 3*SIGMA
        SBP_Time = magnif * sigma_Time;
        SBP_Depd = magnif * sigma_Depd;
        % window to compute each  gradient
        %const int W = (int) floor( sqrt(2.0) * SBP * (NBP + 1) / 2.0 + 0.5) ;    // SQUARE WINDOW  
-       W_Time = floor(0.5 + ((sqrt(2)*SBP_Time*(NBP_Time))/2));
-       W_Depd = floor(0.5 + ((sqrt(2)*SBP_Depd*(NBP_Depd))/2));
+       W_Time = floor(0.5 + ((sqrt(2)*SBP_Time*(NBP_Time+1))/2));
+       W_Depd = floor(0.5 + ((sqrt(2)*SBP_Depd*(NBP_Depd+1))/2));
 
        %        /* Check that keypoints are within bounds . */
 %        if(xi < 0   |  xi > N-1 |...
@@ -126,6 +138,10 @@ Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
 %        */
 %       pt  = buffer_pt + xi*xo + yi*yo + si*so ;
 %       dpt = descr_pt + (NBP/2) * binyo + (NBP/2) * binxo ;
+
+descr=zeros(NBP_Time*NBP_Depd*NBO,1);
+dpt = 1+ (NBP_Time/2) * binyo + (NBP_Depd/2) * binxo ;
+        %  bino+ (NBP_Time/2) * binyo + (NBP_Depd/2) * binxo ;
 %%
 %       /*
 %        * Process each pixel in the window and in the (1,1)-(M-1,N-1)
@@ -197,25 +213,48 @@ Angles= atan2(Dy, Dx) ; %// ANGLE OF THE 1ST DERIVATE ACROSS x AND y
                 for dbinx =1:2
                     for dbiny =1:2
                         for dbint =1:2
-                           if( binx+dbinx >= -(NBP/2) &...
-                              binx+dbinx  <   (NBP/2) &...
-                              biny+dbiny  >= -(NBP/2) &...
-                              biny+dbiny  <   (NBP/2) )
+                           if( binx+dbinx >= -(NBP_Depd/2) &...
+                              binx+dbinx  <   (NBP_Depd/2) &...
+                              biny+dbiny  >= -(NBP_Time/2) &...
+                              biny+dbiny  <   (NBP_Time/2) )
 %                           float weight = win 
 %                                         * mod 
 %                                         * fabsf(1 - dbinx - rbinx)
 %                                         * fabsf(1 - dbiny - rbiny)
 %                                         * fabsf(1 - dbint - rbint) ;
-                            float weight = win... 
+                            
+                                    weight = win... 
                                            * mod... 
                                            * abs(1 - dbinx - rbinx)...
                                            * abs(1 - dbiny - rbiny)...
                                            * abs(1 - dbint - rbint) ;
+%                 #define atd(dbinx,dbiny,dbint) (*(dpt + (dbint)*binto + (dbiny)*binyo + (dbinx)*binxo))
+%                 atd(binx+dbinx, biny+dbiny, (bint+dbint) % NBO) += weight ;
+                                        orientation_idx=  ceil((bint+dbint) / NBO);
+                                        idx_inDescriptor = dpt+(binx+dbinx)*binto + (biny+dbiny)*binyo +orientation_idx*binxo;
+                                        descr(idx_inDescriptor,1) =descr(idx_inDescriptor,1) + weight;
                            end
                         end
                     end
                 end
             end
         end
-            
+        
+        
+%           /* Normalize the histogram to L2 unit length. */        
+%         normalize_histogram(descr_pt, descr_pt + NBO*NBP*NBP) ;
+%         
+          sd = normalize_Histogram_Sly(descr);
+%         /* Truncate at 0.2. */
+%         for(bin = 0; bin < NBO*NBP*NBP ; ++bin) {
+%           if (descr_pt[bin] > 0.2) descr_pt[bin] = 0.2;
+%         }
+
+          idxBin02 = sd >0.2;
+          sd(idxBin02,1)=0.2;
+
+%         /* Normalize again. */
+%         normalize_histogram(descr_pt, descr_pt + NBO*NBP*NBP) ;
+%       }  
+            sd=normalize_Histogram_Sly(sd);
 end
