@@ -1,4 +1,4 @@
-function [fgss,VariatePosScale] = computeFeatureMatrix(octave,sminT,sminD, sigmaDep0, St,Sd,H,H1,directed)
+function [fgss,StartPos] = computeFeatureMatrix(octave,sminT,sminD, sigmaDep0, St,Sd,H,H1,directed)
 % For each combination of scale  dependency and Time in the octave create a
 % structure where  the matrix  represent the neighboorhood of the  specific
 % variate V_i
@@ -23,7 +23,6 @@ soT = -sminT+1 ;
 soD = -sminD+1 ;
 
 [M_Time, N_variate,NSD,NST]= size(octave(:,:,:,:) );
-VariatePosScale=zeros(1,NSD);
 StartPos =1;
 for si_T= sminT:St+1
     for si_D= sminD:Sd+1
@@ -32,7 +31,6 @@ for si_T= sminT:St+1
         for V_i=1:N_variate
             V_i_rearrange= zeros(M_Time,2*ScopeDependency+1);
             StartPos= floor(ScopeDependency+1);
-            VariatePosScale(1,si_D+soD)=StartPos;
             V_i_rearrange(:,StartPos)= octave(:,V_i,si_D+soD,si_T+soT);
             fgss{si_D+soD,si_T+soT,V_i} =zeros(M_Time, N_variate);
             for i= 1:ScopeDependency

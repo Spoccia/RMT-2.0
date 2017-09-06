@@ -24,8 +24,8 @@ function sd = siftdescriptor_Silv(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minS
 mode = 'NOSCALESPACE' ; % We pass just thte specific scale space of the feature
 loweCompatible =1; % loweCompatible=0 then no Lowe compatible
 % loweCompatible=1 then Lowe compatible
-M = size(smoothedScale,1);
-N= size(smoothedScale,2);
+M = size(smoothedScale,1);% Time dimension
+N= size(smoothedScale,2); % variate dimension
 num_levels=1;
 featureInfo= size(frame,1); %K in the original code++
 
