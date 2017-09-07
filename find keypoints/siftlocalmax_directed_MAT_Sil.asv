@@ -79,8 +79,8 @@ for i = 2 : combinationScale-1
             end
             if(is_greaterDepd & is_greaterTime & is_greaterBoth)
                 
-%                 M_mask=M(y, :)>0;
-%                 N_mask=N(y, :)>0;            
+                M_mask=M(y, :)>0;
+                N_mask=N(y, :)>0;            
                 temp = [(input{1}(x, y, i)), (input{2}(x, y, i)), (input{3}(x, y, i))];
                 [tmax,idxmax] = max(temp);
                 neighbour = zeros(1,69);                
@@ -166,7 +166,7 @@ for i = 2 : combinationScale-1
                 if(tmax>neighbour(:))% this is a key point(tmax>threshold*abs(neighbour(:)))% this is a key point
                     % if(tmax>abs(neighbour(:)))% this is a key point
                     % if(tmax>neighbour(:))% this is a key point
-                    if(input{3}(x, y, i) >= input{2}(x, y, i) & input{3}(x, y, i)>= input{1}(x, y, i))% maxmum is in scale Both
+                    if(idxmax==3)% maxmum is in scale Both
                         idx = cat(1, idx, [y, x, i, i, tmax]); % variate, time, scaleDepd , scaleTime
                     elseif(idxmax==2)% maxmum is in scale Time
                         idx = cat(1, idx, [y, x, 1, i, tmax]);
@@ -182,6 +182,7 @@ end
 
 check_numScale= numT_scale - numD_scale;
 if(check_numScale ~= 0)
+    startScale= combinationScale;
     if(check_numScale>0)% we have more Time Scale
         for i = combinationScale : timeScale
              for y = 2 : depdStep - 1
@@ -191,8 +192,8 @@ if(check_numScale ~= 0)
                         is_greaterTime= input{2}(x, y, i)>=threshold;
                     end
                     if(is_greaterTime)
-%                         M_mask=M(y, :)>0;
-%                         N_mask=N(y, :)>0;            
+                        M_mask=M(y, :)>0;
+                        N_mask=N(y, :)>0;            
                         idxmax=2; % the max is in the scale time
                         tmax=input{2}(x, y, i);
                         neighbour = zeros(1,26);                
@@ -237,8 +238,8 @@ if(check_numScale ~= 0)
                         is_greaterDepd= input{1}(x, y, i)>=threshold;
                     end
                     if(is_greaterDepd)
-%                         M_mask=M(y, :)>0;
-%                         N_mask=N(y, :)>0;            
+                        M_mask=M(y, :)>0;
+                        N_mask=N(y, :)>0;            
                         idxmax=1; % the max is in the scale time
                         tmax=input{1}(x, y, i);
                         neighbour = zeros(1,26);                

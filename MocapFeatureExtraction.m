@@ -2,9 +2,9 @@ close all;
 clc;
 clear;
 
-PATH_dataset ='C:\Users\silvestro\Desktop\Mocap\data\';
-PATH_coordinates='C:\Users\silvestro\Desktop\Mocap\Location matrix\';
-saveFeaturesPath='C:\Users\silvestro\Desktop\Mocap\Features\';
+PATH_dataset ='D:\Mocap _ RMT2\data\';
+PATH_coordinates='D:\Mocap _ RMT2\Location matrix\';
+saveFeaturesPath='D:\Mocap _ RMT2\Features\';
 %% sift parameters
 % x - variate
 % y - time
@@ -17,16 +17,16 @@ DeOctDepd = 2;
 DeLevelTime = 4;%6;%
 DeLevelDepd = 4;%6;%
 DeSigmaDepd = 0.4;%0.4;%0.6;%0.4;%0.5;%
-DeSigmaTime = 4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%
+DeSigmaTime = 4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
 %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
 thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
-DeGaussianThres = 0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
+DeGaussianThres = 0.1;%6;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
 DeSpatialBins = 4; %NUMBER OF BINs
 r= 10; %5 threshould variates
 
 featureExtractionGaussian = zeros(1, 184);
 for TEST =1:184
-    
+    TS_name=num2str(TEST)
     data = csvread ([PATH_dataset,num2str(TEST),'.csv']);%
     coordinates=csvread(strcat(PATH_coordinates,'LocationMatrixMocap.csv'))';
     p = tic;
@@ -65,5 +65,5 @@ for TEST =1:184
     csvwrite(savepath7, timeDescr);
     
     
-    clear frames2 descr2 gss2 dogss2 depd2 idm2 I2;
+    clear frames1 descr1 gss1 dogss1 depd1 idm1 data;
 end
