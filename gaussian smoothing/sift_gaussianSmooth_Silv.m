@@ -49,7 +49,6 @@ for otime = 1: size(gss.octave,1)
         % forwardIdx = siftlocalmax_directed_bak12142015(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % forwardIdx = siftlocalmax_directed_95(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         forwardIdx = siftlocalmax_directed_100(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
-        %pippoF =siftlocalmax_directed_MAT_Sil(dogss.octave{otime, odepd}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),gss.sminD, gss.sminT,St,Sd);
         % forwardIdx = siftlocalmax_directed_999(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % forwardIdx = siftlocalmax_directed_998(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         [i,j, s1] = ind2sub( size( dogss.octave{otime, odepd}{3}), forwardIdx ) ;
@@ -68,7 +67,6 @@ for otime = 1: size(gss.octave,1)
         % backwardIdx = siftlocalmax_directed_bak12142015(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % backwardIdx = siftlocalmax_directed_95(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         backwardIdx = siftlocalmax_directed_100(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
-%         pippoB =siftlocalmax_directed_MAT_Sil(dogss.octave{otime, odepd}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),gss.sminD, gss.sminT,St,Sd);
         % backwardIdx = siftlocalmax_directed_999(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % backwardIdx = siftlocalmax_directed_998(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         time(otime, odepd) =  time(otime, odepd) + toc(p);
@@ -148,7 +146,6 @@ for otime = 1: size(gss.octave,1)
         [fgss_silv,Pseudo_centerVaraite]= computeFeatureMatrix_Silv(gss.octave{otime, odepd},gss.sminT,gss.sminD,gss.sigmad,gss.St,gss.Sd,NormalizeByRow(depd{odepd}),NormalizeByRow(depd{odepd}'),1);
         %% Descriptors
         if(size(oframes, 2) > 0)
-
             p = tic;
             % for f=1:size(oframes,2)
             for f=1:size(oframes,2)

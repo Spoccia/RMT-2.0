@@ -94,7 +94,8 @@ mexFunction(int nout, mxArray *out[],
             int nin, const mxArray *in[])
 {
   int M,N,S=0,smin=0,K,num_levels=0 ;
-  const int* dimensions ;
+  // const int* dimensions ;
+  const size_t * dimensions ;
   const double* P_pt ;
   const double* G_pt ;
   float* descr_pt ;
