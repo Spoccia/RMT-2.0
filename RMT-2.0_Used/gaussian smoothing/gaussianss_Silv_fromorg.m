@@ -171,7 +171,7 @@ for otact=1: Ot
                 depd{odact} = H;
              end
             SS.smoothmatrix{otact, odact} = zeros(size(SS.octave{otact, odact},2),size(SS.octave{otact, odact},2),size(SS.octave{otact, odact},3));
-            SS = Smooth_Asyn(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, Smatrix,soT,soD);
+            SS = Smooth_Asyn(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, ComputeDependencyScale(depd{CurrentDepdOct}, sigmaD0),soT,soD);%Smatrix,soT,soD);
             %SS = Smooth_Asyn(SS, otact, odact, ktime, kdepd, stmax, sdmax,dsigmaT0,dsigmaD0,depd, Smatrix,soT,soD);
          end
         if odact ~= 1
@@ -182,6 +182,7 @@ for otact=1: Ot
 end
 
 function [SS] = Smooth_Asyn(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)
+% Smatrix = ComputeDependencyScale(depd{CurrentDepdOct}, dsigmaD);
 for sd=sdmin:sdmax 
 
     if sd==(sdmin)
@@ -196,7 +197,7 @@ for sd=sdmin:sdmax
         end
     else
         dsigmaD = kdepd^(sd) * sigmaDscaleStep ;%kdepd^(sd+1) * sigmaDscaleStep ;
-        Smatrix = ComputeDependencyScale(depd{CurrentDepdOct}, dsigmaD);
+        Smatrix = ComputeDependencyScale(Smatrix, dsigmaD);% ComputeDependencyScale(depd{CurrentDepdOct}, dsigmaD);
         SS.smoothmatrix{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD) = Smatrix;
         for st=stmin:stmax     
             dsigmaT = ktime^(st) * sigmaTscaleStep ;
