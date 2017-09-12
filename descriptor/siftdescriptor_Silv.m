@@ -4,7 +4,8 @@ function sd = siftdescriptor_Silv(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minS
 %         Frame(2,1)= Time index of the feature in the octave representation
 %         Frame(3,1)= Scale Dependency of the feature
 %         Frame(4,1)= Scale Time of the feature
-%         Frame(5,1)= eventual orientation otherwise 0
+%         Frame(5,1)= eventual orientation otherwise 0 with 0 the rotation
+%                     should be disabled.
 % sigmaT0: the original sigma used to smooth over Time
 % sigmaD0: the original sigma used to smooth over Dependency
 % St: maximum scale over Time
@@ -148,7 +149,7 @@ for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincreme
         dx= xi+dxi - x;
         dy= yi+dyi - y;
         %           /* Get the displacement normalized w.r.t. the keypoint orientation  and extension. */
-        
+        %% This is the rotation
         nx = ( ct0 * dx + st0 * dy) / SBP_Depd; % modul against dependency
         ny = (-st0 * dx + ct0 * dy) / SBP_Time ; %modul against  time
         nt = NBO * theta / (2*pi) ; % angle in radiant
