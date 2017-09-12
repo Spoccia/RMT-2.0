@@ -2,7 +2,8 @@
 clear;
 clc;
 
-classIndex = csvread('./classindex.csv');
+classIndexPath = [''];
+classIndex = csvread(classIndexPath);
 featureFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
 % saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
 saveFolder = '.';
