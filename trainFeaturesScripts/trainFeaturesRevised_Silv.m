@@ -44,49 +44,51 @@ for clusterID = 1:8
     for queryID = Array(clusterID):Array(clusterID + 1) - 1
         fprintf('query ID: %d, clusterID: %d. \n', queryID, clusterID);
         testData=[];
-        setofpossibleindex= Array(clusterID):Array(clusterID+1)-1;
-        %remove the query from the set
-        setofpossibleindex(setofpossibleindex==queryID) = []; % r is smaller now
-        setofpossiblevalue = setofpossibleindex(randi([1,size(setofpossibleindex,2)],1,round(0.6*size(setofpossibleindex,2))));
+
+        trainingSetRelevant = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
+        
+        trainingSetIrrelevant =[];
         for i = 1: size(Array, 2)-1
             if(i == clusterID)
             else
-                dataFromOtherCluster = Array(i):Array(i+1)-1;
-                trainSize = floor(size(dataFromOtherCluster, 2)*0.6);
-                tempData = dataFromOtherCluster(1 : trainSize);
-                testData = [testData tempData];
+                trainingSetIrrelevant=[trainingSetIrrelevant,randomizeSet(queryID,Array(i),Array(i+1)-1, 0.6 )]
+%                 dataFromOtherCluster = Array(i):Array(i+1)-1;
+%                 trainSize = floor(size(dataFromOtherCluster, 2)*0.6);
+%                 tempData = dataFromOtherCluster(1 : trainSize);
+%                 testData = [testData tempData];
             end
         end
         
-        % each cluster use 60% train 40%(the rest) for test
-        dataFromCurrentCluster = Array(clusterID):Array(clusterID+1)-1;
-        % currentClusterFileSize = size(dataFromCurrentCluster, 2);
-        
-        trainSize = floor(size(dataFromCurrentCluster, 2)*0.6);
-        % trainingData1 = dataFromCurrentCluster(2 : trainSize+1);
-        trainingDataStart = dataFromCurrentCluster(2);
-        
-        testData = testData';
-        trainingFeatures = [];
-        rangeFeatures = [];
-        
-        countTrainingTimeSeries = 1;
+        %% each cluster use 60% train 40%(the rest) for test
+%         dataFromCurrentCluster = Array(clusterID):Array(clusterID+1)-1;
+%         % currentClusterFileSize = size(dataFromCurrentCluster, 2);
+%         
+%         trainSize = floor(size(dataFromCurrentCluster, 2)*0.6);
+%         % trainingData1 = dataFromCurrentCluster(2 : trainSize+1);
+%         trainingDataStart = dataFromCurrentCluster(2);
+%         
+%         testData = testData';
+%         trainingFeatures = [];
+%         rangeFeatures = [];
+%         
+%         countTrainingTimeSeries = 1;
         % load training data
         % clusterID = 2;
         % queryID = 1;
-    
-        while(countTrainingTimeSeries <=trainSize)%for i = 1 : size(trainingData1, 2) % true data
-            if (countTrainingTimeSeries + Array(clusterID)-1)== queryID
-                trainSize=trainSize+1;
-            else
+    trainingSetRelevant
+       for i=1:size(trainingSetRelevant,2)
+%         while(countTrainingTimeSeries <=trainSize)%for i = 1 : size(trainingData1, 2) % true data
+%             if (countTrainingTimeSeries + Array(clusterID)-1)== queryID
+%                 trainSize=trainSize+1;
+%             else
                 % dataElementIndex = trainingData1(i);
                 
                 % XsaveFolder1 = [featureFolder,'/feature',num2str(dataElementIndex),'.mat'];
                 % load(XsaveFolder1);
-                trainingFeatures = [trainingFeatures AllFeatures{countTrainingTimeSeries + Array(clusterID)-1}.frame1];
+                trainingFeatures = [trainingFeatures, AllFeatures{trainingSetRelevant(i)}.frame1];%countTrainingTimeSeries + Array(clusterID)-1}.frame1];
 
-            end
-            countTrainingTimeSeries = countTrainingTimeSeries+1;
+%             end
+%             countTrainingTimeSeries = countTrainingTimeSeries+1;
         end
         
         timeStart = trainingFeatures(2, :) - trainingFeatures(4, :);%, 1
