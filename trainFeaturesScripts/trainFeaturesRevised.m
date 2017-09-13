@@ -27,16 +27,16 @@ for i = 1 : dataSize
     rangeFeatures = zeros(size(AllFeatures{i}.frame1, 2), 16);
     for j = 1 : size(AllFeatures{i}.frame1, 2)
         % time ranges from timeCenter - 1*sigmaTime to timeCenter + 1*sigmaTime
-        timeStart = max(AllFeatures{i}.frame1(2, j) - AllFeatures{i}.frame1(2, j), 1);
-        timeEnd = min(AllFeatures{i}.frame1(2, j) + AllFeatures{i}.frame1(2, j), timeSeriesLength);
+        timeStart = max(AllFeatures{i}.frame1(2, j) - AllFeatures{i}.frame1(4, j), 1);
+        timeEnd = min(AllFeatures{i}.frame1(2, j) + AllFeatures{i}.frame1(4, j), timeSeriesLength);
         rangeFeatures(j, 1) = AllFeatures{i}.frame1(1, j);
-        rangeFeatures(j, 2) = AllFeatures{i}.frame1(2, j); % depd octave
-        rangeFeatures(j, 3) = AllFeatures{i}.frame1(3, j); % time octave
+        rangeFeatures(j, 2) = AllFeatures{i}.frame1(5, j); % depd octave
+        rangeFeatures(j, 3) = AllFeatures{i}.frame1(6, j); % time octave
         rangeFeatures(j, end-2) = AllFeatures{i}.frame1(2, j);
         rangeFeatures(j, end-1) = timeStart;
         rangeFeatures(j, end) = timeEnd;
     end
-    ProcessedAllFeatures = rangeFeatures;
+    ProcessedAllFeatures{i} = rangeFeatures;
 end
 
 p = tic;
@@ -79,10 +79,7 @@ for clusterID = 1:8
                 % XsaveFolder1 = [featureFolder,'/feature',num2str(dataElementIndex),'.mat'];
                 % load(XsaveFolder1);
                 trainingFeatures = [trainingFeatures AllFeatures{countTrainingTimeSeries + Array(clusterID)-1}.frame1];
-                
-                
-                ==================
-                
+                rangeFeatures = [rangeFeatures; ProcessedAllFeatures{countTrainingTimeSeries + Array(clusterID)-1}];
                 
             end
             countTrainingTimeSeries = countTrainingTimeSeries+1;
@@ -100,39 +97,45 @@ for clusterID = 1:8
         options.ReducedDim = 10;
         % PCA, trainVector is the project matrix
         
-        [trainedVector, trainValues] = PCA(trainingDescriptors',options);
-        % trainingDescriptors = trainingDescriptors*trainedVector;
+        [trainedVector, trainValues] = PCA(trainingDescriptors,options);
+        trainingDescriptors = trainingDescriptors*trainedVector;
+        % rangeFeatures(:, 4:end-3) = trainedVector;
+        rangeFeatures(:, 4:end-3) = trainingDescriptors;
         
-        rawFeatures = [ featureDepd'  trainedVector featureTime' featureDepdOctave' featureTimeOctave'];
-        [C, Xia, ic]= unique(rawFeatures(:, end-3), 'rows'); % ia is the remaining column
-        uniqueFeatures = (rawFeatures(Xia, :));
+        % [trainedVectorTEST, trainValuesTEST] = PCA(trainingDescriptors,options);
+        % trainingDescriptorsTEST = trainingDescriptors * trainedVectorTEST;
         
-        descriptorRange = zeros(2, size(trainedVector, 2));
-        descriptorRange(1,:) = min(uniqueFeatures(:,5:end));
-        descriptorRange(2,:) = max(uniqueFeatures(:,5:end));
+        % rawFeatures = [ featureDepd'  trainedVector featureTime' featureDepdOctave' featureTimeOctave'];
+        % [C, Xia, ic]= unique(rangeFeatures(:, 1:end-3), 'rows'); % ia is the remaining column
+        [C, Xia, ic]= unique(rangeFeatures, 'rows'); % ia is the remaining column
+        uniqueFeatures = (rangeFeatures(Xia, :));
+        
+        descriptorRange = zeros(2, options.ReducedDim);
+        descriptorRange(1,:) = min(uniqueFeatures(:,4:end-3));
+        descriptorRange(2,:) = max(uniqueFeatures(:,4:end-3));
         
         % cluster descriptors on training data
         
         resolution = 2;
         % assume there would be duplicate here
-        % rawFeatures(:, 5:end) = clusterDescrs(trainedVector, descriptorRange, resolution);
-        rawFeatures(:, 2:end-3) = clusterDescrs(trainedVector, descriptorRange, resolution);
+        % rangeFeatures(:, 4:end-3) = clusterDescrs(trainedVector, descriptorRange, resolution);
+        rangeFeatures(:, 4:end-3) = clusterDescrs(trainingDescriptors, descriptorRange, resolution);
         
         % update raw feature
-        % uniqueFeatures(:, 5:end) = clusterDescrs(uniqueFeatures(:, 5:end), descriptorRange, resolution);
-        uniqueFeatures(:, 2:end-3) = clusterDescrs(uniqueFeatures(:, 5:end), descriptorRange, resolution);
+        uniqueFeatures(:, 4:end-3) = clusterDescrs(uniqueFeatures(:, 4:end-3), descriptorRange, resolution);
         
         % unique again
-        [C, Xia, ic]= unique(uniqueFeatures(:, end-3), 'rows'); % ia is the remaining column
+        % [C, Xia, ic]= unique(uniqueFeatures(:, end-3), 'rows'); % ia is the remaining column
+        [C, Xia, ic]= unique(uniqueFeatures, 'rows'); % ia is the remaining column
         uniqueFeatures = (uniqueFeatures(Xia, :));
         
         % load test data
         testFeatures = [];
+        testRangeFeatures = [];
         for i = 1 : size(testData, 1)
             dataElementIndex = testData(i);
-            %             XsaveFolder1 = [featureFolder,'/feature',num2str(dataElementIndex),'.mat'];
-            %             load(XsaveFolder1);
             testFeatures = [testFeatures AllFeatures{dataElementIndex}.frame1];
+            testRangeFeatures = [testRangeFeatures; ProcessedAllFeatures{dataElementIndex}];
         end
         
         featureDepdCenter = testFeatures(1, :);
@@ -149,32 +152,37 @@ for clusterID = 1:8
         options.ReducedDim = 10;
         row=0;
         
-        [trainedVector1, trainValues] = PCA(testFeatureDescriptor',options);
-        % testFeatureDescriptor = testFeatureDescriptor*trainedVector;
-        testFeatureDescriptor = trainedVector1;
+        [trainedVector1, trainValues] = PCA(testFeatureDescriptor,options);
+        testFeatureDescriptor = testFeatureDescriptor*trainedVector;
+        
+        % testFeatureDescriptor = trainedVector1;
+        
         % testing data clustering
-        testFeatureDescriptor = clusterDescrs(testFeatureDescriptor, descriptorRange, resolution);
+        testRangeFeatures(:, 4:end-3) = clusterDescrs(testFeatureDescriptor, descriptorRange, resolution);
         
         XappCount = zeros(size(uniqueFeatures, 1), 2);
         
-        rawTestFeatures =[featureDepdCenter' featureTimeCenter' testFeatureDepdOctave' testFeatureTimeOctave'  testFeatureDescriptor];
+        % rawTestFeatures =[featureDepdCenter' featureTimeCenter' testFeatureDepdOctave' testFeatureTimeOctave'  testFeatureDescriptor];
+        % rawTestFeatures =[featureDepdCenter' featureTimeCenter' testFeatureDepdOctave' testFeatureTimeOctave'  testFeatureDescriptor];
         
         % using testing and training to compute relevance feedback
         for i = 1 : size(XappCount, 1)
             % Xtrain = uniqueFeatures(i,:);
             Xtrain = uniqueFeatures(i,:);
             
-            % need to modify the look-up function
+            RelevenceVector = featureLookUp(rangeFeatures, Xtrain);
+            XappCount(i, 1) = size(RelevenceVector, 1);
+            
+            InRelevenceVector = featureLookUp(testRangeFeatures, Xtrain);
+            XappCount(i, 2) = size(InRelevenceVector, 1);
             
             % compute the frequency of a training vector appears in the
             % training set
-            tt = find(all(bsxfun(@eq, rawFeatures, Xtrain), 2));
-            XappCount(i, 1) = size(tt, 1);
+            % tt = find(all(bsxfun(@eq, rawFeatures, Xtrain), 2));
             
             % compute the frequency of a training vector appears in the
             % testing set
-            tt = find(all(bsxfun(@eq, rawTestFeatures, Xtrain), 2));
-            XappCount(i, 2) = size(tt, 1);
+            % tt = find(all(bsxfun(@eq, rawTestFeatures, Xtrain), 2));
         end
         % compute score, no need to sort
         Relevance = floor(size(dataFromCurrentCluster, 2)*0.6); % original training size
@@ -193,8 +201,8 @@ for clusterID = 1:8
         csvwrite([saveFolder,'/descrRange', num2str(queryID), '_', num2str(clusterID), '.csv'], descriptorRange);
         
         csvwrite([saveFolder,'/testObj', num2str(queryID), '_', num2str(clusterID), '.csv'], testData);
-        csvwrite([saveFolder,'/trainObj', num2str(queryID), '_', num2str(clusterID), '.csv'], trainingData1);
-        csvwrite([saveFolder,'/training', num2str(queryID), '_', num2str(clusterID), '.csv'], trainingData1);
+        % csvwrite([saveFolder,'/trainObj', num2str(queryID), '_', num2str(clusterID), '.csv'], trainingData1);
+        % csvwrite([saveFolder,'/training', num2str(queryID), '_', num2str(clusterID), '.csv'], trainingData1);
     end
 end
 time = toc(p);

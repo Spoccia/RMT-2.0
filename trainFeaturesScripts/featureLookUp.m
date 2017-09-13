@@ -1,4 +1,4 @@
-function frequency = featureLookUp(fullDataSet, searchDataVector, overLapRatio)
+function frequency = featureLookUp(fullDataSet, searchDataVector)
 % search searchData in fullDataSet and return the frequency
 
 % timeStart index: 2
@@ -10,13 +10,9 @@ searchDataTimeCenter = searchDataVector(end-2);
 fullDataSet(:, end-1); % fullDataSet timeStart
 fullDataSet(:, end); % fullDataSet timeEnd
 
-
-
-
-index = fullDataSet(:, end-1) < searchDataTimeCenter & fullDataSet(:, end) > searchDataTimeCenter);
+index = fullDataSet(:, end-1) < searchDataTimeCenter & fullDataSet(:, end) > searchDataTimeCenter;
 fullDataSet = fullDataSet(index, :);
-tt = find(all(bsxfun(@eq, rawFeatures, Xtrain), 2));
-
-
+frequency = find(all(bsxfun(@eq, fullDataSet(:, 1:end-3), searchDataVector(1:end-3)), 2));
+% frequency = find(all(bsxfun(@eq, fullDataSet(:, 4:end-3), searchDataVector(4:end-3)), 2));
 end
 
