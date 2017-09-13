@@ -33,7 +33,6 @@ for i = 1 : dataSize
         rangeFeatures(j, 3) = AllFeatures{i}.frame1(2, j); % Time center
         rangeFeatures(j, 5) = AllFeatures{i}.frame1(5, j); % Dep octave
         rangeFeatures(j, 6) = AllFeatures{i}.frame1(6, j); % Time octave
-        rangeFeatures(j, end) = AllFeatures{i}.frame1(2, j);
         rangeFeatures(j, 1) = timeStart;
         rangeFeatures(j, 2) = timeEnd;
     end
@@ -45,6 +44,10 @@ for clusterID = 1:8
     for queryID = Array(clusterID):Array(clusterID + 1) - 1
         fprintf('query ID: %d, clusterID: %d. \n', queryID, clusterID);
         testData=[];
+        setofpossibleindex= Array(clusterID):Array(clusterID+1)-1;
+        %remove the query from the set
+        setofpossibleindex(setofpossibleindex==queryID) = []; % r is smaller now
+        setofpossiblevalue = setofpossibleindex(randi([1,size(setofpossibleindex,2)],1,round(0.6*size(setofpossibleindex,2))));
         for i = 1: size(Array, 2)-1
             if(i == clusterID)
             else
