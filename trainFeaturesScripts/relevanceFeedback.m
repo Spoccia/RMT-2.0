@@ -6,7 +6,7 @@ function tempG = relevanceFeedback(appCount, Relevence, InRelevence)
 % output: importance -- nx1 matrix
 
 % tempD = appCount(:, 1) + appCount(:, 2); %totAL RELEVANT AND IRRELEVANT
-tempH = abs(appCount(:,1)/Relevence - appCount(:, 2)/InRelevence);
+tempH = abs(appCount(:,1)/(Relevence+0.01) - appCount(:, 2)/(InRelevence+0.01));
 tempI = repmat(InRelevence, size(appCount, 1), 1);
 tempR = repmat(Relevence, size(appCount, 1), 1);
 % tempG = appCount(:,1)*(I-appCount(:,2)+0.01)/((appCount(:, 2)+0.01)*(R-appCount(:,1)+0.01));

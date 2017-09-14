@@ -21,14 +21,6 @@ AllFeatures = cell(dataSize, 1);
 % 7-end:10-D descriptor
 
 reducedDescriptorRange = 7 : 16;
-reducedDimension = 10;
-featureDepdIndex = 1;
-featureTimeIndex = 2;
-featureDepdSigmaIndex = 3;
-featureTimeSigmaIndex = 4;
-featureDepdOctaveIndex = 5;
-featureTimeOctaveIndex = 6;
-
 ProcessedAllFeatures = cell(dataSize, 1);
 for i = 1 : dataSize
     featurePath = [featureFolder,'/feature',num2str(i),'.mat'];
@@ -40,13 +32,13 @@ for i = 1 : dataSize
     
     for j = 1 : size(AllFeatures{i}.frame1, 2)
         % time ranges from timeCenter - 1*sigmaTime to timeCenter + 1*sigmaTime
-        timeCenter = AllFeatures{i}.frame1(featureTimeIndex, j);
-        timeSigma = AllFeatures{i}.frame1(featureTimeSigmaIndex, j);
+        timeCenter = AllFeatures{i}.frame1(2, j);
+        timeSigma = AllFeatures{i}.frame1(4, j);
         timeStart = max(timeCenter - timeSigma, 1);
         timeEnd = min(timeCenter + timeSigma, timeSeriesLength);
-        depdIndex = AllFeatures{i}.frame1(featureDepdIndex, j);
-        depdOctave = AllFeatures{i}.frame1(featureDepdOctaveIndex, j); % depd octave
-        timeOctave = AllFeatures{i}.frame1(featureTimeOctaveIndex, j); % time octave
+        depdIndex = AllFeatures{i}.frame1(1, j);
+        depdOctave = AllFeatures{i}.frame1(5, j); % depd octave
+        timeOctave = AllFeatures{i}.frame1(6, j); % time octave
         
         rangeFeatures(j, 1) = timeStart;
         rangeFeatures(j, 2) = timeEnd;
@@ -62,50 +54,55 @@ p = tic;
 for clusterID = 1:8
     for queryID = Array(clusterID):Array(clusterID + 1) - 1
         fprintf('query ID: %d, clusterID: %d. \n', queryID, clusterID);
-        irRelevantDataSet=[];
+        testData=[];
         for i = 1: size(Array, 2)-1
             if(i == clusterID)
             else
                 dataFromOtherCluster = Array(i):Array(i+1)-1;
                 trainSize = floor(size(dataFromOtherCluster, 2)*0.6);
                 tempData = dataFromOtherCluster(1 : trainSize);
-                irRelevantDataSet = [irRelevantDataSet tempData];
+                testData = [testData tempData];
             end
         end
         % each cluster use 60% train 40%(the rest) for test
-        dataFromCurrentCluster = Array(clusterID) : Array(clusterID+1)-1;
+        dataFromCurrentCluster = Array(clusterID):Array(clusterID+1)-1;
         
         trainSize = floor(size(dataFromCurrentCluster, 2)*0.6);
+        trainingDataStart = dataFromCurrentCluster(2);
         
-        irRelevantDataSet = irRelevantDataSet';
-        relevantFeatures = [];
-        relevantRangeFeatures = [];
+        testData = testData';
+        trainingFeatures = [];
+        rangeFeatures = [];
+        
         countTrainingTimeSeries = 1;
-        
         % load training data
         while(countTrainingTimeSeries <= trainSize)%for i = 1 : size(trainingData1, 2) % true data
-            if (countTrainingTimeSeries + Array(clusterID) - 1)== queryID
+            if (countTrainingTimeSeries + Array(clusterID)-1)== queryID
                 trainSize=trainSize+1;
             else
-                relevantFeatures = [relevantFeatures AllFeatures{countTrainingTimeSeries + Array(clusterID)-1}.frame1];
-                relevantRangeFeatures = [relevantRangeFeatures; ProcessedAllFeatures{countTrainingTimeSeries + Array(clusterID)-1}];
+                trainingFeatures = [trainingFeatures AllFeatures{countTrainingTimeSeries + Array(clusterID)-1}.frame1];
+                rangeFeatures = [rangeFeatures; ProcessedAllFeatures{countTrainingTimeSeries + Array(clusterID)-1}];
             end
             countTrainingTimeSeries = countTrainingTimeSeries+1;
         end
         
-        relevantDescriptors = relevantFeatures(8:135, :)';
+        trainingDescriptors = trainingFeatures(8:135, :)';
+        
+        
+        
+        
         
         % train SVD on training dataset, use SVD on descriptors only
         options = [];
-        options.ReducedDim = reducedDimension;
+        options.ReducedDim = 10;
         % PCA, trainVector is the project matrix
         
-        [revelantVector, trainValues] = PCA(relevantDescriptors, options);
-        relevantDescriptors = relevantDescriptors * revelantVector;
-        relevantRangeFeatures(:, reducedDescriptorRange) = relevantDescriptors;
+        [trainedVector, trainValues] = PCA(trainingDescriptors, options);
+        trainingDescriptors = trainingDescriptors * trainedVector;
+        rangeFeatures(:, reducedDescriptorRange) = trainingDescriptors;
         
-        [C, Xia, ic]= unique(relevantRangeFeatures, 'rows'); % ia is the remaining column
-        uniqueFeatures = (relevantRangeFeatures(Xia, :));
+        [C, Xia, ic]= unique(rangeFeatures, 'rows'); % ia is the remaining column
+        uniqueFeatures = (rangeFeatures(Xia, :));
         
         descriptorRange = zeros(2, options.ReducedDim);
         descriptorRange(1,:) = min(uniqueFeatures(:, reducedDescriptorRange));
@@ -115,7 +112,7 @@ for clusterID = 1:8
         resolution = 2;
         
         % assume there would be duplicate here
-        relevantRangeFeatures(:, reducedDescriptorRange) = clusterDescrs(relevantDescriptors, descriptorRange, resolution);
+        rangeFeatures(:, reducedDescriptorRange) = clusterDescrs(trainingDescriptors, descriptorRange, resolution);
         
         % update raw feature
         uniqueFeatures(:, reducedDescriptorRange) = clusterDescrs(uniqueFeatures(:, reducedDescriptorRange), descriptorRange, resolution);
@@ -124,57 +121,70 @@ for clusterID = 1:8
         [C, Xia, ic]= unique(uniqueFeatures, 'rows'); % ia is the remaining column
         uniqueFeatures = (uniqueFeatures(Xia, :));
         
+        
+        
+        
+        
+        
+        
         % load test data
-        irRelevantFeatures = [];
-        irRelevantRangeFeatures = [];
-        for i = 1 : size(irRelevantDataSet, 1)
-            dataElementIndex = irRelevantDataSet(i);
-            irRelevantFeatures = [irRelevantFeatures AllFeatures{dataElementIndex}.frame1];
-            irRelevantRangeFeatures = [irRelevantRangeFeatures; ProcessedAllFeatures{dataElementIndex}];
+        testFeatures = [];
+        testRangeFeatures = [];
+        for i = 1 : size(testData, 1)
+            dataElementIndex = testData(i);
+            testFeatures = [testFeatures AllFeatures{dataElementIndex}.frame1];
+            testRangeFeatures = [testRangeFeatures; ProcessedAllFeatures{dataElementIndex}];
         end
         
-        testFeatureDescriptor = irRelevantFeatures(8:135, :)';
+        testFeatureDescriptor = testFeatures(8:135, :)';
         
         % traing SVD on testing data
         % SVD on test data descriptors
         % testing data PCA
         options = [];
-        options.ReducedDim = reducedDimension;
+        options.ReducedDim = 10;
         
-        [revelantVector1, trainValues] = PCA(testFeatureDescriptor, options);
-        testFeatureDescriptor = testFeatureDescriptor * revelantVector;
+        [trainedVector1, trainValues] = PCA(testFeatureDescriptor, options);
+        testFeatureDescriptor = testFeatureDescriptor * trainedVector;
         
         % testing data clustering
-        irRelevantRangeFeatures(:, reducedDescriptorRange) = clusterDescrs(testFeatureDescriptor, descriptorRange, resolution);
+        testRangeFeatures(:, reducedDescriptorRange) = clusterDescrs(testFeatureDescriptor, descriptorRange, resolution);
         
         % relevance
         relevanceCount = zeros(size(uniqueFeatures, 1), 2);
         
         % using testing and training to compute relevance feedback
         for i = 1 : size(relevanceCount, 1)
-            relevantFeatureVector = uniqueFeatures(i,:);
+            Xtrain = uniqueFeatures(i,:);
             
-            RelevanceVector = featureLookUp(relevantRangeFeatures, relevantFeatureVector);
+            RelevanceVector = featureLookUp(rangeFeatures, Xtrain);
             relevanceCount(i, 1) = size(RelevanceVector, 1);
             
-            IrRelevanceVector = featureLookUp(irRelevantRangeFeatures, relevantFeatureVector);
+            IrRelevanceVector = featureLookUp(testRangeFeatures, Xtrain);
             relevanceCount(i, 2) = size(IrRelevanceVector, 1);
         end
         % compute score, no need to sort
         Relevance = floor(size(dataFromCurrentCluster, 2)*0.6); % original training size
-        IrRelevance = size(irRelevantDataSet, 1);
+        IrRelevance = size(testData, 1);
         relevantFeatureImportance = relevanceFeedback(relevanceCount, Relevance, IrRelevance);
         
+        
+        
+        
+        
+        
+        
+%         irrelevantFeatureImportance
         csvwrite([saveFolder,'/importance',num2str(queryID), '.csv'], featureImportance);
         csvwrite([saveFolder,'/uniqueFeature',num2str(queryID), '.csv'], uniqueFeatures);
         
         % save project matrix
-        csvwrite([saveFolder,'/projectMatrix',num2str(queryID), '.csv'], revelantVector);
+        csvwrite([saveFolder,'/projectMatrix',num2str(queryID), '.csv'], trainedVector);
         
         % save projected descr range
         csvwrite([saveFolder,'/descrRange', num2str(queryID), '.csv'], descriptorRange);
         
-        csvwrite([saveFolder,'/testObj', num2str(queryID),'.csv'], irRelevantDataSet);
+        csvwrite([saveFolder,'/testObj', num2str(queryID),'.csv'], testData);
     end
 end
 time = toc(p);
