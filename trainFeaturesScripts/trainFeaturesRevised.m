@@ -137,10 +137,10 @@ for clusterID = 1:8
         for i = 1 : size(relevanceCount, 1)
             relevantFeatureVector = uniqueFeatures(i,:);
             % do the look up for both relevant range features and irrelevant range features
-            RelevanceVector = featureLookUp(relevantRangeFeatures, relevantFeatureVector);
+            RelevanceVector = featureLookUp(relevantRangeFeatures, relevantFeatureVector, isPaired);
             relevanceCount(i, 1) = size(RelevanceVector, 1);
             
-            IrRelevanceVector = featureLookUp(irRelevantRangeFeatures, relevantFeatureVector);
+            IrRelevanceVector = featureLookUp(irRelevantRangeFeatures, relevantFeatureVector, isPaired);
             relevanceCount(i, 2) = size(IrRelevanceVector, 1);
         end
         % compute score, no need to sort
