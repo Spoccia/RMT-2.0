@@ -1,9 +1,9 @@
+function trainFeaturesRevisedUnPaired()
 % compute contextual feature signifiacne for multi-variate (RMT) time series features
-clear;
-clc;
-featureFolder = ['/Users/sicongliu/Desktop/features/NewPara/UnionScale_SigmaT28SigmaD05'];
-dataFolder = ['/Users/sicongliu/Desktop/data/mocap'];
-saveFolder = '/Users/sicongliu/Desktop/features/NewPara/UnionScale_SigmaT28SigmaD05';
+
+featureFolder = ['./FullScale_SigmaT56SigmaD05_Octave3'];
+dataFolder = ['./data/mocap'];
+saveFolder = './FullScale_SigmaT56SigmaD05_Octave3/UnPaired5';
 dataSize = 184;
 
 % MoCap data
@@ -11,7 +11,7 @@ Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 
 % load all features
 AllFeatures = cell(dataSize, 1);
-% features are organized as: 
+% features are organized as:
 % 1: timeStart
 % 2: timeEnd
 % 3: timeCenter
@@ -20,7 +20,8 @@ AllFeatures = cell(dataSize, 1);
 % 6: timeOct
 % 7-end:10-D descriptor
 
-reducedDescriptorRange = 7 : 16;
+reducedFeatureSize = 11;
+reducedDescriptorRange = 7 : 11;
 reducedDimension = 5;
 featureDepdIndex = 1;
 featureTimeIndex = 2;
@@ -30,16 +31,16 @@ featureDepdOctaveIndex = 5;
 featureTimeOctaveIndex = 6;
 
 % isPaired variable, 0 - unpaired, 1 - paired
-isPaired = 1; 
+isPaired = 0;
 
 ProcessedAllFeatures = cell(dataSize, 1);
 for i = 1 : dataSize
-    featurePath = [featureFolder,'/feature',num2str(i),'.mat'];
+    featurePath = [featureFolder,'/feature_',num2str(i),'.mat'];
     AllFeatures{i} = load(featurePath); % feature is frame1 from cell structure
     dataPath = [dataFolder, '/', num2str(i), '.csv'];
     data = csvread(dataPath);
     timeSeriesLength = size(data, 1);
-    rangeFeatures = zeros(size(AllFeatures{i}.frame1, 2), 16);
+    rangeFeatures = zeros(size(AllFeatures{i}.frame1, 2), reducedFeatureSize);
     
     for j = 1 : size(AllFeatures{i}.frame1, 2)
         % time ranges from timeCenter - 1*sigmaTime to timeCenter + 1*sigmaTime
@@ -100,7 +101,7 @@ for clusterID = 1:8
         
         [revelantVector, relevantEigenValues] = PCA(relevantFeatureDescriptors, options);
         relevantFeatureDescriptors = relevantFeatureDescriptors * revelantVector;
-       
+        
         [C, Xia, ic]= unique(relevantRangeFeatures, 'rows'); % ia is the remaining column
         uniqueFeatures = (relevantRangeFeatures(Xia, :));
         
@@ -165,3 +166,6 @@ end
 time = toc(p);
 csvwrite([saveFolder,'/trainingTime.csv'], time);
 fprintf('All done, \n');
+
+end
+
