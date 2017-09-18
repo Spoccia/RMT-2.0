@@ -4,7 +4,7 @@ clear;
 
 PATH_dataset ='D:\Mocap _ RMT2\data\';
 PATH_coordinates='D:\Mocap _ RMT2\Location matrix\';
-saveFeaturesPath='D:\Mocap _ RMT2\Features\';
+saveFeaturesPath='D:\Mocap _ RMT2\SigmaDepdiff\Features\';
 %% sift parameters
 % x - variate
 % y - time
@@ -38,10 +38,16 @@ for TEST =1:184
     
     while(size(frames1,2)==0)
         frames1 = zeros(4,1);
-        descr2 = zeros(128,1);
+        descr1 = zeros(128,1);
     end
     frame1 = [frames1;descr1];
-    
+    if( isnan(sum(descr1(:))))
+        TS_name
+       nanIDX=  isnan(sum(descr1));
+       frame1(:,nanIDX)= [];
+       descr1(:,nanIDX)= [];
+       frames1(:,nanIDX)= [];
+    end
     feature = frame1;
     
     featureExtractionGaussian(1, TEST) = featureExtractionGaussian(1, TEST) + toc(p);
@@ -55,10 +61,10 @@ for TEST =1:184
     savepath7 = [saveFeaturesPath,'/ScaleTime_',TS_name,'.csv'];
     savepath8 = [saveFeaturesPath,'/DescrTime_',TS_name,'.csv'];
     
-    save(savepath1,'data', 'gss1', 'frame1','depd1');
+    save(savepath1, 'gss1', 'frame1','depd1');%(savepath1,'data', 'gss1', 'frame1','depd1');
     save(savepath2,'idm1');
-    save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
-    save(savepath5, 'depd1');
+    save(savepath3,'descr1');%(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
+    %save(savepath5, 'depd1');
     
     csvwrite(savepath5, time);
     csvwrite(savepath6, timee);

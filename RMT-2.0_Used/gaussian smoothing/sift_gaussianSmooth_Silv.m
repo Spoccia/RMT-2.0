@@ -130,7 +130,7 @@ for otime = 1: size(gss.octave,1)
            % sigma = 2^(o-1+gss.omin) * gss.sigma0 * 2.^(oframes(3,:)/gss.S) ;
             sigmad =  2^(odepd-1+gss.odmin) * gss.sigmad * 2.^(oframes(3,:)/gss.Sd);
             %%sigmad =  sigmaDepd*2^(odepd-1)*kdepd.^(dependencyScale-1) ;%gss.sigmat = sigmatimezero  SICONG
-            sigmat =  2^(otime-1+gss.odmin) * gss.sigmat * 2.^(oframes(3,:)/gss.Sd);
+            sigmat =  2^(otime-1+gss.odmin) * gss.sigmat * 2.^(oframes(3,:)/gss.St);
             %sigmat =  (sigmaTime*2^(otime-1))*ktime.^(timeScale-1);%%gss.sigmat = sigmatimezero SICONG
             
             

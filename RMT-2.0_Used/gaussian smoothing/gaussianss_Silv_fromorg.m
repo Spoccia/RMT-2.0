@@ -36,7 +36,7 @@ if dsigmaT0 < 0
   dsigmaT0 = sigmaT0 * sqrt(1 - 1/ktime^2) ; % Scale step factor Time between each scale 
 end
 if dsigmaD0 < 0
-    dsigmaD0 = sigmaD0 * sqrt(1 - 1/kdepd^2) ; % Scale step factor Dependency between each scale
+     dsigmaD0 = sigmaD0 * sqrt(1 - 1/kdepd^2) ; % Scale step factor Dependency between each scale
  %   dsigmaD0 = sigmaD0; 
 end
 

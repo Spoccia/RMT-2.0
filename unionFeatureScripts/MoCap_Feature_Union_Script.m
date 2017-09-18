@@ -2,9 +2,9 @@ clc;
 clear;
 warning off;
 
-adaptiveScalePath = ['G:\Features_sigmaBig_Right\MoCap\FullScale\Features SD 0_6 ST 2_8'];%5_6 %2_8 %11_2['G:\Features_sigmaBig_Right\ASL\AdaptiveScale\Features'];%
-fixedScalePath = ['G:\Features_sigmaBig_Right\MoCap\FixedScale\Features sd 0_6 st 2_8'];%['G:\Features_sigmaBig_Right\ASL\FixedScale\Features'];%
-unionScalePath = ['G:\Features_sigmaBig_Right\MoCap\HYBScale\Features sd 0_6 st 2_8'];%['G:\Features_sigmaBig_Right\ASL\UnionScale'];%
+adaptiveScalePath = 'D:\Mocap _ RMT2\Features 3 octave  SD 0_6 ST 11_2';%2_8';%['G:\Features_sigmaBig_Right\MoCap\FullScale\Features SD 0_6 ST 2_8'];%5_6 %2_8 %11_2['G:\Features_sigmaBig_Right\ASL\AdaptiveScale\Features'];%
+fixedScalePath = 'D:\Mocap _ RMT2\FIX SCALE\Features Octave3 sd 0_6 st 11_2';%2_8';%['G:\Features_sigmaBig_Right\MoCap\FixedScale\Features sd 0_6 st 2_8'];%['G:\Features_sigmaBig_Right\ASL\FixedScale\Features'];%
+unionScalePath = 'D:\Mocap _ RMT2\UNION\Features 3 octave  SD 0_6 ST 11_2';%2_8';%['G:\Features_sigmaBig_Right\MoCap\HYBScale\Features sd 0_6 st 2_8'];%['G:\Features_sigmaBig_Right\ASL\UnionScale'];%
 
 fileList = 1 : 184;
 for i = 1: size(fileList, 2)
@@ -56,6 +56,9 @@ for i = 1: size(fileList, 2)
     
     % frame1 = [frames1;descr11];
     % output features to files
+    if(exist([unionScalePath,'/'],'dir')==0)
+        mkdir([unionScalePath,'/']);
+    end
     savepath1 = [unionScalePath, '/feature', num2str(i), '.mat'];
     savepath2 = [unionScalePath, '/idm', num2str(i)];
     savepath3 = [unionScalePath, '/MetaData', num2str(i), '.mat'];
