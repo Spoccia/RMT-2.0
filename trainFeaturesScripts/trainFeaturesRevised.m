@@ -20,6 +20,8 @@ AllFeatures = cell(dataSize, 1);
 % 6: timeOct
 % 7-end:10-D descriptor
 
+descriptorStart = 11;
+descriptorEnd = 138;
 reducedDescriptorRange = 7 : 16;
 reducedDimension = 5;
 featureDepdIndex = 1;
@@ -91,7 +93,7 @@ for clusterID = 1:8
             
         end
         
-        relevantFeatureDescriptors = relevantFeatures(8:135, :)';
+        relevantFeatureDescriptors = relevantFeatures(descriptorStart:descriptorEnd, :)';
         
         % train SVD on training dataset, use SVD on descriptors only
         options = [];
@@ -121,7 +123,7 @@ for clusterID = 1:8
         [C, Xia, ic]= unique(uniqueFeatures, 'rows'); % ia is the remaining column
         uniqueFeatures = (uniqueFeatures(Xia, :));
         
-        irrelevantFeatureDescriptors = irRelevantFeatures(8:135, :)';
+        irrelevantFeatureDescriptors = irRelevantFeatures(descriptorStart:descriptorEnd, :)';
         
         % traing SVD on testing data
         [irrevelantVector, irrelevantEigenValues] = PCA(irrelevantFeatureDescriptors, options);
