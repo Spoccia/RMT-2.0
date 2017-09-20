@@ -52,7 +52,7 @@ for queryID =1:184
     % Select index of the elements in each class
     training_Sets=[];
     for clusterID =1:8
-            training_Sets{clusterID} = randomizeSet(queryID,ClassIndexes(clusterID),ClassIndexes(clusterID+1)-1, trainingPercentage );
+        training_Sets{clusterID} = randomizeSet(queryID,ClassIndexes(clusterID),ClassIndexes(clusterID+1)-1, trainingPercentage );
     end
     for clusterID = 1:size(ClassIndexes,2)-1;
         'training query class' 
