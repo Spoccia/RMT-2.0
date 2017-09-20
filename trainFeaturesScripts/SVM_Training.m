@@ -2,17 +2,16 @@ clear;
 clc;
 
 %% Input variable
-% featureFolder = Folder that contains the features
-% dataFolder =  Folder that contains the data
-% destFolder = Destination where to save trained SVM model
-% 
-% SelectDataset = 1 full scale  change the descriptor start end position
-%                 2 for all the others
-% startDescr = location where the descriptor start
-% endDescr   = location where the descriptor ends
-% dataSize   = number of timeseries in the dataset 
+% featureFolder      = Folder that contains the features
+% dataFolder         = Folder that contains the data
+% destFolder         = Destination where to save trained SVM model
+% SelectDataset      = 1 full scale  change the descriptor start end position
+%                      2 for all the others
+% startDescr         = location where the descriptor start
+% endDescr           = location where the descriptor ends
+% dataSize           = number of timeseries in the dataset 
 % trainingPercentage = what percentage of data we should use to train the SVM
-% ClassIndexes Sart and end index for eleents of each class
+% ClassIndexes       = Start and End index for eleents of each class
 
 
 featureFolder = ['D:\Test Traning\dataFeatures'];
