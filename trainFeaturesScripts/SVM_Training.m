@@ -91,7 +91,9 @@ for queryID =1:184
                 Mdl = fitcecoc(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification);
                 % From my reading  this should be fine
                 SVMModel = fitcsvm(X,Y,'KernelFunction','linear','Standardize',true,'ClassNames',{'1','2'});
-                
+%                 CVSVMModel = crossval(SVMModel);
+%                 [~,scorePred] = kfoldPredict(CVSVMModel);
+%                 outlierRate = mean(scorePred<0);
                 if(exist(strcat(destFolder,num2str(queryID),'\'),'dir')==0)
                     mkdir(strcat(destFolder,num2str(queryID),'\'));
                 end
