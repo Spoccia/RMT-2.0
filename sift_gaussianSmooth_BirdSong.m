@@ -1,4 +1,4 @@
-function [tempFrames,descriptors,gss,dogss,depd,idm, time, timee, timeDescr]=sift_gaussianSmooth_BirdSong(I, LocM1 ,LocM2,IDM1, IDM2, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
+function [tempFrames,descriptors,gss,dogss,depd,idm, time, timee, timeDescr]=sift_gaussianSmooth_BirdSong(I, LocM1 ,LocM2,LocM3, IDM1, IDM2,IDM3, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
 % [M,N,C] = size(I) ;
 % O = floor(log2(min(M,N)))-2 ; % up to 8x8 images
 % time  = zeros(1, Ot*Od);
@@ -32,7 +32,7 @@ sdmin=0;%-1;
 otmin=0;
 odmin=0;
 
- [gss, depd, idm] = gaussianss_Silv_fromorg_BirdSong(I, LocM1 ,LocM2,IDM1, IDM2, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
+ [gss, depd, idm] = gaussianss_Silv_fromorg_BirdSong(I, LocM1 ,LocM2,LocM3,IDM1, IDM2,IDM3, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
 
 %[gss, depd, idm] = gaussianss_asynchronousMote_Silv_2(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
 timee(1) = timee(1)+ toc(p);
@@ -50,7 +50,7 @@ for otime = 1: size(gss.octave,1)
         % forwardIdx = siftlocalmax_directed_bak12142015(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % forwardIdx = siftlocalmax_directed_95(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         forwardIdx = siftlocalmax_directed_100(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
-        pippoF =siftlocalmax_directed_MAT_Sil(dogss.octave{otime, odepd}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),gss.sminD, gss.sminT,St,Sd);
+        %pippoF =siftlocalmax_directed_MAT_Sil(dogss.octave{otime, odepd}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),gss.sminD, gss.sminT,St,Sd);
         % forwardIdx = siftlocalmax_directed_999(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % forwardIdx = siftlocalmax_directed_998(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         [i,j, s1] = ind2sub( size( dogss.octave{otime, odepd}{3}), forwardIdx ) ;

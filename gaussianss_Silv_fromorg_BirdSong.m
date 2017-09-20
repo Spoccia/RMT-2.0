@@ -1,4 +1,4 @@
-function [ SS,depd, IDMall] = gaussianss_Silv_fromorg_BirdSong(I,LocM1 ,LocM2,IDM1, IDM2,Ot,Od,St,Sd,ominT,ominD,sminT,sminD,smaxD,smaxT,sigmaT0,sigmaD0,DepThreshold,dsigmaT0,dsigmaD0)%
+function [ SS,depd, IDMall] = gaussianss_Silv_fromorg_BirdSong(I,LocM1 ,LocM2,LocM3,IDM1, IDM2,IDM3,Ot,Od,St,Sd,ominT,ominD,sminT,sminD,smaxD,smaxT,sigmaT0,sigmaD0,DepThreshold,dsigmaT0,dsigmaD0)%
 
 %I : timeseries column are variate rows are timedata,
 %LocM: location matrix
@@ -85,7 +85,7 @@ IDM = (1:N)';
 % IDMall{odcur} = IDM;
 IDMall{1} = IDM1;
 IDMall{2} = IDM2;
-
+IDMall{3} = IDM3;
 % DistM = computeDist(LocM, IDM, odcur);         %DistM: distance matrixLocM;%
 %% Silv Normalization
 %     maxim = max(DistM(:));
@@ -96,6 +96,7 @@ IDMall{2} = IDM2;
 % depd{odcur} = H;
 depd{1} = LocM1;
 depd{2} = LocM2;
+depd{3} = LocM3;
 SS.ds{otcur, odcur} = [1, 1];
 
 SS.octave{otcur, odcur} = zeros(M, N,smaxD,smaxT) ;

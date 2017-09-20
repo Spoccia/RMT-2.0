@@ -12,12 +12,12 @@ saveFeaturesPath='D:\AustralianSignLanguage\Features\';
 % sigmad - sigma dependency (variate)
 % sigmat - sigma time (time)
 % pricur - principle curvature
-DeOctTime = 2;
-DeOctDepd = 2;
+DeOctTime = 3;
+DeOctDepd = 3;
 DeLevelTime = 4;%6;%
 DeLevelDepd = 4;%6;%
-DeSigmaDepd = 0.4;%0.4;%0.6;%0.4;%0.5;%
-DeSigmaTime = 0.5;%1.6*2^(1/(DeLevelTime));%0.8;%0.5;%3.2298;%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
+DeSigmaDepd = 0.5;%0.4;%0.6;%0.4;%0.5;%
+DeSigmaTime = 4*sqrt(2)/2;%0.5;%1.6*2^(1/(DeLevelTime));%0.8;%0.5;%3.2298;%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
 %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
 thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
 DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
@@ -28,8 +28,10 @@ r= 10; %5 threshould variates
 %% set up location matrix
 IDM1 = [1:22];
 IDM2 = [1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 9, 10, 11, 11, 11, 12, 12];
+IDM3 = [1 ,2, 2, 2, 3,3,4,5,5,5,6 ];%[1, 2,2,2, 3, 4,4, 5, 6, 7, 8, 9, 10 11];
 idm2{1} = IDM1;
 idm2{2} = IDM2;
+idm2{3} = IDM3;
 %%% first octave location matrix
 LocM1 = zeros(22, 22);
 LocM11 = zeros(11);
@@ -74,9 +76,27 @@ LocM11 = [LocM22 LocM12];
 LocM2 = [LocM11; LocM21];
 LocM2 = LocM2 - eye([12 12]);
 
+%%% thrd octave location matrix
+LocM3 = zeros(6,6);
+LocM33 = zeros(3, 3);
+for i=1:3
+    for j=1:3
+        if (i==1 && j==1)
+            LocM33(i,j)=1;
+        end        
+        if (i>=2 && i<=3  && j>=2 && j<=3)
+            LocM33(i,j)=1;
+        end
+    end
+end
+LocM13 = zeros(3);
+LocM31 = [LocM13 LocM33];
+LocM11 = [LocM33 LocM13];
+LocM3 = [LocM11;LocM31];
+LocM3 = LocM3 - eye([6 6]);
 
 featureExtractionGaussian = zeros(1, 2565);
-for TEST =5:2565
+for TEST =1:2565
     TS_name=num2str(TEST)
     data = csvread ([PATH_dataset,num2str(TEST),'.csv']);%
     data(isnan(data))=0;
@@ -85,7 +105,7 @@ for TEST =5:2565
     sBoundary=1;
     eBoundary=size(data,1);
      [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_BirdSong(data,...
-         LocM1 ,LocM2,IDM1, IDM2, DeOctTime, DeOctDepd,...
+         LocM1 ,LocM2,LocM3,IDM1, IDM2,IDM3, DeOctTime, DeOctDepd,...
         DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
         DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
 %     [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_Silv(data,coordinates', DeOctTime, DeOctDepd,...
@@ -98,7 +118,13 @@ for TEST =5:2565
         descr2 = zeros(128,1);
     end
     frame1 = [frames1;descr1];
-    
+    if( isnan(sum(descr1(:))))
+       TS_name
+       nanIDX=  isnan(sum(descr1));
+       frame1(:,nanIDX)= [];
+       descr1(:,nanIDX)= [];
+       frames1(:,nanIDX)= [];
+    end
     feature = frame1;
     
     featureExtractionGaussian(1, TEST) = featureExtractionGaussian(1, TEST) + toc(p);

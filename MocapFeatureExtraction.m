@@ -50,7 +50,7 @@ for TEST =1:184
     end
     feature = frame1;
     
-    featureExtractionGaussian(1, TEST) = featureExtractionGaussian(1, TEST) + toc(p);
+%    featureExtractionGaussian(1, TEST) = featureExtractionGaussian(1, TEST) + toc(p);
     
     savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
     savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];

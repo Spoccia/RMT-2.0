@@ -9,7 +9,7 @@ dataFolder = ['D:\Test Traning\data'];
 % saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
 saveFolder = '.';
 dataSize = 184;
-
+trainingPercentage = 0.6;
 % MoCap data
 Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 % Array = [1, 15, 51, 81, 99, 118, 149, 179];
@@ -42,20 +42,26 @@ for i = 1 : dataSize
     ProcessedAllFeatures{i} = rangeFeatures;
 end
 
+
 p = tic;
 
     for queryID = 1:184%Array(clusterID):Array(clusterID + 1) - 1
+        training_Sets_Relevant=[];
+        for clusterID =1:8
+            training_Sets_Relevant{clusterID} = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, trainingPercentage );
+        end
+        
         for clusterID = 1:8
         fprintf('query ID: %d, clusterID: %d. \n', queryID, clusterID);
         testData=[];
 % select relevat feature for class 
-        trainingSetRelevant = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
+        trainingSetRelevant = training_Sets_Relevant{clusterID};%randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
         
         trainingSetIrrelevant =[];
         for i = 1: size(Array, 2)-1
             if(i == clusterID)
             else
-                trainingSetIrrelevant=[trainingSetIrrelevant,randomizeSet(queryID,Array(i),Array(i+1)-1, 0.6 )];
+                trainingSetIrrelevant=training_Sets_Relevant{i};%[trainingSetIrrelevant,randomizeSet(queryID,Array(i),Array(i+1)-1, 0.6 )];
             end
         end
         

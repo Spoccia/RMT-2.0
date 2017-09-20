@@ -12,12 +12,12 @@ saveFeaturesPath='D:\BirdSong\Features\';
 % sigmad - sigma dependency (variate)
 % sigmat - sigma time (time)
 % pricur - principle curvature
-DeOctTime = 2;
-DeOctDepd = 2;
+DeOctTime = 3;
+DeOctDepd = 3;
 DeLevelTime = 4;%6;%
 DeLevelDepd = 4;%6;%
-DeSigmaDepd = 0.4;%0.4;%0.6;%0.4;%0.5;%
-DeSigmaTime = 3.2298;%4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
+DeSigmaDepd = 0.5;%0.4;%0.6;%0.4;%0.5;%
+DeSigmaTime = 4*sqrt(2)/2;%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%3.2298;%
 %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
 thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
 DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
@@ -28,10 +28,10 @@ r= 10; %5 threshould variates
 %% set up location matrix
 IDM1 = [1:13];
 IDM2 = [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
-IDM3 = [1, 2, 2, 3, 3, 4];
+IDM3 = [1, 2, 3, 3, 4, 4];
 idm2{1} = IDM1;
 idm2{2} = IDM2;
-idm2{3} = IDM2;
+idm2{3} = IDM3;
 %%% first octave location matrix
 LocM1 = zeros(13, 13);
 for i = 1 : 13
@@ -70,7 +70,23 @@ for i = 1 : 7
 end
 LocM2 = LocM2 - eye([7 7]);
 
-
+LocM3=zeros(4,4);
+for i=1:4
+    LocM3(i,i)=1;
+    if(i==1)
+        LocM3(i,i+1)=1;
+        LocM3(i+1,i)=1;
+    elseif(i==4)
+        LocM3(i,i-1)=1;
+        LocM3(i-1,i)=1;
+    else
+        LocM3(i,i+1)=1;
+        LocM3(i+1,i)=1;
+        LocM3(i,i-1)=1;
+        LocM3(i-1,i)=1;
+    end
+end
+LocM3 = LocM3 - eye([4 4]);
 featureExtractionGaussian = zeros(1, 154);
 for TEST =1:154
     TS_name=num2str(TEST)
@@ -81,7 +97,7 @@ for TEST =1:154
     sBoundary=1;
     eBoundary=size(data,1);
      [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_BirdSong(data,...
-         LocM1 ,LocM2,IDM1, IDM2, DeOctTime, DeOctDepd,...
+         LocM1 ,LocM2,LocM3,IDM1, IDM2, IDM3, DeOctTime, DeOctDepd,...
         DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
         DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
 %     [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_Silv(data,coordinates', DeOctTime, DeOctDepd,...
@@ -93,7 +109,13 @@ for TEST =1:154
         descr2 = zeros(128,1);
     end
     frame1 = [frames1;descr1];
-    
+    if( isnan(sum(descr1(:))))
+        TS_name
+       nanIDX=  isnan(sum(descr1));
+       frame1(:,nanIDX)= [];
+       descr1(:,nanIDX)= [];
+       frames1(:,nanIDX)= [];
+    end
     feature = frame1;
     
     featureExtractionGaussian(1, TEST) = featureExtractionGaussian(1, TEST) + toc(p);
@@ -107,10 +129,10 @@ for TEST =1:154
     savepath7 = [saveFeaturesPath,'/ScaleTime_',TS_name,'.csv'];
     savepath8 = [saveFeaturesPath,'/DescrTime_',TS_name,'.csv'];
     
-    save(savepath1,'data', 'gss1', 'frame1','depd1');
+    save(savepath1, 'gss1', 'frame1','depd1');%'data',
     save(savepath2,'idm1');
-    save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
-    save(savepath5, 'depd1');
+    %save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
+    %save(savepath5, 'depd1');
     
     csvwrite(savepath5, time);
     csvwrite(savepath6, timee);
