@@ -23,7 +23,7 @@ startDescr =8;
 endDescr = 135;
 %saveFolder = '.';
 dataSize = 184;
-trainingPercentage = 0.6; 
+trainingPercentage = 1;%0.6; 
 % OBSERVATION: take 60% require to do multiple test  using the remaning 40%  to understand what is the best set to use for the query.
 
 
