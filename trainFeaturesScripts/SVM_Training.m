@@ -14,9 +14,9 @@ clc;
 % ClassIndexes       = Start and End index for eleents of each class
 
 
-featureFolder = ['D:\Test Traning\dataFeatures'];
-dataFolder = ['D:\Test Traning\data'];
-destFolder = ['D:\Test Traning\dataFeatures\SVMTrained\'];
+featureFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8'];
+dataFolder = ['D:\Mocap _ RMT2\data'];
+destFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8\SVMTrained\'];
 
 SelectDataset= 1; % 1 means full scale ; 2 means hybrid or fix scale
 startDescr =8;
@@ -40,7 +40,7 @@ AllFeatures = cell(dataSize, 1);
 ProcessedAllFeatures = cell(dataSize, 1);
 timeSeriesLength =zeros(1,dataSize);
 for i = 1 : dataSize
-    featurePath = [featureFolder,'/feature',num2str(i),'.mat'];
+    featurePath = [featureFolder,'/feature_',num2str(i),'.mat'];
     AllFeatures{i} = load(featurePath); % feature is frame1 from cell structure
     dataPath = [dataFolder, '/', num2str(i), '.csv'];
     data = csvread(dataPath);
@@ -84,13 +84,13 @@ for queryID =1:184
 
         for OT =1: 3
             for OD = 1:3
-                index_Of_Octave= (AllFeaturesClass(5,:)==OD & AllFeaturesClass(6,:)==OT )
+                index_Of_Octave= (AllFeaturesClass(5,:)==OD & AllFeaturesClass(6,:)==OT );
                 OctaveClassification=ClassificationIDX(index_Of_Octave,1);
                 OctaveFeatures = AllFeaturesClass(:,index_Of_Octave);
                 % Xilun Suggested function
-                Mdl = fitcecoc(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification);
+ %              Mdl = fitcecoc(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification);
                 % From my reading  this should be fine
-                SVMModel = fitcsvm(X,Y,'KernelFunction','linear','Standardize',true,'ClassNames',{'1','2'});
+                SVMModel = fitcsvm(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification,'KernelFunction','rbf','Standardize',true,'ClassNames',{'1','2'});
 %                 CVSVMModel = crossval(SVMModel);
 %                 [~,scorePred] = kfoldPredict(CVSVMModel);
 %                 outlierRate = mean(scorePred<0);
@@ -98,7 +98,7 @@ for queryID =1:184
                     mkdir(strcat(destFolder,num2str(queryID),'\'));
                 end
                
-                save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'Mdl');
+                save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'SVMModel');
             end
         end
         

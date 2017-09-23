@@ -2,7 +2,7 @@ close all;
 clc;
 clear;
 
-PATH_dataset ='D:\BirdSong\data\';
+PATH_dataset ='D:\BirdSong\data1\';
 %PATH_coordinates='D:\Mocap _ RMT2\Location matrix\';
 saveFeaturesPath='D:\BirdSong\Features\';
 %% sift parameters
@@ -16,8 +16,8 @@ DeOctTime = 3;
 DeOctDepd = 3;
 DeLevelTime = 4;%6;%
 DeLevelDepd = 4;%6;%
-DeSigmaDepd = 0.5;%0.4;%0.6;%0.4;%0.5;%
-DeSigmaTime = 4*sqrt(2)/2;%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%3.2298;%
+DeSigmaDepd = 0.5;%0.4;%0.6;
+DeSigmaTime = 1.6149;%4*sqrt(2)/2;%3.2298;%4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%4*sqrt(2)/2;%
 %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
 thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
 DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
@@ -27,8 +27,8 @@ r= 10; %5 threshould variates
 % manually create location matrix
 %% set up location matrix
 IDM1 = [1:13];
-IDM2 = [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
-IDM3 = [1, 2, 3, 3, 4, 4];
+IDM2 = [1,1,2,2,3,3,4,5,5,6,6,7,7];%[2,2,3,3,4,4,1,5,5,6,6,7,7];%[1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+IDM3 = [1,1,2,3,2,4,4];%[2,2,3,1,3,4,4];%[1, 2, 3, 3, 4, 4];
 idm2{1} = IDM1;
 idm2{2} = IDM2;
 idm2{3} = IDM3;
@@ -39,14 +39,24 @@ for i = 1 : 13
     if(i == 1)
         LocM1(i, i+1) = 1;
         LocM1(i+1, i) = 1;
+%         LocM1(i+2, i) = 1;%silv
+%         LocM1(i, i+2) = 1;%silv
     elseif(i == 13)
         LocM1(i, i-1) = 1;
         LocM1(i-1, i) = 1;
+%         LocM1(i, i-2) = 1;%silv
+%         LocM1(i-2, i) = 1;%silv
     else
         LocM1(i-1, i) = 1;
         LocM1(i+1, i) = 1;
         LocM1(i, i-1) = 1;
         LocM1(i, i+1) = 1;
+%         if(i>2 & i<12)%silv
+%             LocM1(i-2, i) = 1;
+%             LocM1(i+2, i) = 1;
+%             LocM1(i, i-2) = 1;
+%             LocM1(i, i+2) = 1;
+%         end
     end
 end
 LocM1 = LocM1 - eye([13 13]);
@@ -58,9 +68,13 @@ for i = 1 : 7
     if(i == 1)
         LocM2(i, i+1) = 1;
         LocM2(i+1, i) = 1;
+%         LocM2(i+2, i) = 1;%silv
+%         LocM2(i, i+2) = 1;%silv
     elseif(i == 7)
         LocM2(i, i-1) = 1;
         LocM2(i-1, i) = 1;
+%         LocM2(i, i-2) = 1;%silv
+%         LocM2(i-2, i) = 1;%silv
     else
         LocM2(i-1, i) = 1;
         LocM2(i+1, i) = 1;
@@ -75,15 +89,25 @@ for i=1:4
     LocM3(i,i)=1;
     if(i==1)
         LocM3(i,i+1)=1;
-        LocM3(i+1,i)=1;
+        LocM3(i+1,i)=1;      
+%         LocM3(i+2, i) = 1;%silv
+%         LocM3(i, i+2) = 1;%silv
     elseif(i==4)
         LocM3(i,i-1)=1;
         LocM3(i-1,i)=1;
+%         LocM3(i,i-2)=1;%silv
+%         LocM3(i-2,i)=1;%silv
     else
         LocM3(i,i+1)=1;
         LocM3(i+1,i)=1;
         LocM3(i,i-1)=1;
         LocM3(i-1,i)=1;
+%         if(i>2 & i<12)%silv
+%         LocM3(i,i+2)=1;
+%         LocM3(i+2,i)=1;
+%         LocM3(i,i-2)=1;
+%         LocM3(i-2,i)=1;
+%         end
     end
 end
 LocM3 = LocM3 - eye([4 4]);

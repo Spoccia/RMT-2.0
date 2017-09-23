@@ -17,7 +17,7 @@ DeOctDepd = 3;
 DeLevelTime = 4;%6;%
 DeLevelDepd = 4;%6;%
 DeSigmaDepd = 0.5;%0.4;%0.6;%0.4;%0.5;%
-DeSigmaTime = 4*sqrt(2)/2;%0.5;%1.6*2^(1/(DeLevelTime));%0.8;%0.5;%3.2298;%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
+DeSigmaTime = 0.5;%4*sqrt(2)/2;%0.5;%1.6*2^(1/(DeLevelTime));%0.8;%0.5;%3.2298;%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
 %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
 thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
 DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
@@ -28,7 +28,7 @@ r= 10; %5 threshould variates
 %% set up location matrix
 IDM1 = [1:22];
 IDM2 = [1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 9, 10, 11, 11, 11, 12, 12];
-IDM3 = [1 ,2, 2, 2, 3,3,4,5,5,5,6 ];%[1, 2,2,2, 3, 4,4, 5, 6, 7, 8, 9, 10 11];
+IDM3 = [1 ,2, 2, 2, 3, 3, 4, 5, 5, 5, 6];%[1, 2, 2, 2, 3, 4, 4, 5, 6, 7, 8, 9, 10 11];
 idm2{1} = IDM1;
 idm2{2} = IDM2;
 idm2{3} = IDM3;
@@ -140,8 +140,8 @@ for TEST =1:2565
     
     save(savepath1,'data', 'gss1', 'frame1','depd1');
     save(savepath2,'idm1');
-    save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
-    save(savepath5, 'depd1');
+    %save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
+    %save(savepath5, 'depd1');
     
     csvwrite(savepath5, time);
     csvwrite(savepath6, timee);
