@@ -27,8 +27,8 @@ r= 10; %5 threshould variates
 % manually create location matrix
 %% set up location matrix
 IDM1 = [1:13];
-IDM2 = [1,1,2,2,3,3,4,5,5,6,6,7,7];%[2,2,3,3,4,4,1,5,5,6,6,7,7];%[1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
-IDM3 = [1,1,2,3,2,4,4];%[2,2,3,1,3,4,4];%[1, 2, 3, 3, 4, 4];
+IDM2 = [2,2,3,3,4,4,1,5,5,6,6,7,7];%[1,1,2,2,3,3,4,5,5,6,6,7,7];%[1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+IDM3 = [2,2,3,1,3,4,4];%[1,1,2,3,2,4,4];%[1, 2, 3, 3, 4, 4];
 idm2{1} = IDM1;
 idm2{2} = IDM2;
 idm2{3} = IDM3;
@@ -59,8 +59,8 @@ for i = 1 : 13
 %         end
     end
 end
-LocM1 = LocM1 - eye([13 13]);
-
+% LocM1 = LocM1 - eye([13 13]);
+LocM1=zeros(13);
 %%% second octave location matrix
 LocM2 = zeros(7, 7);
 for i = 1 : 7
@@ -110,7 +110,13 @@ for i=1:4
 %         end
     end
 end
+% LocM3_1 = [1	1	0	0
+%            1	1	1	1 
+%            0	1	1	1
+%            0	1	1	1
+%                           ];
 LocM3 = LocM3 - eye([4 4]);
+% LocM3 = LocM3_1-eye([4 4]);
 featureExtractionGaussian = zeros(1, 154);
 for TEST =1:154
     TS_name=num2str(TEST)

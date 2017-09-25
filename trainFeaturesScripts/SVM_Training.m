@@ -16,7 +16,7 @@ clc;
 
 featureFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8'];
 dataFolder = ['D:\Mocap _ RMT2\data'];
-destFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8\SVMTrained\'];
+destFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8\LinearSVMTrained\'];
 
 SelectDataset= 1; % 1 means full scale ; 2 means hybrid or fix scale
 startDescr =8;

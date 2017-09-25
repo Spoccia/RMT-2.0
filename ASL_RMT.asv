@@ -53,7 +53,7 @@ LocM21 = [LocM12 LocM11];
 LocM11 = [LocM11 LocM12];
 LocM1 = [LocM11; LocM21];
 LocM1 = LocM1 - eye([22 22]);
-LocM1 = zeros(22);%silv
+LocM1 = zeros(22);
 %%% second octave location matrix
 LocM2 = zeros(12, 12);
 LocM22 = zeros(6, 6);
@@ -89,7 +89,6 @@ LocM2 = [LocM11; LocM21];
 %          0	0	0	0	0	0	1	1	1	1	1	1
 %          ];
 LocM2 = LocM2 - eye([12 12]);
-LocM2 =zeros(12);
 %%% thrd octave location matrix
 LocM3 = zeros(6,6);
 LocM33 = zeros(3, 3);
@@ -116,7 +115,6 @@ LocM3 =[0	1	1	0	0	0
         0	0	0	1	0	1
         0	0	0	1	1	0
         ];
-LocM3 = zeros(6);    
 featureExtractionGaussian = zeros(1, 2565);
 for TEST =1:2565
     TS_name=num2str(TEST)
