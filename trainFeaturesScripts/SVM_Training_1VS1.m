@@ -83,7 +83,7 @@ for queryID =1:184
                     AllFeaturesNO = [AllFeaturesNO,AllFeatures{training_Sets{i}(j)}.frame1];
                 end
                 AllFeaturesClass =[AllFeaturesClass,AllFeaturesNO];
-                ClassificationIDX= [ClassificationIDX;ones(size(AllFeaturesNO,2),1)*2];%badLabel(badidx)];
+                ClassificationIDX= [ClassificationIDX;ones(size(AllFeaturesNO,2),1)*badLabel(badidx)];
                 badidx=badidx+1;
             end
         end
@@ -92,26 +92,15 @@ for queryID =1:184
 
         for OT =1: 3
             for OD = 1:3
+                for Vsclass =2 : 8
                 index_Of_Octave= (AllFeaturesClass(5,:)==OD & AllFeaturesClass(6,:)==OT );
                 OctaveClassification=ClassificationIDX(index_Of_Octave,1);
                 OctaveFeatures = AllFeaturesClass(:,index_Of_Octave);
-                IDXOutsideClass = OctaveClassification==2;
-                IDXInsideClass = OctaveClassification==1;
-                InsideFeatures = OctaveFeatures(:,IDXInsideClass);
-                sizeinsideclass= sum(IDXInsideClass);
-                OutsideFeatures = OctaveFeatures(:,IDXOutsideClass);
-                numOutsiders = size(OutsideFeatures,2);
-                Idxout= ones(1,size(OutsideFeatures,2));
-                randomOutsiderSampling= randperm(numOutsiders,sizeinsideclass);%randi([1,numOutsiders],sizeinsideclass,1);
-                OutsideFeatures = OutsideFeatures(:,randomOutsiderSampling);
-                IDXOutsideClass= ones(1,size(OutsideFeatures,2))*2;
-                IDXInsideClass = ones(1,size(InsideFeatures,2));
-                FeatureClass= [InsideFeatures,OutsideFeatures];
-                Labels= [IDXInsideClass,IDXOutsideClass];
+                VSClassIDX = (OctaveClassification==1 | OctaveClassification==Vsclass)
+                OctaveClassification=OctaveClassification(VSClassIDX,1);
+                OctaveFeatures = OctaveFeatures(:,VSClassIDX);
                 % liblinear SVM function
-                 Training_instance_matrix = FeatureClass(startDescr:endDescr,:)';
-                 OctaveClassification=Labels';
-%                 Training_instance_matrix = OctaveFeatures(startDescr:endDescr,:)';
+                Training_instance_matrix = OctaveFeatures(startDescr:endDescr,:)';
                 Training_instance_matrix = sparse(Training_instance_matrix);
                 
                 model = train(OctaveClassification, Training_instance_matrix, '-s 5');
@@ -133,8 +122,9 @@ for queryID =1:184
                 end
                
                 % save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'Mdl');
-                save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'model');
+                save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'VS',num2str(Vsclass),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'model');
                 % save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'SVMModel');
+                end
             end
         end
         

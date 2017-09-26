@@ -83,7 +83,7 @@ for queryID =1:184
                     AllFeaturesNO = [AllFeaturesNO,AllFeatures{training_Sets{i}(j)}.frame1];
                 end
                 AllFeaturesClass =[AllFeaturesClass,AllFeaturesNO];
-                ClassificationIDX= [ClassificationIDX;ones(size(AllFeaturesNO,2),1)*2];%badLabel(badidx)];
+                ClassificationIDX= [ClassificationIDX;ones(size(AllFeaturesNO,2),1)*badLabel(badidx)];
                 badidx=badidx+1;
             end
         end
@@ -102,16 +102,12 @@ for queryID =1:184
                 OutsideFeatures = OctaveFeatures(:,IDXOutsideClass);
                 numOutsiders = size(OutsideFeatures,2);
                 Idxout= ones(1,size(OutsideFeatures,2));
-                randomOutsiderSampling= randperm(numOutsiders,sizeinsideclass);%randi([1,numOutsiders],sizeinsideclass,1);
+                randomOutsiderSampling= randi([1,numOutsiders],sizeinsideclass,1);
                 OutsideFeatures = OutsideFeatures(:,randomOutsiderSampling);
                 IDXOutsideClass= ones(1,size(OutsideFeatures,2))*2;
-                IDXInsideClass = ones(1,size(InsideFeatures,2));
-                FeatureClass= [InsideFeatures,OutsideFeatures];
-                Labels= [IDXInsideClass,IDXOutsideClass];
+                IDXInsideClass = ones(1,size(OutsideFeatures,2))
                 % liblinear SVM function
-                 Training_instance_matrix = FeatureClass(startDescr:endDescr,:)';
-                 OctaveClassification=Labels';
-%                 Training_instance_matrix = OctaveFeatures(startDescr:endDescr,:)';
+                Training_instance_matrix = OctaveFeatures(startDescr:endDescr,:)';
                 Training_instance_matrix = sparse(Training_instance_matrix);
                 
                 model = train(OctaveClassification, Training_instance_matrix, '-s 5');
