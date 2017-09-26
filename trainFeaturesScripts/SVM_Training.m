@@ -14,23 +14,12 @@ clc;
 % ClassIndexes       = Start and End index for eleents of each class
 
 
+
 fileList = 1: 184;
 
-
-% trainPath = ['./save_SVM_Model_Folder_', num2str(scriptIndex)];
- 
-% featureFolder = ['D:\Test Traning\dataFeatures'];
-featureFolder = ['/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3'];
-
-% dataFolder = ['D:\Test Traning\data'];
-dataFolder = ['/Users/sicongliu/Desktop/data/mocap/']; 
-
-% destFolder = ['D:\Test Traning\dataFeatures\SVMTrained\'];
-scriptIndex = 1;
-destFolder = ['./', num2str(scriptIndex), '/'];
-
-% load trained model
-trainPath = ['/Users/sicongliu/Desktop/SVM_Weight_Checking/', num2str(scriptIndex)];
+featureFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8'];
+dataFolder = ['D:\Mocap _ RMT2\data'];
+destFolder = ['D:\Mocap _ RMT2\Features 3 octave  SD 0_5 ST 2_8\LinearSVMTrained\'];
 
 
 SelectDataset= 1; % 1 means full scale ; 2 means hybrid or fix scale
@@ -112,6 +101,10 @@ for queryID =1:184
                 % Mdl = fitcecoc(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification);
                 % From my reading  this should be fine
                 % SVMModel = fitcsvm(X,Y,'KernelFunction','linear','Standardize',true,'ClassNames',{'1','2'});
+ %              % Mdl = fitcecoc(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification);
+                % From my reading  this should be fine
+                % SVMModel = fitcsvm(OctaveFeatures(startDescr:endDescr,:)',OctaveClassification,'KernelFunction','rbf','Standardize',true,'ClassNames',{'1','2'});
+
 %                 CVSVMModel = crossval(SVMModel);
 %                 [~,scorePred] = kfoldPredict(CVSVMModel);
 %                 outlierRate = mean(scorePred<0);
@@ -121,6 +114,7 @@ for queryID =1:184
                
                 % save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'Mdl');
                 save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'model');
+                % save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'_OD_',num2str(OD),'_OT_',num2str(OT),'.mat'],'SVMModel');
             end
         end
         

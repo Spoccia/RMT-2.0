@@ -139,7 +139,8 @@ for otime = 1: size(gss.octave,1)
             TimescaleSicongNormalized = timeScale+1;
             [timeDoGs, depdDoGs, bothDoGs] = appendDogs(dogss.octave{otime, odepd}, tempDepd, tempTime, dependencyScale, TimescaleSicongNormalized);
             %% unique goes here
-            tempFrames = [tempFrames, [x(:)' ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];
+           % tempFrames = [tempFrames, [x(:)' ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];
+            tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];
         end
         
         dogss.octave{otime, odepd}{1} = -dogss.octave{otime, odepd}{1};
@@ -188,8 +189,9 @@ for otime = 1: size(gss.octave,1)
                 % oframe (5, 1); eventual orientation value 
                 oframeSilv(4,1)=oframeSilv(3,1); 
                 oframeSilv(5,1)=0;
+%                 fgss_silv{oframeSilv(3,1)-gss.sminD+1,oframeSilv(4,1)-gss.sminT+1,oframes(1,f)},...% gss.octave{otime, odepd}(:,:,oframes(3,1)-gss.sminD+1,oframes(4,1)-gss.sminT+1),...%THIS IS THE SCALE OF THE FEATURE F (TIME,VARIATE,SD,ST)
                 sh_silv=siftdescriptor_Silv(...
-                        fgss_silv{oframeSilv(3,1)-gss.sminD+1,oframeSilv(4,1)-gss.sminT+1,oframes(1,f)},...% gss.octave{otime, odepd}(:,:,oframes(3,1)-gss.sminD+1,oframes(4,1)-gss.sminT+1),...%THIS IS THE SCALE OF THE FEATURE F (TIME,VARIATE,SD,ST)
+                        fgss_silv{oframeSilv(3,1)-gss.sminD+1,oframeSilv(4,1)-gss.sminT+1,oframes(1,f)+1},...
                         oframeSilv(:,1),...%oframes(:,f), ...
                         gss.sigmat, ...
                         gss.sigmad	,...
