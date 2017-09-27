@@ -91,6 +91,7 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
     % this  will be used to compute the relevance of each feature to the
     % specific timeseries
     
+    % Testing Phase
     % sample data from other cluster
     
     for clusterID =1:8
