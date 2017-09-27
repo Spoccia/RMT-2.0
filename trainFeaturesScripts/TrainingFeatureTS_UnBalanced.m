@@ -16,6 +16,7 @@ Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 % testing data PCA
 options = [];
 options.ReducedDim = 5;
+saveFileFolder = [];
 
 AllFeatures = cell(dataSize, 1);
 % depdIndex, timeStart, timeEnd, timeOctave, depdOctave, 10-D descriptor
@@ -120,6 +121,17 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
     TFMatrix = sparse(TFMatrix);
     model = train(TFLabelVector, TFMatrix, '-s 5');
     
-    % save 
-    % save model to file
+    fprintf('save training index: %d to file .\n', queryID);
+    % save training models
+    for clusterID = 1 : 8
+       savePathImportance = [saveFileFolder, 'importance_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+       savePathUniqueFeatures = [saveFileFolder, 'uniqueFeature_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+       savePathProjectVector = [saveFileFolder, 'projectMatrix_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+       savePathDescrRange = [saveFileFolder, 'descrRange_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+       
+       csvwrite(savePathImportance, model.w(clusterID, :)');
+       csvwrite(savePathUniqueFeatures, uniqueFeatures);
+       csvwrite(savePathProjectVector, revelantVector);
+       csvwrite(savePathDescrRange, descriptorRange);
+    end
 end
