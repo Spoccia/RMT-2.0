@@ -1,9 +1,9 @@
 % compute contextual feature signifiacne for multi-variate (RMT) time series features
 clear;
 clc;
-featureFolder = ['/Users/sicongliu/Desktop/features/NewPara/UnionScale_SigmaT28SigmaD05'];
+featureFolder = ['/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3'];
 dataFolder = ['/Users/sicongliu/Desktop/data/mocap'];
-saveFolder = '/Users/sicongliu/Desktop/features/NewPara/UnionScale_SigmaT28SigmaD05';
+saveFolder = '/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3';
 dataSize = 184;
 
 % MoCap data
@@ -11,7 +11,7 @@ Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 
 % load all features
 AllFeatures = cell(dataSize, 1);
-% features are organized as: 
+% features are organized as:
 % 1: timeStart
 % 2: timeEnd
 % 3: timeCenter
@@ -23,7 +23,7 @@ AllFeatures = cell(dataSize, 1);
 descriptorStart = 11;
 descriptorEnd = 138;
 reducedDescriptorRange = 7 : 16;
-reducedDimension = 5;
+reducedDimension = 10;
 featureDepdIndex = 1;
 featureTimeIndex = 2;
 featureDepdSigmaIndex = 3;
@@ -32,11 +32,11 @@ featureDepdOctaveIndex = 5;
 featureTimeOctaveIndex = 6;
 
 % isPaired variable, 0 - unpaired, 1 - paired
-isPaired = 1; 
+isPaired = 1;
 
 ProcessedAllFeatures = cell(dataSize, 1);
 for i = 1 : dataSize
-    featurePath = [featureFolder,'/feature',num2str(i),'.mat'];
+    featurePath = [featureFolder,'/feature_',num2str(i),'.mat'];
     AllFeatures{i} = load(featurePath); % feature is frame1 from cell structure
     dataPath = [dataFolder, '/', num2str(i), '.csv'];
     data = csvread(dataPath);
@@ -102,7 +102,9 @@ for clusterID = 1:8
         
         [revelantVector, relevantEigenValues] = PCA(relevantFeatureDescriptors, options);
         relevantFeatureDescriptors = relevantFeatureDescriptors * revelantVector;
-       
+        % populate modified descriptors
+        relevantRangeFeatures(:, reducedDescriptorRange) = relevantFeatureDescriptors;
+        
         [C, Xia, ic]= unique(relevantRangeFeatures, 'rows'); % ia is the remaining column
         uniqueFeatures = (relevantRangeFeatures(Xia, :));
         
@@ -113,7 +115,7 @@ for clusterID = 1:8
         % cluster descriptors on training data with equal width histogram
         resolution = 2;
         
-        % assume there would be duplicate here
+        % assume there would be duplicate here, pupolate with the clustered descriptors
         relevantRangeFeatures(:, reducedDescriptorRange) = clusterDescrs(relevantFeatureDescriptors, descriptorRange, resolution);
         
         % update raw feature
