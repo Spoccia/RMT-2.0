@@ -67,8 +67,8 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
     [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
     ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;
     
-    AllFeatureRangeClass(7 : 7 + options.ReducedDim - 1, :) = ReducedFeatureDescriptors;
-    [C, Xia, ic] = unique(AllFeatureRangeClass(5 : 6 + options.ReducedDim, :) , 'rows'); % ia is the remaining column
+    AllFeatureRangeClass(:,7 : 6 + options.ReducedDim) = ReducedFeatureDescriptors;
+    [C, Xia, ic] = unique(AllFeatureRangeClass(:,5 : 6 + options.ReducedDim) , 'rows'); % ia is the remaining column
     uniqueFeatures = AllFeatureRangeClass (Xia, :);
     ReducedFeatureDescriptors = ReducedFeatureDescriptors(Xia, :);
     % uniquefeatures(7:11)=ReducedFeatureDescriptors(Xia,:);
@@ -81,8 +81,8 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
     resolution = 2;
     % assume there would be duplicate here
     reducedDescriptor = clusterDescrs(ReducedFeatureDescriptors, descriptorRange, resolution);
-    uniqueFeatures(7:7 + options.ReducedDim - 1, :) = reducedDescriptor;
-    [C, Xia, ic]= unique(uniqueFeatures(5: 6+options.ReducedDim, :) , 'rows'); % ia is the remaining column
+    uniqueFeatures(:,7:6 + options.ReducedDim) = reducedDescriptor;
+    [C, Xia, ic]= unique(uniqueFeatures(:,5: 6+options.ReducedDim) , 'rows'); % ia is the remaining column
     reducedDescriptor = reducedDescriptor(Xia,:);
     uniqueFeatures = uniqueFeatures(Xia,:);
     
@@ -103,7 +103,7 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
             ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;
             reducedDescriptor = clusterDescrs(ReducedFeatureDescriptors, descriptorRange, resolution);
             
-            TimeSeriesRangeSamples{clusterID,i}(:,7 : 7 + options.ReducedDim - 1)= reducedDescriptor;
+            TimeSeriesRangeSamples{clusterID,i}(:,7 : 6 + options.ReducedDim)= reducedDescriptor;
         end
     end
     'data setted complete'
