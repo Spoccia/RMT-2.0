@@ -110,18 +110,12 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
     'data setted complete'
     % Compute the Relevance of  each feature for each timeseries rows is numner of timeseries Column is UniqueFeatures
     
-    % check membership, do counting then SVM to find feature weight
+    % compute TF count matrix for SVM training
+    [TFMatrix, TFLabelVector] = BuildTFMatrix(TimeSeriesRangeSamples, uniqueFeatures);
     
+    % use SVM to train TFMatrix
+    TFMatrix = sparse(TFMatrix);
+    model = train(TFLabelVector, TFMatrix, '-s 5');
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    % save model to file
 end
