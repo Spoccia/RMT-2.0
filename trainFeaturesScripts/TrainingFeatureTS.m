@@ -12,9 +12,9 @@ descriptorEnd = 138;
 % MoCap data
 Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 % testing data PCA
-    options = [];
-    options.ReducedDim = 5;
-    
+options = [];
+options.ReducedDim = 10;
+
 AllFeatures = cell(dataSize, 1);
 % depdIndex, timeStart, timeEnd, timeOctave, depdOctave, 10-D descriptor
 ProcessedAllFeatures = cell(dataSize, 1);
@@ -41,65 +41,86 @@ for i = 1 : dataSize
 end
 
 
-for queryID = 1:184%Array(clusterID):Array(clusterID + 1) - 1
-        %select Training removing  the  feature for each Class
-        AllFeatureClass =[];
-        AllFeatureRangeClass=[];
-        NumOfTrainingTimeseries = 0;
-        TimeSeriesSamples=[];
-        TimeSeriesRangeSamples=[];
-        setForClass=[];
-        for clusterID =1:8
-            TimeseriesSamplesSet = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
-            for i=1:size(TimeseriesSamplesSet,2)
-                TimeSeriesSamples{clusterID,i}=AllFeatures{TimeseriesSamplesSet(i)}.frame1; 
-                TimeSeriesRangeSamples{clusterID,i}= ProcessedAllFeatures{TimeseriesSamplesSet(i),:}%rangeFeatures(TimeseriesSamplesSet(i),:);
-                AllFeatureClass = [AllFeatureClass,AllFeatures{TimeseriesSamplesSet(i)}.frame1];
-                AllFeatureRangeClass =[AllFeatureRangeClass;ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
-            end
-            setForClass{clusterID} = TimeseriesSamplesSet;
-            NumOfTrainingTimeseries = NumOfTrainingTimeseries + size(TimeseriesSamplesSet,2);
+for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
+    % select Training removing  the  feature for each Class
+    AllFeatureClass =[];
+    AllFeatureRangeClass=[];
+    NumOfTrainingTimeseries = 0;
+    TimeSeriesSamples=[];
+    TimeSeriesRangeSamples=[];
+    setForClass=[];
+    for clusterID =1:8
+        TimeseriesSamplesSet = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
+        for i=1:size(TimeseriesSamplesSet,2)
+            TimeSeriesSamples{clusterID,i}=AllFeatures{TimeseriesSamplesSet(i)}.frame1;
+            TimeSeriesRangeSamples{clusterID,i}= ProcessedAllFeatures{TimeseriesSamplesSet(i),:};%rangeFeatures(TimeseriesSamplesSet(i),:);
+            
+            AllFeatureClass = [AllFeatureClass,AllFeatures{TimeseriesSamplesSet(i)}.frame1];
+            AllFeatureRangeClass =[AllFeatureRangeClass; ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
         end
+        setForClass{clusterID} = TimeseriesSamplesSet;
         
-        FeatureDescriptors = AllFeatureClass(descriptorStart:descriptorEnd, :)';
-        [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
-        ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;
-        
-        AllFeatureRangeClass(7:7+options.ReducedDim)=ReducedFeatureDescriptors;
-        [C, Xia, ic]= unique(AllFeatureRangeClass(5:6+options.ReducedDim) , 'rows'); % ia is the remaining column
-        uniqueFeatures = (AllFeatureRangeClass (Xia, :));
-        ReducedFeatureDescriptors= ReducedFeatureDescriptors(Xia, :);
-%         uniquefeatures(7:11)=ReducedFeatureDescriptors(Xia,:);
-        
-        descriptorRange = zeros(2, options.ReducedDim);
-        descriptorRange(1,:) = min(ReducedFeatureDescriptors);%min(uniqueFeatures(:, reducedDescriptorRange));
-        descriptorRange(2,:) = max(ReducedFeatureDescriptors);%max(uniqueFeatures(:, reducedDescriptorRange));
-        
-        % cluster descriptors on training data with equal width histogram
-        resolution = 2;
-        % assume there would be duplicate here
-        reducedDescriptor = clusterDescrs(ReducedFeatureDescriptors, descriptorRange, resolution);
-        uniquefeatures(7:6+options.ReducedDim) = reducedDescriptor;
-        [C, Xia, ic]= unique(uniquefeatures(5: 6+options.ReducedDim) , 'rows'); % ia is the remaining column
-        reducedDescriptor = reducedDescriptor(Xia,:);
-        uniqueFeatures = uniqueFeatures(Xia,:);
-        
-  
- % represent the featre of each timeseries as maded for the training set. 
- % this  will be used to compute the relevance of each feature to the
- % specific timeseries
-        for clusterID =1:8
-            TimeseriesSamplesSet = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
-            for i=1:size(TimeseriesSamplesSet,2)
-                TimeseriesSet = TimeSeriesSamples{clusterID,i}(:,:);
-                FeatureDescriptors = TimeseriesSet(descriptorStart:descriptorEnd, :)';
-                [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
-                ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;
-                reducedDescriptor = clusterDescrs(ReducedFeatureDescriptors, descriptorRange, resolution);
-                TimeSeriesRangeSamples{clusterID,i}(:,7:6+options.ReducedDim)= reducedDescriptor;
-            end
+        NumOfTrainingTimeseries = NumOfTrainingTimeseries + size(TimeseriesSamplesSet,2);
+    end
+    
+    FeatureDescriptors = AllFeatureClass(descriptorStart : descriptorEnd, :)';
+    [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
+    ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;
+    
+    AllFeatureRangeClass(7 : 7 + options.ReducedDim - 1, :) = ReducedFeatureDescriptors;
+    [C, Xia, ic] = unique(AllFeatureRangeClass(5 : 6 + options.ReducedDim, :) , 'rows'); % ia is the remaining column
+    uniqueFeatures = AllFeatureRangeClass (Xia, :);
+    ReducedFeatureDescriptors = ReducedFeatureDescriptors(Xia, :);
+    % uniquefeatures(7:11)=ReducedFeatureDescriptors(Xia,:);
+    
+    descriptorRange = zeros(2, options.ReducedDim);
+    descriptorRange(1,:) = min(ReducedFeatureDescriptors);%min(uniqueFeatures(:, reducedDescriptorRange));
+    descriptorRange(2,:) = max(ReducedFeatureDescriptors);%max(uniqueFeatures(:, reducedDescriptorRange));
+    
+    % cluster descriptors on training data with equal width histogram
+    resolution = 2;
+    % assume there would be duplicate here
+    reducedDescriptor = clusterDescrs(ReducedFeatureDescriptors, descriptorRange, resolution);
+    uniqueFeatures(7:7 + options.ReducedDim - 1, :) = reducedDescriptor;
+    [C, Xia, ic]= unique(uniqueFeatures(5: 6+options.ReducedDim, :) , 'rows'); % ia is the remaining column
+    reducedDescriptor = reducedDescriptor(Xia,:);
+    uniqueFeatures = uniqueFeatures(Xia,:);
+    
+    
+    % represent the featre of each timeseries as maded for the training set.
+    % this  will be used to compute the relevance of each feature to the
+    % specific timeseries
+    
+    % sample data from other cluster
+    
+    for clusterID =1:8
+        TimeseriesSamplesSet = randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
+        for i=1:size(TimeseriesSamplesSet,2)
+            TimeseriesSet = TimeSeriesSamples{clusterID,i}(:,:);
+            FeatureDescriptors = TimeseriesSet(descriptorStart:descriptorEnd, :)';
+            
+            [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
+            ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;
+            reducedDescriptor = clusterDescrs(ReducedFeatureDescriptors, descriptorRange, resolution);
+            
+            TimeSeriesRangeSamples{clusterID,i}(:,7 : 7 + options.ReducedDim - 1)= reducedDescriptor;
         end
-        'data setted complete'
-%% Compute the Relevance of  each feature for each timeseries rows is numner of timeseries Column is UniqueFeatures
-        
+    end
+    'data setted complete'
+    % Compute the Relevance of  each feature for each timeseries rows is numner of timeseries Column is UniqueFeatures
+    
+    % check membership, do counting then SVM to find feature weight
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 end
