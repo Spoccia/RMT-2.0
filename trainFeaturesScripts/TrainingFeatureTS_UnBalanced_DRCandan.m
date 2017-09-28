@@ -1,32 +1,21 @@
 clear;
 clc;
 
-<<<<<<< HEAD
-featureFolder = ['E:\FullScale_SigmaT28SigmaD05_Octave3'];
-dataFolder = ['C:\Users\sliu104\Desktop\MoCapGaussian\MoCapGaussian\data\mocap'];
-% saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
-saveFolder = 'E:\SVM_Trained_Paired\';
-=======
 featureFolder = ['D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8'];%['/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3'];
 dataFolder = ['D:\Mocap _ RMT2\data'];%['/Users/sicongliu/Desktop/data/mocap'];
 % saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
-saveFolder = 'D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8\PairedSVMUnballanced\';%'.';
->>>>>>> 9b23bca606093204d37cb005a63cd0ac250bb8da
+saveFolder = 'D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8\UnPairedSVMUnballanced_1\';%'.';
 dataSize = 184;
 trainingPercentage = 0.6;
 descriptorStart = 11;
 descriptorEnd = 138;
-StartReductedFeatures = 4;
+StartReductedFeatures = 5;
 descriptorStartingRange =7;
 % MoCap data
 Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 % testing data PCA
 options = [];
 options.ReducedDim = 10;
-<<<<<<< HEAD
-saveFileFolder = ['E:\SVM_Trained_Paired\'];
-=======
->>>>>>> 9b23bca606093204d37cb005a63cd0ac250bb8da
 
 AllFeatures = cell(dataSize, 1);
 % depdIndex, timeStart, timeEnd, timeOctave, depdOctave, 10-D descriptor
@@ -55,12 +44,9 @@ end
 
 fprintf('Loading Data done .\n');
 
-<<<<<<< HEAD
-for queryID = 7:184 % Array(clusterID):Array(clusterID + 1) - 1
-=======
 for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
->>>>>>> 9b23bca606093204d37cb005a63cd0ac250bb8da
     % select Training removing  the  feature for each Class
+    
     AllFeatureClass =[];
     AllFeatureRangeClass=[];
     NumOfTrainingTimeseries = 0;
@@ -73,13 +59,24 @@ for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
             TimeSeriesSamples{clusterID,i}=AllFeatures{TimeseriesSamplesSet(i)}.frame1;
             TimeSeriesRangeSamples{clusterID,i}= ProcessedAllFeatures{TimeseriesSamplesSet(i),:};%rangeFeatures(TimeseriesSamplesSet(i),:);
             
-            AllFeatureClass = [AllFeatureClass,AllFeatures{TimeseriesSamplesSet(i)}.frame1];
-            AllFeatureRangeClass =[AllFeatureRangeClass; ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
+%             AllFeatureClass = [AllFeatureClass,AllFeatures{TimeseriesSamplesSet(i)}.frame1];
+%             AllFeatureRangeClass =[AllFeatureRangeClass; ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
         end
         setForClass{clusterID} = TimeseriesSamplesSet;
         
         NumOfTrainingTimeseries = NumOfTrainingTimeseries + size(TimeseriesSamplesSet,2);
     end
+    
+    for goodClass =1:8
+        GoodFeatureSet=[];
+        goodFeatureRangeSet=[];
+        numTS = size(setForClass{goodClass},2);
+        for Fset =1 :numTS
+            GoodFeatureSet = [GoodFeatureSet,AllFeatures{setForClass{goodClass}(i)}.frame1];
+            goodFeatureRangeSet=[goodFeatureRangeSet; ProcessedAllFeatures{setForClass{goodClass}(i),:}];
+        end
+    AllFeatureClass=GoodFeatureSet;
+    AllFeatureRangeClass=goodFeatureRangeSet;
     
     FeatureDescriptors = AllFeatureClass(descriptorStart : descriptorEnd, :)';
     [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
@@ -129,7 +126,7 @@ for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
     % Compute the Relevance of  each feature for each timeseries rows is numner of timeseries Column is UniqueFeatures
     
     % compute TF count matrix for SVM training
-    [TFMatrix, TFLabelVector] = BuildTFMatrix(TimeSeriesRangeSamples, uniqueFeatures,setForClass,StartReductedFeatures);
+    [TFMatrix, TFLabelVector] = BuildTFMatrixCandan(TimeSeriesRangeSamples, uniqueFeatures,setForClass,StartReductedFeatures,goodClass);
     
     % use SVM to train TFMatrix
     TFMatrix = sparse(TFMatrix);
@@ -140,17 +137,16 @@ for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
     if(exist(saveFolder,'dir')==0)
         mkdir(saveFolder);
     end
-    for clusterID = 1 : 8
-       savePathImportance = [saveFolder, 'importance_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       savePathUniqueFeatures = [saveFolder, 'uniqueFeature_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       savePathProjectVector = [saveFolder, 'projectMatrix_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       savePathDescrRange = [saveFolder, 'descrRange_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+%     for clusterID = 1 : 8
+       savePathImportance = [saveFolder, 'importance_Class_', num2str(goodClass), '_', num2str(queryID), '.csv'];
+       savePathUniqueFeatures = [saveFolder, 'uniqueFeature_Class_', num2str(goodClass), '_', num2str(queryID), '.csv'];
+       savePathProjectVector = [saveFolder, 'projectMatrix_Class_', num2str(goodClass), '_', num2str(queryID), '.csv'];
+       savePathDescrRange = [saveFolder, 'descrRange_Class_', num2str(goodClass), '_', num2str(queryID), '.csv'];
        
-       csvwrite(savePathImportance, model.w(clusterID, :)');
+       csvwrite(savePathImportance, model.w);%(clusterID, :)');
        csvwrite(savePathUniqueFeatures, uniqueFeatures);
        csvwrite(savePathProjectVector, revelantVector);
        csvwrite(savePathDescrRange, descriptorRange);
+%     end
     end
 end
-
-fprintf('Fin .\n');
