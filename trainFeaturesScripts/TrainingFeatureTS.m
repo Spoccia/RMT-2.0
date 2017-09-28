@@ -4,12 +4,14 @@ clc;
 featureFolder = ['D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8'];
 dataFolder = ['D:\Test Traning\data'];
 % saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
+destFolder = ['D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8\SVM_Equi\'];
 saveFolder = '.';
 dataSize = 184;
 trainingPercentage = 0.6;
 descriptorStart = 11;
 descriptorEnd = 138;
-StartReductedFeatures = 5;
+StartReductedFeatures = 4;%paired 
+                       %5;%unpaired
 descriptorStartingRange =7;
 % MoCap data
 Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
@@ -113,11 +115,22 @@ for queryID = 1:184 % Array(clusterID):Array(clusterID + 1) - 1
     % Compute the Relevance of  each feature for each timeseries rows is numner of timeseries Column is UniqueFeatures
     
     % compute TF count matrix for SVM training
-    [TFMatrix, TFLabelVector] = BuildTFMatrix(TimeSeriesRangeSamples, uniqueFeatures,setForClass,StartReductedFeatures);
-    
+%     [TFMatrix, TFLabelVector] = BuildTFMatrix(TimeSeriesRangeSamples, uniqueFeatures,setForClass,StartReductedFeatures);
+    [Class_Matrix, LabelClass,IndexCasses]= BuildTFMatrix_Ballanced(TimeSeriesRangeSamples, uniqueFeatures,setForClass,StartReductedFeatures);%[TFMatrix, TFLabelVector]
     % use SVM to train TFMatrix
-    TFMatrix = sparse(TFMatrix);
-    model = train(TFLabelVector, TFMatrix, '-s 5');
     
+    for clusterID =1:8
+        TFMatrix = sparse(Class_Matrix{clusterID});
+        model = train(LabelClass{clusterID}, TFMatrix, '-s 5');
+        if(exist(strcat(destFolder,num2str(queryID),'\'),'dir')==0)
+           mkdir(strcat(destFolder,num2str(queryID),'\'));
+        end
+        save([destFolder,num2str(queryID),'\','Class_',num2str(clusterID),'.mat'],'model');%,'_OD_',num2str(OD),'_OT_',num2str(OT)
+        csvwrite([destFolder,num2str(queryID),'\','TFMatrix_Class',num2str(clusterID),'.csv'],Class_Matrix{clusterID});
+        csvwrite([destFolder,num2str(queryID),'\','TFLabel_Class',num2str(clusterID),'.csv'],LabelClass{clusterID});
+        csvwrite([destFolder,num2str(queryID),'\','TimeseriesIDX_Class',num2str(clusterID),'.csv'],IndexCasses{clusterID});
+    end
+    save([destFolder,num2str(queryID),'\','FaturesUsed','.mat'],'TimeSeriesSamples');
+    save([destFolder,num2str(queryID),'\','baseUsed','.mat'],'revelantVector','descriptorRange');
     % save model to file
 end

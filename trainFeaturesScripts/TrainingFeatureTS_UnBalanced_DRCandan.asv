@@ -46,6 +46,7 @@ fprintf('Loading Data done .\n');
 
 for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
     % select Training removing  the  feature for each Class
+    
     AllFeatureClass =[];
     AllFeatureRangeClass=[];
     NumOfTrainingTimeseries = 0;
@@ -58,14 +59,24 @@ for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
             TimeSeriesSamples{clusterID,i}=AllFeatures{TimeseriesSamplesSet(i)}.frame1;
             TimeSeriesRangeSamples{clusterID,i}= ProcessedAllFeatures{TimeseriesSamplesSet(i),:};%rangeFeatures(TimeseriesSamplesSet(i),:);
             
-            AllFeatureClass = [AllFeatureClass,AllFeatures{TimeseriesSamplesSet(i)}.frame1];
-            AllFeatureRangeClass =[AllFeatureRangeClass; ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
+%             AllFeatureClass = [AllFeatureClass,AllFeatures{TimeseriesSamplesSet(i)}.frame1];
+%             AllFeatureRangeClass =[AllFeatureRangeClass; ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
         end
         setForClass{clusterID} = TimeseriesSamplesSet;
         
         NumOfTrainingTimeseries = NumOfTrainingTimeseries + size(TimeseriesSamplesSet,2);
     end
     
+    for goodClass =1:8
+        GoodFeatureSet=[];
+        goodFeatureRangeSet=[];
+        numTS = size(setForClass{goodClass},2);
+        for Fset =1 :numTS
+            GoodFeatureSet = [GoodFeatureSet,AllFeatures{setForClass{goodClass}(i)}.frame1];
+            goodFeatureRangeSet=[goodFeatureRangeSet; ProcessedAllFeatures{TimeseriesSamplesSet(i),:}];
+        end
+        
+    end
     FeatureDescriptors = AllFeatureClass(descriptorStart : descriptorEnd, :)';
     [revelantVector, relevantEigenValues] = PCA(FeatureDescriptors, options);
     ReducedFeatureDescriptors = FeatureDescriptors * revelantVector;

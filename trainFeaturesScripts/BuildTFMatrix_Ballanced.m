@@ -10,9 +10,9 @@ TFMatrix = [];
 TFLabelVector = [];
 % OCTAVE_START = 5; % starting index of depd octave
 StructureClass_ID= [];
-for Cluster= 1:8
+for clusterID= 1:8
     for id= 1:size(setForClass{clusterID}, 2)
-        StructureClass_ID=[StructureClass_ID;Cluster,id];
+        StructureClass_ID=[StructureClass_ID;clusterID,id];
     end
 end
 Class_Matrix=[];
@@ -21,10 +21,10 @@ for clusterID = 1 : CLUSTER_SIZE
     StructureClass_ID = StructureClass_ID';
     
     IrrelevantIDs = StructureClass_ID;
-    IrrelevantIDs(IrrelevantIDs(1, :)==clusterID) = [];
+    IrrelevantIDs(:,IrrelevantIDs(1, :)==clusterID) = [];
     
     RelevantIDs = StructureClass_ID;
-    RelevantIDs (RelevantIDs(1,:)~=clusterID)=[];
+    RelevantIDs (:,RelevantIDs(1,:)~=clusterID)=[];
     Idx_Sample_Irrelevant=[];
     Idx_Sample_Irrelevant = randperm(size(IrrelevantIDs,2),size(RelevantIDs,2));
     IrrelevantIDs=IrrelevantIDs(:,Idx_Sample_Irrelevant);
