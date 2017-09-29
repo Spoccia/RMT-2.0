@@ -1,10 +1,17 @@
 clear;
 clc;
 
+<<<<<<< HEAD
+featureFolder = ['E:\FullScale_SigmaT28SigmaD05_Octave3'];
+dataFolder = ['C:\Users\sliu104\Desktop\MoCapGaussian\MoCapGaussian\data\mocap'];
+% saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
+saveFolder = 'E:\SVM_Trained_Paired\';
+=======
 featureFolder = ['D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8'];%['/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3'];
 dataFolder = ['D:\Mocap _ RMT2\data'];%['/Users/sicongliu/Desktop/data/mocap'];
 % saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
 saveFolder = 'D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8\PairedSVMUnballanced\';%'.';
+>>>>>>> 9b23bca606093204d37cb005a63cd0ac250bb8da
 dataSize = 184;
 trainingPercentage = 0.6;
 descriptorStart = 11;
@@ -16,6 +23,10 @@ Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 % testing data PCA
 options = [];
 options.ReducedDim = 10;
+<<<<<<< HEAD
+saveFileFolder = ['E:\SVM_Trained_Paired\'];
+=======
+>>>>>>> 9b23bca606093204d37cb005a63cd0ac250bb8da
 
 AllFeatures = cell(dataSize, 1);
 % depdIndex, timeStart, timeEnd, timeOctave, depdOctave, 10-D descriptor
@@ -44,7 +55,11 @@ end
 
 fprintf('Loading Data done .\n');
 
+<<<<<<< HEAD
+for queryID = 7:184 % Array(clusterID):Array(clusterID + 1) - 1
+=======
 for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
+>>>>>>> 9b23bca606093204d37cb005a63cd0ac250bb8da
     % select Training removing  the  feature for each Class
     AllFeatureClass =[];
     AllFeatureRangeClass=[];
@@ -137,3 +152,5 @@ for queryID = 1:23 % Array(clusterID):Array(clusterID + 1) - 1
        csvwrite(savePathDescrRange, descriptorRange);
     end
 end
+
+fprintf('Fin .\n');

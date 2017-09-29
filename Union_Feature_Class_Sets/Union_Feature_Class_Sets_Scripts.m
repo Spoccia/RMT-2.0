@@ -6,10 +6,11 @@ DATA_SIZE = 184;
 CLASS_SIZE = 8;
 
 TrainedFolder = ['/Volumes/TOSHIBA EXT/Features_sigmaBig_Right/MoCap/FullScale/Features SD 0_5 ST 2_8/PairedSVMUnballanced/'];
-SaveFolder = ['./'];
+SaveFolder = ['/Users/sicongliu/Desktop/SaguaroOutput/WithFS/SVM_Union_Feature_Importance/'];
 
 % for each leave-one-out data element
 for data_index = 1 : DATA_SIZE
+    fprintf('Data Index: %d .\n', data_index);
     % for each class
     class_pickup_index = 1;
     descrRangePath = [TrainedFolder, 'descrRange_Class_', num2str(class_pickup_index), '_', num2str(data_index), '.csv'];
@@ -23,7 +24,7 @@ for data_index = 1 : DATA_SIZE
     % only importance different the rest are the same
     importance = [];
     for class_index = 1 : CLASS_SIZE
-        importancePath = [TrainedFolder, 'importance_', num2str(class_index), '_', num2str(data_index), '.csv'];
+        importancePath = [TrainedFolder, 'importance_Class_', num2str(class_index), '_', num2str(data_index), '.csv'];
         if(class_index == 1)
             importance = csvread(importancePath);
         else
