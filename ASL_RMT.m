@@ -17,7 +17,7 @@ DeOctDepd = 3;
 DeLevelTime = 4;%6;%
 DeLevelDepd = 4;%6;%
 DeSigmaDepd = 0.5;%0.4;%0.6;%0.4;%0.5;%
-DeSigmaTime = 0.5;%4*sqrt(2)/2;%0.5;%1.6*2^(1/(DeLevelTime));%0.8;%0.5;%3.2298;%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
+DeSigmaTime = 0.25;%4*sqrt(2)/2;%0.5;%1.6*2^(1/(DeLevelTime));%0.8;%0.5;%3.2298;%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%
 %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
 thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
 DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
@@ -246,7 +246,7 @@ LocM2_4 =  [1	1	1	1	1	0	0	0	0	0	0	0
 %          0	0	0	0	0	0	1	1	1	1	1	1
 %          0	0	0	0	0	0	1	1	1	1	1	1
 %          ];
-LocM2 = LocM2_4 - eye([12 12]);
+LocM2 = LocM2_3 - eye([12 12]);
 
 %%% thrd octave location matrix
 LocM3 = zeros(6,6);
