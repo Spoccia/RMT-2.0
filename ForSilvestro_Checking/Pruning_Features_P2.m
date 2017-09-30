@@ -1,4 +1,4 @@
-function [TT,remainQOctave,Dist] = Pruning_Features_P2(doctave,toctave)
+function [TT,remainQOctave,Dist] = Pruning_Features_P2(feature1,feature2,combineScore,matches,doctave,toctave)
 Dist = 0;
 for ii = 1 : doctave
     for  jj = 1 : toctave
