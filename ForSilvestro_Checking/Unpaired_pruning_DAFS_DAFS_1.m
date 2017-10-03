@@ -1,4 +1,4 @@
-function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave )
+function [remainQOctave,Dist] = Unpaired_pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave )
     remainQOctave=zeros(doctave,toctave);
     Dist=0;
     for ii = 1 : doctave
@@ -8,6 +8,7 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
             combineScore11 = combineScore(index1);
 
             [diagY,I] = sort(combineScore11,2,'descend');
+            diagY_1=diagY;
             diagMatch = matches11(:,I);
             diagRemainMatch = diagMatch;
             counter=0;
@@ -16,9 +17,6 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
             dimention=size(diagRemainMatch,2);
             i=1;
             while i<=dimention
-%                 if(i== 24)
-%                     disp(i);
-%                 end
                 centerc = feature1(2,diagRemainMatch(1,i));
                 centerm = feature2(2,diagRemainMatch(2,i));
                 rangec = 3*(feature1(4,diagRemainMatch(1,i))) ;
@@ -31,14 +29,14 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
                 keept = true;
                 keepd = true;
 
-                depdin1 = depdScale1(:,diagRemainMatch(1,i));
-                depdin1 = depdin1(depdin1~=0);
-                depdin2 = depdScale2(:,diagRemainMatch(2,i));
-                depdin2 = depdin2(depdin2~=0);
-                over = overlap (depdin1,depdin2);
-                if(over < 0.5)
-                    keepd = false;
-                end
+%                 depdin1 = depdScale1(:,diagRemainMatch(1,i));
+%                 depdin1 = depdin1(depdin1~=0);
+%                 depdin2 = depdScale2(:,diagRemainMatch(2,i));
+%                 depdin2 = depdin2(depdin2~=0);
+%                 over = overlap (depdin1,depdin2);
+%                 if(over < 0.5)
+%                     keepd = false;
+%                 end
 
                 j = 1;
                  
@@ -92,10 +90,11 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
                 end
                 if (keept == true) && (keepd == true)
 %                     diagRemainMatch(i) =1;% [diagRemainMatch diagMatch(:,i)];
-                    Dist = Dist + diagY(i);
+                    Dist = Dist + diagY_1(i);
                     counter=counter+1;
                 else
                     diagRemainMatch(:,i)=[];
+                    diagY_1(:,i)=[];
                     i=i-1;
                     dimention=size(diagRemainMatch,2);
                 end
