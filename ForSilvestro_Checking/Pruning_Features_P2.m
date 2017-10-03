@@ -1,4 +1,4 @@
-function [TT,remainQOctave,Dist] = Pruning_Features_P2(feature1,feature2,combineScore,matches,doctave,toctave)
+function [Dist, remainQOctave] = Pruning_Features_P2(feature1, feature2, doctave, toctave, depdScale1, depdScale2, combineScore, matches)
 Dist = 0;
 for ii = 1 : doctave
     for  jj = 1 : toctave
@@ -11,8 +11,11 @@ for ii = 1 : doctave
         for i=1:size(diagMatch,2)
             centerc = feature1(2,diagMatch(1,i));
             centerm = feature2(2,diagMatch(2,i));
-            rangec = 3*(feature1(4,diagMatch(1,i))) ;
-            rangem = 3*(feature2(4,diagMatch(2,i))) ;
+            centerc_variate = feature1(1,diagMatch(1,i));
+            centerm_variate = feature2(1,diagMatch(1,i));
+            
+            rangec = 3 * (feature1(4,diagMatch(1,i))) ;
+            rangem = 3 * (feature2(4,diagMatch(2,i))) ;
             startc = centerc - rangec ;
             endc = centerc + rangec ;
             startm = centerm - rangem ;
@@ -34,6 +37,9 @@ for ii = 1 : doctave
             j = 1;
             while  (j<=size(diagRemainMatch,2)) && (keept == true)&& (keepd == true)
                 % first step check only time
+                rem_variatec = feature1(1,diagRemainMatch(1,j));
+                rem_variatem = feature2(1,diagRemainMatch(1,j));
+                
                 rem_centerc = feature1(2,diagRemainMatch(1,j));
                 rem_centerm = feature2(2,diagRemainMatch(2,j));
                 rem_rangec = 3*(feature1(4,diagRemainMatch(1,j))) ;
@@ -59,10 +65,14 @@ for ii = 1 : doctave
                 rankmend = find(c==endm);
                 
                 if (startc == rem_startc) && (endc==rem_endc) && (startm == rem_startm) && (endm == rem_endm)
-                    keept = false;
-                    break;
+                    if(centerc_variate == rem_variatec)
+                        keept = false;
+                        break;
+                    else
+                        keept = true; 
+                    end
                 else
-                    if rankcstart(1) == rankmstart(1) && rankcend(1) ==rankmend(1)
+                    if rankcstart(1) == rankmstart(1) && rankcend(1) == rankmend(1)
                         keept = true;
                     else
                         keept = false;
