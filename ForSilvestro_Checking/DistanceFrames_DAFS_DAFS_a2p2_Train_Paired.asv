@@ -34,7 +34,6 @@ descr1 = descr1(:, nonzero_entries);
 feature1 = feature1(:, nonzero_entries);
 amp1 = amp1(nonzero_entries);
 featureImp = featureImp(nonzero_entries);
-depdScale1 = depdScale1(:, nonzero_entries);
 featureImp(:) = 1;
 
 
@@ -53,10 +52,7 @@ remainQOctave=[];
 doctave = 3;
 toctave = 3;
 p = tic;
-[remainQOctave1,Dist1]=pruning_DAFS_DAFS(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );
-[remainQOctave,Dist]=pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );
-Roctave=remainQOctave';
-Roctave=Roctave(:)';
+remainQOctave=pruning_DAFS_DAFS(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );
 
 % for ii = 1 : doctave
 %     for  jj = 1 : toctave
@@ -142,3 +138,6 @@ Roctave=Roctave(:)';
 % end
 time(3) = toc(p);
 
+function ovr = overlap (depdin1,depdin2)
+ov = intersect(depdin1(1,:),depdin2(1,:));
+ovr = size(ov,2)/size(depdin1,2);
