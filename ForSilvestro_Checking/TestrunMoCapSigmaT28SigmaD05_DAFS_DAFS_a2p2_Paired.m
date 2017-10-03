@@ -3,11 +3,11 @@ function runMoCapSigmaT28SigmaD05_DAFS_DAFS_a2p2_Paired_1()
 scriptIndex = 1;
 inputRange = [1, 23];
 
-dataPath = ['./data/mocap/'];
+dataPath = ['D:\Mocap _ RMT2\data/'];
 fileList = 1: 184;
-trainPath = ['./FullScale_SigmaT28SigmaD05_Octave3/SVM_Paired'];
-unionFeaturePath = ['./FullScale_SigmaT28SigmaD05_Octave3'];
-saveFolder = ['./save_SigmaT28SigmaD05_DAFS_DAFS_a2p2_Paired1_Folder_', num2str(scriptIndex), '/'];
+trainPath = ['D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8\PairedSVMUnballanced'];
+unionFeaturePath = ['D:\Mocap _ RMT2\Features Octave 3\Features 3 octave  SD 0_5 ST 2_8'];
+ saveFolder = ['./save_SigmaT28SigmaD05_DAFS_DAFS_a2p2_Paired1_Folder_', num2str(scriptIndex), '/'];
 Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 remainFeatureOctave = zeros(184, 9);
 for i = inputRange(1): inputRange(2)
@@ -70,7 +70,7 @@ for i = inputRange(1): inputRange(2)
         % XuniqueFeature,Ximportance, Xproject, XdescrRange
         % from feature in the database
         
-        [Dist(i,j), remainOctave] = DistanceFrames_DAFS_DAFS_a2p2_New_Train_Paired(gss11, frame11, idm11, gss22, frame22, idm22, descr11, descr22,XuniqueFeature,Ximportance, Xproject, XdescrRange,Xamp1,Xamp2, queryTimeSeriesLength);
+        [Dist(i,j), remainOctave] = DistanceFrames_DAFS_DAFS_a2p2_Train_Paired(gss11, frame11, idm11, gss22, frame22, idm22, descr11, descr22,XuniqueFeature,Ximportance, Xproject, XdescrRange,Xamp1,Xamp2, queryTimeSeriesLength);
         
         time(j) = toc(p);
         if(i ~= j)
