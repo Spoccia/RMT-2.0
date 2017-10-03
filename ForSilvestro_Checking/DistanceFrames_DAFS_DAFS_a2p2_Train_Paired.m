@@ -43,8 +43,8 @@ time(1) = toc(p);
 
 combineScore = VcombineScore;
 
-[Y,I] = sort(combineScore,2,'descend');
-matches = matches(:,I);
+% [Y,I] = sort(combineScore,2,'descend');
+% matches = matches(:,I);
 
 Dist=0;
 remainmatch=[];
