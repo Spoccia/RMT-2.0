@@ -1,13 +1,26 @@
+function runASL_Train27()
+
+scriptIndex = 27;
+inputRange = [2471,2565];
+
+dataPath = ['./data/ASL/'];
+fileList = 1: 2565;
+trainPath = ['./UnionScaleASL'];
+unionFeaturePath = ['./UnionScaleASL'];
+saveFolder = ['./save_ASL_DAFS_DAAAFS_Folder_', num2str(scriptIndex), '/'];
+%Array = [1, 27, 51, 81, 99, 118, 149, 179, 185];
+Array = [1,28,55,82,109,136,163,190,217,244,271,298,325,352,379,406,433,460,487,514,541,568,595,622,649,676,703,730,757,784,811,838,865,892,919,946,973,1000,1027,1054,1081,1108,1135,1162,1189,1216,1243,1270,1297,1324,1351,1378,1405,1432,1459,1486,1513,1540,1567,1594,1621,1648,1675,1702,1729,1756,1783,1810,1837,1864,1891,1918,1945,1972,1999,2026,2053,2080,2107,2134,2161,2188,2215,2242,2269,2296,2323,2350,2377,2404,2431,2458,2485,2512,2539,2566];
+
 clear;
 clc;
 
-<<<<<<< HEAD
-featureFolder = ['E:\FullScale_SigmaT28SigmaD05_Octave3'];
-dataFolder = ['C:\Users\sliu104\Desktop\MoCapGaussian\MoCapGaussian\data\mocap'];
-% saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
-saveFolder = 'E:\SVM_Trained_Paired\';
+featureFolder = ['./FullScale_SigmaT28SigmaD05_Octave3'];
+dataFolder = ['./data/mocap'];
+saveFileFolder = [featureFolder, '/SVM_UnPaired/'];
 
-dataSize = 184;
+% saveFolder = '/Users/sicongliu/Desktop/features/MoCapUnionScale';
+saveFolder = '.';
+dataSize = 2565;
 trainingPercentage = 0.6;
 descriptorStart = 11;
 descriptorEnd = 138;
@@ -17,7 +30,7 @@ descriptorStartingRange =7;
 Array = [1, 15, 51, 81, 99, 118, 149, 179, 185];
 % testing data PCA
 options = [];
-options.ReducedDim = 10;
+options.ReducedDim = 6;
 
 AllFeatures = cell(dataSize, 1);
 % depdIndex, timeStart, timeEnd, timeOctave, depdOctave, 10-D descriptor
@@ -46,8 +59,7 @@ end
 
 fprintf('Loading Data done .\n');
 
-for queryID = 7:184 % Array(clusterID):Array(clusterID + 1) - 1
-
+for queryID = inputRange(1):inputRange(2) % Array(clusterID):Array(clusterID + 1) - 1
     % select Training removing  the  feature for each Class
     AllFeatureClass =[];
     AllFeatureRangeClass=[];
@@ -101,7 +113,7 @@ for queryID = 7:184 % Array(clusterID):Array(clusterID + 1) - 1
     % sample data from other cluster
     
     for clusterID =1:8
-     TimeseriesSamplesSet = setForClass{clusterID};%randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
+        TimeseriesSamplesSet = setForClass{clusterID};%randomizeSet(queryID,Array(clusterID),Array(clusterID+1)-1, 0.6 );
         for i=1:size(TimeseriesSamplesSet,2)
             TimeseriesSet = TimeSeriesSamples{clusterID,i}(:,:);
             FeatureDescriptors = TimeseriesSet(descriptorStart:descriptorEnd, :)';
@@ -125,20 +137,15 @@ for queryID = 7:184 % Array(clusterID):Array(clusterID + 1) - 1
     
     fprintf('save training index: %d to file .\n', queryID);
     % save training models
-    if(exist(saveFolder,'dir')==0)
-        mkdir(saveFolder);
-    end
     for clusterID = 1 : 8
-       savePathImportance = [saveFolder, 'importance_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       savePathUniqueFeatures = [saveFolder, 'uniqueFeature_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       savePathProjectVector = [saveFolder, 'projectMatrix_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       savePathDescrRange = [saveFolder, 'descrRange_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
-       
-       csvwrite(savePathImportance, model.w(clusterID, :)');
-       csvwrite(savePathUniqueFeatures, uniqueFeatures);
-       csvwrite(savePathProjectVector, revelantVector);
-       csvwrite(savePathDescrRange, descriptorRange);
+        savePathImportance = [saveFileFolder, 'importance_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+        savePathUniqueFeatures = [saveFileFolder, 'uniqueFeature_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+        savePathProjectVector = [saveFileFolder, 'projectMatrix_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+        savePathDescrRange = [saveFileFolder, 'descrRange_Class_', num2str(clusterID), '_', num2str(queryID), '.csv'];
+        
+        csvwrite(savePathImportance, model.w(clusterID, :)');
+        csvwrite(savePathUniqueFeatures, uniqueFeatures);
+        csvwrite(savePathProjectVector, revelantVector);
+        csvwrite(savePathDescrRange, descriptorRange);
     end
 end
-
-fprintf('Fin .\n');

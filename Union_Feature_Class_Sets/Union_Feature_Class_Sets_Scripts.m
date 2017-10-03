@@ -5,8 +5,8 @@ clear;
 DATA_SIZE = 184;
 CLASS_SIZE = 8;
 
-TrainedFolder = ['/Volumes/TOSHIBA EXT/Features_sigmaBig_Right/MoCap/FullScale/Features SD 0_5 ST 2_8/PairedSVMUnballanced/'];
-SaveFolder = ['/Users/sicongliu/Desktop/SaguaroOutput/WithFS/SVM_Union_Feature_Importance/'];
+TrainedFolder = ['/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3/SVM_Trained_Paired_6Dimensions/'];
+SaveFolder = ['/Users/sicongliu/Desktop/features/NewPara/FullScale_SigmaT28SigmaD05_Octave3/SVM_Union_Feature_Importance_Paired_6Dimensions/'];
 
 % for each leave-one-out data element
 for data_index = 1 : DATA_SIZE

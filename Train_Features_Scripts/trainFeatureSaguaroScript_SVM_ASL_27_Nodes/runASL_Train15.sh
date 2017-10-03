@@ -11,4 +11,4 @@
 module load gcc/4.9.2
 module load matlab/2015b
 cd /home/sliu104/MoCapGaussian/
-matlab -nodisplay -nosplash -nodesktop -r "TestrunMoCapSigmaT28SigmaD05_DAFS_DAFS_a2p2_Paired()"
+matlab -nodisplay -nosplash -nodesktop -r "runASL_Train15()"
