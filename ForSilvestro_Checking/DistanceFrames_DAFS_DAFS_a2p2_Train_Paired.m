@@ -53,10 +53,12 @@ remainQOctave=[];
 doctave = 3;
 toctave = 3;
 p = tic;
-[remainQOctave1,Dist1]=pruning_DAFS_DAFS(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );
-[remainQOctave,Dist]=pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );
-Roctave=remainQOctave';
-Roctave=Roctave(:)';
+[remainQOctave1,Dist1]=pruning_DAFS_DAFS(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%1
+[remainQOctave3,Dist3]=pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%2
+%% this is the function for pruning doing  the things of 1
+[remainQOctave2,Dist2]=pruning_DAFS_DAFS_1_mex(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
+remainQOctave=remainQOctave2';
+remainQOctave=remainQOctave(:)';
 
 % for ii = 1 : doctave
 %     for  jj = 1 : toctave
