@@ -27,7 +27,6 @@
 
 /* Function Declarations */
 extern int32_T asr_s32(int32_T u, uint32_T n);
-extern const mxArray *emlrt_marshallOut(const real_T u);
 
 #endif
 

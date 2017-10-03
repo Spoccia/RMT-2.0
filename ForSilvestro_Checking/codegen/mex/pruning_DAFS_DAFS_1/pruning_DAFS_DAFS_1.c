@@ -16,7 +16,6 @@
 #include "eml_int_forloop_overflow_check.h"
 #include "sort1.h"
 #include "eml_setop.h"
-#include "pruning_DAFS_DAFS_1_mexutil.h"
 #include "pruning_DAFS_DAFS_1_data.h"
 
 /* Variable Definitions */
@@ -77,9 +76,6 @@ static emlrtRSInfo ob_emlrtRSI = { 30, "eml_null_assignment",
 static emlrtRSInfo pb_emlrtRSI = { 347, "eml_null_assignment",
   "C:\\Program Files\\MATLAB\\R2015b\\toolbox\\eml\\lib\\matlab\\eml\\eml_null_assignment.m"
 };
-
-static emlrtMCInfo emlrtMCI = { 20, 21, "pruning_DAFS_DAFS_1",
-  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\pruning_DAFS_DAFS_1.m" };
 
 static emlrtRTEInfo emlrtRTEI = { 1, 33, "pruning_DAFS_DAFS_1",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\pruning_DAFS_DAFS_1.m" };
@@ -350,22 +346,11 @@ static emlrtRTEInfo u_emlrtRTEI = { 370, 1, "eml_null_assignment",
   "C:\\Program Files\\MATLAB\\R2015b\\toolbox\\eml\\lib\\matlab\\eml\\eml_null_assignment.m"
 };
 
-static emlrtRSInfo qb_emlrtRSI = { 20, "pruning_DAFS_DAFS_1",
-  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\pruning_DAFS_DAFS_1.m" };
-
 /* Function Declarations */
-static void disp(const emlrtStack *sp, const mxArray *b, emlrtMCInfo *location);
 static void eml_null_assignment(const emlrtStack *sp, emxArray_real_T *x, real_T
   idx);
 
 /* Function Definitions */
-static void disp(const emlrtStack *sp, const mxArray *b, emlrtMCInfo *location)
-{
-  const mxArray *pArray;
-  pArray = b;
-  emlrtCallMATLABR2012b(sp, 0, NULL, 1, &pArray, "disp", true, location);
-}
-
 static void eml_null_assignment(const emlrtStack *sp, emxArray_real_T *x, real_T
   idx)
 {
@@ -829,11 +814,9 @@ void pruning_DAFS_DAFS_1(const emlrtStack *sp, const emxArray_real_T *feature1,
       dimention = c_ii->size[0];
       i = 1U;
       while ((real_T)i <= dimention) {
-        if ((int32_T)i == 24) {
-          st.site = &qb_emlrtRSI;
-          disp(&st, emlrt_marshallOut(24.0), &emlrtMCI);
-        }
-
+        /*                  if(i== 24) */
+        /*                      disp(i); */
+        /*                  end */
         i0 = feature1->size[0];
         if (!(2 <= i0)) {
           emlrtDynamicBoundsCheckR2012b(2, 1, i0, &r_emlrtBCI, sp);

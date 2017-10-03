@@ -1,5 +1,5 @@
 function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave )
-    remainQOctave=zeros(1,doctave*toctave);
+    remainQOctave=zeros(doctave,toctave);
     Dist=0;
     for ii = 1 : doctave
         for  jj = 1 : toctave
@@ -16,9 +16,9 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
             dimention=size(diagRemainMatch,2);
             i=1;
             while i<=dimention
-                if(i== 24)
-                    disp(i);
-                end
+%                 if(i== 24)
+%                     disp(i);
+%                 end
                 centerc = feature1(2,diagRemainMatch(1,i));
                 centerm = feature2(2,diagRemainMatch(2,i));
                 rangec = 3*(feature1(4,diagRemainMatch(1,i))) ;
@@ -60,14 +60,14 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
                         list2 = zeros(4,1);%[];
 
 
-                        list1(j*4-3,1) =rem_startc;% [list1;rem_startc;rem_endc];
-                        list1(j*4-2,1) = rem_endc;
-                        list2(j*4-3,1) = rem_startm;%[list2;rem_startm;rem_endm];
-                        list2(j*4-3,1) = rem_endm;
-                        list1(j*4-1,1) = startc;% [list1;startc;endc];
-                        list1(j*4,1)   = endc;%
-                        list2 (j*4-1,1) = startm;%[list2;startm;endm];
-                        list2 (j*4,1) = endm;%
+                        list1(4-3,1) =rem_startc;% [list1;rem_startc;rem_endc];
+                        list1(4-2,1) = rem_endc;
+                        list2(4-3,1) = rem_startm;%[list2;rem_startm;rem_endm];
+                        list2(4-2,1) = rem_endm;
+                        list1(4-1,1) = startc;% [list1;startc;endc];
+                        list1(4,1)   = endc;%
+                        list2 (4-1,1) = startm;%[list2;startm;endm];
+                        list2 (4,1) = endm;%
 
                         [c d] = sort(list1);
                         rankcstart = find(c==startc);
@@ -103,7 +103,7 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
             end
             % diagRemainFeature = feature1(:,diagRemainMatch(1,:));
             TT = counter;% size(diagRemainMatch, 2);
-            remainQOctave = [remainQOctave TT];
+            remainQOctave(ii,jj) = TT;%[remainQOctave TT];
         end
     end
 

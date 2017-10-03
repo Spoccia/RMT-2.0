@@ -16,9 +16,9 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
             dimention=size(diagRemainMatch,2);
             i=1;
             while i<=dimention
-                if(i== 24)
-                    disp(i);
-                end
+%                 if(i== 24)
+%                     disp(i);
+%                 end
                 centerc = feature1(2,diagRemainMatch(1,i));
                 centerm = feature2(2,diagRemainMatch(2,i));
                 rangec = 3*(feature1(4,diagRemainMatch(1,i))) ;

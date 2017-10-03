@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2015b">
-  <configuration build-checksum="3876692192" file="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking\pruning_DAFS_DAFS_1.prj" location="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking" name="pruning_DAFS_DAFS_1" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="2593595810" file="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking\pruning_DAFS_DAFS_1.prj" location="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking" name="pruning_DAFS_DAFS_1" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -705,7 +705,7 @@
     <var.gc.lastOutputRoot />
     <var.gc.preBuildChecksum />
     <var.cfi.lastOutputRoot>codegen\mex\pruning_DAFS_DAFS_1</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>3876692192</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>2593595810</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave )</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
     <var.lastUserSourceChecksum />

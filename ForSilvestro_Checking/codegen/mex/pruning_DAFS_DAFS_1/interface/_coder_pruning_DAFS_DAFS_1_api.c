@@ -14,7 +14,6 @@
 #include "pruning_DAFS_DAFS_1.h"
 #include "_coder_pruning_DAFS_DAFS_1_api.h"
 #include "pruning_DAFS_DAFS_1_emxutil.h"
-#include "pruning_DAFS_DAFS_1_mexutil.h"
 #include "pruning_DAFS_DAFS_1_data.h"
 
 /* Variable Definitions */
@@ -25,9 +24,10 @@ static void b_emlrt_marshallIn(const emlrtStack *sp, const mxArray *u, const
   emlrtMsgIdentifier *parentId, emxArray_real_T *y);
 static void c_emlrt_marshallIn(const emlrtStack *sp, const mxArray *matches,
   const char_T *identifier, emxArray_real_T *y);
+static const mxArray *c_emlrt_marshallOut(const emxArray_real_T *u);
 static void d_emlrt_marshallIn(const emlrtStack *sp, const mxArray *u, const
   emlrtMsgIdentifier *parentId, emxArray_real_T *y);
-static const mxArray *d_emlrt_marshallOut(const emxArray_real_T *u);
+static const mxArray *d_emlrt_marshallOut(const real_T u);
 static void e_emlrt_marshallIn(const emlrtStack *sp, const mxArray *combineScore,
   const char_T *identifier, emxArray_real_T *y);
 static void emlrt_marshallIn(const emlrtStack *sp, const mxArray *feature1,
@@ -66,6 +66,20 @@ static void c_emlrt_marshallIn(const emlrtStack *sp, const mxArray *matches,
   emlrtDestroyArray(&matches);
 }
 
+static const mxArray *c_emlrt_marshallOut(const emxArray_real_T *u)
+{
+  const mxArray *y;
+  static const int32_T iv1[2] = { 0, 0 };
+
+  const mxArray *m2;
+  y = NULL;
+  m2 = emlrtCreateNumericArray(2, iv1, mxDOUBLE_CLASS, mxREAL);
+  mxSetData((mxArray *)m2, (void *)u->data);
+  emlrtSetDimensions((mxArray *)m2, u->size, 2);
+  emlrtAssign(&y, m2);
+  return y;
+}
+
 static void d_emlrt_marshallIn(const emlrtStack *sp, const mxArray *u, const
   emlrtMsgIdentifier *parentId, emxArray_real_T *y)
 {
@@ -73,16 +87,12 @@ static void d_emlrt_marshallIn(const emlrtStack *sp, const mxArray *u, const
   emlrtDestroyArray(&u);
 }
 
-static const mxArray *d_emlrt_marshallOut(const emxArray_real_T *u)
+static const mxArray *d_emlrt_marshallOut(const real_T u)
 {
   const mxArray *y;
-  static const int32_T iv1[2] = { 0, 0 };
-
   const mxArray *m3;
   y = NULL;
-  m3 = emlrtCreateNumericArray(2, iv1, mxDOUBLE_CLASS, mxREAL);
-  mxSetData((mxArray *)m3, (void *)u->data);
-  emlrtSetDimensions((mxArray *)m3, u->size, 2);
+  m3 = emlrtCreateDoubleScalar(u);
   emlrtAssign(&y, m3);
   return y;
 }
@@ -243,8 +253,8 @@ void pruning_DAFS_DAFS_1_api(const mxArray * const prhs[8], const mxArray *plhs
                       depdScale2, doctave, toctave, remainQOctave, &Dist);
 
   /* Marshall function outputs */
-  plhs[0] = d_emlrt_marshallOut(remainQOctave);
-  plhs[1] = emlrt_marshallOut(Dist);
+  plhs[0] = c_emlrt_marshallOut(remainQOctave);
+  plhs[1] = d_emlrt_marshallOut(Dist);
   remainQOctave->canFreeData = false;
   emxFree_real_T(&remainQOctave);
   depdScale2->canFreeData = false;
