@@ -54,7 +54,7 @@ doctave = 3;
 toctave = 3;
 p = tic;
 [remainQOctave1,Dist1]=pruning_DAFS_DAFS(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%1
-[remainQOctave2,Dist2]=pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%2
+[remainQOctave2,Dist2]=Paired_pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%2
 %% this is the function for pruning doing  the things of 1
 [remainQOctave3,Dist3]=Paired_pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
 [remainQOctave8,Dist8]=Unpaired_pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );
