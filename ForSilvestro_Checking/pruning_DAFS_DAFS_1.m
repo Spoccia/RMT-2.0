@@ -1,6 +1,7 @@
 function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave )
     remainQOctave=zeros(doctave,toctave);
     Dist=0;
+%     diagSurvived=[];
     for ii = 1 : doctave
         for  jj = 1 : toctave
             index1 = find(feature1(5,:) == ii & feature1(6,:) == jj);
@@ -8,6 +9,7 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
             combineScore11 = combineScore(index1);
 
             [diagY,I] = sort(combineScore11,2,'descend');
+            diagY_1=diagY;
             diagMatch = matches11(:,I);
             diagRemainMatch = diagMatch;
             counter=0;
@@ -92,10 +94,12 @@ function [remainQOctave,Dist] = pruning_DAFS_DAFS_1(feature1,depdScale1,matches,
                 end
                 if (keept == true) && (keepd == true)
 %                     diagRemainMatch(i) =1;% [diagRemainMatch diagMatch(:,i)];
-                    Dist = Dist + diagY(i);
+                    Dist = Dist + diagY_1(i);
+%                     diagSurvived =[diagSurvived,diagY(i)];
                     counter=counter+1;
                 else
                     diagRemainMatch(:,i)=[];
+                    diagY_1(:,i)=[];
                     i=i-1;
                     dimention=size(diagRemainMatch,2);
                 end
