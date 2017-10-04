@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2015b">
-  <configuration build-checksum="326654541" file="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking\Unpaired_pruning_DAFS_DAFS_DV.prj" location="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking" name="Unpaired_pruning_DAFS_DAFS_DV" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="1523808533" file="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking\Unpaired_pruning_DAFS_DAFS_DV.prj" location="D:\RMT 2_0\RMT-2.0\ForSilvestro_Checking" name="Unpaired_pruning_DAFS_DAFS_DV" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -147,7 +147,7 @@
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.RanPilSilVerification>false</param.RanPilSilVerification>
-      <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
+      <param.VerificationMode />
       <param.VerificationStatus>option.VerificationStatus.Inactive</param.VerificationStatus>
       <param.CustomSourceCode />
       <param.CustomHeaderCode />
@@ -705,7 +705,7 @@
     <var.gc.lastOutputRoot />
     <var.gc.preBuildChecksum />
     <var.cfi.lastOutputRoot>codegen\mex\Unpaired_pruning_DAFS_DAFS_DV</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1630879104</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>3656559422</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>Unpaired_pruning_DAFS_DAFS_DV(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave )</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
     <var.lastUserSourceChecksum />

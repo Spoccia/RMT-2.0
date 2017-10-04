@@ -18,35 +18,35 @@
 #include "Unpaired_pruning_DAFS_DAFS_DV_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo emlrtRSI = { 103, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo emlrtRSI = { 110, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo b_emlrtRSI = { 102, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo b_emlrtRSI = { 109, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo c_emlrtRSI = { 77, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo c_emlrtRSI = { 84, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo d_emlrtRSI = { 76, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo d_emlrtRSI = { 83, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo e_emlrtRSI = { 75, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo e_emlrtRSI = { 82, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo f_emlrtRSI = { 74, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo f_emlrtRSI = { 81, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo g_emlrtRSI = { 73, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo g_emlrtRSI = { 80, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtRSInfo h_emlrtRSI = { 72, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtRSInfo h_emlrtRSI = { 79, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
@@ -122,126 +122,182 @@ static emlrtRTEInfo o_emlrtRTEI = { 371, 1, "eml_null_assignment",
   "C:\\Program Files\\MATLAB\\R2015b\\toolbox\\eml\\lib\\matlab\\eml\\eml_null_assignment.m"
 };
 
-static emlrtBCInfo emlrtBCI = { -1, -1, 87, 80, "rankmend",
+static emlrtBCInfo emlrtBCI = { -1, -1, 94, 80, "rankmend",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo b_emlrtBCI = { -1, -1, 87, 66, "rankcend",
+static emlrtBCInfo b_emlrtBCI = { -1, -1, 94, 66, "rankcend",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo c_emlrtBCI = { -1, -1, 87, 49, "rankmstart",
+static emlrtBCInfo c_emlrtBCI = { -1, -1, 94, 49, "rankmstart",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo d_emlrtBCI = { -1, -1, 87, 32, "rankcstart",
+static emlrtBCInfo d_emlrtBCI = { -1, -1, 94, 32, "rankcstart",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo e_emlrtBCI = { -1, -1, 58, 48, "feature2",
+static emlrtBCInfo e_emlrtBCI = { -1, -1, 65, 48, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo emlrtDCI = { 58, 48, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo emlrtDCI = { 65, 48, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo f_emlrtBCI = { -1, -1, 58, 46, "feature2",
+static emlrtBCInfo f_emlrtBCI = { -1, -1, 65, 46, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo g_emlrtBCI = { -1, -1, 57, 48, "feature1",
+static emlrtBCInfo g_emlrtBCI = { -1, -1, 64, 48, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo b_emlrtDCI = { 57, 48, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo b_emlrtDCI = { 64, 48, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo h_emlrtBCI = { -1, -1, 57, 46, "feature1",
+static emlrtBCInfo h_emlrtBCI = { -1, -1, 64, 46, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo i_emlrtBCI = { -1, -1, 51, 50, "feature2",
+static emlrtBCInfo i_emlrtBCI = { -1, -1, 58, 50, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo j_emlrtBCI = { -1, -1, 50, 50, "feature1",
+static emlrtBCInfo j_emlrtBCI = { -1, -1, 57, 50, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo k_emlrtBCI = { -1, -1, 49, 50, "feature2",
+static emlrtBCInfo k_emlrtBCI = { -1, -1, 56, 50, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo c_emlrtDCI = { 49, 50, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo c_emlrtDCI = { 56, 50, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo l_emlrtBCI = { -1, -1, 49, 48, "feature2",
+static emlrtBCInfo l_emlrtBCI = { -1, -1, 56, 48, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo m_emlrtBCI = { -1, -1, 48, 50, "feature1",
+static emlrtBCInfo m_emlrtBCI = { -1, -1, 55, 50, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo d_emlrtDCI = { 48, 50, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo d_emlrtDCI = { 55, 50, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo n_emlrtBCI = { -1, -1, 48, 48, "feature1",
+static emlrtBCInfo n_emlrtBCI = { -1, -1, 55, 48, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo o_emlrtBCI = { -1, -1, 23, 38, "feature2",
+static emlrtBCInfo o_emlrtBCI = { -1, -1, 53, 51, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo p_emlrtBCI = { -1, -1, 22, 38, "feature1",
-  "Unpaired_pruning_DAFS_DAFS_DV",
-  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
-  0 };
-
-static emlrtBCInfo q_emlrtBCI = { -1, -1, 21, 38, "feature2",
-  "Unpaired_pruning_DAFS_DAFS_DV",
-  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
-  0 };
-
-static emlrtDCInfo e_emlrtDCI = { 21, 38, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo e_emlrtDCI = { 53, 51, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo r_emlrtBCI = { -1, -1, 21, 36, "feature2",
+static emlrtBCInfo p_emlrtBCI = { -1, -1, 53, 49, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo s_emlrtBCI = { -1, -1, 20, 38, "feature1",
+static emlrtBCInfo q_emlrtBCI = { -1, -1, 52, 51, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo f_emlrtDCI = { 20, 38, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo f_emlrtDCI = { 52, 51, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo t_emlrtBCI = { -1, -1, 20, 36, "feature1",
+static emlrtBCInfo r_emlrtBCI = { -1, -1, 52, 49, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo s_emlrtBCI = { -1, -1, 28, 38, "feature2",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo t_emlrtBCI = { -1, -1, 27, 38, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo u_emlrtBCI = { -1, -1, 26, 38, "feature2",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtDCInfo g_emlrtDCI = { 26, 38, "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  1 };
+
+static emlrtBCInfo v_emlrtBCI = { -1, -1, 26, 36, "feature2",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo w_emlrtBCI = { -1, -1, 25, 38, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtDCInfo h_emlrtDCI = { 25, 38, "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  1 };
+
+static emlrtBCInfo x_emlrtBCI = { -1, -1, 25, 36, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo y_emlrtBCI = { -1, -1, 23, 46, "feature2",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtDCInfo i_emlrtDCI = { 23, 46, "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  1 };
+
+static emlrtBCInfo ab_emlrtBCI = { -1, -1, 23, 44, "feature2",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo bb_emlrtBCI = { -1, -1, 22, 46, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtDCInfo j_emlrtDCI = { 22, 46, "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  1 };
+
+static emlrtBCInfo cb_emlrtBCI = { -1, -1, 22, 44, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
@@ -250,12 +306,12 @@ static emlrtECInfo emlrtECI = { 2, 6, 27, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtBCInfo u_emlrtBCI = { -1, -1, 6, 58, "feature1",
+static emlrtBCInfo db_emlrtBCI = { -1, -1, 6, 58, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo v_emlrtBCI = { -1, -1, 6, 36, "feature1",
+static emlrtBCInfo eb_emlrtBCI = { -1, -1, 6, 36, "feature1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
@@ -268,19 +324,19 @@ static emlrtRTEInfo q_emlrtRTEI = { 4, 5, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m"
 };
 
-static emlrtDCInfo g_emlrtDCI = { 2, 33, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo k_emlrtDCI = { 2, 33, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtDCInfo h_emlrtDCI = { 2, 33, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo l_emlrtDCI = { 2, 33, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   4 };
 
-static emlrtDCInfo i_emlrtDCI = { 2, 25, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo m_emlrtDCI = { 2, 25, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtDCInfo j_emlrtDCI = { 2, 25, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo n_emlrtDCI = { 2, 25, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   4 };
 
@@ -288,118 +344,138 @@ static emlrtRTEInfo r_emlrtRTEI = { 243, 9, "find",
   "C:\\Program Files\\MATLAB\\R2015b\\toolbox\\eml\\lib\\matlab\\elmat\\find.m"
 };
 
-static emlrtBCInfo w_emlrtBCI = { -1, -1, 7, 36, "matches",
+static emlrtBCInfo fb_emlrtBCI = { -1, -1, 7, 36, "matches",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo x_emlrtBCI = { -1, -1, 8, 30, "combineScore",
+static emlrtBCInfo gb_emlrtBCI = { -1, -1, 8, 30, "combineScore",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo y_emlrtBCI = { -1, -1, 12, 37, "matches11",
+static emlrtBCInfo hb_emlrtBCI = { -1, -1, 12, 37, "matches11",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo ab_emlrtBCI = { -1, -1, 111, 27, "remainQOctave",
+static emlrtBCInfo ib_emlrtBCI = { -1, -1, 118, 27, "remainQOctave",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo bb_emlrtBCI = { -1, -1, 111, 30, "remainQOctave",
+static emlrtBCInfo jb_emlrtBCI = { -1, -1, 118, 30, "remainQOctave",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo cb_emlrtBCI = { -1, -1, 20, 56, "diagRemainMatch",
+static emlrtBCInfo kb_emlrtBCI = { -1, -1, 22, 64, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo db_emlrtBCI = { -1, -1, 21, 56, "diagRemainMatch",
+static emlrtBCInfo lb_emlrtBCI = { -1, -1, 23, 64, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo eb_emlrtBCI = { -1, -1, 22, 40, "feature1",
+static emlrtBCInfo mb_emlrtBCI = { -1, -1, 25, 56, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo k_emlrtDCI = { 22, 40, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtBCInfo nb_emlrtBCI = { -1, -1, 26, 56, "diagRemainMatch",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo ob_emlrtBCI = { -1, -1, 27, 40, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtDCInfo o_emlrtDCI = { 27, 40, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo fb_emlrtBCI = { -1, -1, 22, 58, "diagRemainMatch",
+static emlrtBCInfo pb_emlrtBCI = { -1, -1, 27, 58, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo gb_emlrtBCI = { -1, -1, 23, 40, "feature2",
+static emlrtBCInfo qb_emlrtBCI = { -1, -1, 28, 40, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo l_emlrtDCI = { 23, 40, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo p_emlrtDCI = { 28, 40, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo hb_emlrtBCI = { -1, -1, 23, 58, "diagRemainMatch",
+static emlrtBCInfo rb_emlrtBCI = { -1, -1, 28, 58, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo ib_emlrtBCI = { -1, -1, 48, 68, "diagRemainMatch",
+static emlrtBCInfo sb_emlrtBCI = { -1, -1, 52, 69, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo jb_emlrtBCI = { -1, -1, 49, 68, "diagRemainMatch",
+static emlrtBCInfo tb_emlrtBCI = { -1, -1, 53, 69, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo kb_emlrtBCI = { -1, -1, 50, 52, "feature1",
+static emlrtBCInfo ub_emlrtBCI = { -1, -1, 55, 68, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo m_emlrtDCI = { 50, 52, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtBCInfo vb_emlrtBCI = { -1, -1, 56, 68, "diagRemainMatch",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtBCInfo wb_emlrtBCI = { -1, -1, 57, 52, "feature1",
+  "Unpaired_pruning_DAFS_DAFS_DV",
+  "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
+  0 };
+
+static emlrtDCInfo q_emlrtDCI = { 57, 52, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo lb_emlrtBCI = { -1, -1, 50, 70, "diagRemainMatch",
+static emlrtBCInfo xb_emlrtBCI = { -1, -1, 57, 70, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo mb_emlrtBCI = { -1, -1, 51, 52, "feature2",
+static emlrtBCInfo yb_emlrtBCI = { -1, -1, 58, 52, "feature2",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtDCInfo n_emlrtDCI = { 51, 52, "Unpaired_pruning_DAFS_DAFS_DV",
+static emlrtDCInfo r_emlrtDCI = { 58, 52, "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   1 };
 
-static emlrtBCInfo nb_emlrtBCI = { -1, -1, 51, 70, "diagRemainMatch",
+static emlrtBCInfo ac_emlrtBCI = { -1, -1, 58, 70, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo ob_emlrtBCI = { -1, -1, 57, 66, "diagRemainMatch",
+static emlrtBCInfo bc_emlrtBCI = { -1, -1, 64, 66, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo pb_emlrtBCI = { -1, -1, 58, 66, "diagRemainMatch",
+static emlrtBCInfo cc_emlrtBCI = { -1, -1, 65, 66, "diagRemainMatch",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
 
-static emlrtBCInfo qb_emlrtBCI = { -1, -1, 99, 35, "diagY_1",
+static emlrtBCInfo dc_emlrtBCI = { -1, -1, 106, 35, "diagY_1",
   "Unpaired_pruning_DAFS_DAFS_DV",
   "D:\\RMT 2_0\\RMT-2.0\\ForSilvestro_Checking\\Unpaired_pruning_DAFS_DAFS_DV.m",
   0 };
@@ -655,43 +731,43 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
   i0 = remainQOctave->size[0] * remainQOctave->size[1];
   if (!(doctave > 0.0)) {
-    emlrtNonNegativeCheckR2012b(doctave, &j_emlrtDCI, sp);
+    emlrtNonNegativeCheckR2012b(doctave, &n_emlrtDCI, sp);
   }
 
   d0 = doctave;
   if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-    emlrtIntegerCheckR2012b(d0, &i_emlrtDCI, sp);
+    emlrtIntegerCheckR2012b(d0, &m_emlrtDCI, sp);
   }
 
   remainQOctave->size[0] = (int32_T)d0;
   if (!(toctave > 0.0)) {
-    emlrtNonNegativeCheckR2012b(toctave, &h_emlrtDCI, sp);
+    emlrtNonNegativeCheckR2012b(toctave, &l_emlrtDCI, sp);
   }
 
   d0 = toctave;
   if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-    emlrtIntegerCheckR2012b(d0, &g_emlrtDCI, sp);
+    emlrtIntegerCheckR2012b(d0, &k_emlrtDCI, sp);
   }
 
   remainQOctave->size[1] = (int32_T)d0;
   emxEnsureCapacity(sp, (emxArray__common *)remainQOctave, i0, (int32_T)sizeof
                     (real_T), &emlrtRTEI);
   if (!(doctave > 0.0)) {
-    emlrtNonNegativeCheckR2012b(doctave, &j_emlrtDCI, sp);
+    emlrtNonNegativeCheckR2012b(doctave, &n_emlrtDCI, sp);
   }
 
   d0 = doctave;
   if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-    emlrtIntegerCheckR2012b(d0, &i_emlrtDCI, sp);
+    emlrtIntegerCheckR2012b(d0, &m_emlrtDCI, sp);
   }
 
   if (!(toctave > 0.0)) {
-    emlrtNonNegativeCheckR2012b(toctave, &h_emlrtDCI, sp);
+    emlrtNonNegativeCheckR2012b(toctave, &l_emlrtDCI, sp);
   }
 
   d1 = toctave;
   if (d1 != (int32_T)muDoubleScalarFloor(d1)) {
-    emlrtIntegerCheckR2012b(d1, &g_emlrtDCI, sp);
+    emlrtIntegerCheckR2012b(d1, &k_emlrtDCI, sp);
   }
 
   loop_ub = (int32_T)d0 * (int32_T)d1;
@@ -719,7 +795,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
     while (jj <= (int32_T)toctave - 1) {
       i0 = feature1->size[0];
       if (!(5 <= i0)) {
-        emlrtDynamicBoundsCheckR2012b(5, 1, i0, &v_emlrtBCI, sp);
+        emlrtDynamicBoundsCheckR2012b(5, 1, i0, &eb_emlrtBCI, sp);
       }
 
       loop_ub = feature1->size[1];
@@ -735,7 +811,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
 
       i0 = feature1->size[0];
       if (!(6 <= i0)) {
-        emlrtDynamicBoundsCheckR2012b(6, 1, i0, &u_emlrtBCI, sp);
+        emlrtDynamicBoundsCheckR2012b(6, 1, i0, &db_emlrtBCI, sp);
       }
 
       loop_ub = feature1->size[1];
@@ -861,7 +937,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
         for (b_loop_ub = 0; b_loop_ub < 2; b_loop_ub++) {
           d_ii = (int32_T)index1->data[index1->size[0] * i0];
           if (!((d_ii >= 1) && (d_ii <= nx))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, nx, &w_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, nx, &fb_emlrtBCI, sp);
           }
 
           matches11->data[b_loop_ub + matches11->size[0] * i0] = matches->
@@ -874,7 +950,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
       for (i0 = 0; i0 < loop_ub; i0++) {
         b_loop_ub = (int32_T)index1->data[i0];
         if (!((b_loop_ub >= 1) && (b_loop_ub <= d_ii))) {
-          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, d_ii, &x_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, d_ii, &gb_emlrtBCI, sp);
         }
       }
 
@@ -911,7 +987,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
         for (b_loop_ub = 0; b_loop_ub < 2; b_loop_ub++) {
           d_ii = b_ii->data[b_ii->size[0] * i0];
           if (!((d_ii >= 1) && (d_ii <= nx))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, nx, &y_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, nx, &hb_emlrtBCI, sp);
           }
 
           diagMatch->data[b_loop_ub + diagMatch->size[0] * i0] = matches11->
@@ -936,92 +1012,136 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
       i = 1U;
       while ((real_T)i <= dimention) {
         i0 = feature1->size[0];
-        if (!(2 <= i0)) {
-          emlrtDynamicBoundsCheckR2012b(2, 1, i0, &t_emlrtBCI, sp);
+        if (!(1 <= i0)) {
+          emlrtDynamicBoundsCheckR2012b(1, 1, i0, &cb_emlrtBCI, sp);
         }
 
         i0 = feature1->size[1];
         b_loop_ub = diagMatch->size[1];
         d_ii = (int32_T)i;
         if (!(d_ii <= b_loop_ub)) {
-          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &cb_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &kb_emlrtBCI, sp);
         }
 
         d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
         if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-          emlrtIntegerCheckR2012b(d0, &f_emlrtDCI, sp);
+          emlrtIntegerCheckR2012b(d0, &j_emlrtDCI, sp);
         }
 
         b_loop_ub = (int32_T)d0;
         if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
-          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &s_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &bb_emlrtBCI, sp);
         }
 
         i0 = feature2->size[0];
-        if (!(2 <= i0)) {
-          emlrtDynamicBoundsCheckR2012b(2, 1, i0, &r_emlrtBCI, sp);
+        if (!(1 <= i0)) {
+          emlrtDynamicBoundsCheckR2012b(1, 1, i0, &ab_emlrtBCI, sp);
         }
 
         i0 = feature2->size[1];
         b_loop_ub = diagMatch->size[1];
         d_ii = (int32_T)i;
         if (!(d_ii <= b_loop_ub)) {
-          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &db_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &lb_emlrtBCI, sp);
         }
 
         d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
         if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-          emlrtIntegerCheckR2012b(d0, &e_emlrtDCI, sp);
+          emlrtIntegerCheckR2012b(d0, &i_emlrtDCI, sp);
         }
 
         b_loop_ub = (int32_T)d0;
         if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
-          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &q_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &y_emlrtBCI, sp);
         }
 
         i0 = feature1->size[0];
-        if (!(4 <= i0)) {
-          emlrtDynamicBoundsCheckR2012b(4, 1, i0, &p_emlrtBCI, sp);
+        if (!(2 <= i0)) {
+          emlrtDynamicBoundsCheckR2012b(2, 1, i0, &x_emlrtBCI, sp);
         }
 
         i0 = feature1->size[1];
         b_loop_ub = diagMatch->size[1];
         d_ii = (int32_T)i;
         if (!(d_ii <= b_loop_ub)) {
-          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &fb_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &mb_emlrtBCI, sp);
         }
 
         d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
         if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-          emlrtIntegerCheckR2012b(d0, &k_emlrtDCI, sp);
+          emlrtIntegerCheckR2012b(d0, &h_emlrtDCI, sp);
         }
 
         b_loop_ub = (int32_T)d0;
         if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
-          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &eb_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &w_emlrtBCI, sp);
+        }
+
+        i0 = feature2->size[0];
+        if (!(2 <= i0)) {
+          emlrtDynamicBoundsCheckR2012b(2, 1, i0, &v_emlrtBCI, sp);
+        }
+
+        i0 = feature2->size[1];
+        b_loop_ub = diagMatch->size[1];
+        d_ii = (int32_T)i;
+        if (!(d_ii <= b_loop_ub)) {
+          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &nb_emlrtBCI, sp);
+        }
+
+        d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
+        if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
+          emlrtIntegerCheckR2012b(d0, &g_emlrtDCI, sp);
+        }
+
+        b_loop_ub = (int32_T)d0;
+        if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &u_emlrtBCI, sp);
+        }
+
+        i0 = feature1->size[0];
+        if (!(4 <= i0)) {
+          emlrtDynamicBoundsCheckR2012b(4, 1, i0, &t_emlrtBCI, sp);
+        }
+
+        i0 = feature1->size[1];
+        b_loop_ub = diagMatch->size[1];
+        d_ii = (int32_T)i;
+        if (!(d_ii <= b_loop_ub)) {
+          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &pb_emlrtBCI, sp);
+        }
+
+        d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
+        if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
+          emlrtIntegerCheckR2012b(d0, &o_emlrtDCI, sp);
+        }
+
+        b_loop_ub = (int32_T)d0;
+        if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &ob_emlrtBCI, sp);
         }
 
         rangec = 3.0 * feature1->data[3 + feature1->size[0] * (b_loop_ub - 1)];
         i0 = feature2->size[0];
         if (!(4 <= i0)) {
-          emlrtDynamicBoundsCheckR2012b(4, 1, i0, &o_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(4, 1, i0, &s_emlrtBCI, sp);
         }
 
         i0 = feature2->size[1];
         b_loop_ub = diagMatch->size[1];
         d_ii = (int32_T)i;
         if (!(d_ii <= b_loop_ub)) {
-          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &hb_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &rb_emlrtBCI, sp);
         }
 
         d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
         if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-          emlrtIntegerCheckR2012b(d0, &l_emlrtDCI, sp);
+          emlrtIntegerCheckR2012b(d0, &p_emlrtDCI, sp);
         }
 
         b_loop_ub = (int32_T)d0;
         if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
-          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &gb_emlrtBCI, sp);
+          emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &qb_emlrtBCI, sp);
         }
 
         rangem = 3.0 * feature2->data[3 + feature2->size[0] * (b_loop_ub - 1)];
@@ -1051,6 +1171,50 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           /* (j<=size(diagRemainMatch,2)) && (keept == true)&& (keepd == true) */
           /*  first step check only time */
           i0 = feature1->size[0];
+          if (!(1 <= i0)) {
+            emlrtDynamicBoundsCheckR2012b(1, 1, i0, &r_emlrtBCI, sp);
+          }
+
+          i0 = feature1->size[1];
+          b_loop_ub = diagMatch->size[1];
+          d_ii = (int32_T)j;
+          if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &sb_emlrtBCI, sp);
+          }
+
+          d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
+          if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
+            emlrtIntegerCheckR2012b(d0, &f_emlrtDCI, sp);
+          }
+
+          b_loop_ub = (int32_T)d0;
+          if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
+            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &q_emlrtBCI, sp);
+          }
+
+          i0 = feature2->size[0];
+          if (!(1 <= i0)) {
+            emlrtDynamicBoundsCheckR2012b(1, 1, i0, &p_emlrtBCI, sp);
+          }
+
+          i0 = feature2->size[1];
+          b_loop_ub = diagMatch->size[1];
+          d_ii = (int32_T)j;
+          if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &tb_emlrtBCI, sp);
+          }
+
+          d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
+          if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
+            emlrtIntegerCheckR2012b(d0, &e_emlrtDCI, sp);
+          }
+
+          b_loop_ub = (int32_T)d0;
+          if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
+            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &o_emlrtBCI, sp);
+          }
+
+          i0 = feature1->size[0];
           if (!(2 <= i0)) {
             emlrtDynamicBoundsCheckR2012b(2, 1, i0, &n_emlrtBCI, sp);
           }
@@ -1059,7 +1223,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           b_loop_ub = diagMatch->size[1];
           d_ii = (int32_T)j;
           if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &ib_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &ub_emlrtBCI, sp);
           }
 
           d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
@@ -1081,7 +1245,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           b_loop_ub = diagMatch->size[1];
           d_ii = (int32_T)j;
           if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &jb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &vb_emlrtBCI, sp);
           }
 
           d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
@@ -1103,17 +1267,17 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           b_loop_ub = diagMatch->size[1];
           d_ii = (int32_T)j;
           if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &lb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &xb_emlrtBCI, sp);
           }
 
           d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
           if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-            emlrtIntegerCheckR2012b(d0, &m_emlrtDCI, sp);
+            emlrtIntegerCheckR2012b(d0, &q_emlrtDCI, sp);
           }
 
           b_loop_ub = (int32_T)d0;
           if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
-            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &kb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &wb_emlrtBCI, sp);
           }
 
           rem_rangec = 3.0 * feature1->data[3 + feature1->size[0] * (b_loop_ub -
@@ -1127,17 +1291,17 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           b_loop_ub = diagMatch->size[1];
           d_ii = (int32_T)j;
           if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &nb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &ac_emlrtBCI, sp);
           }
 
           d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
           if (d0 != (int32_T)muDoubleScalarFloor(d0)) {
-            emlrtIntegerCheckR2012b(d0, &n_emlrtDCI, sp);
+            emlrtIntegerCheckR2012b(d0, &r_emlrtDCI, sp);
           }
 
           b_loop_ub = (int32_T)d0;
           if (!((b_loop_ub >= 1) && (b_loop_ub <= i0))) {
-            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &mb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &yb_emlrtBCI, sp);
           }
 
           rem_rangem = 3.0 * feature2->data[3 + feature2->size[0] * (b_loop_ub -
@@ -1163,7 +1327,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           b_loop_ub = diagMatch->size[1];
           d_ii = (int32_T)j;
           if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &ob_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &bc_emlrtBCI, sp);
           }
 
           d0 = diagMatch->data[diagMatch->size[0] * (d_ii - 1)];
@@ -1185,7 +1349,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           b_loop_ub = diagMatch->size[1];
           d_ii = (int32_T)j;
           if (!((d_ii >= 1) && (d_ii <= b_loop_ub))) {
-            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &pb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(d_ii, 1, b_loop_ub, &cc_emlrtBCI, sp);
           }
 
           d0 = diagMatch->data[1 + diagMatch->size[0] * (d_ii - 1)];
@@ -1378,9 +1542,9 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           if ((startc == rem_startc) && (endc == rem_endc) && (startm ==
                rem_startm) && (endm == rem_endm)) {
             if (feature1->data[feature1->size[0] * ((int32_T)diagMatch->
-                 data[diagMatch->size[0] * ((int32_T)j - 1)] - 1)] ==
-                feature2->data[feature2->size[0] * ((int32_T)diagMatch->data[1 +
-                 diagMatch->size[0] * ((int32_T)j - 1)] - 1)]) {
+                 data[diagMatch->size[0] * ((int32_T)i - 1)] - 1)] ==
+                feature1->data[feature1->size[0] * ((int32_T)diagMatch->
+                 data[diagMatch->size[0] * ((int32_T)j - 1)] - 1)]) {
               keept = false;
               exitg1 = true;
             } else {
@@ -1441,7 +1605,7 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
           i0 = diagY_1->size[1];
           b_loop_ub = (int32_T)i;
           if (!(b_loop_ub <= i0)) {
-            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &qb_emlrtBCI, sp);
+            emlrtDynamicBoundsCheckR2012b(b_loop_ub, 1, i0, &dc_emlrtBCI, sp);
           }
 
           *Dist += diagY_1->data[b_loop_ub - 1];
@@ -1465,12 +1629,12 @@ void Unpaired_pruning_DAFS_DAFS_DV(const emlrtStack *sp, const emxArray_real_T
       /*  size(diagRemainMatch, 2); */
       i0 = remainQOctave->size[0];
       if (!((ii + 1 >= 1) && (ii + 1 <= i0))) {
-        emlrtDynamicBoundsCheckR2012b(ii + 1, 1, i0, &ab_emlrtBCI, sp);
+        emlrtDynamicBoundsCheckR2012b(ii + 1, 1, i0, &ib_emlrtBCI, sp);
       }
 
       i0 = remainQOctave->size[1];
       if (!((jj + 1 >= 1) && (jj + 1 <= i0))) {
-        emlrtDynamicBoundsCheckR2012b(jj + 1, 1, i0, &bb_emlrtBCI, sp);
+        emlrtDynamicBoundsCheckR2012b(jj + 1, 1, i0, &jb_emlrtBCI, sp);
       }
 
       remainQOctave->data[ii + remainQOctave->size[0] * jj] = counter;
