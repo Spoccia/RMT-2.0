@@ -17,6 +17,8 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_1(feature1,depdScale1,m
             dimention=size(diagRemainMatch,2);
             i=1;
             while i<=dimention
+                centerc_variate = feature1(1,diagRemainMatch(1,i));
+                centerm_variate = feature2(1,diagRemainMatch(2,i));
                 centerc = feature1(2,diagRemainMatch(1,i));
                 centerm = feature2(2,diagRemainMatch(2,i));
                 rangec = 3*(feature1(4,diagRemainMatch(1,i))) ;
@@ -44,6 +46,9 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_1(feature1,depdScale1,m
                 while  (j<=counter) && (keept == true)&& (keepd == true)%(j<=size(diagRemainMatch,2)) && (keept == true)&& (keepd == true)
                     % first step check only time
                    
+                        
+                        rem_variatec = feature1(1,diagRemainMatch(1,j));
+                        rem_variatem = feature2(1,diagRemainMatch(2,j));
                         
                         rem_centerc = feature1(2,diagRemainMatch(1,j));
                         rem_centerm = feature2(2,diagRemainMatch(2,j));

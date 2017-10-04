@@ -19,6 +19,10 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_DV(feature1,depdScale1,
             dimention=size(diagRemainMatch,2);
             i=1;
             while i<=dimention
+                
+                centerc_variate = feature1(1,diagRemainMatch(1,i));
+                centerm_variate = feature2(1,diagRemainMatch(2,i));
+            
                 centerc = feature1(2,diagRemainMatch(1,i));
                 centerm = feature2(2,diagRemainMatch(2,i));
                 rangec = 3*(feature1(4,diagRemainMatch(1,i))) ;
@@ -46,7 +50,9 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_DV(feature1,depdScale1,
                 while  (j<=counter) && (keept == true)&& (keepd == true)%(j<=size(diagRemainMatch,2)) && (keept == true)&& (keepd == true)
                     % first step check only time
                    
-                        
+                        rem_variatec = feature1(1,diagRemainMatch(1,j));
+                        rem_variatem = feature2(1,diagRemainMatch(2,j));    
+                    
                         rem_centerc = feature1(2,diagRemainMatch(1,j));
                         rem_centerm = feature2(2,diagRemainMatch(2,j));
                         rem_rangec = 3*(feature1(4,diagRemainMatch(1,j))) ;
@@ -55,9 +61,9 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_DV(feature1,depdScale1,
                         rem_endc = rem_centerc + rem_rangec ;
                         rem_startm = rem_centerm - rem_rangem ;
                         rem_endm = rem_centerm + rem_rangem ;
-                        
-                        VariateF1 = feature1(1,diagRemainMatch(1,j));
-                        VariateF2 = feature2(1,diagRemainMatch(2,j));
+%                         
+%                         VariateF1 = feature1(1,diagRemainMatch(1,j));
+%                         VariateF2 = feature2(1,diagRemainMatch(2,j));
                         list1 = zeros(4,1);%[];
                         list2 = zeros(4,1);%[];
 
@@ -79,7 +85,7 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_DV(feature1,depdScale1,
                         rankmend = find(c==endm);
 
                         if (startc == rem_startc) && (endc==rem_endc) && (startm == rem_startm) && (endm == rem_endm)                            
-                            if(VariateF1 == VariateF2)
+                            if(centerc_variate == rem_variatec)
                                 keept = false;                            
                                 break;
                             else

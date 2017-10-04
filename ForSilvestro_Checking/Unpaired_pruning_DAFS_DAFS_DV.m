@@ -17,6 +17,11 @@ function [remainQOctave,Dist] = Unpaired_pruning_DAFS_DAFS_DV(feature1,depdScale
             dimention=size(diagRemainMatch,2);
             i=1;
             while i<=dimention
+                
+                
+                centerc_variate = feature1(1,diagRemainMatch(1,i));
+                centerm_variate = feature2(1,diagRemainMatch(2,i));
+                
                 centerc = feature1(2,diagRemainMatch(1,i));
                 centerm = feature2(2,diagRemainMatch(2,i));
                 rangec = 3*(feature1(4,diagRemainMatch(1,i))) ;
@@ -44,7 +49,9 @@ function [remainQOctave,Dist] = Unpaired_pruning_DAFS_DAFS_DV(feature1,depdScale
                 while  (j<=counter) && (keept == true)&& (keepd == true)%(j<=size(diagRemainMatch,2)) && (keept == true)&& (keepd == true)
                     % first step check only time
                    
-                        
+                        rem_variatec = feature1(1,diagRemainMatch(1,j));
+                        rem_variatem = feature2(1,diagRemainMatch(2,j));    
+                    
                         rem_centerc = feature1(2,diagRemainMatch(1,j));
                         rem_centerm = feature2(2,diagRemainMatch(2,j));
                         rem_rangec = 3*(feature1(4,diagRemainMatch(1,j))) ;
@@ -77,7 +84,7 @@ function [remainQOctave,Dist] = Unpaired_pruning_DAFS_DAFS_DV(feature1,depdScale
                         rankmend = find(c==endm);
 
                         if (startc == rem_startc) && (endc==rem_endc) && (startm == rem_startm) && (endm == rem_endm)
-                            if(VariateF1 == VariateF2)
+                            if(centerc_variate == rem_variatec)
                                 keept = false;                            
                                 break;
                             else
