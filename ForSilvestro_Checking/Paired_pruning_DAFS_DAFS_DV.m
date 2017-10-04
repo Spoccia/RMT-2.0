@@ -57,7 +57,7 @@ function [remainQOctave,Dist] = Paired_pruning_DAFS_DAFS_DV(feature1,depdScale1,
                         rem_endm = rem_centerm + rem_rangem ;
                         
                         VariateF1 = feature1(1,diagRemainMatch(1,j));
-                        VaraiteF2 = feature2(1,diagRemainMatch(2,j));
+                        VariateF2 = feature2(1,diagRemainMatch(2,j));
                         list1 = zeros(4,1);%[];
                         list2 = zeros(4,1);%[];
 

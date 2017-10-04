@@ -1,0 +1,21 @@
+MEX {
+	global:
+		mexFunction;
+		emlrtMexFcnProperties;
+		Unpaired_pruning_DAFS_DAFS_DV;
+		asr_s32;
+		emxEnsureCapacity;
+		emxFree_boolean_T;
+		emxFree_int32_T;
+		emxFree_real_T;
+		emxInit_boolean_T;
+		emxInit_int32_T;
+		emxInit_int32_T1;
+		emxInit_real_T;
+		emxInit_real_T1;
+		Unpaired_pruning_DAFS_DAFS_DV_initialize;
+		Unpaired_pruning_DAFS_DAFS_DV_terminate;
+		Unpaired_pruning_DAFS_DAFS_DV_atexit;
+	local:
+		*;
+};

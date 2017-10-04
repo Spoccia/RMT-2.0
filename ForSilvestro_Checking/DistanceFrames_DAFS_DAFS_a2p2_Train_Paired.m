@@ -57,6 +57,13 @@ p = tic;
 [remainQOctave3,Dist3]=pruning_DAFS_DAFS_1(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%2
 %% this is the function for pruning doing  the things of 1
 [remainQOctave2,Dist2]=pruning_DAFS_DAFS_1_mex(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
+
+[remainQOctave4,Dist4]=Paired_pruning_DAFS_DAFS_DV(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
+[remainQOctave5,Dist5]=Unpaired_pruning_DAFS_DAFS_DV(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
+
+[remainQOctave6,Dist6]=Paired_pruning_DAFS_DAFS_DV_mex(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
+[remainQOctave7,Dist7]=Unpaired_pruning_DAFS_DAFS_DV_mex(feature1,depdScale1,matches,combineScore,feature2,depdScale2,doctave,toctave );%3
+
 remainQOctave=remainQOctave2';
 remainQOctave=remainQOctave(:)';
 
