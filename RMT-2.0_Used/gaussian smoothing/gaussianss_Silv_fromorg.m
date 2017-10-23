@@ -86,9 +86,9 @@ IDMall{odcur} = IDM;
 
 DistM = computeDist(LocM, IDM, odcur);         %DistM: distance matrixLocM;%
 %% Silv Normalization
-%     maxim = max(DistM(:));
-%     minim = min(DistM(:));
-%     DistM= (DistM - minim) /abs(maxim-minim);
+    maxim = max(DistM(:));
+    minim = min(DistM(:));
+    DistM= (DistM - minim) /abs(maxim-minim);
     
 H = dependencyALL(DistM , DepThreshold, IDM, odcur);
 depd{odcur} = H;
@@ -123,9 +123,9 @@ for otact=1: Ot
                 %distance matrix
                 DistM = computeDist(LocMTemp, IDM, odcur);
                 %% Silv Normalization of distance matrix
-%                     maxim = max(DistM(:));
-%                     minim = min(DistM(:));
-%                     DistM= (DistM - minim) /abs(maxim-minim);
+                    maxim = max(DistM(:));
+                    minim = min(DistM(:));
+                    DistM= (DistM - minim) /abs(maxim-minim);
                 %% Silv Normalization
                 DepThreshold = DepThreshold*1.1;
                 H = dependencyALL(DistM , DepThreshold, IDM, odcur);
@@ -161,9 +161,9 @@ for otact=1: Ot
                 [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(TMP));
                 DistM = computeDist(LocMTemp, IDM, odcur);
                 %% Silv Normalization
-%                     maxim = max(DistM(:));
-%                     minim = min(DistM(:));
-%                     DistM= (DistM - minim) /abs(maxim-minim);
+                    maxim = max(DistM(:));
+                    minim = min(DistM(:));
+                    DistM= (DistM - minim) /abs(maxim-minim);
                 %% Silv Normalization
                 DepThreshold = DepThreshold*1.1;
                 H = dependencyALL(DistM , DepThreshold, IDM, odcur);

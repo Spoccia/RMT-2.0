@@ -201,7 +201,7 @@ for otime = 1: size(gss.octave,1)
                         NBP_Depd, ...
                         NBO) ;
                 descriptors = [descriptors, sh_silv] ;
-%                 descriptor_silv=[descriptor_silv,sh_silv];
+%               descriptor_silv=[descriptor_silv,sh_silv];
             end
         end
         clear fOframes bOframes fgss

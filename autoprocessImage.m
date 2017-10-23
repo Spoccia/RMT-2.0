@@ -28,7 +28,7 @@ PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
 % Path Parameters
-TEST ='7';%
+TEST ='5';%
 
 % Global Variables
 SizeFeaturesforImages = [];
@@ -185,7 +185,7 @@ for TSnumber = 1: 1
         end
         frame1 = [frames1;descr1];
         % Silv offset features
-        frame1 = shiftFeatures(frame1,1);
+% %         frame1 = shiftFeatures(frame1,1);
         % end
         % remove descriptors near 0
         %             Parse= sum((frame1(11:138,:)~=0))<64;
