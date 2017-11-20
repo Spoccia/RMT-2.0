@@ -22,8 +22,8 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
     savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
     savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];   
-    ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\afterPruning\ClusterMatlab\',prunewith,'\imageMotifs\'];
-    PrunedClusterPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\afterPruning\',typeofCluster];
+    ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\AP_Kmeans\'];%,prunewith,'\imageMotifs\'];
+    PrunedClusterPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\AP_Kmeans\',typeofCluster];
     ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
     load(savepath1);
     load(savepath2);
@@ -157,8 +157,8 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
                         Ending(max(B1((B1(:,iii)>0),iii)),(Xs):(Xe)) = Ending(max(B1((B1(:,iii)>0),iii)),(Xs):(Xe))+1;
                     end
                     if(size(A1,2)>1)
-                        if(exist([ImageSavingPath,imagename,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
-                            mkdir([ImageSavingPath,imagename,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                        if(exist([ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
+                            mkdir([ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
                         end
                         Starting= Starting*255;
                         Ending= Ending*255;
@@ -166,9 +166,9 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
                         Combined(:,:,2)= uint8(Starting);%green
                         Combined(:,:,3)= uint8(histdataid(:,:,i));%blue
                         
-                        imwrite(uint8(dataid(:,:,i)),[ImageSavingPath,imagename,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\Im_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(i),'.jpg'])
-                        imwrite(uint8(histdataid(:,:,i)),[ImageSavingPath,imagename,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(i),'.jpg'])
-                        imwrite(Combined,[ImageSavingPath,imagename,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\CHistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(i),'.jpg'])
+                        imwrite(uint8(dataid(:,:,i)),[ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\Im_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(i),'.jpg'])
+                        imwrite(uint8(histdataid(:,:,i)),[ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(i),'.jpg'])
+                        imwrite(Combined,[ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\CHistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(i),'.jpg'])
                     end
                     
                 end

@@ -13,8 +13,8 @@ savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];
 
 ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
-ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor'];%\imageMotifs\',imagename];
-RebSeriesPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor\rebClusters\'];
+ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_Fixed\Descriptor\BPKmeans_CosineDescriptor\imageMotifs\',imagename];
+RebSeriesPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BeforePruningMatlabKmeans_CosineDescriptor\rebClusters\'];
 
 load(savepath1);
 load(savepath2);
