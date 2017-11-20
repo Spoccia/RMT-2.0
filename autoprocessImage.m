@@ -5,7 +5,7 @@ clear;
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\Image\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RMT';%'
+FeaturesRM ='RME';%'RMT';%
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;

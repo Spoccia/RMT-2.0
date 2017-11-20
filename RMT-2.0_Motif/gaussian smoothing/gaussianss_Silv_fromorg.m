@@ -185,7 +185,6 @@ end
 
 function [SS] = Smooth_Asyn(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)
 for sd=sdmin:sdmax
-    
     if sd==(sdmin)
         for st=stmin+1:stmax
             dsigmaT =  ktime^(st) * sigmaTscaleStep ;%ktime^(st+1) * sigmaTscaleStep ;
