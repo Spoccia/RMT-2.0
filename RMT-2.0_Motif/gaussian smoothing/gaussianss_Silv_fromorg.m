@@ -98,7 +98,7 @@ SS.octave{otcur, odcur} = zeros(M, N,smaxD,smaxT) ;
 SS.smoothmatrix{otcur, odcur} = zeros(N, N, smaxD);
 
 % From first octave
-SDepdsigmafor_OT1_OD1 =sigmaD0; %sqrt((sigmaD0*kdepd^sminD)^2  - (sigmaND/2^ominD)^2);
+SDepdsigmafor_OT1_OD1 =sqrt((sigmaD0*kdepd^sminD)^2  - (sigmaND/2^ominD)^2);%sigmaD0; %
 Smatrix = ComputeDependencyScale(depd{odcur}, SDepdsigmafor_OT1_OD1); %% can be chaged to
 %supposing that the  data are presmoothed with a sigmaNT over time we can
 %do a smoothing as:

@@ -5,7 +5,7 @@ clear;
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\Image\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RME';%'RMT';%
+FeaturesRM ='RMT';%'RME';%
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
@@ -34,9 +34,9 @@ TEST ='5';%
 SizeFeaturesforImages = [];
 
 % FixCluster Experiment
-FT1=[30,30,30,15];%10];%[5,5,5,5];%[3,3,3,3];%
+FT1=[30,30,30,20];%10];%[5,5,5,5];%[3,3,3,3];%
 ThresholdCluster =[0.05,0.05,0.05,0.05];%[0.1,0.2,0.1,0.2];
-KmeansDescmetric='cosine';%'euclidean';%'cityblock';%
+KmeansDescmetric='euclidean';%'cosine';%'cityblock';%
 KmedoidsCoefTerm =0.005;% 0.5;
 
 % kind of distance
@@ -61,9 +61,9 @@ for TSnumber = 1: 1
     % pricur - principle curvature
     DeOctTime = 2;
     DeOctDepd = 2;
-    DeLevelTime = 6;%3;%
-    DeLevelDepd = 6;%3;%
-    DeSigmaDepd = 0.3;%0.4;%0.6;%0.5;%0.4;%
+    DeLevelTime = 4;%6;%3;%
+    DeLevelDepd = 4;%6;%3;%
+    DeSigmaDepd = 1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
     DeSigmaTime = 1.6*2^(1/(DeLevelTime));%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%
     %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
@@ -201,9 +201,9 @@ for TSnumber = 1: 1
         %             frame1 =X1;
         %
         feature = frame1;
-        Num(str2num(TS_name),1) = size(find(feature(4,:)==1),2);
-        Num(str2num(TS_name),2) = size(find(feature(4,:)==2),2);
-        Num(str2num(TS_name),3) = size(find(feature(4,:)==3),2);
+%         Num(str2num(TS_name),1) = size(find(feature(4,:)==1),2);
+%         Num(str2num(TS_name),2) = size(find(feature(4,:)==2),2);
+%         Num(str2num(TS_name),3) = size(find(feature(4,:)==3),2);
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
@@ -353,7 +353,7 @@ for TSnumber = 1: 1
                         if(strcmp(typeofCluster,'ClusterMatlab')~=1)
                             [C,mu] = cvKmeans (X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC',false,data,gss1,idm1,KmeansDescmetric);
                         else
-                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','cosine');%);%
+                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%'cosine');%);%
                         end
                     elseif(strcmp(distanceUsed,'Amplitude_Descriptor')==1)
                         'Cluster on composed distance Descriptors + Amplitude'
