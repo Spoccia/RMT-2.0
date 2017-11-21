@@ -1,4 +1,4 @@
-function [tempFrames,descriptor_silv,gss,dogss,depd,idm, time, timee, timeDescr, featureTimeScale, featureDepdScale]=sift_gaussianSmooth_Silv(I, LocM, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
+function [tempFrames,descriptor_silv,gss,dogss,depd,idm, time, timee, timeDescr]=sift_gaussianSmooth_Silv(I, LocM, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
 % [M,N,C] = size(I) ;
 % O = floor(log2(min(M,N)))-2 ; % up to 8x8 images
 % time  = zeros(1, Ot*Od);
@@ -6,8 +6,6 @@ time = zeros(Ot, Od);
 timeDescr = zeros(Ot, Od);
 timee = zeros(1,2);
 
-featureTimeScale = [];
-featureDepdScale = [];
 % thresh = 0.04 / St / 2 ;
 thresh = 0.04 / 3 / 2 ; %value picked from the vivaldi code
 NBO    = 8;
@@ -123,9 +121,6 @@ for otime = 1: size(gss.octave,1)
             %dependencyScale = oframes(3,:)+1; %SICONG
             % timeScale = oframes(4,:)+1;
             timeScale = oframes(3,:);% SICONG
-            featureDepdScale = [featureDepdScale dependencyScale];
-            featureTimeScale = [featureTimeScale timeScale];
-            
             %timeScale = oframes(3,:)+1; % Silv SAY: ASK Sicong why this line of code is like this... It seems correct this are not the octave
             % sigma = 2^(o-1+gss.omin) * gss.sigma0 * 2.^(oframes(3,:)/gss.S) ;
             sigmad =  2^(odepd-1+gss.odmin) * gss.sigmad * 2.^(oframes(3,:)/gss.Sd);

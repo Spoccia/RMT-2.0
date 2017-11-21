@@ -1,4 +1,4 @@
-function [tempFrames,descriptor_silv,gss,dogss,depd,idm, time, timee, timeDescr]=sift_gaussianSmooth_entropy(I, LocM, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
+function [tempFrames,descriptor_silv,gss,dogss,depd,idm, time, timee, timeDescr, featureTimeScale, featureDepdScale]=sift_gaussianSmooth_entropy(I, LocM, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
 % [M,N,C] = size(I) ;
 % O = floor(log2(min(M,N)))-2 ; % up to 8x8 images
 % time  = zeros(1, Ot*Od);
@@ -6,6 +6,8 @@ time = zeros(Ot, Od);
 timeDescr = zeros(Ot, Od);
 timee = zeros(1,2);
 
+featureTimeScale = [];
+featureDepdScale = [];
 % thresh = 0.04 / St / 2 ;
 thresh = 0.04 / 3 / 2 ; % why???
 NBO    = 8;
@@ -24,16 +26,16 @@ odmin=0;
 p = tic;
 % Compute scale spaces
 % [gss, depd, idm] = gaussianss_asynchronousMote(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
-%% work original Sicong with  graph normalized 
+% work original Sicong with  graph normalized 
 %[gss, depd, idm] = gaussianss_asynchronousMote_Silv_1(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
-%% work scale created just with entropy function on the original image
+% work scale created just with entropy function on the original image
 % [gss, depd, idm] = gaussianss_asynchronousMote_Silv_Entropy(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
 %[gss, depd, idm] = gaussianss_asynchronousMote_Silv_Entropy_smooth(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
 [gss, depd, idm] = EntropyScale_Silv_fromorg(I, LocM, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
 timee(1) = timee(1)+ toc(p);
 
 p = tic;
-dogss = diffss_asynchronous(gss); %% difference of gaussians
+dogss = diffss_asynchronous(gss); % difference of gaussians
 doess = diffss_asynchronous_Entropy(gss);
 % dogss = diffss_asynchronousTest(gss);
 timee(2) = timee(2)+ toc(p);
@@ -53,12 +55,12 @@ for otime = 1: size(gss.octave,1)
                                           doess.Entropyoctave{otime, odepd}{2},...
                                           doess.Entropyoctave{otime, odepd}{1},...
                                           0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
- %%      forwardIdx =siftlocalmax_directed_Debug(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
- %% Entropy on the Dog
+ %      forwardIdx =siftlocalmax_directed_Debug(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
+ % Entropy on the Dog
 % % %           THR_Neighboors=0.8*thresh;
 % % %         [forwardIdx1, forwardIdx_Entropy] =...
-% % %                                              siftlocalmaxEntropy_Sil_EntropyAverage(doess.Entropyoctave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%%Works
-%                                              %siftlocalmax_directed_MAT_Sil_EntropyAverage(doess.Entropyoctave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%%Works
+% % %                                              siftlocalmaxEntropy_Sil_EntropyAverage(doess.Entropyoctave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works
+%                                              %siftlocalmax_directed_MAT_Sil_EntropyAverage(doess.Entropyoctave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works
                                              % siftlocalmax_directed_MAT_Sil_EntropyConvolutionSAMESIZE(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works
                                              % siftlocalmax_directed_MAT_Sil_EntropyConvolution(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works
                                              % siftlocalmax_directed_MAT_Sil_EntropyConvolutionToPrune(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);
@@ -116,14 +118,14 @@ for otime = 1: size(gss.octave,1)
                                                         doess.Entropyoctave{otime, odepd}{2},...
                                                         doess.Entropyoctave{otime, odepd}{1},...
                                                         0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);% Entropy scale 
-%% Silv Entropy on the  DogScale
+% Silv Entropy on the  DogScale
 % %          [backwardIdx1,backwardIdx_Entropy] = ...
-% %                                                siftlocalmaxEntropy_Sil_EntropyAverage(doess.Entropyoctave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%%Works 
-%                                                 % siftlocalmax_directed_MAT_Sil_EntropyConvolutionSAMESIZE(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime); %%Works
-                                                %siftlocalmax_directed_MAT_Sil_EntropyConvolution(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%%Works
+% %                                                siftlocalmaxEntropy_Sil_EntropyAverage(doess.Entropyoctave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works 
+%                                                 % siftlocalmax_directed_MAT_Sil_EntropyConvolutionSAMESIZE(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime); %Works
+                                                %siftlocalmax_directed_MAT_Sil_EntropyConvolution(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works
                                                 %siftlocalmax_directed_MAT_Sil_EntropyConvolutionToPrune(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);
                                                 % siftlocalmax_directed_MAT_Sil_EntropyAverageToPrune(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);
-                                                %siftlocalmax_directed_MAT_Sil_EntropyAverage(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%%Works
+                                                %siftlocalmax_directed_MAT_Sil_EntropyAverage(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%Works
 %                                                 %  siftlocalmax_directed_MAT_Sil_EntropyConvolution_Pre_Post(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);...%
 %                                                 %  siftlocalmax_directed_MAT_Sil_EntropyConvolution(dogss.octave{otime, odepd},THR_Neighboors, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'),St,Sd,sigmaTime,otime);%0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
 %         if(size(backwardIdx1,2)~=0)
@@ -152,7 +154,7 @@ for otime = 1: size(gss.octave,1)
 %         s1=s1-1-1;
 %         s2 = s1;
 %         backwardIdx = [x(:)';y(:)';s1(:)'] ;
-%% Silv Entropy Sclale detected features
+% Silv Entropy Sclale detected features
         time(otime, odepd) =  time(otime, odepd) + toc(p);
         [i,j, s1] = ind2sub( size( gss.octave{otime, odepd} ), backwardIdx_Entropy ) ;
         y=i-1;
@@ -188,11 +190,11 @@ for otime = 1: size(gss.octave,1)
                 oframes(2,:)-rad >= 1  & ...
                 oframes(2,:)+rad <= size(gss.octave{otime, odepd},1)      ;
             oframes=oframes(:,sel) ;
-            %% Silv concern: If wedo not do this we should use 0 curvature (I do not rememebr )
+            % Silv concern: If wedo not do this we should use 0 curvature (I do not rememebr )
             % adding a 0 vector to the oframes.
             %pricurRatio = zeros(1,size(oframes,2));  % Silv setted the pricur ratio = 0 ;
 
-            %% pruning Features Extrcted on the base of curvature
+            % pruning Features Extrcted on the base of curvature
             % Silv commented the pruning step here
               oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%
 %              oframes = siftrefinemx_directed(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%
@@ -218,21 +220,24 @@ for otime = 1: size(gss.octave,1)
             tempDepd = oframes(1,:) ;
             tempTime = oframes(2,:) ;
             dependencyScale = oframes(3,:);
-            %%dependencyScale = oframes(3,:)+1; %%SICONG
+            %dependencyScale = oframes(3,:)+1; %SICONG
             % timeScale = oframes(4,:)+1;
-            timeScale = oframes(3,:);%% SICONG
-            %timeScale = oframes(3,:)+1; %% Silv SAY: ASK Sicong why this line of code is like this... It seems correct this are not the octave
+            timeScale = oframes(3,:);% SICONG
+            featureDepdScale = [featureDepdScale dependencyScale];
+            featureTimeScale = [featureTimeScale timeScale];
+            
+            %timeScale = oframes(3,:)+1; % Silv SAY: ASK Sicong why this line of code is like this... It seems correct this are not the octave
            % sigma = 2^(o-1+gss.omin) * gss.sigma0 * 2.^(oframes(3,:)/gss.S) ;
             sigmad =  2^(odepd-1+gss.odmin) * gss.sigmad * 2.^(oframes(3,:)/gss.Sd);
-            %%sigmad =  sigmaDepd*2^(odepd-1)*kdepd.^(dependencyScale-1) ;%gss.sigmat = sigmatimezero  SICONG
+            %sigmad =  sigmaDepd*2^(odepd-1)*kdepd.^(dependencyScale-1) ;%gss.sigmat = sigmatimezero  SICONG
             sigmat =  2^(otime-1+gss.odmin) * gss.sigmat * 2.^(oframes(3,:)/gss.Sd);
-            %sigmat =  (sigmaTime*2^(otime-1))*ktime.^(timeScale-1);%%gss.sigmat = sigmatimezero SICONG
+            %sigmat =  (sigmaTime*2^(otime-1))*ktime.^(timeScale-1);%gss.sigmat = sigmatimezero SICONG
             
             
             % append difference-of-Gausssian values to output
             TimescaleSicongNormalized = timeScale+1;
             [timeDoGs, depdDoGs, bothDoGs] = appendDogs(dogss.octave{otime, odepd}, tempDepd, tempTime, dependencyScale, TimescaleSicongNormalized);
-            %% unique goes here
+            % unique goes here
             tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
         end
         
@@ -241,7 +246,7 @@ for otime = 1: size(gss.octave,1)
         dogss.octave{otime, odepd}{3} = -dogss.octave{otime, odepd}{3};
         % 1 means directed graph
         [fgss_silv,Pseudo_centerVaraite]= computeFeatureMatrix_Silv(gss.octave{otime, odepd},gss.sminT,gss.sminD,gss.sigmad,gss.St,gss.Sd,NormalizeByRow(depd{odepd}),NormalizeByRow(depd{odepd}'),1);
-        %% Descriptors
+        % Descriptors
         if(size(oframes, 2) > 0)
             p = tic;
             % for f=1:size(oframes,2)
@@ -300,9 +305,9 @@ for otime = 1: size(gss.octave,1)
 %             
 %             % append difference-of-Gausssian values to output
 %             [timeDoGs, depdDoGs, bothDoGs] = appendDogs(dogss.octave{otime, odepd}, tempDepd, tempTime, dependencyScale, timeScale);
-%             %% unique goes here
+%             % unique goes here
 %             tempFrames = [tempFrames, [x(:)' ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];
-%             %% add the pruning on entropy here
+%             % add the pruning on entropy here
 %             %            computeFeatureEntropy(tempFrames,I,gss,idm);
 %             
 %         end
@@ -310,7 +315,7 @@ for otime = 1: size(gss.octave,1)
 %         dogss.octave{otime, odepd}{1} = -dogss.octave{otime, odepd}{1};
 %         dogss.octave{otime, odepd}{2} = -dogss.octave{otime, odepd}{2};
 %         dogss.octave{otime, odepd}{3} = -dogss.octave{otime, odepd}{3};
-%         %% Descriptors
+%         % Descriptors
 %         if(size(oframes, 2) > 0)
 %             fgss = computeFeatureMatrix_directed_bak12112015(gss.octave{otime, odepd}, oframes, NormalizeByRow(depd{odepd}));
 %             oframes(4,:) = [];
