@@ -1,4 +1,4 @@
-function [tempFrames,descriptor_silv,gss,dogss,depd,idm, time, timee, timeDescr, featureTimeScale, featureDepdScale]=sift_gaussianSmooth_Silv(I, LocM, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
+function [tempFrames,descriptor_silv,gss,dogss,depd,idm, time, timee, timeDescr, featureDepdScale, featureTimeScale]=sift_gaussianSmooth_Silv(I, LocM, Ot, Od, St, Sd, sigmaTime ,sigmaDepd, NBP, gthresh, r,sBoundary, eBoundary)
 % [M,N,C] = size(I) ;
 % O = floor(log2(min(M,N)))-2 ; % up to 8x8 images
 % time  = zeros(1, Ot*Od);

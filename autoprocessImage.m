@@ -165,11 +165,11 @@ for TSnumber = 1: 1
             %             [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth(data',RELATION, DeOctTime, DeOctDepd,...
             %                                                                                    DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
             %                                                                                    DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
-            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr, featureTimeScale, featureDepdScale] = sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
+            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr, featureDepdScale, featureTimeScale] = sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
         elseif(strcmp(FeaturesRM,'RME'))
-            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr, featureTimeScale, featureDepdScale] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
+            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr, featureDepdScale, featureTimeScale] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);%
         end
@@ -247,10 +247,12 @@ for TSnumber = 1: 1
         for k=1:DeOctTime
             for j=1:DeOctDepd
                 indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
+                curFeatureDepdScale = featureDepdScale(indexfeatureGroup);
+                curFeatureTimeScale = featureTimeScale(indexfeatureGroup);
                 X=frame1(:,indexfeatureGroup);
                 % save dependency of each feature
                 % [depdScale1] = computeDepdScale(X, gss1, idm1);
-                [depdScale1] = computeDepdScaleWithScaleInfo(X, gss1, idm1, featureTimeScale, featureDepdScale);
+                [depdScale1] = computeDepdScaleWithScaleInfo(X, gss1, idm1, curFeatureDepdScale, curFeatureTimeScale);
                 if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\'),'dir')==0)
                     mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\'));
                 end

@@ -1,4 +1,4 @@
-function [depdScale1] = computeDepdScaleWithScaleInfo(feature1, gss1, idm1, featureTimeScale, featureDepdScale)
+function [depdScale1] = computeDepdScaleWithScaleInfo(feature1, gss1, idm1, featureDepdScale, featureTimeScale)
 % compute match score using matlab
 % feature1, feature2, descr1, descr2 -- same size for column
 depdSize = size(idm1{1}, 1);
@@ -8,18 +8,19 @@ depdScale1 = zeros(depdSize, featureSize);
 for i = 1 : size(feature1, 2)
     frame1 = feature1(1:7, i);
     depdin1 = depdscale(gss1, frame1(:,1), idm1, featureDepdScale(i), featureTimeScale(i));
-    depdScale1(1:size(depdin1,2), i) =depdin1(1,:)';
+    depdScale1(1:size(depdin1,2), i) = depdin1(1,:)';
 end
 
-function depdin = depdscale(gss1, frame, idm1, DepdScale, timeScale)
+function depdin = depdscale(gss1, frame, idm1, DepdScale, TimeScale)
 % [x(:)' ; y(:)' ; sigmad(:)' ;sigmat(:)' ; octave_Depd--oframes(4,:); octave_Time--oframes(5,:); pricurRatio
 % gss.ds{toctave, doctave}
 % gss.octave{toctave, doctave}
 DOctave = frame(5, 1);
+TOctave = frame(6, 1);
 % TOctave = frame(3, 1);
 OriginalIDM = idm1{1,1};
 ActIDM =idm1{1,DOctave};
-S1 = gss1.smoothmatrix{DOctave}(:,:, DepdScale, timeScale);
+S1 = gss1.smoothmatrix{DOctave, TOctave}(:,:, DepdScale);
 % ignore small number
 tempDepdIndex = frame(1, 1);%+1;% Silv Change +1
 
