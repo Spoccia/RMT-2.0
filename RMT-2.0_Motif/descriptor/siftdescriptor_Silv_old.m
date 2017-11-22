@@ -4,7 +4,8 @@ function sd = siftdescriptor_Silv(smoothedScale,frame,sigmaT0,sigmaD0,St,Sd,minS
 %         Frame(2,1)= Time index of the feature in the octave representation
 %         Frame(3,1)= Scale Dependency of the feature
 %         Frame(4,1)= Scale Time of the feature
-%         Frame(5,1)= eventual orientation otherwise 0
+%         Frame(5,1)= eventual orientation otherwise 0 with 0 the rotation
+%                     should be disabled.
 % sigmaT0: the original sigma used to smooth over Time
 % sigmaD0: the original sigma used to smooth over Dependency
 % St: maximum scale over Time
@@ -134,10 +135,9 @@ dpt = 1+ (NBP_Time/2) * binyo + (NBP_Depd/2) * binxo ;
 %        */
 
 % 2 is because  in matlab westart from 1
-% Parametercheck=[];
 for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincrement we can start  with a +1
     for dyi = max(-W_Time,1-yi): min(+W_Time, M-2-yi) %TIME
-        modul = Gradient_Scale(yi+dyi+1,xi+dxi+1);
+        mod = Gradient_Scale(yi+dyi+1,xi+dxi+1);
         angle=Angles(yi+dyi+1,xi+dxi+1);
         
         theta = normalizeTheta(angle - theta0);
@@ -149,7 +149,7 @@ for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincreme
         dx= xi+dxi - x;
         dy= yi+dyi - y;
         %           /* Get the displacement normalized w.r.t. the keypoint orientation  and extension. */
-        
+        %% This is the rotation
         nx = ( ct0 * dx + st0 * dy) / SBP_Depd; % modul against dependency
         ny = (-st0 * dx + ct0 * dy) / SBP_Time ; %modul against  time
         nt = NBO * theta / (2*pi) ; % angle in radiant
@@ -176,7 +176,7 @@ for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincreme
         rbinx = nx - (binx+0.5) ;
         rbiny = ny - (biny+0.5) ;
         rbint = nt - bint ;
-%         Parametercheck = [Parametercheck;[dx,dy,win,theta,theta0,binx,biny,bint,rbinx,rbiny,rbint,nx,ny,nt,modul,angle,binxo,binyo,binto,bino ]];
+        
         %%               /* Distribute the current sample into the 8 adijacient bins. */
         for dbinx =0:1
             for dbiny =0:1
@@ -187,20 +187,17 @@ for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincreme
                             biny+dbiny  <   (NBP_Time/2) )
                         
                         weight = win...
-                            * modul...
+                            * mod...
                             * abs(1 - dbinx - rbinx)...
                             * abs(1 - dbiny - rbiny)...
                             * abs(1 - dbint - rbint) ;
                         
                         off_dbinX = binx+dbinx;
                         off_dbinY = biny+dbiny;
-                        
-                        off_dbinT = mod((bint+dbint),NBO);%ceil((bint+dbint) / NBO);
+                        off_dbinT = ceil((bint+dbint) / NBO);
                         offsetDescriptor =  off_dbinT * binto + off_dbinY*binyo + off_dbinX * binxo;
                         idx_inDescriptor = dpt+offsetDescriptor;
                         descr(idx_inDescriptor,1) =descr(idx_inDescriptor,1) + weight;
-%                         Parametercheck = [Parametercheck;...
-%                             [dx,dy,weight,dbinx,dbiny,dbint,dpt,off_dbinX,off_dbinY,off_dbinT,offsetDescriptor,idx_inDescriptor]];
                     end
                 end
             end
