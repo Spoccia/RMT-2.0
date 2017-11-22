@@ -37,7 +37,9 @@ DOctave = frame(5, 1);
 % TOctave = frame(3, 1);
 OriginalIDM = idm1{1,1};
 ActIDM =idm1{1,DOctave};
-S1 = gss1.smoothmatrix{DOctave}(:,:, end, end);
+scale =frame(7,1);
+% S1 = gss1.smoothmatrix{DOctave}(:,:, end, end);
+S1 = gss1.smoothmatrix{DOctave}(:,:, scale, scale);
 % ignore small number
 tempDepdIndex = frame(1, 1);%+1;%% Silv Change +1
 

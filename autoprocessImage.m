@@ -353,7 +353,7 @@ for TSnumber = 1: 1
                         if(strcmp(typeofCluster,'ClusterMatlab')~=1)
                             [C,mu] = cvKmeans (X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC',false,data,gss1,idm1,KmeansDescmetric);
                         else
-                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%'cosine');%);%
+                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','cosine');%'sqeuclidean');%);%
                         end
                     elseif(strcmp(distanceUsed,'Amplitude_Descriptor')==1)
                         'Cluster on composed distance Descriptors + Amplitude'
