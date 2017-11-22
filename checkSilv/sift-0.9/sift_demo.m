@@ -44,7 +44,7 @@
 % BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE
 % MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-I1= imreadbw('D:\Motif_Results\Datasets\Image\data\5.jpg')
+ I1= imreadbw('D:\Motif_Results\Datasets\Image\data\5.jpg')
 % I1=imreadbw('data/img3.jpg') ; 
 % I2=imreadbw('data/img5.jpg') ;
 % I3 = imreadbw('data/5.jpg') ;
@@ -57,10 +57,10 @@ I1=I1/max(I1(:)) ;
 
 fprintf('Computing frames and descriptors.\n') ;
 % 
-% [frames2,descr2,gss2,dogss2] = sift( I7, 'Verbosity', 1 ) ;
+%  [frames2,descr2,gss2,dogss2] = sift( I7, 'Verbosity', 1 ) ;
 %[frames2,descr2,gss2,dogss2] = sift( I3, 'Verbosity', 1 ) ;
 
-[frames1,descr1,gss1,dogss1] = sift( I1, 'Verbosity', 1 ) ;
+ [frames1,descr1,gss1,dogss1] = sift( I1, 'Verbosity', 1 ) ;
 % [frames2,descr2,gss2,dogss2] = sift( I2, 'Verbosity', 1 ) ;
 
 figure(11) ; clf ; plotss(dogss1) ; colormap gray ;
