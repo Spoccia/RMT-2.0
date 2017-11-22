@@ -424,7 +424,7 @@ mexPrintf("\n SMIN: %d.  max scale %d. Sigma0 %f.  \n ", smin,S,sigma0);
      // mexPrintf("\n xi: %d.  xo %d. yi %d. yo %d. si %d. so %d. \n ", xi,xo,yi,yo,si,so);
       pt  = buffer_pt + xi*xo + yi*yo + si*so ;
       dpt = descr_pt + (NBP/2) * binyo + (NBP/2) * binxo ;
-      mexPrintf("\n offset pt: %d.  dpt offset %d. \n ",  (xi*xo + yi*yo + si*so),(NBP/2) * binyo + (NBP/2) * binxo);
+      //mexPrintf("\n offset pt: %d.  dpt offset %d. \n ",  (xi*xo + yi*yo + si*so),(NBP/2) * binyo + (NBP/2) * binxo);
      
 #define atd(dbinx,dbiny,dbint) (*(dpt + (dbint)*binto + (dbiny)*binyo + (dbinx)*binxo))
       
@@ -432,8 +432,8 @@ mexPrintf("\n SMIN: %d.  max scale %d. Sigma0 %f.  \n ", smin,S,sigma0);
        * Process each pixel in the window and in the (1,1)-(M-1,N-1)
        * rectangle.
        */
-       mexPrintf("\n dxi start: %d.  dxi end %d. \n ", max(-W, 1-xi), min(+W, N-2-xi));
-       mexPrintf("\n dyi start: %d.  dyi end %d. \n ", max(-W, 1-yi), min(+W, M-2-yi));
+//       mexPrintf("\n dxi start: %d.  dxi end %d. \n ", max(-W, 1-xi), min(+W, N-2-xi));
+//       mexPrintf("\n dyi start: %d.  dyi end %d. \n ", max(-W, 1-yi), min(+W, M-2-yi));
       for(dxi = max(-W, 1-xi) ; dxi <= min(+W, N-2-xi) ; ++dxi) {
         for(dyi = max(-W, 1-yi) ; dyi <= min(+W, M-2-yi) ; ++dyi) {
 
@@ -473,7 +473,9 @@ mexPrintf("\n SMIN: %d.  max scale %d. Sigma0 %f.  \n ", smin,S,sigma0);
           int dbinx ;
           int dbiny ;
           int dbint ;
- //mexPrintf("\n dx %f. dy %f. binx: %d biny: %d bint: %d rbinx: %f.  rbiny  %f. rbint %f nt %f  theta %f theta0 %f angle %f mod %f\n", dx,dy,binx,biny,bint,rbinx, rbiny,rbint,nt,theta,theta0,angle,mod);
+          
+ //mexPrintf("\n dx: %f. dy: %f. win: %f. theta: %f. theta0: %f. binx: %d. biny: %d. bint: %d. rbinx: %f.  rbiny:  %f. rbint: %f. nx: %f. ny: %f. nt: %f. mod: %f. angle: %f. \n", dx,dy,win,theta,theta0,binx,biny,bint,rbinx,rbiny,rbint,nx,ny,nt,mod,angle);
+  // mexPrintf("\n dx: %f. dy: %f. binxo: %d. binyo: %d. binto: %d. bino: %d. ", dx,dy,binxo,binyo,binto,bino);       
           /* Distribute the current sample into the 8 adijacient bins. */
           for(dbinx = 0 ; dbinx < 2 ; ++dbinx) {
             for(dbiny = 0 ; dbiny < 2 ; ++dbiny) {
@@ -488,8 +490,10 @@ mexPrintf("\n SMIN: %d.  max scale %d. Sigma0 %f.  \n ", smin,S,sigma0);
                     * fabsf(1 - dbinx - rbinx)
                     * fabsf(1 - dbiny - rbiny)
                     * fabsf(1 - dbint - rbint) ;
-mexPrintf("\n dx %f. dy %f. win %f theta %f weight %f angle %f mod %f offsetPosition %d dbint %d OFFSETdbINT %d \n", 
-        dx,dy,win,theta,weight,angle,mod,(((bint+dbint) % NBO)*binto + (biny+dbiny)*binyo + (binx+dbinx)*binxo),dbint,((bint+dbint) % NBO));
+//mexPrintf("\n dx %f. dy %f. win %f theta %f weight %f angle %f mod %d dpt %d bint %d dbint %d binto %d biny %d dbiny %d binyo %d binx %d dbinx %d binxo  \n", 
+//        dx,dy,win,theta,weight,angle,mod, dpt,bint,dbint,binto,biny,dbiny,binyo,binx,dbinx,binxo);// (((bint+dbint) % NBO)*binto + (biny+dbiny)*binyo + (binx+dbinx)*binxo),dbint,((bint+dbint) % NBO));
+mexPrintf("\n dx: %f. dy: %f. weight: %f. dbinx: %d. dbiny: %d. dbint: %d. p1: %d. p2: %d. p3: %d. 1diff %f ",
+              dx,     dy,     weight,     dbinx    ,  dbiny   ,   dbint , binx+dbinx  , biny+dbiny ,(bint+dbint) % NBO ,fabsf(1 - dbint - rbint));
                   atd(binx+dbinx, biny+dbiny, (bint+dbint) % NBO) += weight ;
                 }
               }            
