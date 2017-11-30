@@ -34,12 +34,12 @@ function depdin = depdscale(gss1, frame, idm1)
 % gss.ds{toctave, doctave}
 % gss.octave{toctave, doctave}
 DOctave = frame(5, 1);
-% TOctave = frame(3, 1);
+TOctave = frame(6, 1);
 OriginalIDM = idm1{1,1};
 ActIDM =idm1{1,DOctave};
 scale =frame(7,1);
-% S1 = gss1.smoothmatrix{DOctave}(:,:, end, end);
-S1 = gss1.smoothmatrix{DOctave}(:,:, scale, scale);
+S1 = gss1.smoothmatrix{TOctave,DOctave}(:,:, end);%, end);
+%S1 = gss1.smoothmatrix{TOctave,DOctave}(:,:, scale);%, scale);
 % ignore small number
 tempDepdIndex = frame(1, 1);%+1;%% Silv Change +1
 

@@ -137,10 +137,10 @@ for TSnumber = 1: 1
         % * test_Full.m - FULL Scale feature extraction and matching process
         % * test_Hyb.m - HYB Scale feature extraction and matching process
         % + After getting Diag and Full scale features, execute saveUnionFeatures.m to generate union features;
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TS_name,'\'];
-        if(exist([datasetPath,subfolderPath,'Features\',TS_name,'\'],'dir')==0)
-            mkdir([datasetPath,subfolderPath,'Features\',TS_name,'\']);
-            mkdir([datasetPath,subfolderPath,'Features\',TS_name,'\','GaussianSmoothing\']);
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+        if(exist([datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'],'dir')==0)
+            mkdir([datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\']);
+            mkdir([datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\','GaussianSmoothing\']);
         end
         %saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TEST,'\'];
         
@@ -221,7 +221,7 @@ for TSnumber = 1: 1
     end
     
     if(ShiftFeatures==1)
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TEST,'\'];
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
@@ -235,7 +235,7 @@ for TSnumber = 1: 1
     end
     
     if(createDependencyScale==1)
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TEST,'\'];
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
@@ -262,7 +262,7 @@ for TSnumber = 1: 1
     if (PruningEntropy==1)
         % execute K-means Cluster k = DictionarySize;
         % A Dictionary for each cluster
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TEST,'\'];
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
@@ -318,7 +318,7 @@ for TSnumber = 1: 1
     if (Cluster==1)
         % execute K-means Cluster k = DictionarySize;
         % A Dictionary for each cluster
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TS_name,'\'];
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
@@ -372,7 +372,7 @@ for TSnumber = 1: 1
     % threshould clustering
     if(Cluster==2)
         NumofCluster=10;
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TS_name,'\'];
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
         savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
@@ -420,32 +420,32 @@ for TSnumber = 1: 1
                 
             end
         end
-        ShowThresholdCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,'ClusterThrehold',histTSImage);
+        ShowThresholdCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,'ClusterThrehold',histTSImage,FeaturesRM);
     end
     
     % save images before pruning
     if(motifidentificationBP ==1)
-        ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage );
+        ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM );
     end
     if(motifidentificationBP_MatlabDescr ==1)
-        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage);
+        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
     end
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage);
+        KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     
     if(pruneClusterDescrMatlab==2)
-        KmeansPruning_overlappingcleaning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage);
+        KmeansPruning_overlappingcleaning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     
     if (pruneCluster==1)
-        KmedoidsPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage);
+        KmedoidsPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     
     if(savecaracteristics==1)
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features\',TS_name,'\'];
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
         savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];

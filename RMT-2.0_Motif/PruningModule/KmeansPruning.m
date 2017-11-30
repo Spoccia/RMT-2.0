@@ -1,4 +1,4 @@
-function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage )
+function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage,FeaturesRM )
 %KMEANSPRUNING Summary of this function goes here
 % imagepath=path of the original timeseries
 % specificimagepath= ppath to go inside  where the dataset is located
@@ -18,7 +18,7 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
         return;
     end
     Matlab=1;
-    saveFeaturesPath=[imagepath,specificimagepath,'Features\',TEST,'\'];
+    saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',TEST,'\'];
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
     savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
     savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];   

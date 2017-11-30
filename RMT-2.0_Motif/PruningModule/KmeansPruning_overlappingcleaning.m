@@ -1,4 +1,4 @@
-function [  ] = KmeansPruning_overlappingcleaning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage )
+function [  ] = KmeansPruning_overlappingcleaning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage,FeaturesRM )
 %KMEANSPRUNING Summary of this function goes here
 % imagepath=path of the original timeseries
 % specificimagepath= ppath to go inside  where the dataset is located
