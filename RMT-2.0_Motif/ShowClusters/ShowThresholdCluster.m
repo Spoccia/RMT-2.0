@@ -1,4 +1,4 @@
-function [ output_args ] = ShowThresholdCluster(TEST,imagepath,specificimagepath,imagename,K_valuesCalc,distanceUsed,typeofCluster,histdataimage )
+function [ output_args ] = ShowThresholdCluster(TEST,imagepath,specificimagepath,imagename,K_valuesCalc,distanceUsed,typeofCluster,histdataimage,FeaturesRM )
 %SHOWKMEANSCLUSTER Summary of this function goes here
 %   Detailed explanation goes here
 if (strcmp(typeofCluster,'ClusterMatlab')~=1& strcmp(typeofCluster,'ClusterThrehold')~=1)
@@ -7,7 +7,7 @@ if (strcmp(typeofCluster,'ClusterMatlab')~=1& strcmp(typeofCluster,'ClusterThreh
     pause;
     return;
 end
-saveFeaturesPath=[imagepath,specificimagepath,'Features\',TEST,'\'];
+saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',TEST,'\'];
 savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
 savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];

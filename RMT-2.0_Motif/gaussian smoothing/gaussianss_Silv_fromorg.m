@@ -85,10 +85,10 @@ IDM = (1:N)';
 IDMall{odcur} = IDM;
 
 DistM = computeDist(LocM, IDM, odcur);         %DistM: distance matrixLocM;%
-%% Silv Normalization
-maxim = max(DistM(:));
-minim = min(DistM(:));
-DistM= (DistM - minim) /abs(maxim-minim);
+% %% Silv Normalization
+% maxim = max(DistM(:));
+% minim = min(DistM(:));
+% DistM= (DistM - minim) /abs(maxim-minim);
 
 H = dependencyALL(DistM , DepThreshold, IDM, odcur);
 depd{odcur} = H;
@@ -98,7 +98,7 @@ SS.octave{otcur, odcur} = zeros(M, N,smaxD,smaxT) ;
 SS.smoothmatrix{otcur, odcur} = zeros(N, N, smaxD);
 
 % From first octave
-SDepdsigmafor_OT1_OD1 =sqrt((sigmaD0*kdepd^sminD)^2  - (sigmaND/2^ominD)^2);%sigmaD0; %
+SDepdsigmafor_OT1_OD1 =sigmaD0; %sqrt((sigmaD0*kdepd^sminD)^2  - (sigmaND/2^ominD)^2);%
 Smatrix = ComputeDependencyScale(depd{odcur}, SDepdsigmafor_OT1_OD1); %% can be chaged to
 %supposing that the  data are presmoothed with a sigmaNT over time we can
 %do a smoothing as:
@@ -124,11 +124,11 @@ for otact=1: Ot
                 [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(SS.octave{otact,odact-1}(:,:,sbest_Dep+soD,1)));
                 %distance matrix
                 DistM = computeDist(LocMTemp, IDM, odcur);
-                %% Silv Normalization of distance matrix
-                maxim = max(DistM(:));
-                minim = min(DistM(:));
-                DistM= (DistM - minim) /abs(maxim-minim);
-                %% Silv Normalization
+%                 %% Silv Normalization of distance matrix
+%                 maxim = max(DistM(:));
+%                 minim = min(DistM(:));
+%                 DistM= (DistM - minim) /abs(maxim-minim);
+%                 %% Silv Normalization
                 DepThreshold = DepThreshold*1.1;
                 H = dependencyALL(DistM , DepThreshold, IDM, odcur);
             elseif ((otact ~=1)&&(odact==1)) %octave with octave dependency 1
@@ -160,10 +160,10 @@ for otact=1: Ot
                 end
                 [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(TMP));
                 DistM = computeDist(LocMTemp, IDM, odcur);
-                %% Silv Normalization
-                maxim = max(DistM(:));
-                minim = min(DistM(:));
-                DistM= (DistM - minim) /abs(maxim-minim);
+%                 %% Silv Normalization
+%                 maxim = max(DistM(:));
+%                 minim = min(DistM(:));
+%                 DistM= (DistM - minim) /abs(maxim-minim);
                 %% Silv Normalization
                 DepThreshold = DepThreshold*1.1;
                 H = dependencyALL(DistM , DepThreshold, IDM, odcur);

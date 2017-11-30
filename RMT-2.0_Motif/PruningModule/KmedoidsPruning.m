@@ -1,4 +1,4 @@
-function [  ] = KmedoidsPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage)
+function [  ] = KmedoidsPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage,FeaturesRM)
 %KMEDOIDSPRUNING Summary of this function goes here
 % imagepath=path of the original timeseries
 % specificimagepath= ppath to go inside  where the dataset is located

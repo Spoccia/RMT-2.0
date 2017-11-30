@@ -136,8 +136,14 @@ for otime = 1: size(gss.octave,1)
             % append difference-of-Gausssian values to output
             TimescaleSicongNormalized = timeScale+1;
             [timeDoGs, depdDoGs, bothDoGs] = appendDogs(dogss.octave{otime, odepd}, tempDepd, tempTime, dependencyScale, TimescaleSicongNormalized);
+<<<<<<< HEAD
             % unique goes here
             tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
+=======
+            %% unique goes here
+%           tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
+            tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); oframes(3,:); timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
+>>>>>>> 529218238fcbb579e213a93403e16cf4a420b21e
         end
         
         dogss.octave{otime, odepd}{1} = -dogss.octave{otime, odepd}{1};
@@ -148,9 +154,12 @@ for otime = 1: size(gss.octave,1)
         % Descriptors
         if(size(oframes, 2) > 0)
             p = tic;
+%            fgss = computeFeatureMatrix_directed_bak12112015(gss.octave{otime, odepd}, oframes, NormalizeByRow(depd{odepd}));
             % for f=1:size(oframes,2)
             for f=1:size(oframes,2)
-                
+%                 oframe_old = oframes(:,f);
+%                 oframe_old(4,:)= [];%remove octave deendency   
+%                 oframe_old(4,:)=oframe_old(4,:)*0;
                 oframeSilv=oframes(:,f);
                 centerV= Pseudo_centerVaraite(1,oframeSilv(3,1)-gss.sminD+1);
                 oframeSilv(1,1)=centerV;
@@ -173,8 +182,18 @@ for otime = 1: size(gss.octave,1)
                     NBP_Time, ...
                     NBP_Depd, ...
                     NBO) ;
-                
                 descriptor_silv=[descriptor_silv,sh_silv];
+                
+%                 sh = siftdescriptor_original(...
+%                     fgss{f}, ...
+%                     oframe_old(:,1),...
+%                     gss.sigmat, ...
+%                     gss.St, ...
+%                     0, ...
+%                     'Magnif', magnif, ...
+%                     'NumSpatialBins', NBP, ...
+%                     'NumOrientBins', NBO) ;
+%                 descriptors = [descriptors, sh] ;
             end
         end
         clear fOframes bOframes fgss
