@@ -3,14 +3,14 @@ clc;
 clear;
 
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\Mocap\';
+datasetPath= 'D:\Motif_Results\Datasets\Image\';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';%'RME';%
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
 Cluster = 1;%1;%
 
 motifidentificationBP = 0; %2;% work on all the features
@@ -28,13 +28,13 @@ PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
 % Path Parameters
-TEST ='1';%
+TEST ='5';%
 
 % Global Variables
 SizeFeaturesforImages = [];
 
 % FixCluster Experiment
-FT1=[15,15,15,15];%[30,30,30,20];%10];%[5,5,5,5];%[3,3,3,3];%
+FT1=[20,20,20,20];%[30,30,30,20];%10];%[5,5,5,5];%[3,3,3,3];%
 ThresholdCluster =[0.05,0.05,0.05,0.05];%[0.1,0.2,0.1,0.2];
 KmeansDescmetric='euclidean';%'cosine';%'cityblock';%
 KmedoidsCoefTerm =0.005;% 0.5;
@@ -63,19 +63,18 @@ for TSnumber = 1: 1
     DeOctDepd = 2;
     DeLevelTime = 4;%6;%3;%
     DeLevelDepd = 4;%6;%3;%
-    DeSigmaDepd = 0.5;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
-    DeSigmaTime = 4*sqrt(2)/2;%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%%1.6*2^(1/(DeLevelTime));
+    DeSigmaDepd = 0.4;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
+    DeSigmaTime = 1.6*2^(1/(DeLevelTime));%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%
     %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
-    DeGaussianThres = 6;%10;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
+    DeGaussianThres = 0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     
     % inside cluster paramenters
     DictionarySize=FT1;%
     %     data = csvread([datasetPath,subfolderPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-    data = csvread([datasetPath,SubDSPath,TS_name,'.csv'])';
-           %double(imread ([datasetPath,SubDSPath,TS_name,'.jpg']));%'EmbeddedfeatureSingleFeature_2.csv']);%'Embeddedfeature.csv']);
+    data = double(imread ([datasetPath,SubDSPath,TS_name,'.jpg']));%'EmbeddedfeatureSingleFeature_2.csv']);%'Embeddedfeature.csv']);
     %'test1_EmbedMotif_ALL.csv']);
     %'test2_EmbedMotif_DepO_2_DepT_2.csv']);%num2str(TSnumber);%(TS_name);
     if (showOriginalImage==1)
@@ -128,8 +127,7 @@ for TSnumber = 1: 1
         csvwrite(strcat(datasetPath,'LocationSensor_aggregate.csv'),X_Coordinate);
         csvwrite(strcat(datasetPath,'LocationSensor_NN_aggregate.csv'),X_Coordinate_NN);
     end
-    coordinates=csvread(strcat(datasetPath,'location\','LocationMatrixMocap.csv'));
-    %csvread(strcat(datasetPath,'location\',TS_name,'_SeqCoord.csv'))';%'LocationSensor_NN.csv'));%csvread(strcat(datasetPath,'LocationSensor.csv'));
+    coordinates=csvread(strcat(datasetPath,'location\',TS_name,'_SeqCoord.csv'))';%'LocationSensor_NN.csv'));%csvread(strcat(datasetPath,'LocationSensor.csv'));
 %     datasetPath =[datasetPath,SubDSPath];
     RELATION=coordinates;
     
@@ -171,7 +169,7 @@ for TSnumber = 1: 1
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
         elseif(strcmp(FeaturesRM,'RME'))
-            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data,RELATION', DeOctTime, DeOctDepd,...
+            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);%
         end
@@ -355,13 +353,11 @@ for TSnumber = 1: 1
                         if(strcmp(typeofCluster,'ClusterMatlab')~=1)
                             [C,mu] = cvKmeans (X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC',false,data,gss1,idm1,KmeansDescmetric);
                         else
-                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
+                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','cosine');%'sqeuclidean');%);%
                         end
                     elseif(strcmp(distanceUsed,'Amplitude_Descriptor')==1)
                         'Cluster on composed distance Descriptors + Amplitude'
                         [C,mu] = cvKmeansCombined(X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC_AMP',false,data,gss1,idm1,KmeansDescmetric);
-                    elseif(strcmp(typeofCluster,'AdaptivekMeans')==1)
-                       [C,mu,inertia,startK]= adaptiveKmeans(X,3,0.05);
                     end
                     if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
                         mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));

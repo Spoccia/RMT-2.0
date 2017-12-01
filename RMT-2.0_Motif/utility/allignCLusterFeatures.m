@@ -56,7 +56,7 @@ for timeOctave = 2:DeOctTime
                         % use symmetric approach to define the similiar motifs below
                         overlap = overlapJaccardSimilarity(depdScale(:, queryFeautreIndex), depdScale(:, dataFeatureIndex));
                         if(overlap > depdOverLapThreshold)
-                            Depd_OverLapping(queryFeatureIndex) = [Depd_OverLapping(queryFeatureIndex), dataFeatureIndex];
+                            Depd_OverLapping{queryFeatureIndex} = [Depd_OverLapping{queryFeatureIndex}, dataFeatureIndex];
                             % since its symmetric, no need to mark dataFeatureIndex
                         end
                     end
