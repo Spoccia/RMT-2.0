@@ -1,4 +1,5 @@
 % This matlab script reads a cluster of a features and saves features that have similiar variates as one cluster
+function returned= allignClusterFeatures()
 clc;
 clear;
 
@@ -135,5 +136,5 @@ unionFeatures = union(depdin1(1,:),depdin2(1,:));
 overlap = size(intersecFeatures, 2)/size(unionFeatures, 2);
 end
 
-
+end
 
