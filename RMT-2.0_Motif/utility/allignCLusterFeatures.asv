@@ -76,16 +76,18 @@ for timeOctave = 2:DeOctTime
                         stopFlag = 1;
                     else
                         subClusterFeatureIndex = Depd_OverLapping(:, index); % column vector
-                        %nonZeroEntryIndex = find(subClusterFeatureIndex ~= 0); % nonZeroEntryIndex is the actual feature index from current cluster
+                        nonZeroEntryIndex = find(subClusterFeatureIndex ~= 0); % nonZeroEntryIndex is the actual feature index from current cluster
                         subClusterFeatures =  clusterFeatures(:, subClusterFeatureIndex);
                         
                         % re-org features and the feathre labels
                         reOrgFeatures       = [reOrgFeatures, subClusterFeatures];
-                        currentFeatureLabel = [currentFeatureLabel, repmat(subClusterLabel, 1, size(subClusterFeatures, 2))]; % design as a row vector
-                        reorgCentroids      = [reorgCentroids,avg(currentFeatureLabel')'];
+                        currentFeatureLabel = [currentFeatureLabel, repmat(subClusterLabel, 1, size(nonZeroEntryIndex, 1))]; % design as a row vector
+                        reorgCentroids      = [reorgCentroids,];
                         currentFeatDepd     = [currentFeatDepd,depdScale(:,subClusterFeatureIndex)];
                         
-                        prevFeaturesLabel   = [prevFeaturesLabel,repmat(clusterIndex, 1, size(subClusterFeatures, 2))];   
+                        prevFeaturesLabel   = [];   
+                        prevCentroid        = [];
+                        prevDepd            = [];
                         % save as index: subClusterLabel
                         subClusterLabel = subClusterLabel + 1;
                         
