@@ -72,7 +72,7 @@ for timeOctave = 2:DeOctTime
                 while(stopFlag == 0 )
                     columnSum = sum(Depd_OverLapping); % row vector
                     [maxSum, index] = max(columnSum);
-                    if(maxSum == 0) % check maxSum condition at the beginning
+                    if(maxSum<=1)%(maxSum == 0) % check maxSum condition at the beginning Silv Did <=1 because 1 means single cluster
                         stopFlag = 1;
                     else
                         subClusterFeatureIndex = Depd_OverLapping(:, index); % column vector
