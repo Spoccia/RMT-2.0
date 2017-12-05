@@ -1,4 +1,5 @@
 % This matlab script reads a cluster of a features and saves features that have similiar variates as one cluster
+% function returned= allignCLusterFeatures()
 clc;
 clear;
 
@@ -27,8 +28,7 @@ load(savepath2);
 load(savepath3);
 depdOverLapThreshold = 0.5;
 
-reOrgFeatures = [];
-subFeatureLabels = []; % design as a row vector
+ % design as a row vector
 for timeOctave = 2:DeOctTime
     for depdOctave = 2:DeOctDepd
         if(exist(strcat(ClusterPath, '\Cluster_IM_', imagename, '_DepO_', num2str(depdOctave), '_TimeO_', num2str(timeOctave), '.csv'), 'file')~=0)
@@ -47,6 +47,12 @@ for timeOctave = 2:DeOctTime
             % subCluster label for interesting octave monotonically increases
             % for features from different octaves, subClusterLabel reset to 1
             subClusterLabel = 1; 
+
+            reOrgFeatures       = [];
+            currentFeatureLabel = [];
+            reorgCentroids      = [];
+            currentFeatDepd     = [];
+            prevFeaturesLabel   = [];
             
             for clusterIndex = 1 : numberOfClusters
                 % get the features from current clutser index
@@ -62,7 +68,7 @@ for timeOctave = 2:DeOctTime
                     % dataFeatureIndex starts from queryFeatureIndex since our goal is to group feature from the same simulation data
                     for dataFeatureIndex = queryFeatureIndex : size(clusterFeatures, 2)
                         % use symmetric approach to define the similiar motifs below
-                        overlap = overlapJaccardSimilarity(depdScale(:, queryFeautreIndex), depdScale(:, dataFeatureIndex));
+                        overlap = overlapJaccardSimilarity(depdScale(:, queryFeatureIndex), depdScale(:, dataFeatureIndex));
                         Depd_OverLapping(queryFeatureIndex, dataFeatureIndex) = overlap;
                         Depd_OverLapping(dataFeatureIndex, queryFeatureIndex) = overlap;
                     end
@@ -76,24 +82,22 @@ for timeOctave = 2:DeOctTime
                         stopFlag = 1;
                     else
                         subClusterFeatureIndex = Depd_OverLapping(:, index); % column vector
-                        nonZeroEntryIndex = find(subClusterFeatureIndex ~= 0); % nonZeroEntryIndex is the actual feature index from current cluster
+                        %nonZeroEntryIndex = find(subClusterFeatureIndex ~= 0); % nonZeroEntryIndex is the actual feature index from current cluster
                         subClusterFeatures =  clusterFeatures(:, subClusterFeatureIndex);
                         
                         % re-org features and the feathre labels
                         reOrgFeatures       = [reOrgFeatures, subClusterFeatures];
-                        currentFeatureLabel = [currentFeatureLabel, repmat(subClusterLabel, 1, size(nonZeroEntryIndex, 1))]; % design as a row vector
-                        reorgCentroids      = [reorgCentroids,];
+                        currentFeatureLabel = [currentFeatureLabel, repmat(subClusterLabel, 1, size(subClusterFeatures, 2))]; % design as a row vector
+                        reorgCentroids      = [reorgCentroids,mean(subClusterFeatures(11:end,:)')'];
                         currentFeatDepd     = [currentFeatDepd,depdScale(:,subClusterFeatureIndex)];
                         
-                        prevFeaturesLabel   = [];   
-                        prevCentroid        = [];
-                        prevDepd            = [];
+                        prevFeaturesLabel   = [prevFeaturesLabel,repmat(clusterIndex, 1, size(subClusterFeatures, 2))];   
                         % save as index: subClusterLabel
                         subClusterLabel = subClusterLabel + 1;
                         
                         % now update Depd_OverLapping matrix
                         zeroColumn = zeros(size(subClusterFeatureIndex));
-                        Depd_OverLapping(:, index) = zeroColumn;
+                        Depd_OverLapping(:, subClusterFeatureIndex) = zeroColumn;
                     end
                 end
                 
@@ -120,22 +124,8 @@ for timeOctave = 2:DeOctTime
             end % end marking current cluster at interesting octave
         end
     end
-end
-
-function overlap = overlapQueryFeature(depdin1,depdin2)
-depdin1 = depdin1(depdin1~=0);
-depdin2 = depdin2(depdin2~=0);
-ov = intersect(depdin1(1,:),depdin2(1,:));
-overlap = size(ov,2)/size(depdin1,2);
-end
-
-function overlap = overlapJaccardSimilarity(depdin1,depdin2)
-depdin1 = depdin1(depdin1~=0);
-depdin2 = depdin2(depdin2~=0);
-intersecFeatures = intersect(depdin1(1,:),depdin2(1,:));
-unionFeatures = union(depdin1(1,:),depdin2(1,:));
-overlap = size(intersecFeatures, 2)/size(unionFeatures, 2);
-end
+ end
 
 
+% end
 
