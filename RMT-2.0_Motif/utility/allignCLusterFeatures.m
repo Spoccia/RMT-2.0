@@ -97,7 +97,8 @@ for timeOctave = 2:DeOctTime
                         
                         % now update Depd_OverLapping matrix
                         zeroColumn = zeros(size(subClusterFeatureIndex));
-                        Depd_OverLapping(:, subClusterFeatureIndex) = zeroColumn;
+                        Depd_OverLapping(:, subClusterFeatureIndex) = Depd_OverLapping(:, subClusterFeatureIndex)*0;%zeroColumn;
+                        Depd_OverLapping(subClusterFeatureIndex,:) = Depd_OverLapping(subClusterFeatureIndex,:)*0;%zeroColumn;
                     end
                 end
                 
