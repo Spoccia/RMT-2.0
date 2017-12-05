@@ -28,6 +28,12 @@ load(savepath2);
 load(savepath3);
 depdOverLapThreshold = 0.5;
 
+            reOrgFeatures       = [];
+            currentFeatureLabel = [];
+            reorgCentroids      = [];
+            currentFeatDepd     = [];
+            prevFeaturesLabel   = [];
+
  % design as a row vector
 for timeOctave = 2:DeOctTime
     for depdOctave = 2:DeOctDepd
@@ -46,14 +52,7 @@ for timeOctave = 2:DeOctTime
             
             % subCluster label for interesting octave monotonically increases
             % for features from different octaves, subClusterLabel reset to 1
-            subClusterLabel = 1; 
-
-            reOrgFeatures       = [];
-            currentFeatureLabel = [];
-            reorgCentroids      = [];
-            currentFeatDepd     = [];
-            prevFeaturesLabel   = [];
-            
+            subClusterLabel = 1;             
             for clusterIndex = 1 : numberOfClusters
                 % get the features from current clutser index
                 clusterFeatures = X(:, C == clusterLabel(clusterIndex));
