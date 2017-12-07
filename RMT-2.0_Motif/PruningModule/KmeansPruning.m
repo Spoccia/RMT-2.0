@@ -11,12 +11,12 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
 % TEST= test folder path
 %   Detailed explanation goes here
     %% load features
-    if (strcmp(typeofCluster,'ClusterMatlab') ~= 1)
-    'wrong cluster !!!!' 
-    typeofCluster
-    pause;
-        return;
-    end
+%     if (strcmp(typeofCluster,'ClusterMatlab') ~= 1)
+%     'wrong cluster !!!!' 
+%     typeofCluster
+%     pause;
+%         return;
+%     end
     Matlab=1;
     saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',TEST,'\'];
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];

@@ -12,12 +12,12 @@ CreateRelation = 0;%1;
 FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
 createDependencyScale = 0;%1;
 Cluster = 0;%1;%
-CreateSubCluster=0;
+CreateSubCluster=1;
 
 motifidentificationBP = 0; %2;% work on all the features
-motifidentificationBP_MatlabDescr = 1;%1
+motifidentificationBP_MatlabDescr = 0;%1
 pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%1;%0
+pruneClusterDescrMatlab = 0;%1;%0
 motifidentification = 0; % work on pruned features
 savecaracteristics = 0;
 showOriginalImage = 0;
@@ -362,11 +362,11 @@ for TSnumber = 1: 1
 %                         'Cluster on composed distance Descriptors + Amplitude'
 %                         [C,mu] = cvKmeansCombined(X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC_AMP',false,data,gss1,idm1,KmeansDescmetric);
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,0);%0 will fix the step to 2 as default
+                       [C,mu,inertia,startK]= adaptiveKmeans(X,3,0.05,0);%0 will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));
                         end
-                        xlswrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Cluster_behavior_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.xlsx'),[inertia',tryK']);%Matlab_    
+                        xslw(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'_behavior\',distanceUsed,'\',typeofCluster,'\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_    
                     end
                     if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
                         mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));
@@ -445,7 +445,6 @@ for TSnumber = 1: 1
     end
     if(motifidentificationBP_MatlabDescr ==1)
         ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
-        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
     end
     
     % Prune the clusters

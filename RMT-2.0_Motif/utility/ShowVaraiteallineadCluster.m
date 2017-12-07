@@ -1,4 +1,4 @@
-function [ output_args ] = ShowKmeansCluster(TEST,imagepath,specificimagepath,imagename,K_valuesCalc,distanceUsed,typeofCluster,histdataimage,FeaturesRM )
+function [ output_args ] = ShowVaraiteallineadCluster(TEST,imagepath,specificimagepath,imagename,K_valuesCalc,distanceUsed,typeofCluster,histdataimage,FeaturesRM )
 %SHOWKMEANSCLUSTER Summary of this function goes here
 %   Detailed explanation goes here
 % if (strcmp(typeofCluster,'ClusterMatlab')~=1)
@@ -12,9 +12,9 @@ savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
 savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];
 
-ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
-ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor'];%\imageMotifs\',imagename];
-RebSeriesPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor\rebClusters\'];
+ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster,'\SplitVariate'];
+ImageSavingPath=[ClusterPath,'\BP_Kmeans_VA'];%\imageMotifs\',imagename];
+RebSeriesPath = [ClusterPath,'\BP_Kmeans_VA\rebClusters\'];
 
 load(savepath1);
 load(savepath2);
@@ -30,15 +30,16 @@ end
 
 for k=1:DeOctTime
     for j=1:DeOctDepd
-        if(exist(strcat(ClusterPath,'\Cluster_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),'file')~=0)
-            indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
-            X=frame1(:,indexfeatureGroup);
-            DictionarySizeApplied= floor(abs(size(X,2))/10);
-            if(abs(size(X,2))>=DictionarySizeApplied)
-                dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+        if(exist(strcat(ClusterPath,'\Cluster_IM_',imagename,'_OT_',num2str(k),'_OD_',num2str(j),'.csv'),'file')~=0)
+           % indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
+            X=csvread(strcat(ClusterPath,'\Features_IM_',imagename,'_OT_',num2str(k),'_OD_',num2str(j),'.csv'));%frame1(:,indexfeatureGroup);
+%             DictionarySizeApplied= floor(abs(size(X,2))/10);
+%              if(abs(size(X,2))>=DictionarySizeApplied)
+                dpscale = csvread(strcat(ClusterPath,'\DepdScale_IM_',imagename,'_OT_',num2str(k),'_OD_',num2str(j),'.csv'));
+%                 csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
                 
-                C = csvread(strcat(ClusterPath,'\Cluster_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
-                mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+                C = csvread(strcat(ClusterPath,'\Cluster_IM_',imagename,'_OT_',num2str(k),'_OD_',num2str(j),'.csv'));
+                mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_OT_',num2str(k),'_OD_',num2str(j),'.csv'));
                 clusterLabel = unique(C);
                 nCluster     = length(clusterLabel);
                 dataid=zeros(size(data,1),size(data,2),nCluster);
@@ -102,7 +103,7 @@ for k=1:DeOctTime
                 end
                 save(strcat(RebSeriesPath,'Series_Feature_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_KC_',num2str(nCluster),'.mat'),'FeatureLocation');
                 save(strcat(RebSeriesPath,'RebSeries_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_dic_',num2str(nCluster),'.mat'),'dataid');
-            end
+%             end
         end
     end
 end

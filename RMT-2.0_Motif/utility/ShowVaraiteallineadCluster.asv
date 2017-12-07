@@ -12,9 +12,9 @@ savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
 savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];
 
-ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
-ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor'];%\imageMotifs\',imagename];
-RebSeriesPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor\rebClusters\'];
+ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster,'\SplitVariate'];
+ImageSavingPath=[ClusterPath,'\BP_Kmeans_VA'];%\imageMotifs\',imagename];
+RebSeriesPath = [ClusterPath,'\BP_Kmeans_VA\rebClusters\'];
 
 load(savepath1);
 load(savepath2);

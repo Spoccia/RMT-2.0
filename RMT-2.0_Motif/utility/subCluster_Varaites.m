@@ -13,20 +13,20 @@ ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',dist
 load(savepath1);
 load(savepath2);
 load(savepath3);
-depdOverLapThreshold = 0.5;
+
 
 for timeOctave = 1:DeOctTime
     for depdOctave = 1:DeOctDepd
-        if(exist(strcat(ClusterPath, '\Cluster_IM_', imagename, '_DepO_', num2str(depdOctave), '_TimeO_', num2str(timeOctave), '.csv'), 'file')~=0)
+        if(exist(strcat(ClusterPath, '\Cluster_IM_', TS_name, '_DepO_', num2str(depdOctave), '_TimeO_', num2str(timeOctave), '.csv'), 'file')~=0)
             
             % for features from each octave
             indexfeatureGroup = (frame1(6,:) == timeOctave & frame1(5,:) == depdOctave);
             X = frame1(:,indexfeatureGroup);
-            depdScaleRead = csvread(strcat(saveFeaturesPath, 'DistancesDescriptors\DepdScale_IM_', imagename, '_DepO_', num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
+            depdScaleRead = csvread(strcat(saveFeaturesPath, 'DistancesDescriptors\DepdScale_IM_', TS_name, '_DepO_', num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
             
             % read output from preivous k-means
-            C = csvread(strcat(ClusterPath,'\Cluster_IM_',imagename,'_DepO_',num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
-            mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
+            C = csvread(strcat(ClusterPath,'\Cluster_IM_',TS_name,'_DepO_',num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
+            mu = csvread(strcat(ClusterPath,'\Centroids_IM_',TS_name,'_DepO_',num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
             clusterLabel = unique(C);
             numberOfClusters = length(clusterLabel);
             
@@ -88,14 +88,15 @@ for timeOctave = 1:DeOctTime
                     end
                 end
             end % end marking current cluster at interesting octave
-            if(exist([ClusterPath,'SplitVariate\'],'dir')==0)
-                mkdir([ClusterPath,'SplitVariate\']);
+            if(exist([ClusterPath,'\SplitVariate\'],'dir')==0)
+                mkdir([ClusterPath,'\SplitVariate\']);
             end
-            csvwrite([ClusterPath,'SplitVariate\Features',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],reOrgFeatures);
-            csvwrite([ClusterPath,'SplitVariate\Clusters',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],currentFeatureLabel);
-            csvwrite([ClusterPath,'SplitVariate\Centroids',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],reorgCentroids);      
-            csvwrite([ClusterPath,'SplitVariate\Depd',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],currentFeatDepd);      
-            csvwrite([ClusterPath,'SplitVariate\ParentCluster',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],prevFeaturesLabel);      
+            csvwrite([ClusterPath,'\SplitVariate\Features_IM_',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],reOrgFeatures);
+            csvwrite([ClusterPath,'\SplitVariate\Cluster_IM_',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],currentFeatureLabel);
+            csvwrite([ClusterPath,'\SplitVariate\Centroids_IM_',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],reorgCentroids);      
+            csvwrite([ClusterPath,'\SplitVariate\DepdScale_IM_',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],currentFeatDepd);      
+            csvwrite([ClusterPath,'\SplitVariate\ParentCluster_IM_',TS_name,'_OT_',num2str(timeOctave),'_OD_',num2str(depdOctave),'.csv'],prevFeaturesLabel);      
+            
         end
     end
 end
