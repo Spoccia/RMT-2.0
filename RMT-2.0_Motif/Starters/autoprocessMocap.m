@@ -12,7 +12,7 @@ CreateRelation = 0;%1;
 FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
 createDependencyScale = 0;%1;
 Cluster = 0;%1;%
-CreateSubCluster=0;
+CreateSubCluster=1;
 
 motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 1;%1
@@ -435,7 +435,7 @@ for TSnumber = 1: 1
     
     if (CreateSubCluster==1)
         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
-        depdOverLapThreshold = 0.5;
+        depdOverLapThreshold = 0.7;
         subCluster_Varaites(saveFeaturesPath,TS_name,SizeofK,distanceUsed,typeofCluster,depdOverLapThreshold);
         
     end
@@ -451,6 +451,7 @@ for TSnumber = 1: 1
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
         KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+        VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     
     if(pruneClusterDescrMatlab==2)

@@ -54,6 +54,9 @@ for timeOctave = 1:DeOctTime
                     % dataFeatureIndex starts from queryFeatureIndex since our goal is to group feature from the same simulation data
                     for dataFeatureIndex = queryFeatureIndex : size(clusterFeatures, 2)
                         % use symmetric approach to define the similiar motifs below
+%                         if(dataFeatureIndex==17)
+%                             'check'
+%                         end
                         overlap = overlapJaccardSimilarity(depdScale(:, queryFeatureIndex), depdScale(:, dataFeatureIndex));
                         Depd_OverLapping(queryFeatureIndex, dataFeatureIndex) = overlap;
                         Depd_OverLapping(dataFeatureIndex, queryFeatureIndex) = overlap;
