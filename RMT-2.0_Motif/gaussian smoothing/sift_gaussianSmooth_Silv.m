@@ -136,14 +136,11 @@ for otime = 1: size(gss.octave,1)
             % append difference-of-Gausssian values to output
             TimescaleSicongNormalized = timeScale+1;
             [timeDoGs, depdDoGs, bothDoGs] = appendDogs(dogss.octave{otime, odepd}, tempDepd, tempTime, dependencyScale, TimescaleSicongNormalized);
-<<<<<<< HEAD
-            % unique goes here
-            tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
-=======
+
             %% unique goes here
 %           tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); pricurRatio; timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
             tempFrames = [tempFrames, [x(:)'+ones(1,size(x,1)) ; y(:)' ; sigmad(:)' ;sigmat(:)' ; oframes(4,:); oframes(5,:); oframes(3,:); timeDoGs(:)'; depdDoGs(:)'; bothDoGs(:)']];%[x(:)'
->>>>>>> 529218238fcbb579e213a93403e16cf4a420b21e
+
         end
         
         dogss.octave{otime, odepd}{1} = -dogss.octave{otime, odepd}{1};

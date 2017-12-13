@@ -1,4 +1,4 @@
-function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturation,Step)
+function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturation,Step,distance)
    isFound=false;
    inertia=[];
    
@@ -10,7 +10,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
     tryK=[];
    while(~isFound)
       
-       [C1,mu1,SUMD] = kmeans(features1(11:size(features1,1),:)',startK,'Distance','sqeuclidean');%'cosine');%
+       [C1,mu1,SUMD] = kmeans(features1(11:size(features1,1),:)',startK,'Distance',distance);%'sqeuclidean');%'cosine');%
        %% computeinertia
        if(itr==1)
        inertia=[inertia,sum(SUMD)];

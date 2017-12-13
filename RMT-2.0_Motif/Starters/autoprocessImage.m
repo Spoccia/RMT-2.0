@@ -12,6 +12,7 @@ CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 Cluster = 1;%1;%
+CreateSubCluster=1;
 
 motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 1;%1
@@ -40,10 +41,10 @@ KmeansDescmetric='euclidean';%'cosine';%'cityblock';%
 KmedoidsCoefTerm =0.005;% 0.5;
 
 % kind of distance
-typeofCluster='ClusterMatlab';%'ClusterKmedoids';%
+typeofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
 prunewith='Descriptor';%'Amplitude_Descriptor';%'Amplitude_Descriptor_overlapping'%
 distanceUsed='Descriptor';%'Amplitude_Descriptor';%
-SizeofK= 'Fixed';%'Threshould';% 'Computed';%'Fixed_K15';%
+SizeofK= 'Akmeans';%'Fixed';%'Threshould';% 'Computed';%'Fixed_K15';%
 K_valuesCalc=SizeofK;
 
 KindofFeatures= 0; % 1 for DoG 0 for DoE
@@ -345,26 +346,49 @@ for TSnumber = 1: 1
                 end
                 
                 % DictionarySizeApplied = DictionarySize(clustindfix);
-                if(abs(size(X,2))>=DictionarySizeApplied & abs(size(X,2))>0)
-                    C = [];
-                    mu=[];
-                    if(strcmp(distanceUsed,'Descriptor')==1)
+                %if(strcmp(distanceUsed,'Descriptor')==1)
                         'Cluster on Descriptors'
-                        if(strcmp(typeofCluster,'ClusterMatlab')~=1)
+                    if(strcmp(typeofCluster,'ClusterKmedoid')==1)
                             [C,mu] = cvKmeans (X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC',false,data,gss1,idm1,KmeansDescmetric);
-                        else
-                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','cosine');%'sqeuclidean');%);%
+                    elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
+                            [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
+%                         end
+%                     elseif(strcmp(distanceUsed,'Amplitude_Descriptor')==1)
+%                         'Cluster on composed distance Descriptors + Amplitude'
+%                         [C,mu] = cvKmeansCombined(X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC_AMP',false,data,gss1,idm1,KmeansDescmetric);
+                    elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
+                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,0,'sqeuclidean');%0 will fix the step to 2 as default
+                        if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
+                            mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));
                         end
-                    elseif(strcmp(distanceUsed,'Amplitude_Descriptor')==1)
-                        'Cluster on composed distance Descriptors + Amplitude'
-                        [C,mu] = cvKmeansCombined(X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC_AMP',false,data,gss1,idm1,KmeansDescmetric);
+                        xlswrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Cluster_behavior_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.xlsx'),[inertia',tryK']);%Matlab_    
                     end
                     if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
                         mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));
                     end
                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_
                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
-                end
+               
+%                 if(abs(size(X,2))>=DictionarySizeApplied & abs(size(X,2))>0)
+%                     C = [];
+%                     mu=[];
+%                     if(strcmp(distanceUsed,'Descriptor')==1)
+%                         'Cluster on Descriptors'
+%                         if(strcmp(typeofCluster,'ClusterMatlab')~=1)
+%                             [C,mu] = cvKmeans (X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC',false,data,gss1,idm1,KmeansDescmetric);
+%                         else
+%                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','cosine');%'sqeuclidean');%);%
+%                         end
+%                     elseif(strcmp(distanceUsed,'Amplitude_Descriptor')==1)
+%                         'Cluster on composed distance Descriptors + Amplitude'
+%                         [C,mu] = cvKmeansCombined(X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC_AMP',false,data,gss1,idm1,KmeansDescmetric);
+%                     end
+%                     if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
+%                         mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));
+%                     end
+%                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_
+%                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
+%                 end
             end
         end
     end
@@ -423,17 +447,26 @@ for TSnumber = 1: 1
         ShowThresholdCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,'ClusterThrehold',histTSImage,FeaturesRM);
     end
     
+    if (CreateSubCluster==1)
+        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+        depdOverLapThreshold = 0.7;
+        subCluster_Varaites(saveFeaturesPath,TS_name,SizeofK,distanceUsed,typeofCluster,depdOverLapThreshold);
+        
+    end
+    
     % save images before pruning
     if(motifidentificationBP ==1)
         ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM );
     end
     if(motifidentificationBP_MatlabDescr ==1)
         ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
+        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
     end
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
         KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+        VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     
     if(pruneClusterDescrMatlab==2)
