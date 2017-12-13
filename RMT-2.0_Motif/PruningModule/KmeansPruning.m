@@ -22,9 +22,9 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
     savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
     savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];   
-    ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\AP_Kmeans\'];%,prunewith,'\imageMotifs\'];
-    PrunedClusterPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\AP_Kmeans\',typeofCluster];
-    ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
+    ImageSavingPath=[saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\AP\'];%,prunewith,'\imageMotifs\'];
+    PrunedClusterPath=[saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\AP\',typeofCluster];
+    ClusterPath = [saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\'];
     load(savepath1);
     load(savepath2);
     load(savepath3);
@@ -48,7 +48,7 @@ function [  ] = KmeansPruning(TEST, imagepath,specificimagepath,imagename,typeof
                DictionarySizeApplied = DictionarySize(clustindfix);
             end
             if(abs(size(X,2))>=DictionarySizeApplied & abs(size(X,2))>0)
-                dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));%_',imagename,'_',num2str(p),'.csv'));
+                dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));%_',imagename,'_',num2str(p),'.csv'));
                 %dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\afterPruning\PrunedDepScaleFeatures_',imagename,'_',num2str(p),'.csv'));
                 C = csvread(strcat(ClusterPath,'\Cluster_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));%_',imagename,'_',num2str(p),'.csv'));
                 mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));%_',imagename,'_',num2str(p),'.csv'));

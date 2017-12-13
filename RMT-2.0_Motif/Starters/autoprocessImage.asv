@@ -9,17 +9,15 @@ FeaturesRM ='RMT';%'RME';%
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
-Cluster = 0;%1;%
-CreateSubCluster=0;
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
+Cluster = 1;%1;%
+CreateSubCluster=1;
 
 motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 1;%1
-
 pruneCluster = 0;
 pruneClusterDescrMatlab = 1;%1;%0
-
 motifidentification = 0; % work on pruned features
 savecaracteristics = 1;
 showOriginalImage = 0;
@@ -253,10 +251,10 @@ for TSnumber = 1: 1
                 X=frame1(:,indexfeatureGroup);
                 % save dependency of each feature
                 [depdScale1] = computeDepdScale(X, gss1, idm1);
-                if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\'),'dir')==0)
-                    mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\'));
+                if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\'),'dir')==0)
+                    mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\'));
                 end
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),depdScale1);
+                csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),depdScale1);
             end
         end
     end
@@ -285,7 +283,7 @@ for TSnumber = 1: 1
                 
                 NewDependency=[];
                 if(abs(size(X,2))>0)
-                    dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+                    dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
                     
                     % Remove feature withentropy  near to 0
                     EntropyTHR=0.01;
@@ -300,11 +298,11 @@ for TSnumber = 1: 1
                     %                   [A,dpscale]=PruningOverlappingFeaturesSize(A,dpscale,overTime,overDep,data);
                     [A,dpscale] = Pre_PruningOverlappingFeaturesCombined(A,dpscale,overTime,overDep,data,criteria);
                     
-                    if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\'),'dir')==0)
-                        mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\'));
+                    if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\'),'dir')==0)
+                        mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\'));
                     end
-                    csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\Features_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),A);%Matlab_
-                    csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),dpscale);%Matlab_
+                    csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\Features_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),A);%Matlab_
+                    csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),dpscale);%Matlab_
                     NewFeatures=[NewFeatures,A];
                     NewDependency= [NewDependency,dpscale];
                     %                     [C,mu] = kmeans(A(11:size(X,1),:)',5,'Distance','cosine');
@@ -314,7 +312,7 @@ for TSnumber = 1: 1
             end
         end
         frame1=NewFeatures;
-        save(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\','feature_',TS_name,'.mat'),'data', 'gss1', 'frame1','depd1');
+        save(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\','feature_',TS_name,'.mat'),'data', 'gss1', 'frame1','depd1');
     end
     
     % Clustering
@@ -362,15 +360,14 @@ for TSnumber = 1: 1
                        [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,0,'sqeuclidean');%0 will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
-%                             saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,
                         end
-                        xlswrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\Cluster_behavior_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.xlsx'),[inertia',tryK']);%Matlab_    
+                        xlswrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Cluster_behavior_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.xlsx'),[inertia',tryK']);%Matlab_    
                     end
-                    if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
-                        mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
+                    if(exist(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'),'dir')==0)
+                        mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\'));
                     end
-                    csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_
-                    csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
+                    csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_
+                    csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster,'\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
                
 %                 if(abs(size(X,2))>=DictionarySizeApplied & abs(size(X,2))>0)
 %                     C = [];
@@ -435,14 +432,14 @@ for TSnumber = 1: 1
                 % %                         end
                 % %                     end
                 % %                 end
-                dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
-                %dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+                dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+                %dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
                 [centroids,Clusterfeatures,ClusterSymbols,ClusterDep] = clusteronInportance(X,DescrDist,dpscale,0.05,NumofCluster);%ThresholdCluster(clustindfix),NumofCluster);
-                mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\'));
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),ClusterSymbols);
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),centroids);
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Cluster_Features_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),Clusterfeatures);
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Cluster_Dep_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),ClusterDep);
+                mkdir(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\'));
+                csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),ClusterSymbols);
+                csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),centroids);
+                csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Cluster_Features_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),Clusterfeatures);
+                csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\ClusterThrehold\Cluster_Dep_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),ClusterDep);
                 
                 
             end
@@ -453,7 +450,7 @@ for TSnumber = 1: 1
     if (CreateSubCluster==1)
         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
         depdOverLapThreshold = 0.7;
-        subCluster_Varaites(saveFeaturesPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,depdOverLapThreshold);
+        subCluster_Varaites(saveFeaturesPath,TS_name,SizeofK,distanceUsed,typeofCluster,depdOverLapThreshold);
         
     end
     

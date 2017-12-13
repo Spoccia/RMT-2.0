@@ -12,9 +12,9 @@ savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
 savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];
 
-ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
-ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor'];%\imageMotifs\',imagename];
-RebSeriesPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor\rebClusters\'];
+ClusterPath = [saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\'];%,'\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
+ImageSavingPath=[saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\BP'];%,'\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor'];%\imageMotifs\',imagename];
+RebSeriesPath = [saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\BP\info\'];%,'\Cluster_',K_valuesCalc,'\',distanceUsed,'\BP_Kmeans_CosineDescriptor\rebClusters\'];
 
 load(savepath1);
 load(savepath2);
@@ -35,7 +35,7 @@ for k=1:DeOctTime
             X=frame1(:,indexfeatureGroup);
             DictionarySizeApplied= floor(abs(size(X,2))/10);
             if(abs(size(X,2))>=DictionarySizeApplied)
-                dpscale = csvread(strcat(saveFeaturesPath,'DistancesDescriptors\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+                dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
                 
                 C = csvread(strcat(ClusterPath,'\Cluster_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
                 mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));

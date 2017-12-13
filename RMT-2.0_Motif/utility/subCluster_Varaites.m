@@ -8,7 +8,7 @@ function  subCluster_Varaites(saveFeaturesPath,TS_name,SizeofK,distanceUsed,type
 savepath1 = [saveFeaturesPath, 'feature_', TS_name,'.mat'];
 savepath2 = [saveFeaturesPath, 'idm_', TS_name,'.mat'];
 savepath3 = [saveFeaturesPath, 'MetaData_', TS_name,'.mat'];
-ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster];
+ClusterPath = [saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'];%,'\Cluster_',SizeofK,'\',distanceUsed,'\',typeofCluster];
 
 load(savepath1);
 load(savepath2);
@@ -22,7 +22,7 @@ for timeOctave = 1:DeOctTime
             % for features from each octave
             indexfeatureGroup = (frame1(6,:) == timeOctave & frame1(5,:) == depdOctave);
             X = frame1(:,indexfeatureGroup);
-            depdScaleRead = csvread(strcat(saveFeaturesPath, 'DistancesDescriptors\DepdScale_IM_', TS_name, '_DepO_', num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
+            depdScaleRead = csvread(strcat(saveFeaturesPath, 'Distances',distanceUsed,'\DepdScale_IM_', TS_name, '_DepO_', num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));
             
             % read output from preivous k-means
             C = csvread(strcat(ClusterPath,'\Cluster_IM_',TS_name,'_DepO_',num2str(depdOctave),'_TimeO_',num2str(timeOctave),'.csv'));

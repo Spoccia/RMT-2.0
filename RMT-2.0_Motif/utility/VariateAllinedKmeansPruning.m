@@ -24,10 +24,10 @@ function [  ] = VariateAllinedKmeansPruning(TEST, imagepath,specificimagepath,im
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
     savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
     savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];   
-    ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster,'\SplitVariate'];
-    ImageSavingPath=[ClusterPath,'\AP_Kmeans_VA'];%\imageMotifs\',imagename];
+    ClusterPath = [saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',K_valuesCalc,'\SplitVariate'];%'\',distanceUsed,'\',typeofCluster,
+    ImageSavingPath=[ClusterPath,'\AP_VA'];%\imageMotifs\',imagename];
 %     ImageSavingPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\AP_Kmeans\'];%,prunewith,'\imageMotifs\'];
-    PrunedClusterPath = [ClusterPath,'\AP_Kmeans_VA\',typeofCluster];
+    PrunedClusterPath = [ClusterPath,'\AP_VA\',typeofCluster];
 % PrunedClusterPath=[saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\AP_Kmeans\',typeofCluster];
 %     ClusterPath = [saveFeaturesPath,'DistancesDescriptors\Cluster_',K_valuesCalc,'\',distanceUsed,'\',typeofCluster];
     load(savepath1);
