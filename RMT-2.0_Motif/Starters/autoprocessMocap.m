@@ -9,9 +9,9 @@ FeaturesRM ='RMT';%'RME';%
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
-Cluster = 0;%1;%
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
+Cluster = 1;%1;%
 CreateSubCluster=1;
 
 motifidentificationBP = 0; %2;% work on all the features
@@ -19,7 +19,7 @@ motifidentificationBP_MatlabDescr = 1;%1
 pruneCluster = 0;
 pruneClusterDescrMatlab = 1;%1;%0
 motifidentification = 0; % work on pruned features
-savecaracteristics = 0;
+savecaracteristics = 1;
 showOriginalImage = 0;
 mapdataintograyscale = 1;
 saveTSasImage = 1;
@@ -68,7 +68,7 @@ for TSnumber = 1: 1
     DeSigmaTime = 4*sqrt(2)/2;%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%%1.6*2^(1/(DeLevelTime));
     %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
-    DeGaussianThres = 6;%10;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
+    DeGaussianThres = 0.1;%6;%10;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     
@@ -172,7 +172,7 @@ for TSnumber = 1: 1
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
         elseif(strcmp(FeaturesRM,'RME'))
-            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
+            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data,RELATION', DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);%
         end
