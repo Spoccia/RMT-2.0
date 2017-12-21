@@ -21,7 +21,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
         inertia=[inertia,sum(SUMD)];
         tryK=[tryK,startK];
         error = abs(inertia(itr) - inertia(itr-1));
-        if error<=saturation
+        if error<=saturation || startK >= (size(features1,2)-1)
             isFound=true;
         end
         startK=startK+Step;        
