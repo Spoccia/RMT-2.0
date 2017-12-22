@@ -37,7 +37,7 @@ TEST ='5';%
 SizeFeaturesforImages = [];
 
 % FixCluster Experiment
-FT1=[20,20,20,20];%[30,30,30,20];%10];%[5,5,5,5];%[3,3,3,3];%
+FT1=[5,5,5,5];%[30,30,30,20];%10];%[5,5,5,5];%[3,3,3,3];%
 ThresholdCluster =[0.05,0.05,0.05,0.05];%[0.1,0.2,0.1,0.2];
 KmeansDescmetric='euclidean';%'cosine';%'cityblock';%
 KmedoidsCoefTerm =0.005;% 0.5;
