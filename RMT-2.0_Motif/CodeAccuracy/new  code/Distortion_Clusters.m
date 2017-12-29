@@ -1,19 +1,19 @@
-clc; clear;
-AfterPruning=1;
-subcluster=1;
-
-%% Analize Results
-path='D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\FeatureSyntDataset\';
-kindofinj='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-
-TEST = 'test1';
-FeaturesRM ='RMT';%'RME';%
-kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
-measure='Descriptor';
-ClusterAlg = 'ClusterMatlab';
-subfolderClusterLabel='Clusterlabel\ClusterLabel_';
-DepO=num2str(2);
-DepT=num2str(2);
+% clc; clear;
+% AfterPruning=1;
+% subcluster=1;
+function Distortion_Clusters(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,DepO,DepT,AfterPruning,subcluster)
+% %% Analize Results
+% path='D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\FeatureSyntDataset\';
+% kindofinj='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
+% 
+% TEST = 'test1';
+% FeaturesRM ='RMT';%'RME';%
+% kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
+% measure='Descriptor';
+% ClusterAlg = 'ClusterMatlab';
+% subfolderClusterLabel='Clusterlabel\ClusterLabel_';
+% DepO=num2str(2);
+% DepT=num2str(2);
 
 
 %% data injected and groundtruth
@@ -56,6 +56,7 @@ else
         Featurepruned=frame1(:,indexfeatureGroup);
         Clusterpruned = csvread([featurespath,'\Cluster_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);%,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         Centroidpruned = csvread([featurespath,'\Centroids_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);%,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
+        Centroidpruned =Centroidpruned';
     else 
         featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\SplitVariate\'];%AP_VA\Cluster_AKmeans\'];
         Dependencypruned = csvread([featurespath,'\DepdScale_IM_',TEST,'_OT_',DepT,'_OD_',DepO,'.csv']);%_DepO_',DepO,'_DepT_',DepT,'.csv']);
@@ -77,9 +78,11 @@ ClusterDistortion=[];
 %% check Clusters
 checkCluster = pdist2(Centroidpruned',Featurepruned(11:138,:)','cosine');
 [~,checkClusterID] = min(checkCluster);
+row_header =[];
 for i=1: nCluster
     F = Featurepruned(:, Clusterpruned == clusterLabel(i));
     D = Dependencypruned(:, Clusterpruned == clusterLabel(i));
+    row_header=[row_header,clusterLabel(i)];
 %     timescopeF= F(4,:)*3;
 %     for iii=1: size(F,2)
 %         Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),round(F(2,iii)-timescopeF(iii)) , round(F(2,iii)+timescopeF(iii))]];
@@ -89,8 +92,8 @@ for i=1: nCluster
 Distortion = pdist2(F(11:138,:)',F(11:138,:)','cosine')/2;
 DistortionCluster = pdist2(Centroidpruned(:,i)',F(11:138,:)','cosine')/2;%);%
 AvgDescriptor = mean(F(11:138,:)');
-Centroid_AVG_Distance = pdist2(AvgDescriptor,Centroidpruned(:,i)','cosine')/2;
-DistortionAvgCentroid = pdist2(AvgDescriptor,F(11:138,:)','cosine')/2;
+% Centroid_AVG_Distance = pdist2(AvgDescriptor,Centroidpruned(:,i)','cosine')/2;
+% DistortionAvgCentroid = pdist2(AvgDescriptor,F(11:138,:)','cosine')/2;
 [d_row,d_col]= size(Distortion);%drow= ||M||
 Diaginf= eye(size(Distortion))* (max(Distortion(:))+1);
 minDist=Distortion+Diaginf;
@@ -100,36 +103,56 @@ MaxDistortion=0;
 MaxDistortionCluster=0;
 MinDistortion= min(minDist(:));
 MinDistortionCluster= min(DistortionCluster(:));
-MinDistortionAvgCentroid= min(DistortionAvgCentroid(:));
+% MinDistortionAvgCentroid= min(DistortionAvgCentroid(:));
 MaxDistortion= max(Distortion(:));
 MaxDistortionCluster= max(DistortionCluster(:));
-MaxDistortionAvgCentroid= max(DistortionAvgCentroid(:));
-ClusterDistortion=[ClusterDistortion;[d_row,Centroid_AVG_Distance,MinDistortion,MaxDistortion,MinDistortionCluster,MaxDistortionCluster,MinDistortionAvgCentroid,MaxDistortionAvgCentroid]];
+% MaxDistortionAvgCentroid= max(DistortionAvgCentroid(:));
+% ClusterDistortion=[ClusterDistortion;[d_row,Centroid_AVG_Distance,MinDistortion,MaxDistortion,MinDistortionCluster,MaxDistortionCluster,MinDistortionAvgCentroid,MaxDistortionAvgCentroid]];
+ClusterDistortion=[ClusterDistortion;[d_row,MinDistortion,MaxDistortion,MinDistortionCluster,MaxDistortionCluster]];
 end
+
+col_header={'ClassID','Support','minD_Fi_Fj_in same C','maxD_Fi_Fj_in same C','minD_Ci_Fi_inCi','maxD_Ci_Fi_inCi'};
+
+if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\'],'dir')==0)
+   mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\']);
+end
+
 
 if(AfterPruning==1)
     if(subcluster==0) 
-        if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\'],'dir')==0)
-            mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\']);
-        end
-        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\','AP_',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+%         if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\'],'dir')==0)
+%             mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\']);
+%         end
+%         xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\','AP_',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],col_header,'AP_Distorsion','A1');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],row_header','AP_Distorsion','A2');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],ClusterDistortion,'AP_Distorsion','B2');
     else
-        if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\'],'dir')==0)
-            mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\']);
-        end
-        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\','AP_',TEST,'_Distortion_SubCluster_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+%         if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\'],'dir')==0)
+%             mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\']);
+%         end
+%         xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\','AP_',TEST,'_Distortion_SubCluster_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],col_header,'AP_Distorsion_SubC','A1');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],row_header','AP_Distorsion_SubC','A2');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],ClusterDistortion,'AP_Distorsion_SubC','B2');
     end
 else
     if(subcluster==0)
-        if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\'],'dir')==0)
-            mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\']);
-        end
-        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\','BP_',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+%         if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\'],'dir')==0)
+%             mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\']);
+%         end
+%         xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\','BP_',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],col_header,'BP_Distorsion','A1');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],row_header','BP_Distorsion','A2');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],ClusterDistortion,'BP_Distorsion','B2');
     else
-        if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\'],'dir')==0)
-            mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\']);
-        end
-        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\','BP_',TEST,'_Distortion_SubCluster_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+%         if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\'],'dir')==0)
+%             mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\']);
+%         end
+%         xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\Distortion\','BP_',TEST,'_Distortion_SubCluster_',DepO,'_DepT_',DepT,'.csv'],ClusterDistortion);
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],col_header,'BP_Distorsion_SubC','A1');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],row_header','BP_Distorsion_SubC','A2');
+        xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\',TEST,'_Distortion_',DepO,'_DepT_',DepT,'.xls'],ClusterDistortion,'BP_Distorsion_SubC','B2');
     end
 end
 

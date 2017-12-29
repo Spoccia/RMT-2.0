@@ -1,18 +1,18 @@
 %% Accuracy best timeoverlapping
-clc; clear;
-
-%% Analize Results
-path='D:\Motif_Results\Datasets\SynteticDataset\';
-kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-TEST = 'test1';
-
-FeaturesRM ='RMT';%'RME';%
-kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
-measure='Descriptor';
-ClusterAlg = 'ClusterMatlab';
-subfolderClusterLabel='Clusterlabel\ClusterLabel_';
-DepO=num2str(2);
-DepT=num2str(2);
+% clc; clear;
+function BP_MAX_OverlappingInTime_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,DepO,DepT)
+% %% Analize Results
+% path='D:\Motif_Results\Datasets\SynteticDataset\';
+% kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
+% TEST = 'test1';
+% 
+% FeaturesRM ='RMT';%'RME';%
+% kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
+% measure='Descriptor';
+% ClusterAlg = 'ClusterMatlab';
+% subfolderClusterLabel='Clusterlabel\ClusterLabel_';
+% DepO=num2str(2);
+% DepT=num2str(2);
 
 %% data injected and groundtruth
 data = csvread([path,kindofinj,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
@@ -56,7 +56,7 @@ end
 ItervalFeatures=Interv_Features_Cluster;
 
 %% Sort the Feature on the index of  the name of the specific feature.
-[q,I] = sort(Position_F_Injected(:,2));
+[q,I] = sort(Position_F_Injected(:,1));
 
 [q1, I_IntervFeat]= sort(ItervalFeatures(:,1));
 
@@ -80,6 +80,7 @@ FoundedFeatures= [];
     MAXOverlappingIDX=-1;
     for j=1:size(ItervalFeatures,1);
         IdentifiedTimePeriod=ItervalFeatures(j,1): ItervalFeatures(j,2);
+        IdentifiedTimePeriod = IdentifiedTimePeriod(IdentifiedTimePeriod>0 & IdentifiedTimePeriod<=size(data,2));
         newOverlapping= intersect(InjectedTimePeriod,IdentifiedTimePeriod);
         if((size(newOverlapping,2) > size(MAXOverlapping,2)) | (MAXOverlapping == -1))
             MAXOverlapping=newOverlapping;
@@ -102,15 +103,24 @@ FoundedFeatures= [];
         FoundedFeatures=[NotFoundPosition];
     end
 
-    ActualName= [ActualName,...
+    ActualName= [
                  FoundedFeatures,...
-                 found,miss];
+                 ActualName,...
+                 found];
     FeatureClassCount=[FeatureClassCount;ActualName];
 end
 
 if(exist(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\'),'dir')==0)
     mkdir(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\'));
 end
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\',TEST,'_BP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureClassCount);
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\',TEST,'_BP_FeaturesFounded_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureFoundedSorted);
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\',TEST,'_BP_DependencyFounded_DepO',DepO,'_DepT_',DepT,'.xls'],DependencyorFoundedSorted);
+FeatureClassCount(:,6)=[];
+col_header={'Class','ID','Start','End','ClassInj','StartInj','EndInj','found'};
+xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_BP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureClassCount,'BP_bestTimeOverlap_subC','A2');
+xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_BP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],col_header,'BP_bestTimeOverlap_subC','A1');
+xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_BP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],DependencyorFoundedSorted,'BP_Dependency_subC');
+
+xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_BP_FeaturesFounded_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureFoundedSorted,'BP_Features_subC');
+% 
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\',TEST,'_BP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureClassCount);
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\',TEST,'_BP_FeaturesFounded_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureFoundedSorted);
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\',TEST,'_BP_DependencyFounded_DepO',DepO,'_DepT_',DepT,'.xls'],DependencyorFoundedSorted);

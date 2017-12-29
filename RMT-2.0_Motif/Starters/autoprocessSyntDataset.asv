@@ -65,35 +65,7 @@ for TSnumber = 1: 1
    
     distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
     if DatasetInject == 2 % MoCap
-        distanceVaraiteTS=[datasetPath,'LocationMatrixMocap.csv'];%
-    end
-    
-%% Create Coordinate space from a relation matrix 
-    if CreateRelation==1
-        [row,col]= size(data);
-        rel_reord = csvread(distanceVaraiteTS);
-        maxim = max(rel_reord(:));
-        minim = min(rel_reord(:));
-        normdist= (rel_reord - minim) /abs(maxim-minim);
-        
-        % normal coordinate in the space from D:
-        M=zeros(row);
-        M_notnorm=zeros(row);
-        for i=1:row
-            for j=1:row
-                M(i,j)= (normdist(1,j)^2+normdist(i,1)^2-normdist(i,j)^2)/2;
-                M_notnorm(i,j)= (rel_reord(1,j)^2+rel_reord(i,1)^2-rel_reord(i,j)^2)/2;
-            end
-        end
-        rank(M);
-        rank(M_notnorm);
-        [U,s,V]=eig(M);
-        [U1,s1,V1]=eig(M_notnorm);
-        X_Coordinate = U*(s^1/2);
-        X_Coordinate_NN = U1*(s1^1/2);
-        csvwrite(strcat(datasetPath,'norm_Dist_aggregate.csv'),normdist);
-        csvwrite(strcat(datasetPath,'LocationSensor_aggregate.csv'),X_Coordinate);
-        csvwrite(strcat(datasetPath,'LocationSensor_NN_aggregate.csv'),X_Coordinate_NN);
+        TEST='Mocap_test1';
     end
     
     %% sift parameters
@@ -127,7 +99,6 @@ for TSnumber = 1: 1
     DictionarySize=FT1;%
     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
     data1=data;
-    %% Eventually normalize the data  by single  variate 
     if(normalizeData == 1)
         [Nrows,Ncols]= size(data);
         minvariate= min(data');
@@ -163,11 +134,34 @@ for TSnumber = 1: 1
         imwrite(uint8(histTSImage),[datasetPath,subfolderPath,'TS_as_Image\',TS_name,'.jpg'])
         csvwrite([datasetPath,subfolderPath,'TS_as_Image\',TS_name,'.csv'],histTSImage);
     end
+    if CreateRelation==1
+        [row,col]= size(data);
+        rel_reord = csvread(distanceVaraiteTS);
+        maxim = max(rel_reord(:));
+        minim = min(rel_reord(:));
+        normdist= (rel_reord - minim) /abs(maxim-minim);
+        
+        % normal coordinate in the space from D:
+        M=zeros(row);
+        M_notnorm=zeros(row);
+        for i=1:row
+            for j=1:row
+                M(i,j)= (normdist(1,j)^2+normdist(i,1)^2-normdist(i,j)^2)/2;
+                M_notnorm(i,j)= (rel_reord(1,j)^2+rel_reord(i,1)^2-rel_reord(i,j)^2)/2;
+            end
+        end
+        rank(M);
+        rank(M_notnorm);
+        [U,s,V]=eig(M);
+        [U1,s1,V1]=eig(M_notnorm);
+        X_Coordinate = U*(s^1/2);
+        X_Coordinate_NN = U1*(s1^1/2);
+        csvwrite(strcat(datasetPath,'norm_Dist_aggregate.csv'),normdist);
+        csvwrite(strcat(datasetPath,'LocationSensor_aggregate.csv'),X_Coordinate);
+        csvwrite(strcat(datasetPath,'LocationSensor_NN_aggregate.csv'),X_Coordinate_NN);
+    end
     
     coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));%'LocationSensor_NN.csv'));%csvread(strcat(datasetPath,'LocationSensor.csv'));
-    if DatasetInject == 2 % MoCap
-        coordinates=csvread(strcat(datasetPath,'location\LocationMatrixMocap.csv'));%
-    end
     
     RELATION=coordinates;
     
