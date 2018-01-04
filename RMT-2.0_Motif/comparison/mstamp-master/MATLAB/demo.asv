@@ -18,7 +18,11 @@ load('toy_data.mat');
 
 %% alternative 1.a: the basic version
 
-data=csvread('D:\Motif_Results\Datasets\SynteticDataset\data');
+% data=csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
+% data=data';
+% sub_len=58;
+% data = (data - mean(data)) ...
+%                         / std(data, 1);
 must_dim = [];
 exc_dim = [];
 [pro_mul, pro_idx] = ...
@@ -63,10 +67,10 @@ exc_dim = [];
 
 
 %% guided search for 2-dimensional motif
-n_dim = 2; % we want the top 2-dimensional motif
-[motif_idx, motif_dim] = guide_serach(...
-    data, sub_len, pro_mul, pro_idx, n_dim);
-plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
+% n_dim = 2; % we want the top 2-dimensional motif
+% [motif_idx, motif_dim] = guide_serach(...
+%     data, sub_len, pro_mul, pro_idx, n_dim);
+% plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
 
 
 %% extract motif using the MDL-based unconstrained search method
@@ -75,3 +79,8 @@ k = inf;%2; % number of motif to retrieve
 [motif_idx, motif_dim] = unconstrain_search(...
     data, sub_len, pro_mul, pro_idx, n_bit, k);
 plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
+
+
+%% bag of motifs using MDL unconstrained search
+MotifBag = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
+size(MotifBag)

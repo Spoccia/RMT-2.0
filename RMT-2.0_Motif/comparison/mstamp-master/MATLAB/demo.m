@@ -75,7 +75,15 @@ exc_dim = [];
 
 %% extract motif using the MDL-based unconstrained search method
 n_bit = 4; % number of bit for discretization
-k = 12;%2; % number of motif to retrieve
+k = inf;%2; % number of motif to retrieve
 [motif_idx, motif_dim] = unconstrain_search(...
     data, sub_len, pro_mul, pro_idx, n_bit, k);
 plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
+
+
+%% bag of motifs using MDL unconstrained search
+MotifBag = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
+size(MotifBag)
+for i=1:size(MotifBag,2)
+    plot_motif_on_data(data, sub_len, MotifBag{i}.idx, MotifBag{i}.depd);
+end
