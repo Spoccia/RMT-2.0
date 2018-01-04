@@ -18,9 +18,9 @@ load('toy_data.mat');
 
 %% alternative 1.a: the basic version
 
-data=csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
-data=data';
-sub_len=58;
+% data=csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
+% data=data';
+% sub_len=58;
 % data = (data - mean(data)) ...
 %                         / std(data, 1);
 must_dim = [];
@@ -75,7 +75,7 @@ exc_dim = [];
 
 %% extract motif using the MDL-based unconstrained search method
 n_bit = 4; % number of bit for discretization
-k = 12;%2; % number of motif to retrieve
+k = 2;%2; % number of motif to retrieve
 [motif_idx, motif_dim] = unconstrain_search(...
     data, sub_len, pro_mul, pro_idx, n_bit, k);
 plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
