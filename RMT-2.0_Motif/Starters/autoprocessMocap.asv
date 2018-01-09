@@ -495,7 +495,6 @@ for TSnumber = 1: 184
         end
         SizeFeaturesforImages=[SizeFeaturesforImages;a];
         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
-        xslwrite(strcat(saveFeaturesPath,'time.xls',[TotClusterTime;TimeforSubClustering;TimeforPruningSubClustering;TimeforPruningCluster]);
     end
 %     % Features Extraction
 %     if(FeatureExtractionFlag==1)
