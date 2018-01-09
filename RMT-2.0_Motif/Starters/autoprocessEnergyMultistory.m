@@ -7,20 +7,20 @@ datasetPath= 'D:\Motif_Results\Datasets\Building_MultiStory\';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';%'RME';%
 
-normalizeData=1;
+normalizeData=0;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
-Cluster = 1;%1;%
-CreateSubCluster=1;
+Cluster = 0;%1;%
+CreateSubCluster=0;
+
+motifidentificationBP_MatlabDescr = 0;%1
+pruneClusterDescrMatlab = 0;%1;%0
 
 motifidentificationBP = 0; %2;% work on all the features
-motifidentificationBP_MatlabDescr = 1;%1
-
 pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%1;%0
 
 motifidentification = 0; % work on pruned features
 savecaracteristics = 1;
@@ -55,7 +55,8 @@ K_valuesCalc=SizeofK;
 KindofFeatures= 0; % 1 for DoG 0 for DoE
 
 
-for TSnumber = 1: 1
+for TSnumber = 183: 709
+    TEST =num2str(TSnumber); %'1';%
     TS_name=num2str(TSnumber);%
     distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
     
@@ -71,7 +72,7 @@ for TSnumber = 1: 1
     DeOctDepd = 2;
     DeLevelTime = 4;%6;
     DeLevelDepd = 4;%6;
-    DeSigmaDepd = 0.3;%0.6;%0.5;%0.4;%
+    DeSigmaDepd = 0.4;%0.6;%0.5;%0.3;%
     DeSigmaTime = 1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
     DeGaussianThres = 0.2;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
@@ -432,7 +433,9 @@ for TSnumber = 1: 1
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
+        
         KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+        
         VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     

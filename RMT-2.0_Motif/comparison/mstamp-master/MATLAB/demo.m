@@ -17,10 +17,10 @@ load('toy_data.mat');
 % The script will only run when only one of the alternatives is uncomment
 
 %% alternative 1.a: the basic version
-
-% data=csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
-% data=data';
-% sub_len=58;
+% 
+data=csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
+data=data';
+sub_len=58;
 % data = (data - mean(data)) ...
 %                         / std(data, 1);
 must_dim = [];
@@ -75,11 +75,7 @@ exc_dim = [];
 
 %% extract motif using the MDL-based unconstrained search method
 n_bit = 4; % number of bit for discretization
-<<<<<<< HEAD
-k = 2;%2; % number of motif to retrieve
-=======
 k = inf;%2; % number of motif to retrieve
->>>>>>> c9493168df7eb30547887ca7b73d56b76d8194f2
 [motif_idx, motif_dim] = unconstrain_search(...
     data, sub_len, pro_mul, pro_idx, n_bit, k);
 plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
@@ -87,7 +83,13 @@ plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
 
 %% bag of motifs using MDL unconstrained search
 MotifBag = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
-size(MotifBag)
 for i=1:size(MotifBag,2)
     plot_motif_on_data(data, sub_len, MotifBag{i}.idx, MotifBag{i}.depd);
+end
+
+for i=1:size(MotifBag,2)
+    % apply matrix profile for the motif found
+    [pro_mul, pro_idx] = ...
+    mstamp(data, sub_len, must_dim, exc_dim);
+    % scan in all the matrtix profile for the motif to find all the minimum till the end of the  timeseries 
 end

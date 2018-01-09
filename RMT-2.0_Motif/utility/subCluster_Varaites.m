@@ -1,4 +1,4 @@
-function  subCluster_Varaites(saveFeaturesPath,TS_name,SizeofK,distanceUsed,typeofCluster,depdOverLapThreshold)
+function  timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,SizeofK,distanceUsed,typeofCluster,depdOverLapThreshold)
 %  % design as a row vector
 %             reOrgFeatures       = [];
 %             currentFeatureLabel = [];
@@ -14,7 +14,7 @@ load(savepath1);
 load(savepath2);
 load(savepath3);
 
-
+timeforSubclustering=[];
 for timeOctave = 1:DeOctTime
     for depdOctave = 1:DeOctDepd
         if(exist(strcat(ClusterPath, '\Cluster_IM_', TS_name, '_DepO_', num2str(depdOctave), '_TimeO_', num2str(timeOctave), '.csv'), 'file')~=0)
@@ -39,7 +39,8 @@ for timeOctave = 1:DeOctTime
             reorgCentroids      = [];
             currentFeatDepd     = [];
             prevFeaturesLabel   = [];
-
+            
+            tic;
             for clusterIndex = 1 : numberOfClusters
                 % get the features from current clutser index
                 clusterFeatures = X(:, C == clusterLabel(clusterIndex));
@@ -62,7 +63,7 @@ for timeOctave = 1:DeOctTime
                         Depd_OverLapping(dataFeatureIndex, queryFeatureIndex) = overlap;
                     end
                 end
-                Depd_OverLapping = Depd_OverLapping > depdOverLapThreshold;
+                Depd_OverLapping = Depd_OverLapping >= depdOverLapThreshold;
                 stopFlag= 0;
                 while(stopFlag == 0 )
                     columnSum = sum(Depd_OverLapping); % row vector
@@ -91,6 +92,7 @@ for timeOctave = 1:DeOctTime
                     end
                 end
             end % end marking current cluster at interesting octave
+            timeforSubclustering=[timeforSubclustering,toc];
             if(exist([ClusterPath,'\SplitVariate\'],'dir')==0)
                 mkdir([ClusterPath,'\SplitVariate\']);
             end
