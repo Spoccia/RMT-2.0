@@ -63,7 +63,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
                     mu=mu';
                 end
                 
-                tic;
+               
                 
                 clusterLabel = unique(C);
                 nCluster     = length(clusterLabel);
@@ -71,7 +71,9 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %                 dataid=zeros(size(data,1),size(data,2),nCluster);
 %                 histdataid=zeros(size(data,1),size(data,2),nCluster);
 %                 FeatureLocation=zeros(size(data,1),size(data,2),3,nCluster);
+TimeforPruningSubClustering_0=[];
                 for i=1:nCluster
+                     tic;
 %                     Centroid_desriptor = mu(:, i);
                     %% features and depscale of each feature in cluster i
                     A = X(:, C == clusterLabel(i));
@@ -94,7 +96,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %                     end
                     IdxClFeat=zeros(1,numfeatures);
                     if(strcmp(prunewith,'Descriptor')==1 || strcmp(prunewith,'Amplitude_Descriptor')==1 ||strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
-                       'Prune using just Descriptors'
+%                        'Prune using just Descriptors'
                         for k1=1:numfeatures
                             IdxClFeat(1,k1)= sum(distancecentroid(:,k1) <= single_std_cluster*3)==128;
                         end
@@ -132,10 +134,11 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
                      A1=A;
                      B1=B;
                      
-                     TimeforPruningSubClustering=[TimeforPruningSubClustering,toc];
+                     
                     if (size(A1,2)>0)
                         timescope= A1(4,:)*3;
                     end
+                    TimeforPruningSubClustering_0=[TimeforPruningSubClustering_0,toc];
                     if(size(A1,2)>1)
                         MotifBag{i}.features=A1;
                         StartID= round(A1(2,:)-timescope);
@@ -154,14 +157,14 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
                         end
 %                         figure1=figure;
                         figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
-                        filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.jpg']
+                        filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.jpg'];
                         saveas(figure1,filename);
                         prunedFeaturesCluster=[prunedFeaturesCluster,A1];
                         prunedDepScale = [prunedDepScale,B1];
                         prunedsymbols = ones(1,size(A1,2))*i;
                         prunedCluster=[prunedCluster,prunedsymbols];
                     end
-
+           
                     
 
 %                     tempMinScope1 = min(3*A1(4, :)); % temporal scope of the features in cluster i
@@ -214,6 +217,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %                     end
 %                     
                 end
+                 TimeforPruningSubClustering=[TimeforPruningSubClustering,sum(TimeforPruningSubClustering_0)];
                 if(exist(PrunedClusterPath,'dir')==0)
                     mkdir(PrunedClusterPath);
                 end    

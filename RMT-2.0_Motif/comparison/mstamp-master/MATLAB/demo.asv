@@ -9,7 +9,7 @@
 
 clear
 clc
-close all;
+
 load('toy_data.mat');
 
 %% compute the multidimensional matrix profile
@@ -95,7 +95,7 @@ for TSnumber=1:184
         n_bit = 4; % number of bit for discretization
         k = inf;%2; % number of motif to retrieve
         [motif_idx, motif_dim] = unconstrain_search(...
-            data, sub_len, pro_mul, pro_idx, n_bit, k,2);
+            data, sub_len, pro_mul, pro_idx, n_bit, k);
 %         plot_motif_on_data(data, sub_len, motif_idx, motif_dim);
 
 
@@ -110,7 +110,7 @@ for TSnumber=1:184
            filename=[ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\TS_',TS_name,'BoM_',num2str(i),'.jpg'];
            saveas(figure1,filename);
         end
- close all;
+
 %         for i=1:size(MotifBag,2)
 %             % apply matrix profile for the motif found
 %             [pro_mul, pro_idx] = ...
@@ -121,7 +121,7 @@ for TSnumber=1:184
     datasave= [ImageSavingPath,TS_name,'\'];
     save ([datasave,'Motif_output_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag');
     xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],Time);
-   
+    
     % save time and all the structures
     
 end

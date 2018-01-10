@@ -41,9 +41,10 @@ for k=1:DeOctTime
                 mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
                 clusterLabel = unique(C);
                 nCluster     = length(clusterLabel);
-                dataid=zeros(size(data,1),size(data,2),nCluster);
-                histdataid=zeros(size(data,1),size(data,2),nCluster);
-                FeatureLocation=zeros(size(data,1),size(data,2),3,nCluster);
+%                 dataid=zeros(size(data,1),size(data,2),nCluster);
+%                 histdataid=zeros(size(data,1),size(data,2),nCluster);
+%                 FeatureLocation=zeros(size(data,1),size(data,2),3,nCluster);
+                MotifBag=[];
                 for ii=1:nCluster
                     A = X(:, C == clusterLabel(ii));
                     B =dpscale(:,C == clusterLabel(ii));
@@ -56,52 +57,69 @@ for k=1:DeOctTime
                     if (size(A,2)>0)
                         timescope= A(4,:)*3;
                     end
-                    %% close  this portion of code
-                    % try to add square under the feature
-                    Starting = zeros(size(data,1),size(data,2));
-                    Ending   = zeros(size(data,1),size(data,2));
-                    
-                    for iii=1: size(A,2)
-                        intervaltime=(round((A(2,iii)-timescope(iii))) : (round((A(2,iii)+timescope(iii)))));
-                        dataid(B((B(:,iii)>0),iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))),ii)= data(B(B(:,iii)>0,iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
-                        histdataid(B((B(:,iii)>0),iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))),ii)= histdataimage(B(B(:,iii)>0,iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
-                        
-                        Xs=min(intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
-                        Xe=max(intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
-                        
-                        FeatureLocation(B((B(:,iii)>0),iii),Xs,1,ii)= Starting(B((B(:,iii)>0),iii),Xs)+1;
-                        FeatureLocation(B((B(:,iii)>0),iii),Xe,2,ii)= Ending(B((B(:,iii)>0),iii),Xe)+1;
-                        FeatureLocation(B((B(:,iii)>0),iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))),3,ii)= data(B(B(:,iii)>0,iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
-                      
-                        Starting(B((B(:,iii)>0),iii),Xs) = Starting(B((B(:,iii)>0),iii),Xs)+1;
-                        Starting(min(B((B(:,iii)>0),iii)),(Xs):(Xe)) = Starting(min(B((B(:,iii)>0),iii)),(Xs):(Xe))+1;
-                        Ending(B((B(:,iii)>0),iii),Xe) = Ending(B((B(:,iii)>0),iii),Xe)+1;
-                        Ending(max(B((B(:,iii)>0),iii)),(Xs):(Xe)) = Ending(max(B((B(:,iii)>0),iii)),(Xs):(Xe))+1;
+                    MotifBag{ii}.features=A;
+                    StartID= round(A(2,:)-timescope);
+                    StartID(StartID <1)=1;
+                    MotifBag{ii}.startIdx = StartID';%round(A1(2,:)-timescope)';
+                    for iterator=1:size(MotifBag{ii}.startIdx,1)
+                        MotifBag{ii}.depd{iterator}=B(B(:,iterator)>0,iterator);
+                        intervaltime=(round((A(2,iterator)-timescope(iterator))) : (round((A(2,iterator)+timescope(iterator)))));
+                        MotifBag{ii}.Tscope{iterator}= size(intervaltime(intervaltime>0 & intervaltime<=size(data,2)),2);%2* timescope(:);
                     end
-                    
-                    if(size(A,2)>1)
-                        if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),],'dir')==0)
-                            mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
-                        end
-                        
-                        Starting= Starting*255;
-                        Ending= Ending*255;
-                        Combined(:,:,1)= uint8(Ending);%red
-                        Combined(:,:,2)= uint8(Starting);%red
-                        Combined(:,:,3)= (histdataid(:,:,ii));%blue
-                        %                         figure
-                        %                         imshow(Combined)
-                        
-                        imwrite(uint8(histdataid(:,:,ii)),[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(ii),'.jpg']);
-                        imwrite(uint8(dataid(:,:,ii)),[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\Im_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(ii),'.jpg']);
-                        imwrite(Combined,[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\CHistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(ii),'.jpg']);
+                    if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),],'dir')==0)
+                        mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
                     end
+                    figure1 = plot_RMTmotif_on_data(data, MotifBag{ii}.startIdx, MotifBag{ii}.depd,MotifBag{ii}.Tscope);
+                    filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.jpg'];
+                    saveas(figure1,filename);
+%                     %% close  this portion of code
+%                     % try to add square under the feature
+%                     Starting = zeros(size(data,1),size(data,2));
+%                     Ending   = zeros(size(data,1),size(data,2));
+%                     
+%                     for iii=1: size(A,2)
+%                         intervaltime=(round((A(2,iii)-timescope(iii))) : (round((A(2,iii)+timescope(iii)))));
+%                         dataid(B((B(:,iii)>0),iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))),ii)= data(B(B(:,iii)>0,iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
+%                         histdataid(B((B(:,iii)>0),iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))),ii)= histdataimage(B(B(:,iii)>0,iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
+%                         
+%                         Xs=min(intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
+%                         Xe=max(intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
+%                         
+%                         FeatureLocation(B((B(:,iii)>0),iii),Xs,1,ii)= Starting(B((B(:,iii)>0),iii),Xs)+1;
+%                         FeatureLocation(B((B(:,iii)>0),iii),Xe,2,ii)= Ending(B((B(:,iii)>0),iii),Xe)+1;
+%                         FeatureLocation(B((B(:,iii)>0),iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))),3,ii)= data(B(B(:,iii)>0,iii),intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
+%                       
+%                         Starting(B((B(:,iii)>0),iii),Xs) = Starting(B((B(:,iii)>0),iii),Xs)+1;
+%                         Starting(min(B((B(:,iii)>0),iii)),(Xs):(Xe)) = Starting(min(B((B(:,iii)>0),iii)),(Xs):(Xe))+1;
+%                         Ending(B((B(:,iii)>0),iii),Xe) = Ending(B((B(:,iii)>0),iii),Xe)+1;
+%                         Ending(max(B((B(:,iii)>0),iii)),(Xs):(Xe)) = Ending(max(B((B(:,iii)>0),iii)),(Xs):(Xe))+1;
+%                     end
+%                     
+%                     if(size(A,2)>1)
+%                         if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),],'dir')==0)
+%                             mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+%                         end
+%                         
+%                         Starting= Starting*255;
+%                         Ending= Ending*255;
+%                         Combined(:,:,1)= uint8(Ending);%red
+%                         Combined(:,:,2)= uint8(Starting);%red
+%                         Combined(:,:,3)= (histdataid(:,:,ii));%blue
+%                         %                         figure
+%                         %                         imshow(Combined)
+%                         
+%                         imwrite(uint8(histdataid(:,:,ii)),[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(ii),'.jpg']);
+%                         imwrite(uint8(dataid(:,:,ii)),[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\Im_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(ii),'.jpg']);
+%                         imwrite(Combined,[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\CHistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_Cl_',num2str(ii),'.jpg']);
+%                     end
                 end
                 if(exist(RebSeriesPath,'dir')==0)
                     mkdir (RebSeriesPath);
                 end
-                save(strcat(RebSeriesPath,'Series_Feature_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_KC_',num2str(nCluster),'.mat'),'FeatureLocation');
-                save(strcat(RebSeriesPath,'RebSeries_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_dic_',num2str(nCluster),'.mat'),'dataid');
+                save(strcat(RebSeriesPath,'MotifBag_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_KC_',num2str(nCluster),'.mat'),'MotifBag');
+                close all;
+%                 save(strcat(RebSeriesPath,'Series_Feature_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_KC_',num2str(nCluster),'.mat'),'FeatureLocation');
+%                 save(strcat(RebSeriesPath,'RebSeries_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_dic_',num2str(nCluster),'.mat'),'dataid');
             end
         end
     end

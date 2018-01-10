@@ -42,9 +42,9 @@ for k=1:DeOctTime
             mu = csvread(strcat(ClusterPath,'\Centroids_IM_',imagename,'_OT_',num2str(k),'_OD_',num2str(j),'.csv'));
             clusterLabel = unique(C);
             nCluster     = length(clusterLabel);
-            dataid=zeros(size(data,1),size(data,2),nCluster);
-            histdataid=zeros(size(data,1),size(data,2),nCluster);
-            FeatureLocation=zeros(size(data,1),size(data,2),3,nCluster);
+%             dataid=zeros(size(data,1),size(data,2),nCluster);
+%             histdataid=zeros(size(data,1),size(data,2),nCluster);
+%             FeatureLocation=zeros(size(data,1),size(data,2),3,nCluster);
             MotifBag=[];
             for ii=1:nCluster
                 A = X(:, C == clusterLabel(ii));
@@ -63,12 +63,15 @@ for k=1:DeOctTime
                 StartID(StartID <1)=1;
                 MotifBag{ii}.startIdx = StartID';%round(A1(2,:)-timescope)';
                 for iterator=1:size(MotifBag{ii}.startIdx,1)
-                    MotifBag{ii}.depd{iterator}=B1(B1(:,iterator)>0,iterator);
-                    intervaltime=(round((A1(2,iterator)-timescope(iterator))) : (round((A1(2,iterator)+timescope(iterator)))));
+                    MotifBag{ii}.depd{iterator}=B(B(:,iterator)>0,iterator);
+                    intervaltime=(round((A(2,iterator)-timescope(iterator))) : (round((A(2,iterator)+timescope(iterator)))));
                     MotifBag{ii}.Tscope{iterator}= size(intervaltime(intervaltime>0 & intervaltime<=size(data,2)),2);%2* timescope(:);
                 end
-                figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope)
-                filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.jpg']
+                if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),],'dir')==0)
+                    mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                end
+                figure1 = plot_RMTmotif_on_data(data, MotifBag{ii}.startIdx, MotifBag{ii}.depd,MotifBag{ii}.Tscope);
+                filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.jpg'];
                 saveas(figure1,filename);
                 %                     %% close  this portion of code
                 %                     % try to add square under the feature
@@ -115,6 +118,7 @@ for k=1:DeOctTime
                 mkdir (RebSeriesPath);
             end
             save(strcat(RebSeriesPath,'MotifBag_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_KC_',num2str(nCluster),'.mat'),'MotifBag');
+            close all;
             %                 save(strcat(RebSeriesPath,'Series_Feature_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_KC_',num2str(nCluster),'.mat'),'FeatureLocation');
             %                 save(strcat(RebSeriesPath,'RebSeries_',imagename,'_Toctave_',num2str(k),'_Doctave_',num2str(j),'_dic_',num2str(nCluster),'.mat'),'dataid');
             %             end

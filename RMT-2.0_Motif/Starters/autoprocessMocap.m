@@ -11,13 +11,13 @@ FeaturesRM ='RMT';%'RME';%
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
 createDependencyScale = 0;%1;
-Cluster = 0;%1;%
-CreateSubCluster=0;
+Cluster = 1;%1;%
+CreateSubCluster=1;
 
 % motifidentificationBP = 0; %2;% work on all the features
 % pruneCluster = 0;
 
-motifidentificationBP_MatlabDescr = 0;%1
+motifidentificationBP_MatlabDescr = 1;%1
 pruneClusterDescrMatlab = 1;%1;%0
 
 % motifidentification = 0; % work on pruned features
@@ -51,15 +51,15 @@ K_valuesCalc=SizeofK;
 
 KindofFeatures= 0; % 1 for DoG 0 for DoE
 
-for TSnumber = 1: 184
-    TEST =num2str(TSnumber); %'1';%
+for TSnumber = 11: 184
+    TEST =num2str(TSnumber) %'1';%
     TS_name=TEST;%num2str(TSnumber); % to iterate from 1 to k
     distanceVaraiteTS=[datasetPath,'location\',TS_name,'_Coordinates.csv'];%'HopMatrix_multistory.csv'];
     
     TotClusterTime =[];
     TimeforSubClustering=[];
     TimeforPruningSubClustering=[];
-    TimeforPruningCluster=[];
+    TimeforPruningClustering=[];
     % sift parameters
     % x - variate
     % y - time
@@ -495,7 +495,7 @@ for TSnumber = 1: 184
         end
         SizeFeaturesforImages=[SizeFeaturesforImages;a];
         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
-        xslwrite(strcat(saveFeaturesPath,'time.xls',[TotClusterTime;TimeforSubClustering;TimeforPruningSubClustering;TimeforPruningCluster]);
+        xlswrite(strcat(saveFeaturesPath,'time.xls'),[TotClusterTime;TimeforSubClustering;TimeforPruningSubClustering;TimeforPruningClustering]);
     end
 %     % Features Extraction
 %     if(FeatureExtractionFlag==1)

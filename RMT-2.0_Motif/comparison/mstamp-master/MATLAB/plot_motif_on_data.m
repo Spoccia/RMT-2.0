@@ -15,8 +15,8 @@
 % http://www.cs.ucr.edu/~eamonn/MatrixProfile.html
 %
 
-function plot_motif_on_data(data, sub_len, motif_idx, motif_dim)
-figure();
+function figure1 = plot_motif_on_data(data, sub_len, motif_idx, motif_dim)
+figure1=figure();
 ax = axes();
 hold(ax, 'on');
 
