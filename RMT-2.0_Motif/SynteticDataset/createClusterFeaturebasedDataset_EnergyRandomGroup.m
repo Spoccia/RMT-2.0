@@ -8,6 +8,7 @@ TEST = ['Mocap_test', TS_name];
 
 FeaturePath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/RMTFeatures';
 FeaturePath = [FeaturePath, '/', num2str(TimeSeriesIndex), '/'];
+motifInjectionOption = 'Random'; % 'RoundRobin'
 kindofBasicTS = 'randomWalk'; %'Sinusoidal';%'flat';%
 if(strcmp(kindofBasicTS, 'flat') == 1)
     KindOfDataset = 'FlatTS_MultiFeatureDiffClusters\';
@@ -61,20 +62,14 @@ featuresOfInterest = featuresOfInterest';
 sortedIndex = sortedIndex';
 dpscale = dpscale(:, sortedIndex);
 
-myRandom = pickRandomFeatures(featuresOfInterest, dpscale, nummotifs);
-
-% while(timeLengthFlag | variateFlag)
-%     myRandom = randi([1, columns], 1, nummotifs);
-%     [timeLengthFlag, variateFlag] = DifferentTimeLengthsVariate(myRandom, featuresOfInterest, dpscale);
-%     pickRandomFeatures(featuresOfInterest, dpscale);
-%     % variateFlag= DifferentVariates(myRandom, featuresOfInterest, depdScale);
-% end
+% randomly pick range pivot based on size of the range
+[myRandom, sortedRangePivotIndex] = pickRandomFeatures(featuresOfInterest, dpscale, nummotifs);
 
 MotifsFeatures = [];
 motifdpscale = [];
 
 % loop feature index from previously created structure-myRandom
-for ii=1:nummotifs
+for ii = 1 : nummotifs
     A = featuresOfInterest(:, myRandom(ii));
     B = dpscale(:, myRandom(ii));
     MotifsFeatures = [MotifsFeatures, A];
@@ -98,18 +93,21 @@ end
 
 origRW = rndWalks;
 
-% FeatPositions: 
+% FeatPositions:
 % class label, time center of original features, time start, time end
-FeatPositions = zeros(NumInstances, 4); 
-% Step = floor(datacoln / NumInstances); % avoid injecting features in the same position
+FeatPositions = zeros(NumInstances, 4);
 Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in the same position
 pStep = 0; % count the injection location
 
 for ii = 1 : NumInstances
-    i = randi([1, size(A, 2)], 1, 1);
+    if(strcmp(motifInjectionOption, 'RoundRobin') == 1)
+        i = mod(ii, size(myRandom, 2));
+    else
+        i = randi([1, size(A, 2)], 1, 1);
+    end
     intervaltime = (max(round((A(2, i) - timescope(i)), 0)) : (min(round((A(2, i) + timescope(i))), size(data, 2)))); % feature time scope (integer)
-    % motifData = data(:, intervaltime((intervaltime > 0 & intervaltime <= size(data, 2)))); 
-    motifData = data(:, intervaltime); 
+    % motifData = data(:, intervaltime((intervaltime > 0 & intervaltime <= size(data, 2))));
+    motifData = data(:, intervaltime);
     [~, motifclmn] = size(motifData);
     
     % random select the injection position

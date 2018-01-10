@@ -59,7 +59,7 @@ featuresOfInterest = featuresOfInterest';
 featuresOfInterest = featuresOfInterest';
 % re-arrange depdscale index
 sortedIndex = sortedIndex';
-dpscale = dpscale(sortedIndex);
+dpscale = dpscale(:, sortedIndex);
 
 myRandom = pickRandomFeatures(featuresOfInterest, dpscale, nummotifs);
 
@@ -93,7 +93,7 @@ B = motifdpscale;
 timescope = A(4, :) * 3; %+offSpace;
 
 if(strcmp(kindofBasicTS, 'randomWalk') == 1)
-    rndWalks = rndWalkGeneration(size(data,1), size(data,2)); % generate random walk z-normalized
+    rndWalks = rndWalkGeneration(size(data,1), 2 * size(data,2)); % generate random walk z-normalized
 end
 
 origRW = rndWalks;
@@ -101,17 +101,18 @@ origRW = rndWalks;
 % FeatPositions: 
 % class label, time center of original features, time start, time end
 FeatPositions = zeros(NumInstances, 4); 
-Step = floor(datacoln / NumInstances); % avoid injecting features in the same position
+Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in the same position
 pStep = 0; % count the injection location
 
 for ii = 1 : NumInstances
     i = randi([1, size(A, 2)], 1, 1);
-    intervaltime = (max(round((A(2, i) - timescope(i)), 0)) : (round((A(2, i) + timescope(i))))); % feature time scope (integer)
-    motifData = data(:, intervaltime((intervaltime > 0 & intervaltime <= size(data, 2)))); 
+    intervaltime = (max(round((A(2, i) - timescope(i)), 0)) : (min(round((A(2, i) + timescope(i))), size(data, 2)))); % feature time scope (integer)
+    % motifData = data(:, intervaltime((intervaltime > 0 & intervaltime <= size(data, 2)))); 
+    motifData = data(:, intervaltime); 
     [~, motifclmn] = size(motifData);
     
     % random select the injection position
-    starter = randi([pStep, pStep + Step - motifclmn],1,1);
+    starter = randi([pStep, max(pStep + Step - motifclmn, 0)],1,1);
     FeatPositions(ii,:) = [i, A(2,i), starter, starter + motifclmn - 1];
     
     if(strcmp(kindofBasicTS, 'randomWalk') == 1 | strcmp(kindofBasicTS, 'flat') == 1)
