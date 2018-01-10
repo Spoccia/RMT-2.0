@@ -10,6 +10,7 @@
 clear
 clc
 close all;
+saveMotifImages=1;
 load('toy_data.mat');
 
 %% compute the multidimensional matrix profile
@@ -100,28 +101,32 @@ for TSnumber=1:184
 
 
         %% bag of motifs using MDL unconstrained search
-        MotifBag = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
+        MotifBag_mstamp = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
+        MotifBag=MotifBag_mstamp;
         Time=[Time,toc];
-        for i=1:size(MotifBag,2)
-           figure1 = plot_motif_on_data(data, sub_len, MotifBag{i}.idx, MotifBag{i}.depd);
-           if(exist([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\'],'dir')==0)
-                mkdir([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\']);
-           end
-           filename=[ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\TS_',TS_name,'BoM_',num2str(i),'.jpg'];
-           saveas(figure1,filename);
+        if(saveMotifImages==1)
+            for i=1:size(MotifBag,2)
+               figure1 = plot_motif_on_data(data, sub_len, MotifBag{i}.idx, MotifBag{i}.depd);
+               if(exist([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\'],'dir')==0)
+                    mkdir([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\']);
+               end
+               filename=[ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\TS_',TS_name,'BoM_',num2str(i),'.jpg'];
+               saveas(figure1,filename);
+            end
+            close all;
         end
- close all;
 %         for i=1:size(MotifBag,2)
 %             % apply matrix profile for the motif found
 %             [pro_mul, pro_idx] = ...
 %             mstamp(data, sub_len, must_dim, exc_dim);
 %             % scan in all the matrtix profile for the motif to find all the minimum till the end of the  timeseries 
 %         end
-    end
     datasave= [ImageSavingPath,TS_name,'\'];
-    save ([datasave,'Motif_output_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag');
+    save ([datasave,'Motif_output_',TS_name,'Lenght_',num2str(sub_len),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag_mstamp');
     xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],Time);
-   
+    clc;
+    end
+
     % save time and all the structures
     
 end

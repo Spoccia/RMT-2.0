@@ -13,6 +13,7 @@
 
 function figure1 = plot_RMTmotif_on_data(data, motif_idx, motif_dim,motif_lenght)
 figure1=figure();
+set(figure1, 'Visible', 'off');
 ax = axes();
 hold(ax, 'on');
 data =data';

@@ -459,14 +459,14 @@ for TSnumber = 55: 184
 %         ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM );
 %     end
     if(motifidentificationBP_MatlabDescr ==1)
-        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,0);
-        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,0);
+        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
+        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
     end
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,0);
-        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,0);
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
     end
     
 %     if(pruneClusterDescrMatlab==2)

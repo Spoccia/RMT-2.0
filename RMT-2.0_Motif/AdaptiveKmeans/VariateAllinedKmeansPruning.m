@@ -1,4 +1,4 @@
-function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage,FeaturesRM )
+function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage,FeaturesRM,saveMotifImages )
 %KMEANSPRUNING Summary of this function goes here
 % imagepath=path of the original timeseries
 % specificimagepath= ppath to go inside  where the dataset is located
@@ -152,13 +152,15 @@ TimeforPruningSubClustering_0=[];
                             intervaltime=(round((A1(2,iterator)-timescope(iterator))) : (round((A1(2,iterator)+timescope(iterator)))));  
                             MotifBag{i}.Tscope{iterator}= size(intervaltime(intervaltime>0 & intervaltime<=size(data,2)),2);%2* timescope(:);
                         end
-                        if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
-                            mkdir([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                        if(saveMotifImages==1)
+                            if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
+                                mkdir([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                            end
+    %                         figure1=figure;
+                            figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
+                            filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.jpg'];
+                            saveas(figure1,filename);
                         end
-%                         figure1=figure;
-                        figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
-                        filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.jpg'];
-                        saveas(figure1,filename);
                         prunedFeaturesCluster=[prunedFeaturesCluster,A1];
                         prunedDepScale = [prunedDepScale,B1];
                         prunedsymbols = ones(1,size(A1,2))*i;

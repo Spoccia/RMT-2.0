@@ -17,6 +17,7 @@
 
 function figure1 = plot_motif_on_data(data, sub_len, motif_idx, motif_dim)
 figure1=figure();
+set(figure1, 'Visible', 'off');
 ax = axes();
 hold(ax, 'on');
 

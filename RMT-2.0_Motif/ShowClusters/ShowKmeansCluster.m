@@ -1,4 +1,4 @@
-function [ output_args ] = ShowKmeansCluster(TEST,imagepath,specificimagepath,imagename,K_valuesCalc,distanceUsed,typeofCluster,histdataimage,FeaturesRM )
+function [ output_args ] = ShowKmeansCluster(TEST,imagepath,specificimagepath,imagename,K_valuesCalc,distanceUsed,typeofCluster,histdataimage,FeaturesRM,saveMotifImages )
 %SHOWKMEANSCLUSTER Summary of this function goes here
 %   Detailed explanation goes here
 % if (strcmp(typeofCluster,'ClusterMatlab')~=1)
@@ -66,12 +66,16 @@ for k=1:DeOctTime
                         intervaltime=(round((A(2,iterator)-timescope(iterator))) : (round((A(2,iterator)+timescope(iterator)))));
                         MotifBag{ii}.Tscope{iterator}= size(intervaltime(intervaltime>0 & intervaltime<=size(data,2)),2);%2* timescope(:);
                     end
-                    if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),],'dir')==0)
-                        mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                    if (saveMotifImages ==1 )
+                        if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),],'dir')==0)
+                            mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                        end
+
+                        figure1 = plot_RMTmotif_on_data(data, MotifBag{ii}.startIdx, MotifBag{ii}.depd,MotifBag{ii}.Tscope);
+                        filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.jpg'];
+                        saveas(figure1,filename);
                     end
-                    figure1 = plot_RMTmotif_on_data(data, MotifBag{ii}.startIdx, MotifBag{ii}.depd,MotifBag{ii}.Tscope);
-                    filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.jpg'];
-                    saveas(figure1,filename);
+                    
 %                     %% close  this portion of code
 %                     % try to add square under the feature
 %                     Starting = zeros(size(data,1),size(data,2));
