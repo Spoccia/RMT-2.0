@@ -51,7 +51,7 @@ K_valuesCalc=SizeofK;
 
 KindofFeatures= 0; % 1 for DoG 0 for DoE
 
-for TSnumber = 55: 184
+for TSnumber = 100: 184
     TEST =num2str(TSnumber) %'1';%
     TS_name=TEST;%num2str(TSnumber); % to iterate from 1 to k
     distanceVaraiteTS=[datasetPath,'location\',TS_name,'_Coordinates.csv'];%'HopMatrix_multistory.csv'];

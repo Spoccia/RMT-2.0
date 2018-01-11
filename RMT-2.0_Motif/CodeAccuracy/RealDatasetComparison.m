@@ -6,13 +6,13 @@ clc;
 path_MStamp='D:\Motif_Results\Datasets\Mocap\MStamp\';
 pathRMT= 'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
 SavingResult='D:\Motif_Results\Datasets\Mocap\Results\';
-TsNumber=10;%184;
+TsNumber=20;%184;
 MstampSize=[29,58];
 Num_OD=2;
-SplitVariate='SplitVariate\';
-AterPruning='AP_VA';%'AP';
+SplitVariate='';%'SplitVariate\';%
+AterPruning='AP';%'AP_VA';%
 RMT_clusterName='Cluster_Akmeans\';
-for TS_id = 1: TsNumber
+for TS_id = 2: TsNumber
     for sizeid= 1:length(MstampSize)
         TsName= num2str(TS_id);
         load([path_MStamp,TsName,'\Motif_output_',TsName,'Lenght_',num2str(MstampSize(sizeid)),'.mat']);

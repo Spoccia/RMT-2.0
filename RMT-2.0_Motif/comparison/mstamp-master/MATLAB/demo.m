@@ -10,8 +10,8 @@
 clear
 clc
 close all;
-saveMotifImages=1;
-load('toy_data.mat');
+saveMotifImages=0;
+% load('toy_data.mat');
 
 %% compute the multidimensional matrix profile
 % here we provided three variation of the mSTAMP algorithm
@@ -23,7 +23,7 @@ datasetPath= 'D:\Motif_Results\Datasets\Mocap\';
 ImageSavingPath='D:\Motif_Results\Datasets\Mocap\MStamp\';
 FeaturesRM='MStamp';
 sublenght=[29,58];
-for TSnumber=1:184
+for TSnumber=20:184
     TEST =num2str(TSnumber)
     TS_name=TEST;
     data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
@@ -104,12 +104,13 @@ for TSnumber=1:184
         MotifBag_mstamp = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
         MotifBag=MotifBag_mstamp;
         Time=[Time,toc];
+        if(exist([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\'],'dir')==0)
+            mkdir([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\']);
+        end
         if(saveMotifImages==1)
             for i=1:size(MotifBag,2)
                figure1 = plot_motif_on_data(data, sub_len, MotifBag{i}.idx, MotifBag{i}.depd);
-               if(exist([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\'],'dir')==0)
-                    mkdir([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\']);
-               end
+
                filename=[ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\TS_',TS_name,'BoM_',num2str(i),'.jpg'];
                saveas(figure1,filename);
             end
