@@ -11,7 +11,7 @@ end
 DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 DestLocationPath = 'D:\Motif_Results\Datasets\SynteticDataset\location';
 sinFreq=1;
-TEST = 'Mocap_test5';
+TEST = 'Mocap_test2';
 
 TS_name = num2str(1);
 
@@ -89,12 +89,8 @@ for ii =1:NumInstances
     if(strcmp(kindofBasicTS,'randomWalk')==1 | strcmp(kindofBasicTS,'flat')==1)
         valueRND  = rndWalks(:,starter);
         valueM = motifData(:,1);
-        scaleValues = valueM - valueRND;
-        M=motifData;
-        for variateiterate = 1: length(valueM);
-            M(variateiterate,:) = motifData(variateiterate,:)-scaleValues(variateiterate);
-        end
-        rndWalks(B((B(:,i)>0),i),starter:starter+motifclmn-1) = M(B(B(:,i)>0,i),:);%motifData(B(B(:,i)>0,i),:);
+        scaleValues =abs(valueRND)  
+        rndWalks(B((B(:,i)>0),i),starter:starter+motifclmn-1) = motifData(B(B(:,i)>0,i),:);
     elseif(strcmp(kindofBasicTS,'Sinusoidal')==1)       
        rndWalks(B((B(:,i)>0),i),starter:starter+motifclmn-1)  = motifData(B(B(:,i)>0,i),:);       
     end

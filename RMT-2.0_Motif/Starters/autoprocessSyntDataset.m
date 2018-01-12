@@ -39,7 +39,7 @@ ShiftFeatures = 0;
 % Path Parameters
 TEST ='test1';%'1';%
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test1';
+    TEST='Mocap_test5';
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -295,61 +295,61 @@ for TSnumber = 1: 1
         end
     end
     
-    % PruningEntropy
-    if (PruningEntropy==1)
-        % execute K-means Cluster k = DictionarySize;
-        % A Dictionary for each cluster
-        saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
-        
-        savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
-        savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
-        savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
-        load(savepath1);
-        load(savepath2);
-        load(savepath3);
-        
-        clustindfix=0;
-        NewFeatures=[];
-        for k=1:DeOctTime
-            for j=1:DeOctDepd
-                clustindfix=clustindfix+1;
-                indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
-                X=frame1(:,indexfeatureGroup);
-                A=X;
-                
-                NewDependency=[];
-                if(abs(size(X,2))>0)
-                    dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
-                    
-                    % Remove feature withentropy  near to 0
-                    EntropyTHR=0.01;
-                    [A,dpscale] = pruningEntropyThresh(A,dpscale,EntropyTHR,data);
-                    
-                    % pruningOverlapping features using and of overlapping
-                    overTime=0.8;
-                    overDep =0.8;
-                    criteria =3;
-                    %                   [A,dpscale]=pruneOverlappingFeaturesTimeandDep(A,dpscale,overTime,overDep,data);
-                    %                   [A,dpscale]=pruneOverlappingFeaturesTimeandDepEntropy(A,dpscale,overTime,overDep,data);
-                    %                   [A,dpscale]=PruningOverlappingFeaturesSize(A,dpscale,overTime,overDep,data);
-                    [A,dpscale] = Pre_PruningOverlappingFeaturesCombined(A,dpscale,overTime,overDep,data,criteria);
-                    
-                    if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\'),'dir')==0)
-                        mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\'));
-                    end
-                    csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\Features_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),A);%Matlab_
-                    csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),dpscale);%Matlab_
-                    NewFeatures=[NewFeatures,A];
-                    NewDependency= [NewDependency,dpscale];
-                    %                     [C,mu] = kmeans(A(11:size(X,1),:)',5,'Distance','cosine');
-                    %                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_
-                    %                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\\FeaturesPruned\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
-                end
-            end
-        end
-        frame1=NewFeatures;
-        save(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\','feature_',TS_name,'.mat'),'data', 'gss1', 'frame1','depd1');
-    end
+%     % PruningEntropy
+%     if (PruningEntropy==1)
+%         % execute K-means Cluster k = DictionarySize;
+%         % A Dictionary for each cluster
+%         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
+%         
+%         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
+%         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
+%         savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
+%         load(savepath1);
+%         load(savepath2);
+%         load(savepath3);
+%         
+%         clustindfix=0;
+%         NewFeatures=[];
+%         for k=1:DeOctTime
+%             for j=1:DeOctDepd
+%                 clustindfix=clustindfix+1;
+%                 indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
+%                 X=frame1(:,indexfeatureGroup);
+%                 A=X;
+%                 
+%                 NewDependency=[];
+%                 if(abs(size(X,2))>0)
+%                     dpscale = csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
+%                     
+%                     % Remove feature withentropy  near to 0
+%                     EntropyTHR=0.01;
+%                     [A,dpscale] = pruningEntropyThresh(A,dpscale,EntropyTHR,data);
+%                     
+%                     % pruningOverlapping features using and of overlapping
+%                     overTime=0.8;
+%                     overDep =0.8;
+%                     criteria =3;
+%                     %                   [A,dpscale]=pruneOverlappingFeaturesTimeandDep(A,dpscale,overTime,overDep,data);
+%                     %                   [A,dpscale]=pruneOverlappingFeaturesTimeandDepEntropy(A,dpscale,overTime,overDep,data);
+%                     %                   [A,dpscale]=PruningOverlappingFeaturesSize(A,dpscale,overTime,overDep,data);
+%                     [A,dpscale] = Pre_PruningOverlappingFeaturesCombined(A,dpscale,overTime,overDep,data,criteria);
+%                     
+%                     if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\'),'dir')==0)
+%                         mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\'));
+%                     end
+%                     csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\Features_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),A);%Matlab_
+%                     csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),dpscale);%Matlab_
+%                     NewFeatures=[NewFeatures,A];
+%                     NewDependency= [NewDependency,dpscale];
+%                     %                     [C,mu] = kmeans(A(11:size(X,1),:)',5,'Distance','cosine');
+%                     %                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\FeaturesPruned\Cluster_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),C);%Matlab_
+%                     %                     csvwrite(strcat(saveFeaturesPath,'DistancesDescriptors\\FeaturesPruned\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
+%                 end
+%             end
+%         end
+%         frame1=NewFeatures;
+%         save(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\','feature_',TS_name,'.mat'),'data', 'gss1', 'frame1','depd1');
+%     end
     
     % Clustering
     if (Cluster==1)
@@ -444,28 +444,39 @@ for TSnumber = 1: 1
         
     end
     
-    % save images before pruning
-    if(motifidentificationBP ==1)
-        ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM );
-    end
     if(motifidentificationBP_MatlabDescr ==1)
-        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
-        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
+        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,1);
+        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,1);
     end
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
-        VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
-    end
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);
+    end    
     
-    if(pruneClusterDescrMatlab==2)
-        KmeansPruning_overlappingcleaning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
-    end
-    
-    if (pruneCluster==1)
-        KmedoidsPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
-    end
+%     % save images before pruning
+%     if(motifidentificationBP ==1)
+%         ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM );
+%     end
+%     if(motifidentificationBP_MatlabDescr ==1)
+%         ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
+%         ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM);
+%     end
+%     
+%     % Prune the clusters
+%     if(pruneClusterDescrMatlab==1)
+%         KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+%         VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+%     end
+%     
+%     if(pruneClusterDescrMatlab==2)
+%         KmeansPruning_overlappingcleaning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+%     end
+%     
+%     if (pruneCluster==1)
+%         KmedoidsPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM);
+%     end
     
     if(savecaracteristics==1)
         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
