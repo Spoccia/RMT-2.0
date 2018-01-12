@@ -23,7 +23,7 @@ elseif(strcmp(kindofBasicTS, 'randomWalk') == 1)
 end
 
 % two values below not 1 or 0 at the same
-multiScaleFeatureInjection = 1; % 0;
+multiScaleFeatureInjection = 0; % 0;
 differentVariateGroupInjection = 1; % 0
 
 % DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
@@ -31,7 +31,7 @@ DestDataPath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/InjectedFe
 sinFreq = 1;
 
 % pick features from higher octaves
-DepO = 2;  % octave depd
+DepdO = 2;  % octave depd
 TimeO = 2; % octave time
 
 NumInstances = 10; % inject into 10 locations
@@ -39,7 +39,7 @@ dpscale = [];
 frame1 = [];
 
 % read the depd involved for the corresponding features
-dpscale = csvread(strcat(FeaturePath, 'DistancesDescriptor/DepdScale_IM_', TS_name, '_DepO_', num2str(DepO), '_TimeO_', num2str(TimeO), '.csv'));
+dpscale = csvread(strcat(FeaturePath, 'DistancesDescriptor/DepdScale_IM_', TS_name, '_DepO_', num2str(DepdO), '_TimeO_', num2str(TimeO), '.csv'));
 
 savepath1 = [FeaturePath, 'feature_', TS_name, '.mat'];
 savepath2 = [FeaturePath, 'idm_', TS_name, '.mat'];
@@ -48,8 +48,14 @@ load(savepath1);
 load(savepath2);
 load(savepath3);
 
+% load metadata graph
+metadataPath = [FeaturePath, 'idm_', num2str(NumInstances), '.mat'];
+idm = load(metadataPath);
+idm = idm.idm1;
+
+
 % So far only use features from higher octaves
-indexfeatureGroup = (frame1(6,:) == TimeO & frame1(5,:) == DepO);
+indexfeatureGroup = (frame1(6,:) == TimeO & frame1(5,:) == DepdO);
 featuresOfInterest = frame1(:, indexfeatureGroup);
 
 [rows, columns] = size(featuresOfInterest);
@@ -86,7 +92,7 @@ if(multiScaleFeatureInjection == 1)
     cutOffRate = 0.5;
     % pick features of different time scales
     [patternFeature, variates] = pickLargestTimeSimgaFeaturesCutOff(featuresOfInterest, dpscale, cutOffRate);
-    [rndWalks, FeatPositions] = featureInject(patternFeature, variates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data);
+    [rndWalks, FeatPositions] = featureInject(patternFeature, variates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
 end
 
 if(differentVariateGroupInjection == 1)
@@ -95,7 +101,7 @@ if(differentVariateGroupInjection == 1)
     
     % pick feature that covers the smallest portion of variates
     [patternFeature, variates] = pickSmallestVariateCoverageFeatures(featuresOfInterest, dpscale);
-    [rndWalks, FeatPositions] = featureInject(patternFeature, variates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data);
+    [rndWalks, FeatPositions] = featureInject(patternFeature, variates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
 end
 
 if(exist([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\'],'dir')==0)

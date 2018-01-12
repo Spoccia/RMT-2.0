@@ -12,10 +12,23 @@ Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in th
 
 if(sameVariateGroup == 0)
     % different variate group but same interval time
-    nonZeroDepdScale = depdScale(depdScale ~= 0);
+    myDepdScale = depdScale(depdScale ~= 0); 
     
+    variateSize = size(myDepdScale, 1);
     % compute variate group -- find variate group in graph, size same as myDepdScale
-    variateGroup = computeVariateGroup(nonZeroDepdScale, idm, DepdO, depdScale);
+    variateGroup = computeVariateGroup(idm, DepdO, );
+    variateGroup = [];
+    totalVariate = size(depdScale, 1);
+    while(DepdO > 0)
+        for i = 1 : totalVariate
+            
+            
+        
+        
+        variateGroup = [variateGroup, currentGroup];
+        DepdO = DepdO - 1;
+    end
+    
     
     for i = 1 : NumInstances
         timeScope = patternFeature(4) * 3;
@@ -25,16 +38,22 @@ if(sameVariateGroup == 0)
         
         % insert same feature at different variate groups
         starter = randi([pStep, max(pStep + Step - motifColumn, 0)],1,1);
-        FeatPositions(i, :) = [i, patternFeature(2), starter, starter + motifColumn - 1];
+        variateStartIndex = randi([1, size(depdScale, 1)], 1, 1);
+        FeatPositions(i,:) = [i, patternFeature(2), starter, starter + motifColumn - 1];
         
-        myDepdScale = variateGroup(:, mod(i, size(variateGroup, 2)) + 1);
-        
-        rndWalks(myDepdScale, starter : starter + motifColumn - 1) = motifData(myDepdScale, :); % inject the features into random walk time series data
+        myDepdScale = zeros(size(depdScale, 1), 1);
+        if(variateStartIndex + variateSize > size(myDepdScale, 1))
+            myDepdScale(variateStartIndex : end) = 1;
+            myDepdScale(1 : mod((variateStartIndex + variateSize), size(myDepdScale, 1))) = 1;
+        else
+            myDepdScale(variateStartIndex : variateStartIndex + variateSize) = 1;
+        end
+        rndWalks(myDepdScale(:) > 0, starter : starter + motifColumn - 1) = motifData(myDepdScale(:) > 0, :); % inject the features into random walk time series data
         pStep = pStep + Step;
     end
 else
     for i = 1 : NumInstances
-        % myDepdScale -- depd scales included are identical
+    % myDepdScale -- depd scales included are identical
         myDepdScale = depdScale(:, :) ~= 0;
         timeScope_1 = patternFeature(4, 1) * 3;
         timeScope_2 = patternFeature(4, 2) * 3;
