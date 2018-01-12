@@ -19,10 +19,10 @@ createDependencyScale = 1;%1;
 Cluster = 1;%1;%
 CreateSubCluster=1;
 
-motifidentificationBP = 0; %2;% work on all the features
+% motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 1;%1
 
-pruneCluster = 0;
+% pruneCluster = 0;
 pruneClusterDescrMatlab = 1;%1;%0
 
 motifidentification = 0; % work on pruned features
@@ -39,7 +39,7 @@ ShiftFeatures = 0;
 % Path Parameters
 TEST ='test1';%'1';%
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test4';
+    TEST='Mocap_test6';
 end
 % Global Variables
 SizeFeaturesforImages = [];

@@ -47,13 +47,13 @@ for i = 1:k
     for j = 1:tot_dim
         idx_2(j) = pro_idx(idx_1(j), j);
         motif_1 = data(idx_1(j):idx_1(j) + sub_len - 1, :);
-        if(isnan(   idx_2(j)))
-         bit_sz(j)= inf;
-         dim{j}= dim{j-1};
-        else
+%         if(isnan(   idx_2(j)))
+%          bit_sz(j)= inf;
+%          dim{j}= dim{j-1};
+%         else
         motif_2 = data(idx_2(j):idx_2(j) + sub_len - 1, :);
         [bit_sz(j), dim{j}] = get_bit_save(motif_1, motif_2, j, n_bit);
-        end
+%         end
     end
     [best_bit, min_idx] = min(bit_sz);
     if best_bit > base_bit

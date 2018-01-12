@@ -2,7 +2,7 @@ clc; clear;
 
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-TEST = 'Mocap_test3';
+TEST = 'Mocap_test4';
 
 FeaturesRM ='RMT';%'RME';%
 kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%

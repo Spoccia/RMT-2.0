@@ -10,7 +10,7 @@
 clear
 clc
 close all;
-saveMotifImages=0;
+saveMotifImages=1;
 % load('toy_data.mat');
 
 %% compute the multidimensional matrix profile
@@ -19,17 +19,18 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 % 
-datasetPath= 'D:\Motif_Results\Datasets\Mocap\';
-ImageSavingPath='D:\Motif_Results\Datasets\Mocap\MStamp\';
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\Datasets\Mocap\';
+ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%'D:\Motif_Results\Datasets\Mocap\MStamp\';
+
 FeaturesRM='MStamp';
-sublenght=[29,58];
-for TSnumber=20:184
-    TEST =num2str(TSnumber)
+sublenght= 59;%[29,58];
+% for TSnumber=20:184
+    TEST ='Mocap_test6';%num2str(TSnumber)
     TS_name=TEST;
     data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
 %     data = (data - mean(data)) ...
 %                                 / std(data, 1);
-    data=data';
+%     data=data';
 
     Time=[];
     pro_mul=[]; 
@@ -37,12 +38,12 @@ for TSnumber=20:184
     motif_idx=[];
     motif_dim=[];
     MotifBag=[];
-    for j= 1:2
+%     for j= 1:2
         tic;
-        sub_len=sublenght(j);
-        
+%         sub_len=sublenght(j);
+        sub_len=sublenght;
         must_dim = [];
-        exc_dim = [34,46]; % for mocap we have o exclude flat timeseries
+        exc_dim = [];%[34,46]; % for mocap we have o exclude flat timeseries
                            % if big portion of the timeseries is flat we have perhaps to exclude that variates  
         [pro_mul, pro_idx] = ...
             mstamp(data, sub_len, must_dim, exc_dim);
@@ -126,8 +127,8 @@ for TSnumber=20:184
     save ([datasave,'Motif_output_',TS_name,'Lenght_',num2str(sub_len),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag_mstamp');
     xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],Time);
     clc;
-    end
+%     end
 
     % save time and all the structures
     
-end
+% end
