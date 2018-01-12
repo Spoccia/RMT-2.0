@@ -31,14 +31,14 @@ Centroidpruned=[];
 if(AfterPruning==1)
     if(subcluster==0)
         featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\AP\Cluster_AKmeans\'];
-        load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat']);
+%          load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat']);
         Dependencypruned = csvread([featurespath,'\PrunedDepScaleFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         Featurepruned    = csvread([featurespath,'\PrunedFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         Clusterpruned = csvread([featurespath,'\PrunedCluster_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         Centroidpruned = csvread([featurespath,'\Centroids_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
     else
         featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\SplitVariate\AP_VA\Cluster_AKmeans\'];
-        load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat'])
+%         load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat'])
         Dependencypruned = csvread([featurespath,'\PrunedDepScaleFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         Featurepruned    = csvread([featurespath,'\PrunedFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         Clusterpruned = csvread([featurespath,'\PrunedCluster_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
@@ -51,7 +51,7 @@ else
     if(subcluster==0)
         featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\'];%AP_VA\Cluster_AKmeans\'];
         Dependencypruned = csvread([path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\DepdScale_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);
-        load([path,'Features_',FeaturesRM,'\',TEST,'\feature_',TEST,'.mat']);%csvread([featurespath,'\Features_IM_',TEST,'_OT_',DepT,'_OD_',DepO,'.csv']);%,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
+         load([path,'Features_',FeaturesRM,'\',TEST,'\feature_',TEST,'.mat']);%csvread([featurespath,'\Features_IM_',TEST,'_OT_',DepT,'_OD_',DepO,'.csv']);%,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
         indexfeatureGroup = (frame1(6,:)==str2num(DepT) & frame1(5,:)==str2num(DepO));
         Featurepruned=frame1(:,indexfeatureGroup);
         Clusterpruned = csvread([featurespath,'\Cluster_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);%,'_DepO_',DepO,'_DepT_',DepT,'.csv']);

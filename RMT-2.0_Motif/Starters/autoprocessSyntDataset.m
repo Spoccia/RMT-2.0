@@ -39,7 +39,7 @@ ShiftFeatures = 0;
 % Path Parameters
 TEST ='test1';%'1';%
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test5';
+    TEST='Mocap_test4';
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -387,7 +387,7 @@ for TSnumber = 1: 1
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,1,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
+                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
                         end
@@ -439,7 +439,7 @@ for TSnumber = 1: 1
     
     if (CreateSubCluster==1)
         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
-        depdOverLapThreshold = 0.7;
+        depdOverLapThreshold = 1;
         subCluster_Varaites(saveFeaturesPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,depdOverLapThreshold);
         
     end
