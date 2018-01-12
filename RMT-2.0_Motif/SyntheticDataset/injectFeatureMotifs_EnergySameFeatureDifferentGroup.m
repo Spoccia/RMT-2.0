@@ -22,6 +22,7 @@ elseif(strcmp(kindofBasicTS, 'randomWalk') == 1)
     KindOfDataset = 'RandomWalkTS_MultiFeatureDiffClusters\';%
 end
 
+% two values below not 1 or 0 at the same
 multiScaleFeatureInjection = 1; % 0;
 differentVariateGroupInjection = 1; % 0
 
@@ -69,11 +70,14 @@ end
 
 origRW = rndWalks;
 
-% FeatPositions:
-% class label, time center of original features, time start, time end
+% FeatPositions: class label, time center of original features, time start, time end
 FeatPositions = zeros(NumInstances, 4);
-Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in the same position
-pStep = 0; % count the injection location
+
+% avoid injecting features in the same position
+Step = floor(size(rndWalks, 2) / NumInstances); 
+
+% count the injection location
+pStep = 0; 
 
 if(multiScaleFeatureInjection == 1)
     % pick different locations, same group of variate for injection
