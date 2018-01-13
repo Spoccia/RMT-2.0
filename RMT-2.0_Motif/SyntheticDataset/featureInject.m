@@ -24,9 +24,9 @@ if(sameVariateGroup == 0)
     % inject the same pattern
     patternTimeSeriesData = data(nonZeroDepdScale, intervaltime);
     
-    % insert same feature at different variate groups
-    starter = randi([pStep, max(pStep + Step - motifColumn, 0)],1,1);
     for i = 1 : NumInstances
+        % insert same feature at different variate groups
+        starter = randi([pStep, max(pStep + Step - motifColumn, 0)],1,1);
         FeatPositions(i, :) = [i, patternFeature(2), starter, starter + motifColumn - 1];
         myDepdScale = variateGroup(:, mod(i, size(variateGroup, 2)) + 1);
         rndWalks(myDepdScale, starter : starter + motifColumn - 1) = patternTimeSeriesData; % inject the features into random walk time series data
