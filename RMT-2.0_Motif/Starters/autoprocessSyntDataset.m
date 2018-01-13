@@ -39,7 +39,7 @@ ShiftFeatures = 0;
 % Path Parameters
 TEST ='test1';%'1';%
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test6';
+    TEST='Mocap_test7';
 end
 % Global Variables
 SizeFeaturesforImages = [];

@@ -8,9 +8,10 @@ clear;
 % FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\1_euclid\';
 TimeSeriesIndex = 10;
 TS_name = num2str(TimeSeriesIndex);
-TEST = ['Mocap_test', TS_name];
+TEST = ['Mocap_test7', TS_name];
 
-FeaturePath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/RMTFeatures';
+FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT';
+%FeaturePath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/RMTFeatures';
 FeaturePath = [FeaturePath, '/', num2str(TimeSeriesIndex), '/'];
 motifInjectionOption = 'Random'; % 'RoundRobin'
 kindofBasicTS = 'randomWalk'; %'Sinusoidal';%'flat';%
@@ -27,7 +28,8 @@ multiScaleFeatureInjection = 0; % 0;
 differentVariateGroupInjection = 1; % 0
 
 % DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
-DestDataPath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/InjectedFeatures';
+% DestDataPath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/InjectedFeatures';
+DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 sinFreq = 1;
 
 % pick features from higher octaves
@@ -39,7 +41,7 @@ dpscale = [];
 frame1 = [];
 
 % read the depd involved for the corresponding features
-dpscale = csvread(strcat(FeaturePath, 'DistancesDescriptor/DepdScale_IM_', TS_name, '_DepO_', num2str(DepdO), '_TimeO_', num2str(TimeO), '.csv'));
+dpscale = csvread(strcat(FeaturePath, 'DistancesDescriptor\DepdScale_IM_', TS_name, '_DepO_', num2str(DepdO), '_TimeO_', num2str(TimeO), '.csv'));
 
 savepath1 = [FeaturePath, 'feature_', TS_name, '.mat'];
 savepath2 = [FeaturePath, 'idm_', TS_name, '.mat'];
