@@ -33,7 +33,7 @@ DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 sinFreq = 1;
 
 % pick features from higher octaves
-DepdO = 2;  % octave depd
+DepdO = 2; % octave depd
 TimeO = 2; % octave time
 
 NumInstances = 10; % inject into 10 locations
