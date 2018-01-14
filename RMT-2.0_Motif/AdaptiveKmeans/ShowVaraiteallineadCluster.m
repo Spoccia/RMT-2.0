@@ -72,8 +72,8 @@ for k=1:DeOctTime
                         mkdir ([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
                     end
                     figure1 = plot_RMTmotif_on_data(data, MotifBag{ii}.startIdx, MotifBag{ii}.depd,MotifBag{ii}.Tscope);
-                    filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.jpg'];
-                    saveas(figure1,filename);
+                    filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\HistIm_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(ii),'.eps'];%'.jpg'];
+                    saveas(figure1,filename,'epsc');
                 end
                 %                     %% close  this portion of code
                 %                     % try to add square under the feature

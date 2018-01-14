@@ -13,7 +13,7 @@
 
 function figure1 = plot_RMTmotif_on_data(data, motif_idx, motif_dim,motif_lenght)
 figure1=figure();
-set(figure1, 'Visible', 'off');
+% set(figure1, 'Visible', 'off');
 ax = axes();
 hold(ax, 'on');
 data =data';
@@ -30,7 +30,7 @@ for i = 1:length(motif_idx)
         sub_len=motif_lenght{i};
         motif_location = motif_idx(i):motif_idx(i) + sub_len - 1;
         motif = data(motif_location, motif_dim{i}(k));
-        plot(motif_location, motif, 'color', 'r');
+        plot(motif_location, motif, 'LineWidth',1.2, 'color', 'r');
     end
 end
 

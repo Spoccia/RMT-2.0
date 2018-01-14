@@ -14,10 +14,10 @@ normalizeData=0;%1;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
-createDependencyScale = 1;%1;
-Cluster = 1;%1;%
-CreateSubCluster=1;
+FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+createDependencyScale = 0;%1;
+Cluster = 0;%1;%
+CreateSubCluster=0;
 
 % motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 1;%1
@@ -26,7 +26,7 @@ motifidentificationBP_MatlabDescr = 1;%1
 pruneClusterDescrMatlab = 1;%1;%0
 
 motifidentification = 0; % work on pruned features
-savecaracteristics = 1;
+savecaracteristics = 0;
 showOriginalImage = 0;
 mapdataintograyscale = 1;
 saveTSasImage = 1;
@@ -39,7 +39,7 @@ ShiftFeatures = 0;
 % Path Parameters
 TEST ='test1';%'1';%
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test7';
+    TEST='Mocap_test1';
 end
 % Global Variables
 SizeFeaturesforImages = [];

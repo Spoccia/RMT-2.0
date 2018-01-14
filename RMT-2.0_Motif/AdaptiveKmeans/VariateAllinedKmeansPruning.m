@@ -158,8 +158,8 @@ TimeforPruningSubClustering_0=[];
                             end
     %                         figure1=figure;
                             figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
-                            filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.jpg'];
-                            saveas(figure1,filename);
+                            filename=[ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.eps'];%'.jpg'];
+                            saveas(figure1,filename,'epsc');
                         end
                         prunedFeaturesCluster=[prunedFeaturesCluster,A1];
                         prunedDepScale = [prunedDepScale,B1];
