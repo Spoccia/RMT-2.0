@@ -93,8 +93,8 @@ if(multiScaleFeatureInjection == 1)
     
     cutOffRate = 0.5;
     % pick features of different time scales
-    [patternFeature, variates] = pickLargestTimeSimgaFeaturesCutOff(featuresOfInterest, dpscale, cutOffRate);
-    [rndWalks, FeatPositions] = featureInject(patternFeature, variates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
+    [patternFeature, patternVariates] = pickLargestTimeSimgaFeaturesCutOff(featuresOfInterest, dpscale, cutOffRate);
+    [rndWalks, FeatPositions, injectedVariates] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
 end
 
 if(differentVariateGroupInjection == 1)
@@ -102,8 +102,8 @@ if(differentVariateGroupInjection == 1)
     sameVariateGroup = 0;
     
     % pick feature that covers the smallest portion of variates
-    [patternFeature, variates] = pickSmallestVariateCoverageFeatures(featuresOfInterest, dpscale);
-    [rndWalks, FeatPositions] = featureInject(patternFeature, variates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
+    [patternFeature, patternVariates] = pickSmallestVariateCoverageFeatures(featuresOfInterest, dpscale);
+    [rndWalks, FeatPositions, injectedVariates] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
 end
 
 if(exist([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\'],'dir')==0)
@@ -112,6 +112,7 @@ end
 csvwrite([DestDataPath,'\',TEST,'.csv'],rndWalks);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','rndData_',TEST,'.csv'],origRW);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturePosition_',TEST,'.csv'],FeatPositions);
-csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','dpscale_',TEST,'.csv'],variates);
+csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','patternDpscale_',TEST,'.csv'],patternVariates);
+csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','injectedDpscale_',TEST,'.csv'], injectedVariates);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturesEmbedded_',TEST,'.csv'],patternFeature);
 
