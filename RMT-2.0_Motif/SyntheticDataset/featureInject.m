@@ -1,4 +1,4 @@
-function [rndWalks, FeatPositions] = featureInject(patternFeature, depdScale, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO)
+function [rndWalks, FeatPositions, injectedDepdScale] = featureInject(patternFeature, patternDepdScale, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO)
 % sameVariateGroup = 1: feature injected to same group of variates
 % sameVariateGroup = 0: feature injected to different group of variates
 
@@ -12,30 +12,32 @@ Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in th
 
 if(sameVariateGroup == 0)
     % different variate group but same interval time
-    nonZeroDepdScale = depdScale(depdScale ~= 0);
+    nonZeropatternDepdScale = patternDepdScale(patternDepdScale ~= 0);
     
-    % compute variate group -- find variate group in graph, size same as myDepdScale
-    variateGroup = computeVariateGroup(nonZeroDepdScale, idm, DepdO, depdScale);
+    % compute variate group -- find variate group in graph, size same as mypatternDepdScale
+    variateGroup = computeVariateGroup(nonZeropatternDepdScale, idm, DepdO, patternDepdScale);
     timeScope = patternFeature(4) * 3;
     intervaltime = (max(round((patternFeature(2) - timeScope), 0)) : (min(round((patternFeature(2) + timeScope)), size(data, 2)))); % feature time scope (integer)
     motifData = data(:, intervaltime);
     [~, motifColumn] = size(motifData);
     
     % inject the same pattern
-    patternTimeSeriesData = data(nonZeroDepdScale, intervaltime);
+    patternTimeSeriesData = data(nonZeropatternDepdScale, intervaltime);
     
     for i = 1 : NumInstances
         % insert same feature at different variate groups
         starter = randi([pStep, max(pStep + Step - motifColumn, 0)],1,1);
         FeatPositions(i, :) = [i, patternFeature(2), starter, starter + motifColumn - 1];
-        myDepdScale = variateGroup(:, mod(i, size(variateGroup, 2)) + 1);
-        rndWalks(myDepdScale, starter : starter + motifColumn - 1) = patternTimeSeriesData; % inject the features into random walk time series data
+        mypatternDepdScale = variateGroup(:, mod(i, size(variateGroup, 2)) + 1);
+        injectedDepdScale = [injectedDepdScale, mypatternDepdScale];
+        rndWalks(mypatternDepdScale, starter : starter + motifColumn - 1) = patternTimeSeriesData; % inject the features into random walk time series data
         pStep = pStep + Step;
     end
 else
+    injectedDepdScale = patternDepdScale;
     for i = 1 : NumInstances
-        % myDepdScale -- depd scales included are identical
-        myDepdScale = depdScale(:, :) ~= 0;
+        % mypatternDepdScale -- depd scales included are identical
+        mypatternDepdScale = patternDepdScale(:, :) ~= 0;
         timeScope_1 = patternFeature(4, 1) * 3;
         timeScope_2 = patternFeature(4, 2) * 3;
         intervaltime_1 = (max(round((patternFeature(2, 1) - timeScope_1), 0)) : (min(round((patternFeature(2, 1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
@@ -64,8 +66,8 @@ else
         FeatPositions(2 * (i - 1) + 1, :) = [2 * (i - 1) + 1, patternFeature(2, 1), starter_1, starter_1 + motifColumn_1 - 1];
         FeatPositions(2 * i, :) = [2 * i, patternFeature(2, 2), starter_2, starter_2 + motifColumn_2 - 1];
         
-        rndWalks(myDepdScale(:, 1), starter_1 : starter_1 + motifColumn_1 - 1) = motifData_1(myDepdScale(:, 1), :); % inject the features into random walk time series data
-        rndWalks(myDepdScale(:, 1), starter_2 : starter_2 + motifColumn_2 - 1) = motifData_2(myDepdScale(:, 1), :); % inject the features into random walk time series data
+        rndWalks(mypatternDepdScale(:, 1), starter_1 : starter_1 + motifColumn_1 - 1) = motifData_1(mypatternDepdScale(:, 1), :); % inject the features into random walk time series data
+        rndWalks(mypatternDepdScale(:, 1), starter_2 : starter_2 + motifColumn_2 - 1) = motifData_2(mypatternDepdScale(:, 1), :); % inject the features into random walk time series data
         
         pStep = pStep + Step;
     end
