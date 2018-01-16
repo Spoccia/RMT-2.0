@@ -25,18 +25,6 @@ precisoin = [];
 recall = [];
 FScore = [];
 
-uniqueInjectedClass = unique(injectedClassID);
-
-% for each of the injected class, we have a precision and recall
-for i = 1 : uniqueInjectedClass
-    
-    
-    
-    precision = [precision, currentBestPrecision];
-    recall = [recall, currentBestRecall];
-    FScore = [FScore, currentBestPrecision];
-end
-
 currentClass = unique(classID);
 for i = 1 : currentClass
     index = find(classID == i);
@@ -51,18 +39,14 @@ for i = 1 : currentClass
     currentUniqueClass = unique(currentInjectedClassID);
     currentBestFScore = realmin;
     currentBestPrecision = 0;
-    currentBestRecall = 0;
     for j = 1 : currentUniqueClass
-        % filter using threshold
-        currentIndex = find(currentInjectedClassID == j);
-        filteredIndex = find(currentDepdOverlap(currentIndex) > depdOverlapThreshold& currentTimeOverlap(currentIndex) > timeOverlapThreshold);
         % pick the best FScore
         
         currentFScore = (2 * currentPrecision * currentRecall) / (currentPrecision + currentRecall);
         if(currentFScore > currentBestFScore)
             currentBestPrecision = currentPrecision;
             currentBestRecall = currentRecall;
-            currentBestFScore = currentFScore;
+            currentBestPrecision = currentPrecision;
         end
         
         
