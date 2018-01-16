@@ -32,14 +32,14 @@ mapdataintograyscale = 1;
 saveTSasImage = 1;
 
 % To report the  center variate to the right one in the index
-PruningEntropy = 1;%1;%
+PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
 
 % Path Parameters
 TEST ='test1';%'1';%
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test5';
+    TEST='Mocap_test6';
 end
 % Global Variables
 SizeFeaturesforImages = [];

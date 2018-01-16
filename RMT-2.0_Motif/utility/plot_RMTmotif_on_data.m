@@ -16,6 +16,7 @@ figure1=figure();
 % set(figure1, 'Visible', 'off');
 ax = axes();
 hold(ax, 'on');
+set(gca, 'YTick', []);
 data =data';
 %% plot the data
 for i = 1:size(data, 2)
@@ -33,5 +34,6 @@ for i = 1:length(motif_idx)
         plot(motif_location, motif, 'LineWidth',1.2, 'color', 'r');
     end
 end
-
+  ylabel('Variate');
+  xlabel('<---- Time ---->');
 hold(ax, 'off');

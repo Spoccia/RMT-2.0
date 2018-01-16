@@ -20,7 +20,7 @@ figure1=figure();
 % set(figure1, 'Visible', 'off');
 ax = axes();
 hold(ax, 'on');
-set(gca, 'YTick', []);
+hAxes = gca;
 %% plot the data
 for i = 1:size(data, 2)
     data(:, i) = data(:, i) - min(data(:, i));
@@ -41,5 +41,4 @@ for i = 1:length(motif_idx)
 end
 
   ylabel('Variate');
-  xlabel('<---- Time ---->');
 hold(ax, 'off');

@@ -23,9 +23,9 @@ datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\Dat
 ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%'D:\Motif_Results\Datasets\Mocap\MStamp\';
 
 FeaturesRM='MStamp';
-sublenght= 29;%[29,58];
+sublenght= 59;%[29,58];
 % for TSnumber=20:184
-    TEST ='Mocap_test1';%num2str(TSnumber)
+    TEST ='Mocap_test6';%num2str(TSnumber)
     TS_name=TEST;
     data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
 %     data = (data - mean(data)) ...

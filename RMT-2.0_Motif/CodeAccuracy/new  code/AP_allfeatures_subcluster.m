@@ -59,7 +59,7 @@ end
 
 FeatureClassCount=[];
 ActualName=[];
-NotFoundPosition=[0,-1,-1,-1];
+NotFoundPosition=[0,-1,-1];
 for i=1: size(Interv_Features_Cluster,1)
     IdentifiedTimePeriod=Interv_Features_Cluster(i,2): Interv_Features_Cluster(i,3);
     IdentifiedTimePeriod = IdentifiedTimePeriod(IdentifiedTimePeriod>0 & IdentifiedTimePeriod<=size(data,2))
@@ -145,6 +145,7 @@ end
     col_header={'Class','ID','Start','End','ClassInj','StartInj','EndInj','dep_Overlapping','found'}; 
 xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount,'AP_all_SubC','A2');
 xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],col_header,'AP_all_SubC','A1');
+csvread([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_all_SubC_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount);
 
 % %% Sort the Feature on the index of  the name of the specific feature.
 % [q,I] = sort(Position_F_Injected(:,2));

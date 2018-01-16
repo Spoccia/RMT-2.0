@@ -119,9 +119,9 @@ FeatureClassCount(:,6)=[];
 col_header={'Class','ID','Start','End','ClassInj','StartInj','EndInj','found'};
 xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_AP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureClassCount,'AP_bestTimeOverlap','A2');
 xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_AP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],col_header,'AP_bestTimeOverlap','A1');
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_AP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],DependencyorFoundedSorted,'AP_Dependency');
-
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_AP_FeaturesFounded_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureFoundedSorted,'AP_Features');
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_AP_MAXOverlapping_DepO',DepO,'_DepT_',DepT,'.xls'],DependencyorFoundedSorted,'AP_Dependency');
+% 
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_AP_FeaturesFounded_DepO',DepO,'_DepT_',DepT,'.xls'],FeatureFoundedSorted,'AP_Features');
 % xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\',TEST,'_BP_DependencyFounded_DepO',DepO,'_DepT_',DepT,'.xls'],DependencyorFoundedSorted);
 % 
 % %% To identify a feature at list 50% of th feature should be involved in the feature identified

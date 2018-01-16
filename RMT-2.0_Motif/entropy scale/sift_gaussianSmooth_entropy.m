@@ -12,9 +12,12 @@ featureDepdScale = [];
 thresh = 0.04 / 3 / 2 ; % why???
 NBO    = 8;
 magnif = 3.0;
+NBP_Time = 4;
+NBP_Depd = 4;
 % frames      = [] ;
 tempFrames = [];
 descriptors = [] ;
+descriptor_silv=[];
 ktime = 2^(1/(St-3));
 kdepd = 2^(1/(Sd-3));
 
@@ -196,7 +199,8 @@ for otime = 1: size(gss.octave,1)
 
             % pruning Features Extrcted on the base of curvature
             % Silv commented the pruning step here
-              oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%
+%               oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%
+
 %              oframes = siftrefinemx_directed(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%
      %oframes = siftrefinemx_directed_noPrune(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;
      %oframes = siftrefinemx_directed_noPrune(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;

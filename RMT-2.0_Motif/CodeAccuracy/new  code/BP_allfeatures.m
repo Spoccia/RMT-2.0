@@ -64,10 +64,10 @@ end
 
 FeatureClassCount=[];
 ActualName=[];
-NotFoundPosition=[0,-1,-1,-1];
+NotFoundPosition=[0,-1,-1];
 for i=1: size(Interv_Features_Cluster,1)
     IdentifiedTimePeriod=Interv_Features_Cluster(i,2): Interv_Features_Cluster(i,3);
-    IdentifiedTimePeriod = IdentifiedTimePeriod(IdentifiedTimePeriod>0 & IdentifiedTimePeriod<=size(data,2))
+    IdentifiedTimePeriod = IdentifiedTimePeriod(IdentifiedTimePeriod>0 & IdentifiedTimePeriod<=size(data,2));
     miss=0;
     found=0;
     MAXOverlapping=-1;
@@ -150,4 +150,6 @@ end
     col_header={'Class','ID','Start','End','ClassInj','StartInj','EndInj','dep_Overlapping','found'}; 
 xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','BP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount,'BP_all','A2');
 xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','BP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],col_header,'BP_all','A1');
+csvwrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','BP_all_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount);
+
 
