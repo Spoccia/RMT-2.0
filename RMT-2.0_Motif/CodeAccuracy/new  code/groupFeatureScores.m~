@@ -1,0 +1,31 @@
+function [precision, recall] = groupFeatureScores(statEntry, injectedClassID, currentInjectedClassID, motifFeatureCount, currentRetrievedSize)
+% iterate statEntry, check which one overlap with the same injected features
+myStatEntry = statEntry(statEntry(:, 5) == currentInjectedClassID);
+[uniqueRows, firstIndex, membershipIndex] = unique( myStatEntry(:,[7 8]), 'rows');
+uniqueSize = size(uniqueRows, 1);
+bestScore = zeros(uniqueSize, 1);
+
+for i = 1 : uniqueSize
+    membershipIndex(i)
+    
+    
+    
+    bestScore(i);
+end
+
+
+for i = 1 : size(statEntry, 1)
+    currentFeature = statEntry(i, 7:8);
+    currentTO = statEntry(i, 9);
+    currentVO = statEntry(i, 10);
+    
+    % double check options for score combination
+    score = currentTO * currentVO;
+    [tf, index] = ismember(pastFeature, currentFeature, 'rows');
+    % update the bestScore
+    
+    
+    
+end
+precision = sum(bestScore) / currentRetrievedSize;
+recall = sum(bestScore) / motifFeatureCount;
