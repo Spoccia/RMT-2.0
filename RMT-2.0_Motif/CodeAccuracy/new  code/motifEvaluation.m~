@@ -1,29 +1,12 @@
-clear;
-clc;
-
-% iterate file to for upload
-
-testCaseIndex = 1 : 10;
-GroundTruthFilePath = [];
-MatrixProfileFilePath = [];
-RMTMotifFilePath = [];
-for ii = 1 : size(fileSize, 1)
-    featureCountFilePath = [GroundTruthFilePath, '/', testCaseIndex(ii), '.csv'];
-    MatrixProfile
-end
+function [MotifEntropy] = motifEvaluation(groundTr, motifFile)
 
 % load feature count into motifFeatureCount
 featureCountFilePath = './FeaturePosition_MoCap_test6.csv';
-% featureCountFilePath = './1motif/Groundtruth/IndexEmbeddedFeatures/Mocap_test16/FeaturePosition_Mocap_test16.csv';
 motifFeatureCount = csvread(featureCountFilePath);
 
-% filePath = ['./AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv'];
-filePath = ['./Mocap_test6_MStamp.csv'];
-% filePath = ['./1motif/RMT/Accuracytest16/AP_Mocap_test16_AllFeatureFound_DepO_2_DepT_2.csv'];
+motifFile = ['./Mocap_test6_MStamp.csv'];
 
-% [num,txt,raw] = xlsread(filePath,'AP_all_SubC');
-[num,txt,raw] = xlsread(filePath,'Lenght_59');
-
+[num,txt,raw] = xlsread(motifFile,'Lenght_59');
 
 % matlab unique function provides default sorting
 motifClass = unique(motifFeatureCount(:, 1));
@@ -75,11 +58,6 @@ for i = 1 : size(myClassID, 1)
             relevantSize = motifClassCount(currentInjectedClassID(j));
             [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize);
             
-            % relevantSize = size(injectedClassID == currentInjectedClassID(j), 1);
-            % injectedRelevantSize = motifClassCount(currentInjectedClassID(j));
-            % precision = currentRetrievedSize / currentRetrievedSize;
-            % recall = relevantSize / injectedRelevantSize;
-            
             precisionMatrix(i, currentInjectedClassID(j)) = precision;
             recallMatrix(i, currentInjectedClassID(j)) = recall;
             FScoreMatrix(i, currentInjectedClassID(j)) = 2 * precision * recall / (precision + recall);
@@ -88,9 +66,7 @@ for i = 1 : size(myClassID, 1)
     end
     
 end
-
-normMatrix = norm(FScoreMatrix);
+% normMatrix = norm(FScoreMatrix);
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
-
-% potentially save entropy values to files
-fprintf('All done .\n');
+MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
+end
