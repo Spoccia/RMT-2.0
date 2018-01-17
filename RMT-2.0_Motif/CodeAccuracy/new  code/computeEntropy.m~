@@ -1,0 +1,13 @@
+function [precisionEntropy, recallEntropy, FScoreEntry] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix)
+% compute weighted entropy for each identified cluster by RMT and MatrixProfile
+precisionEntryArray = zeros();
+recall
+for i = 1 : size(precisionMatrix, 1)
+    []
+    
+end
+
+end
+
+
+function [entry] = 

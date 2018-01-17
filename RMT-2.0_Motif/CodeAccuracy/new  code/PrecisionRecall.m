@@ -3,7 +3,15 @@ clc;
 
 % load feature count into motifFeatureCount
 featureCountFilePath = './FeaturePosition_MoCap_test6.csv';
+% featureCountFilePath = './1motif/Groundtruth/IndexEmbeddedFeatures/Mocap_test16/FeaturePosition_Mocap_test16.csv';
 motifFeatureCount = csvread(featureCountFilePath);
+
+% filePath = ['./AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv'];
+filePath = ['./Mocap_test6_MStamp.csv'];
+% filePath = ['./1motif/RMT/Accuracytest16/AP_Mocap_test16_AllFeatureFound_DepO_2_DepT_2.csv'];
+
+% [num,txt,raw] = xlsread(filePath,'AP_all_SubC');
+[num,txt,raw] = xlsread(filePath,'Lenght_59');
 
 % matlab unique function provides default sorting
 motifClass = unique(motifFeatureCount(:, 1));
@@ -14,13 +22,6 @@ for i = 1 : size(motifClass, 1)
     currentMotifClassCount = size(nonzeros(motifFeatureCount(:, 1) == i), 1);
     motifClassCount = [motifClassCount, currentMotifClassCount];
 end
-
-% [num,txt,raw] = xlsread('D:\Motif_Results\Datasets\SynteticDataset\Features_RME\Mocap_test6_AllFeatures\Accuracy\AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv','AP_all_SubC');
-filePath = ['./AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv'];
-% filePath = ['./Mocap_test6_MStamp.csv'];
-
-[num,txt,raw] = xlsread(filePath,'AP_all_SubC');
-% [num,txt,raw] = xlsread(filePath,'Lenght_59');
 
 % Deprecated thresholds
 % timeOverlapThreshold = 0.5;
@@ -84,4 +85,7 @@ for i = 1 : size(myClassID, 1)
 end
 
 normMatrix = norm(FScoreMatrix);
+[precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
+
+% potentially save entropy values to files
 fprintf('All done .\n');
