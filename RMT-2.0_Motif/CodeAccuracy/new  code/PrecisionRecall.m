@@ -2,98 +2,86 @@ clear;
 clc;
 
 % load feature count into motifFeatureCount
-% motifFeatureCount
+featureCountFilePath = './FeaturePosition_MoCap_test6.csv';
+motifFeatureCount = csvread(featureCountFilePath);
 
+% matlab unique function provides default sorting
+motifClass = unique(motifFeatureCount(:, 1));
+motifClassCount = [];
+
+% update motif class count
+for i = 1 : size(motifClass, 1)
+    currentMotifClassCount = size(nonzeros(motifFeatureCount(:, 1) == i), 1);
+    motifClassCount = [motifClassCount, currentMotifClassCount];
+end
 
 % [num,txt,raw] = xlsread('D:\Motif_Results\Datasets\SynteticDataset\Features_RME\Mocap_test6_AllFeatures\Accuracy\AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv','AP_all_SubC');
 filePath = ['./AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv'];
+% filePath = ['./Mocap_test6_MStamp.csv'];
+
 [num,txt,raw] = xlsread(filePath,'AP_all_SubC');
+% [num,txt,raw] = xlsread(filePath,'Lenght_59');
+
+% Deprecated thresholds
+% timeOverlapThreshold = 0.5;
+% depdOverlapThreshold = 1;
+
+% loop through classID
 classID = num(:, 1);
-featureID = num(:, 2);
-timeStart = num(:, 3);
-timeEnd = num(:, 4);
+myClassID = unique(classID);
 
-injectedClassID = num(:, 5);
-injectedTimeStart = num(:, 6);
-injectedTimeEnd = num(:, 7);
+% stateMatrix: predicated_class_size x injected_class_size
+precisionMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
+recallMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
+FScoreMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
 
-% depd overlap computed from Jaccard similarity
-depdOverlap = num(:, 8);
-timeOverlap = num(:, 9);
-
-timeOverlapThreshold = 0.5;
-depdOverlapThreshold = 0.5;
-
-precisoin = [];
-recall = [];
-FScore = [];
-
-uniqueInjectedClass = unique(injectedClassID);
-% for each of the injected class, we have a precision and recall
-for i = 1 : size(uniqueInjectedClass, 1)
-    currentInjectedClassIndex = uniqueInjectedClass(i);
-    % relevantFeatureCount used to compute recall
-    relevantFeatureCount = size(find(motifFeatureCount == i), 1);
+for i = 1 : size(myClassID, 1)
+    currentClassIndex = classID == myClassID(i);
+    statEntry = num(currentClassIndex, :);
     
-    % currentFeatureCount used to compute precision
-    retrievedIndex = injectedClassID == currentInjectedClassIndex;
+    % compute recall and precision for each entry
+    featureID = statEntry(:, 2);
+    timeStart = statEntry(:, 3);
+    timeEnd = statEntry(:, 4);
     
-    currentFeatureCount = size(retrievedIndex~=0, 1);
-    % filter with threshold
-    preFilteredTimeOverlap = timeOverlap(retrievedIndex);
-    preFilteredDepdOverlap = depdOverlap(retrievedIndex);
+    injectedClassID = statEntry(:, 5);
+    injectedID_Deprecated = statEntry(:, 6);
     
-    filteredTimeOverlapIndex = preFilteredTimeOverlap > timeOverlapThreshold;
-    preFilteredDepdOverlap = preFilteredDepdOverlap(filteredTimeOverlapIndex);
-    filteredDepdOverlap = filteredDepdOverlap(preFilteredDepdOverlap > depdOverlapThreshold);
+    injectedTimeStart = statEntry(:, 7);
+    injectedTimeEnd = statEntry(:, 8);
     
-    relevantSize = size(filteredDepdOverlap, 1);
-    currentPrecision = relevantSize/currentFeatureCount;
-    currentRecall = relevantSize/relevantFeatureCount;
+    % depd overlap computed from Jaccard similarity
+    timeOverlap = statEntry(:, 9);
+    depdOverlap = statEntry(:, 10);
     
-    currentFScore = 2 * currentPrecision * currentRecall / (currentRecall + currentPrecision);
+    % for each of these predicated class, precision and recall for each injected class
+    currentInjectedClassID = unique(injectedClassID);
+    currentRetrievedSize = size(statEntry, 1); % used for precision
     
-    precision = [precision, currentPrecision];
-    recall = [recall, currentRecall];
-    FScore = [FScore, currentFScore];
+    for j = 1 : size(currentInjectedClassID, 1)
+        % update statMatrix
+        % group feature scores
+        if(currentInjectedClassID(j) == 0)
+            % precisionMatrix(i, j) = precision;
+            % recallMatrix(i, j) = recall;
+            % FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
+        else
+            relevantSize = motifClassCount(currentInjectedClassID(j));
+            [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize);
+            
+            % relevantSize = size(injectedClassID == currentInjectedClassID(j), 1);
+            % injectedRelevantSize = motifClassCount(currentInjectedClassID(j));
+            % precision = currentRetrievedSize / currentRetrievedSize;
+            % recall = relevantSize / injectedRelevantSize;
+            
+            precisionMatrix(i, currentInjectedClassID(j)) = precision;
+            recallMatrix(i, currentInjectedClassID(j)) = recall;
+            FScoreMatrix(i, currentInjectedClassID(j)) = 2 * precision * recall / (precision + recall);
+        end
+        
+    end
+    
 end
 
-% 
-% currentClass = unique(classID);
-% for i = 1 : currentClass
-%     index = find(classID == i);
-%     currentDataEntry = num(index, :);
-%     
-%     currentInjectedClassID = injectedClassID(index, :);
-%     currentDepdOverlap = depdOverlap(index, :);
-%     currentIsQualified = isQualified(index, :);
-%     currentTimeOverlap = timeOverlap(index, :);
-%     
-%     % for each currentInjectedClassID, use voting scheme to pick the best one for representation
-%     currentUniqueClass = unique(currentInjectedClassID);
-%     currentBestFScore = realmin;
-%     currentBestPrecision = 0;
-%     currentBestRecall = 0;
-%     for j = 1 : currentUniqueClass
-%         % filter using threshold
-%         currentIndex = find(currentInjectedClassID == j);
-%         filteredIndex = find(currentDepdOverlap(currentIndex) > depdOverlapThreshold& currentTimeOverlap(currentIndex) > timeOverlapThreshold);
-%         % pick the best FScore
-%         
-%         currentFScore = (2 * currentPrecision * currentRecall) / (currentPrecision + currentRecall);
-%         if(currentFScore > currentBestFScore)
-%             currentBestPrecision = currentPrecision;
-%             currentBestRecall = currentRecall;
-%             currentBestFScore = currentFScore;
-%         end
-%         
-%         
-%     end
-%     
-%     precision = [precision, currentBestPrecision];
-%     recall = [recall, currentBestRecall];
-%     FScore = [FScore, currentBestPrecision];
-% end
-averageFScore = mean(FScore);
-
+normMatrix = norm(FScoreMatrix);
 fprintf('All done .\n');
