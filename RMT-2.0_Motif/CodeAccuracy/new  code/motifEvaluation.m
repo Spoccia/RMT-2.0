@@ -1,8 +1,15 @@
-function [MotifEntropy] = motifEvaluation(groundTruthFile, motifFile)
+function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize)
 
 % load feature count into motifFeatureCount
 motifFeatureCount = csvread(groundTruthFile);
-[num,txt,raw] = xlsread(motifFile,'Lenght_59');
+
+if(strcmp(algorithmType,'RMT') || strcmp(algorithmType,'RME') == 1)
+    [num,txt,raw] = xlsread(motifFile, 'AP_all_SubC');
+else
+    window = ['Lenght_', num2str(windowSize)];
+    [num,txt,raw] = xlsread(motifFile, window);
+end
+
 
 % matlab unique function provides default sorting
 motifClass = unique(motifFeatureCount(:, 1));

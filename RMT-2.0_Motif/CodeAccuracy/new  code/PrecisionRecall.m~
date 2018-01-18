@@ -31,17 +31,17 @@ for ii = 1 : size(testCaseIndex, 2)
     % save current Matrix to files
     savePathMatrixProfile = ['./'];
     
-    savePathMatrixProfilePrecision = [savePathMatrixProfile, '/MatrixProfilePrecision_', num2str(ii), '.csv'];
-    savePathMatrixProfileRecall = [savePathMatrixProfile, '/MatrixProfileRecall_', num2str(ii), '.csv'];
-    savePathMatrixProfileFScore = [savePathMatrixProfile, '/MatrixProfileFScore_', num2str(ii), '.csv'];
+    savePathMatrixProfilePrecision = [savePathMatrixProfile, '/MatrixProfilePrecision_', num2str(), '.csv'];
+    savePathMatrixProfileRecall = [savePathMatrixProfile, '/MatrixProfileRecall_'];
+    savePathMatrixProfileFScore = [savePathMatrixProfile, '/MatrixProfileFScore_'];
     csvwrite(savePathMatrixProfilePrecision, precisionMatrixMatrixProfile);
     csvwrite(savePathMatrixProfileRecall, recallMatrixMatrixProfile);
     csvwrite(savePathMatrixProfileFScore, FScoreMatrixMatrixProfile)
     
-    savePathRMT = ['./'];
-    savePathRMTPrecision = [savePathRMT, '/RMTPrecision_', num2str(ii), '.csv'];
-    savePathRMTRecall = [savePathRMT, '/RMTRecall_', num2str(ii), '.csv'];
-    savePathRMTFScore = [savePathRMT, '/RMTFScore_', num2str(ii), '.csv'];
+    savePathRMT = [];
+    savePathRMTPrecision = [];
+    savePathRMTRecall = [];
+    savePathRMTFScore = [];
     csvwrite(savePathRMTPrecision, precisionMatrixRMT);
     csvwrite(savePathRMTRecall, recallMatrixRMT);
     csvwrite(savePathRMTFScore, FScoreMatrixRMT);
