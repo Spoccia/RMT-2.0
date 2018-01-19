@@ -79,11 +79,10 @@ ClusterDistortion=[];
 checkCluster = pdist2(Centroidpruned',Featurepruned(11:138,:)');%,'cosine');
 [~,checkClusterID] = min(checkCluster);
 row_header =[];
-    SpaceDistances= pdist2(Featurepruned(11:138,:)',Featurepruned(11:138,:)');
-    maximumSpaceDistance= max(SpaceDistances(:));
 for i=1: nCluster
 
-
+    SpaceDistances= pdist2(Featurepruned(11:138,:)',Featurepruned(11:138,:)');
+    maximumSpaceDistance= max(Distortion(:));
     F = Featurepruned(:, Clusterpruned == clusterLabel(i));
     D = Dependencypruned(:, Clusterpruned == clusterLabel(i));
     row_header=[row_header,clusterLabel(i)];
@@ -93,11 +92,11 @@ for i=1: nCluster
 %     end 
 %     FeatureSortedbyCluster=[FeatureSortedbyCluster,F];
 %     DescriptorSortedbyCluster=[DescriptorSortedbyCluster,D];
-Distortion = pdist2(F(11:138,:)',F(11:138,:)')/maximumSpaceDistance;%,'cosine')/2;
-DistortionCluster = pdist2(Centroidpruned(:,i)',F(11:138,:)')/maximumSpaceDistance;%,'cosine')/2;%);%
+Distortion = pdist2(F(11:138,:)',F(11:138,:)');%,'cosine')/2;
+DistortionCluster = pdist2(Centroidpruned(:,i)',F(11:138,:)');%,'cosine')/2;%);%
 AVGDtoCEntroid = mean2(DistortionCluster);
-
 AVGbetweenCFeatures= mean2(Distortion);
+
 AvgDescriptor = mean(F(11:138,:)');
 % Centroid_AVG_Distance = pdist2(AvgDescriptor,Centroidpruned(:,i)','cosine')/2;
 % DistortionAvgCentroid = pdist2(AvgDescriptor,F(11:138,:)','cosine')/2;
@@ -115,10 +114,10 @@ MaxDistortion= max(Distortion(:));
 MaxDistortionCluster= max(DistortionCluster(:));
 % MaxDistortionAvgCentroid= max(DistortionAvgCentroid(:));
 % ClusterDistortion=[ClusterDistortion;[d_row,Centroid_AVG_Distance,MinDistortion,MaxDistortion,MinDistortionCluster,MaxDistortionCluster,MinDistortionAvgCentroid,MaxDistortionAvgCentroid]];
-ClusterDistortion=[ClusterDistortion;[d_row,MinDistortion,MaxDistortion,MinDistortionCluster,MaxDistortionCluster,AVGDtoCEntroid,AVGbetweenCFeatures]];
+ClusterDistortion=[ClusterDistortion;[d_row,MinDistortion,MaxDistortion,MinDistortionCluster,MaxDistortionCluster]];
 end
 
-col_header={'ClassID','Support','minD_Fi_Fj_in same C','maxD_Fi_Fj_in same C','minD_Ci_Fi_inCi','maxD_Ci_Fi_inCi','AVG Fi_Ci','AVG Fi_Fj_in_Ci'};
+col_header={'ClassID','Support','minD_Fi_Fj_in same C','maxD_Fi_Fj_in same C','minD_Ci_Fi_inCi','maxD_Ci_Fi_inCi'};
 
 if(exist([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\'],'dir')==0)
    mkdir([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\Distortion\']);

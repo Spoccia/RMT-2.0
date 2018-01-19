@@ -76,12 +76,13 @@ for i=1: size(Interv_Features_Cluster,1)
     end
 FeatureClassCount=[FeatureClassCount;[MotifInstanceIdentification,InjectedIDentifcation]];  
 end
-if(exist(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\'),'dir')==0)
-    mkdir(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\'));
+if(exist(strcat(path,'Features_',FeaturesRM,'\Accuracy\'),'dir')==0)%'\',TEST,
+    mkdir(strcat(path,'Features_',FeaturesRM,'\Accuracy\'));%'\',TEST,
 end
 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount,'AP_all','A2');
-xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],col_header,'AP_all','A1');
+FileName=[path,'Features_',FeaturesRM,'\Accuracy\','AP_','DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];%'\',TEST,%'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];
+xlswrite(FileName,FeatureClassCount,'AP_all','A2');
+xlswrite(FileName,col_header,'AP_all','A1');
 %   Position_F_Injected(:,2)=[];
 % % [q,I] = sort(Position_F_Injected(:,2));
 % % [q1, I_IntervFeat]= sort(ItervalFeatures(:,2));

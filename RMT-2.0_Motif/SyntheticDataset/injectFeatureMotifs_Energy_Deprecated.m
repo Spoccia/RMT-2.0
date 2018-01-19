@@ -1,10 +1,10 @@
 clc;
 clear;
-
+for NAME =16:22
 % FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\1_euclid\';
 TimeSeriesIndex = 10;
 TS_name = num2str(TimeSeriesIndex);
-TEST = ['Mocap_test', TS_name];
+TEST = ['Mocap_test', NAME];
 
 FeaturePath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/RMTFeatures';
 FeaturePath = [FeaturePath, '/', num2str(TimeSeriesIndex), '/'];
@@ -131,3 +131,4 @@ csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','rndData_',TEST,'.csv'],origRW)
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturePosition_',TEST,'.csv'],FeatPositions);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','dpscale_',TEST,'.csv'],B);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturesEmbedded_',TEST,'.csv'],A);
+end

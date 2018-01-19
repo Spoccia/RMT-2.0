@@ -4,9 +4,10 @@ clc;
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 FeaturesRM ='Mstamp';%'RMT';%'RME';%
-PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\'
-testname='Mocap_test1';
-lenght=59;
+PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';
+for NAME =16:21
+testname=['Mocap_test',num2str(NAME)]%'Mocap_test11';
+lenght=58;%29;%
 len=['Lenght_',num2str(lenght)];
 
 
@@ -26,7 +27,7 @@ for MID = 1:m
         MotifInstanceIdentification=[MID,instance,motifsStart(instance),motifsStart(instance)+lenght-1];        
         TimeScore =0; 
         Varaitescore =-1; 
-        InjectedIDentifcation=[0,0,0,TimeScore,Varaitescore];
+        InjectedIDentifcation=[0,0,0,0,TimeScore,Varaitescore];
 %         IdentifiedTimePeriod=motifsStart(instance): motifsStart(instance)+lenght-1;
         
         for injectedID =1:fi_n
@@ -47,10 +48,10 @@ for MID = 1:m
         ListofInstances=[ListofInstances;[MotifInstanceIdentification,InjectedIDentifcation]];
     end
 end
-if(exist(strcat(path,'Features_',FeaturesRM,'\',testname,'\Accuracy\'),'dir')==0)
-    mkdir(strcat(path,'Features_',FeaturesRM,'\',testname,'\Accuracy\'));
+if(exist(strcat(path,FeaturesRM,'\',testname,'\Accuracy\'),'dir')==0)
+    mkdir(strcat(path,FeaturesRM,'\',testname,'\Accuracy\'));
 end
 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
-xlswrite([path,'Features_',FeaturesRM,'\',testname,'\Accuracy\',testname,'_MStamp','.csv'],ListofInstances,len,'A2');
-xlswrite([path,'Features_',FeaturesRM,'\',testname,'\Accuracy\',testname,'_MStamp','.csv'],col_header,len,'A1');
-
+xlswrite([path,'',FeaturesRM,'\',testname,'\Accuracy\',testname,'_MStamp','.csv'],ListofInstances,len,'A2');
+xlswrite([path,'',FeaturesRM,'\',testname,'\Accuracy\',testname,'_MStamp','.csv'],col_header,len,'A1');
+end

@@ -18,7 +18,7 @@ function [features,dependency] = Pre_PruningOverlappingFeaturesCombined(A,dpscal
                 Dep_Score_Cand=size(CandidateDepScale(CandidateDepScale>0,1),1);
                 Dep_intersect_score=0;
                 if(size(intersect(CandidateDepScale(CandidateDepScale>0,1),dpscale(dpscale(:,jjj)>0,jjj)),2)~=0)
-                    Dep_intersect_score=size(intersect(CandidateDepScale(CandidateDepScale>0,1),dpscale(dpscale(:,jjj)>0,jjj)),1);
+                    Dep_intersect_score=size(intersect(CandidateDepScale(CandidateDepScale>0,1)',dpscale(dpscale(:,jjj)>0,jjj))',2);
                 end
                 Time_Score_Cand = size(timerangeF1,2);
                 Time_Score_F_i =size(timerangeF2,2);

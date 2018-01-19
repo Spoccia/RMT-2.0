@@ -198,6 +198,7 @@ for otime = 1: size(gss.octave,1)
             %pricurRatio = zeros(1,size(oframes,2));  % Silv setted the pricur ratio = 0 ;
 
             % pruning Features Extrcted on the base of curvature
+            oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,gss.sminT,thresh,r,0) ;
             % Silv commented the pruning step here
 %               oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%(oframes, -doess.Entropyoctave{otime, odepd}{3},HY,HY2,-1,thresh,r,0) ;%
 
