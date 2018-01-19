@@ -7,6 +7,8 @@ if(sameVariateGroup ==1 )
     NumInstances = NumInstances / 2;
 end
 
+injectedDepdScale = [];
+
 pStep = 0;
 Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in the same position
 
