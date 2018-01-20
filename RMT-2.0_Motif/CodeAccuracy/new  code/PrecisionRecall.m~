@@ -29,11 +29,11 @@ for ii = 1 : size(testCaseIndex, 2)
     % [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile] = motifEvaluation(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize);
     
     algorithmType = 'RMT';
-    % [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluationWeighted(GroundTruthFile, RMTMotifFile, algorithmType, windowSize);
+    [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluationWeighted(GroundTruthFile, RMTMotifFile, algorithmType, windowSize);
     
     % threshold = 0.5; % if it captures half of what we injected, then it is a motif instance
-    threshold = eps; % if it is non-zero
-    [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold);
+    % threshold = eps; % if it is non-zero
+    % [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold);
     
     % MatrixProfileEntropy = [MatrixProfileEntropy ; currentMatrixProfileEntropy];
     RMTMotifEntropy = [RMTMotifEntropy ; currentRMTMotifEntropy];
