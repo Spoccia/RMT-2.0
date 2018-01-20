@@ -2,12 +2,12 @@ close all;
 clc;
 clear;
 
-DatasetInject=2;  % 1 Energy 2 Mocap
+DatasetInject=1;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RME';%
+FeaturesRM ='RMT';%'RMT';%
 
 %% Normalize the data?
 normalizeData=0;%1;
@@ -20,7 +20,7 @@ Cluster = 1;%1;%
 CreateSubCluster=1;
 
 % motifidentificationBP = 0; %2;% work on all the features
-motifidentificationBP_MatlabDescr = 1;%1
+motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
 pruneClusterDescrMatlab = 1;%1;%0
@@ -32,14 +32,15 @@ mapdataintograyscale = 1;
 saveTSasImage = 1;
 
 % To report the  center variate to the right one in the index
-PruningEntropy = 1;%1;%
+PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-
+for NAME =1:2%33%10:33%22:33%16:21
 % Path Parameters
-TEST ='test1';%'1';%
+TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
-    TEST='Mocap_test5';
+     TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
+    
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -57,7 +58,7 @@ distanceUsed='Descriptor';%'Amplitude_Descriptor';%
 SizeofK= 'Akmeans';%'Fixed';%'Threshould';% 'Computed';%'Fixed_K15';%
 K_valuesCalc=SizeofK;
  EntropyPruningFolder='';
-if(strcmp(FeaturesRM,'RME'))
+if(strcmp(FeaturesRM,'RME')& PruningEntropy==1)
     EntropyPruningFolder='AllFeatures\';
 end
 KindofFeatures= 0; % 1 for DoG 0 for DoE
@@ -114,9 +115,9 @@ for TSnumber = 1: 1
     DeSigmaTime = 1.6*2^(1/DeLevelTime);%
     DeGaussianThres = 0.1;%
     if DatasetInject == 1 % Energy Building
-        DeSigmaDepd = 0.4;%0.6;%0.5;%0.4;%
-        DeSigmaTime = 4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
-        DeGaussianThres = 0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
+        DeSigmaDepd = 0.5;%0.6;%0.5;%0.4;%
+        DeSigmaTime = 1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
+        DeGaussianThres = 0.2;%0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
     elseif DatasetInject == 2 % MoCap
         DeSigmaDepd = 0.5;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
         DeSigmaTime = 4*sqrt(2)/2;%    
@@ -168,6 +169,7 @@ for TSnumber = 1: 1
     end
     
     coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));%'LocationSensor_NN.csv'));%csvread(strcat(datasetPath,'LocationSensor.csv'));
+%     coordinates= csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));
     if DatasetInject == 2 % MoCap
         coordinates=csvread(strcat(datasetPath,'location\LocationMatrixMocap.csv'));%
     end
@@ -212,6 +214,7 @@ for TSnumber = 1: 1
             [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
+            
         elseif(strcmp(FeaturesRM,'RME'))
             [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
@@ -329,8 +332,8 @@ for TSnumber = 1: 1
                     [A,dpscale] = pruningEntropyThresh(A,dpscale,EntropyTHR,data);
                     
                     % pruningOverlapping features using and of overlapping
-                    overTime=0.8;
-                    overDep =0.8;
+                    overTime=0.7;
+                    overDep =1;
                     criteria =3;
                     %                   [A,dpscale]=pruneOverlappingFeaturesTimeandDep(A,dpscale,overTime,overDep,data);
                     %                   [A,dpscale]=pruneOverlappingFeaturesTimeandDepEntropy(A,dpscale,overTime,overDep,data);
@@ -369,6 +372,7 @@ for TSnumber = 1: 1
         save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
         save(savepath5, 'depd1');
         save(strcat(saveFeaturesPath,'Distances',distanceUsed,'\FeaturesPruned\','feature_',TS_name,'.mat'),'data', 'gss1', 'frame1','depd1');
+        
             if(createDependencyScale==1)
                 saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
 
@@ -430,7 +434,7 @@ for TSnumber = 1: 1
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
+                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.003,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
                         end
@@ -488,14 +492,14 @@ for TSnumber = 1: 1
     end
     
     if(motifidentificationBP_MatlabDescr ==1)
-        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,1);
-        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,1);
+        ShowKmeansCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,0);%1);
+        ShowVaraiteallineadCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM,0);%1);
     end
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);
-        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);%1);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);%1);
     end    
     
 %     % save images before pruning
@@ -540,4 +544,5 @@ for TSnumber = 1: 1
         SizeFeaturesforImages=[SizeFeaturesforImages;a];
         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
     end
+end
 end

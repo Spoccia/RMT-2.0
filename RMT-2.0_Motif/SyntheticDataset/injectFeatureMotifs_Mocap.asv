@@ -75,7 +75,7 @@ FeatPositions=zeros(NumInstances,4);
 Step= floor(1000 /NumInstances);
 pStep=0;
 startInj=30;
-% startInj=[30,35,40];
+startInj=[30,35,40];
 % percentage of scaling over time;
 
 percentageTimeScaling = [0.5,0.75,1,0.5,0.75,1,0.5,0.75,1,1];

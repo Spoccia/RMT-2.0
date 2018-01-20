@@ -127,7 +127,7 @@ function [Cluster Codebook] = cvKmeans(X, K, stopIter, distFunction, verbose,TS,
         % Calculate euclidean distances between each sample and each centroid
         %d = distFunc(Codebook, X,'cosine');%'euclidean');%(Codebook, X); %distance(X(7:size(X,1),:),Codebook(7:size(X,1),:));%
         d=(distFunc(Codebook,X,KmeansDescmetric,TS,gss1,idm1));
-    iter
+   % iter
         % Assign each sample to the nearest codeword (centroid)
         [dataNearClusterDist, Cluster] = min(d, [], 1);
         %[dataNearClusterDist, Cluster] = max(d, [], 1);

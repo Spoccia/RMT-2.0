@@ -2,9 +2,10 @@ clc; clear;
 
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-TEST = 'Mocap_test1';
+for NAME =1:33%22:33%16:21%:21
+TEST = ['Mocap_test',num2str(NAME)]%'Mocap_test11';
 
-FeaturesRM ='RME';%'RMT';%
+FeaturesRM ='RMT';%'RME';%
 kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
 measure='Descriptor';
 ClusterAlg = 'ClusterMatlab';
@@ -13,7 +14,7 @@ DepO=num2str(2);
 DepT=num2str(2);
 
 for DepO =2:2
-    for DepT =2:2
+    for DepT =1:2
         %% BP All Featrures
         BP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
         BP_allfeatures_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
@@ -32,4 +33,5 @@ for DepO =2:2
         end
         
     end
+end
 end

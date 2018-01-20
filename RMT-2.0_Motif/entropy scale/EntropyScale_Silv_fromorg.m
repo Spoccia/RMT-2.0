@@ -108,8 +108,10 @@ STimegsigmafor_OT1_OD1 = sqrt((sigmaT0*ktime^sminT)^2  - (sigmaNT/2^ominT)^2);
 % Smothingsigmafor_OT1_OD1 = sigmaD0; %sqrt((sigmaT0*ktime^sminT)^2  - (sigmaNT/2^ominT)^2);
 % [SS.octave{otcur,odcur}(:,:,1,1),SS.smoothmatrix{otcur,odcur}(:,:,1,1)] = smooth(I, Smatrix, Smothingsigmafor_OT1_OD1);
 EntropyInputData=I;
-SS.Entropyoctave{otcur,odcur}(:,:,1,1) = ...
-                                          computeEntropyScale_1(squeeze(round(SS.octave{otcur,odcur}(:,:,1,1))), STimegsigmafor_OT1_OD1,Smatrix,DepThreshold);
+InputEntropyQuaantized= globalQuantization(squeeze(SS.octave{otcur,odcur}(:,:,1,1)));%singlevariateQuantization(squeeze(SS.octave{otcur,odcur}(:,:,1,1)));
+SS.Entropyoctave{otcur,odcur}(:,:,1,1) = computeEntropyScale_1(InputEntropyQuaantized,STimegsigmafor_OT1_OD1,Smatrix,DepThreshold);
+% ...
+%                                           computeEntropyScale_1(squeeze(round(SS.octave{otcur,odcur}(:,:,1,1))), STimegsigmafor_OT1_OD1,Smatrix,DepThreshold);
 for otact=1: Ot
     if (otact-1)~=0
         SS.ds{otact, odact} = [SS.ds{otact-1, odact}(1)+1, SS.ds{otact-1, odact}(2)];
@@ -214,8 +216,10 @@ for sd=sdmin:sdmax
             else
                [SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT)] = smoothJustTimeSilv(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT-1)),dsigmaT,Smatrix);
                                                                                       %smoothTime(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT-1)),dsigmaT,Smatrix);
-               [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT)] = ...  
-                                                                computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
+               InputEntropyQuaantized= globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));
+               [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT)] = computeEntropyScale_1(InputEntropyQuaantized,dsigmaT,Smatrix,DepThreshold);
+%                ...  
+%                                                                 computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
             end
         end
     else
@@ -229,14 +233,18 @@ for sd=sdmin:sdmax
                % just using the  dependency
                SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT) = smoothJustDependencySilv(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD-1, st+soT)),dsigmaT,Smatrix);
                                                                                            %smoothTime(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD-1, st+soT)),0.5,Smatrix);
-               [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT)] = ...  
-                                                                computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
+               InputEntropyQuaantized= globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));
+               [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT)] = computeEntropyScale_1(InputEntropyQuaantized,dsigmaT,Smatrix,DepThreshold);
+%                ...  
+%                                                                 computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
 
             else
                [SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT)] = smoothBothSilv(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD-1, st+soT-1)),dsigmaT,Smatrix);
                                                                                   %smoothTime(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD-1, st+soT-1)),dsigmaT,Smatrix);
-               [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT)] = ...  
-                                                                computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
+               InputEntropyQuaantized= globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));                                                                   
+               [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT)] = computeEntropyScale_1(InputEntropyQuaantized,dsigmaT,Smatrix,DepThreshold);
+%                ...  
+%                                                                 computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
             end
         end
     end
