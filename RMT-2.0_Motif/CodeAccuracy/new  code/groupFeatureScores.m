@@ -1,4 +1,4 @@
-function [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID, relevantSize, currentRetrievedSize)
+function [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID, relevantSize, currentRetrievedSize, threshold)
 % iterate statEntry, check which one overlap with the same injected features
 myStatEntry = statEntry(statEntry(:, 5) == currentInjectedClassID, :);
 [uniqueRows, firstIndex, membershipIndex] = unique( myStatEntry(:,[7 8]), 'rows');
@@ -11,6 +11,11 @@ for i = 1 : uniqueSize
     bestVO = max(myStatEntry(resultIndex, 10));
     
     bestScore(i) = bestTO * bestVO;
+    if(bestScore(i) >= threshold)
+        bestScore(i) = 1;
+    else
+        bestScore(i) = 0;
+    end
 end
 precision = sum(bestScore) / currentRetrievedSize;
 recall = sum(bestScore) / relevantSize;

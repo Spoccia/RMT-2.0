@@ -1,87 +1,64 @@
 clear;
 clc;
 
-% load feature count into motifFeatureCount
-featureCountFilePath = './FeaturePosition_MoCap_test6.csv';
-motifFeatureCount = csvread(featureCountFilePath);
+% iterate file to for upload
+testCaseIndex = 1 : 9;
+% GroundTruthFilePath = ['./DataFolder/synt_diffTSize/1motif/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
+% MatrixProfileFilePath = ['./DataFolder/synt_diffTSize/1motif/Mstamp/Mocap_MStamp_test'];
+% RMTMotifFilePath = ['./DataFolder/synt_diffTSize/1motif/RMT/AP_Mocap_DepO_2_DepT_2_test'];
 
-% matlab unique function provides default sorting
-motifClass = unique(motifFeatureCount(:, 1));
-motifClassCount = [];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MoCapTestData/example_tests/examles/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
+MatrixProfileFilePath = ['./DataFolder/synt_diffTSize/1motif/Mstamp/Mocap_MStamp_test'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/MoCapTestData/example_tests/examles/RMT/AP_DepO_2_DepT_2_Mocap_test'];
 
-% update motif class count
-for i = 1 : size(motifClass, 1)
-    currentMotifClassCount = size(nonzeros(motifFeatureCount(:, 1) == i), 1);
-    motifClassCount = [motifClassCount, currentMotifClassCount];
-end
 
-% [num,txt,raw] = xlsread('D:\Motif_Results\Datasets\SynteticDataset\Features_RME\Mocap_test6_AllFeatures\Accuracy\AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv','AP_all_SubC');
-filePath = ['./AP_Mocap_test6_AllFeatureFound_DepO_2_DepT_2.csv'];
-% filePath = ['./Mocap_test6_MStamp.csv'];
 
-[num,txt,raw] = xlsread(filePath,'AP_all_SubC');
-% [num,txt,raw] = xlsread(filePath,'Lenght_59');
+MatrixProfileEntropy = [];
+RMTMotifEntropy = [];
 
-% Deprecated thresholds
-% timeOverlapThreshold = 0.5;
-% depdOverlapThreshold = 1;
+% algorithm type: RMT, RME or MatrixProfile
+algorithmType = 'RMT';
 
-% loop through classID
-classID = num(:, 1);
-myClassID = unique(classID);
-
-% stateMatrix: predicated_class_size x injected_class_size
-precisionMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
-recallMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
-FScoreMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
-
-for i = 1 : size(myClassID, 1)
-    currentClassIndex = classID == myClassID(i);
-    statEntry = num(currentClassIndex, :);
+for ii = 1 : size(testCaseIndex, 2)
+    GroundTruthFile = [GroundTruthFilePath, num2str(testCaseIndex(ii)), '.csv'];
+    MatrixProfileFile = [MatrixProfileFilePath, num2str(testCaseIndex(ii)), '.csv'];
+    RMTMotifFile = [RMTMotifFilePath, num2str(testCaseIndex(ii)), '.csv'];
     
-    % compute recall and precision for each entry
-    featureID = statEntry(:, 2);
-    timeStart = statEntry(:, 3);
-    timeEnd = statEntry(:, 4);
+    algorithmType = 'MatrixProfile';
+    windowSize = 58;
+    % [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile] = motifEvaluation(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize);
     
-    injectedClassID = statEntry(:, 5);
-    injectedID_Deprecated = statEntry(:, 6);
+    algorithmType = 'RMT';
+    % [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluationWeighted(GroundTruthFile, RMTMotifFile, algorithmType, windowSize);
     
-    injectedTimeStart = statEntry(:, 7);
-    injectedTimeEnd = statEntry(:, 8);
+    % threshold = 0.5; % if it captures half of what we injected, then it is a motif instance
+    threshold = eps; % if it is non-zero
+    [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold);
     
-    % depd overlap computed from Jaccard similarity
-    timeOverlap = statEntry(:, 9);
-    depdOverlap = statEntry(:, 10);
+    % MatrixProfileEntropy = [MatrixProfileEntropy ; currentMatrixProfileEntropy];
+    RMTMotifEntropy = [RMTMotifEntropy ; currentRMTMotifEntropy];
     
-    % for each of these predicated class, precision and recall for each injected class
-    currentInjectedClassID = unique(injectedClassID);
-    currentRetrievedSize = size(statEntry, 1); % used for precision
+    % save current Matrix to files
+    % savePathMatrixProfile = ['./'];
     
-    for j = 1 : size(currentInjectedClassID, 1)
-        % update statMatrix
-        % group feature scores
-        if(currentInjectedClassID(j) == 0)
-            % precisionMatrix(i, j) = precision;
-            % recallMatrix(i, j) = recall;
-            % FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
-        else
-            relevantSize = motifClassCount(currentInjectedClassID(j));
-            [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize);
-            
-            % relevantSize = size(injectedClassID == currentInjectedClassID(j), 1);
-            % injectedRelevantSize = motifClassCount(currentInjectedClassID(j));
-            % precision = currentRetrievedSize / currentRetrievedSize;
-            % recall = relevantSize / injectedRelevantSize;
-            
-            precisionMatrix(i, currentInjectedClassID(j)) = precision;
-            recallMatrix(i, currentInjectedClassID(j)) = recall;
-            FScoreMatrix(i, currentInjectedClassID(j)) = 2 * precision * recall / (precision + recall);
-        end
-        
-    end
+    % savePathMatrixProfilePrecision = [savePathMatrixProfile, '/MatrixProfilePrecision_', num2str(ii), '.csv'];
+    % savePathMatrixProfileRecall = [savePathMatrixProfile, '/MatrixProfileRecall_', num2str(ii), '.csv'];
+    % savePathMatrixProfileFScore = [savePathMatrixProfile, '/MatrixProfileFScore_', num2str(ii), '.csv'];
+    % csvwrite(savePathMatrixProfilePrecision, precisionMatrixMatrixProfile);
+    % csvwrite(savePathMatrixProfileRecall, recallMatrixMatrixProfile);
+    % csvwrite(savePathMatrixProfileFScore, FScoreMatrixMatrixProfile)
+    
+    savePathRMT = ['./'];
+    savePathRMTPrecision = [savePathRMT, '/RMTPrecision_', num2str(ii), '.csv'];
+    savePathRMTRecall = [savePathRMT, '/RMTRecall_', num2str(ii), '.csv'];
+    savePathRMTFScore = [savePathRMT, '/RMTFScore_', num2str(ii), '.csv'];
+    csvwrite(savePathRMTPrecision, precisionMatrixRMT);
+    csvwrite(savePathRMTRecall, recallMatrixRMT);
+    csvwrite(savePathRMTFScore, FScoreMatrixRMT);
     
 end
 
-normMatrix = norm(FScoreMatrix);
+% csvwrite('./MatrixProfileEntropy.csv', MatrixProfileEntropy);
+csvwrite('./RMTMotifEntropy.csv', RMTMotifEntropy);
+% potentially save entropy values to files
 fprintf('All done .\n');
