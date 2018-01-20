@@ -87,7 +87,8 @@ if(strcmp(kindofBasicTS, 'randomWalk') == 1)
     % rndWalks1 : 0 - 1
     % rndWalks2 : scaled range
     % both same size as original data
-    [rndWalks1,rndWalks2] = rndWalkGenerationbigSize(size(data,1),size(data,2),data);
+    time_stamps_scale = 0.01;
+    [rndWalks1,rndWalks2] = rndWalkGenerationbigSize(size(data,1), floor(size(data, 2) * time_stamps_scale), data);
 end
 
 origRW1 = rndWalks1;

@@ -1,4 +1,4 @@
-function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold)
+function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix] = motifEvaluationWeighted(groundTruthFile, motifFile, algorithmType, windowSize)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 
 % load feature count into motifFeatureCount
@@ -35,6 +35,9 @@ for i = 1 : size(myClassID, 1)
     currentClassIndex = classID == myClassID(i);
     statEntry = num(currentClassIndex, :);
     
+    if(i == 5)
+        disp(i)
+    end
     % compute recall and precision for each entry
     featureID = statEntry(:, 2);
     timeStart = statEntry(:, 3);
@@ -60,7 +63,8 @@ for i = 1 : size(myClassID, 1)
         if(currentInjectedClassID(j) == 0)
         else
             relevantSize = motifClassCount(currentInjectedClassID(j));
-            [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize, threshold);
+            % [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize, threshold);
+            [precision, recall] = groupFeatureScoresWeighted(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize);
             
             precisionMatrix(i, currentInjectedClassID(j)) = precision;
             recallMatrix(i, currentInjectedClassID(j)) = recall;
@@ -71,6 +75,7 @@ for i = 1 : size(myClassID, 1)
     
 end
 % normMatrix = norm(FScoreMatrix);
-[precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
+% [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
+[precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropyWeighted(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
 end

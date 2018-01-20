@@ -10,8 +10,8 @@ TimeSeriesIndex = 10;
 TS_name = num2str(TimeSeriesIndex);
 TEST = ['Mocap_test7', TS_name];
 
-FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT';
-%FeaturePath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/RMTFeatures';
+% FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT';
+FeaturePath = '/Users/sicongliu/Desktop/MyRMT/FeaturesToInject/MoCap/RMTFeatures';
 FeaturePath = [FeaturePath, '/', num2str(TimeSeriesIndex), '/'];
 motifInjectionOption = 'Random'; % 'RoundRobin'
 kindofBasicTS = 'randomWalk'; %'Sinusoidal';%'flat';%
