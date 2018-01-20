@@ -4,6 +4,8 @@ minEnd = min(timeEnd, injectedTimeEnd);
 maxStart = max(timeStart, injectedTimeStart);
 minStart = min(timeStart, injectedTimeStart);
 maxEnd = max(timeEnd, injectedTimeEnd);
-timeOverlap = (minEnd - maxStart)./(maxEnd - minStart);
+previusdenominator= (maxEnd - minStart);
+InjectedFeatureScope= injectedTimeEnd-injectedTimeStart;
+timeOverlap = (minEnd - maxStart)./InjectedFeatureScope;
 end
 

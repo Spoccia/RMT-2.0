@@ -1,4 +1,4 @@
-function [C,mu,SUMD, D] = KmedoidsMStamp(DiscreteDataMatrix,mDepd,startK,  verbose,n_bit,DataMatrix)% distFunction, verbose,n_bit)
+function [Cluster,Centroid,distortion, d] = KmedoidsMStamp(DiscreteDataMatrix,mDepd,startK,  verbose,n_bit,DataMatrix)% distFunction, verbose,n_bit)
  % Description
     %   K-medoids clustering
     %
@@ -18,13 +18,15 @@ function [C,mu,SUMD, D] = KmedoidsMStamp(DiscreteDataMatrix,mDepd,startK,  verbo
     %   (mDepd)  for each timeseries there is the set of dependency on who it is found  the motif 
     %   (n_bit)  numbers of bit for the disctetized representation
 %     if ~exist('stopIter', 'var') || isempty(stopIter)
-%         stopIter = .05;
+        stopIter = .05;
 %     end
 %     if ~exist('distFunc', 'var') || isempty(distFunc)
 %         %'not distance input'
 %         distFunc = @Distance_RMT_DESC;% @cvEucdist;
 %         %distFunc = @Distance_RMT_DESC_AMPL;
 %     end
+    SUMD=[];
+    d=[];
     if ~exist('verbose', 'var') || isempty(verbose)
         verbose = false;
     end
@@ -36,18 +38,30 @@ function [C,mu,SUMD, D] = KmedoidsMStamp(DiscreteDataMatrix,mDepd,startK,  verbo
     
     Dist = MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,DiscreteDataMatrix);
     
-    MaximumValue = max(Dist);
+    MaximumValue = max(Dist(:));
+    MinimumDistance = min(Dist(:));
+    % 0-1 normalization of the space
+    Dist= Dist/MaximumValue;%-MinimumDistance)/(MaximumValue-MinimumDistance);
     
     improvedRatio = Inf;
     distortion = Inf;
     iter = 0;
     numiteration =100;
-    idxcentroid = randi([1 size(DataMatrix,3)],1,startK)
+    idxcentroid = randperm(size(DataMatrix,3),1);%startK);% randi([1 size(DataMatrix,3)],1,startK)
+    
     Discrete_Centroids = DiscreteDataMatrix(:,:,idxcentroid);
     Centroid =DataMatrix(:,:,idxcentroid);
+%     for i=2:startK
+%         centroidDistances = MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,Discrete_Centroids);
+%         sampleProbability = min(centroidDistances,[],2);
+%     end
+    
     while true
         % Assign each sample to the nearest codeword (centroid)
         d=MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,Discrete_Centroids);
+        % 0-1 normalization of the  distances
+        d= d/MaximumValue;%(d - MinimumDistance) /(MaximumValue-MinimumDistance);
+        
         [dataNearClusterDist, Cluster] = min(d', [], 1);
         
         old_distortion = distortion;
@@ -67,8 +81,9 @@ function [C,mu,SUMD, D] = KmedoidsMStamp(DiscreteDataMatrix,mDepd,startK,  verbo
         % Renew Codebook
         for i=1:startK
             idx = find(Cluster == i);
-            RealIndex = 1:size(DataMatrix,3);
-            RealIndex = RealIndex(idx); 
+            RealIndex = idx;
+%             1:size(DataMatrix,3);%do not need
+%             RealIndex = RealIndex(idx); % do not need
             
             AllRealsequncesC = DataMatrix(:,:,idx);
             AllQuantizedSeqC = DiscreteDataMatrix(:,:,idx);
@@ -76,14 +91,16 @@ function [C,mu,SUMD, D] = KmedoidsMStamp(DiscreteDataMatrix,mDepd,startK,  verbo
             averagealllTS = sum(AllRealsequncesC,3)/size(AllRealsequncesC,3);
             split_pt = get_desc_split_pt(n_bit);
             disctrretizeaveragealllTS = discretization(averagealllTS, split_pt);
-            for j=1: size(RealIndex,1)
+            for j=1: size(RealIndex,2)
                 AllCdepd{j} = mDepd{RealIndex(j)};
             end
-            localDistances= MstampDfunction(AllQuantizedSeqC,AllCdepd,n_bit,disctrretizeaveragealllTS);
+            localDistances= MstampDfunction(AllQuantizedSeqC,AllCdepd,n_bit,disctrretizeaveragealllTS)/MaximumValue;%;
             [~,newCentroidID] = min(localDistances);
-            Discrete_Centroids(:,:,i) = AllQuantizedSeqC(:,:,i);
+            idxcentroid(i)=newCentroidID;
+            Discrete_Centroids(:,:,i) = AllQuantizedSeqC(:,:,newCentroidID);
             Centroid(:,:,i) = AllRealsequncesC(:,:,newCentroidID);
         end
+        idxcentroid
     end
     
 

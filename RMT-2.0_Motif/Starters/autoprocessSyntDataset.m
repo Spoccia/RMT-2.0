@@ -2,7 +2,7 @@ close all;
 clc;
 clear;
 
-DatasetInject=2;  % 1 Energy 2 Mocap
+DatasetInject=1;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
@@ -14,7 +14,7 @@ normalizeData=0;%1;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 Cluster = 1;%1;%
 CreateSubCluster=1;
@@ -35,11 +35,12 @@ saveTSasImage = 1;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-for NAME =1:33%10:33%22:33%16:21
+for NAME =1:2%33%10:33%22:33%16:21
 % Path Parameters
-TEST ='test1';%'1';%
+TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
-    TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
+     TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
+    
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -114,9 +115,9 @@ for TSnumber = 1: 1
     DeSigmaTime = 1.6*2^(1/DeLevelTime);%
     DeGaussianThres = 0.1;%
     if DatasetInject == 1 % Energy Building
-        DeSigmaDepd = 0.4;%0.6;%0.5;%0.4;%
-        DeSigmaTime = 4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
-        DeGaussianThres = 0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
+        DeSigmaDepd = 0.5;%0.6;%0.5;%0.4;%
+        DeSigmaTime = 1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
+        DeGaussianThres = 0.2;%0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
     elseif DatasetInject == 2 % MoCap
         DeSigmaDepd = 0.5;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
         DeSigmaTime = 4*sqrt(2)/2;%    
@@ -168,6 +169,7 @@ for TSnumber = 1: 1
     end
     
     coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));%'LocationSensor_NN.csv'));%csvread(strcat(datasetPath,'LocationSensor.csv'));
+%     coordinates= csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));
     if DatasetInject == 2 % MoCap
         coordinates=csvread(strcat(datasetPath,'location\LocationMatrixMocap.csv'));%
     end
@@ -212,6 +214,7 @@ for TSnumber = 1: 1
             [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
+            
         elseif(strcmp(FeaturesRM,'RME'))
             [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
