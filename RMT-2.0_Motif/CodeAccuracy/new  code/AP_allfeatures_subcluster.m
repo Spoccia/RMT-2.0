@@ -64,7 +64,7 @@ for i=1: size(Interv_Features_Cluster,1)
          DI=Dependency_Injected(Dependency_Injected(:,Position_F_Injected(j,1))>0,Position_F_Injected(j,1));
          DC=DescriptorSortedbyCluster(DescriptorSortedbyCluster(:,i)>0,i);
          TimeOverlapping=computeTimeOverlap(IdentifiedTimePeriod(1),IdentifiedTimePeriod(end),Position_F_Injected(j,3),Position_F_Injected(j,4));
-         variateOverlapping = size(intersect(DI,DC),1)/size(union(DI,DC),1);
+         variateOverlapping = size(intersect(DI,DC),1)/size(DI,1);%(union(DI,DC),1);
          if(TimeOverlapping >0 & variateOverlapping >0)
               % condition to modify the score
               if (TimeOverlapping *variateOverlapping > TimeScore*Varaitescore)
