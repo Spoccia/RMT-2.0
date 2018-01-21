@@ -23,7 +23,7 @@ stopIter = .05;
 %     if ~exist('distFunc', 'var') || isempty(distFunc)
 %         %'not distance input'
 %         distFunc = @Distance_RMT_DESC;% @cvEucdist;
-%         %distFunc = @Distance_RMT_DESC_AMPL;
+%         % distFunc = @Distance_RMT_DESC_AMPL;
 %     end
 SUMD=[];
 d=[];
@@ -49,57 +49,60 @@ iter = 0;
 numiteration =100;
 idxcentroid = randperm(size(DataMatrix,3),1);%startK);% randi([1 size(DataMatrix,3)],1,startK)
 
-DiscreteData=[];
-for i=1:size(DiscreteDataMatrix,3)
-    DiscreteData(i,:,:) =DiscreteDataMatrix(:,:,1);
-end
+% DiscreteData=[];
+% for i=1:size(DiscreteDataMatrix,3)
+%     DiscreteData(i,:,:) = DiscreteDataMatrix(:,:,1);
+% end
 
-if (size(DiscreteDataMatrix,3)==1)
-    initialindex=1;
-    Codebook= DiscreteDataMatrix(:,:,initialindex);
+% only one motif found
+if (size(DiscreteDataMatrix,3) == 1)    
+    initialindex = 1;
+    Codebook = DiscreteDataMatrix(:,:,initialindex);
 else
-    P=DiscreteData;
-    % if isempty(S)
+    % P = DiscreteData;
+    P = DiscreteDataMatrix;
     S = RandStream.getGlobalStream;
-    % end
     idxcentroid = zeros(1,startK);
-    [Centroids(1,:,:), idxcentroid(1)] = datasample(S,P,1);
-    Discrete_Centroids(:,:,1) = Centroids(1,:,:);
-    % Select the rest of the seeds by a probabilistic model
-    for ii = 2:startK
-        %distanza=(distFunc(C(1:ii-1,:)',P','cosine'))';%'euclidean'))';%,
-        distanza = MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,Discrete_Centroids);
-        %(distFunc(C(1:ii-1,:)',P',KmeansDescmetric,TS,gss1,idm1))';
+    
+    % idxcentroid(1) : '1' means it is the very first iteration
+    [Discrete_Centroids(:, :, 1), idxcentroid(1)] = datasample(S, P, 1, 3);
+    
+    
+    % first centroid found
+    % Discrete_Centroids(:, :, 1) = Centroids(1, :, :);
+    
+    % select the rest of the seeds, proportional to the distances to the centroids
+    for ii = 2 : startK
+        % return the distance between all the features and all the centroids
+        distances_to_centroids = MstampDfunction(DiscreteDataMatrix, mDepd, n_bit, Discrete_Centroids);
         
-        sampleProbability = min(distanza,[],2);%distance));%,[],2);
-        %sampleProbability = max(distanza,[],2);%distance));%,[],2);
+        % row-wise min
+        sampleProbability = min(distances_to_centroids, [], 2);%distance));%,[],2);
+        
         denominator = sum(sampleProbability);
-        if denominator==0 || isinf(denominator) || isnan(denominator)
-            Centroids(ii:startK,:,:) = datasample(S,P,startK-ii+1,1,'Replace',false);
-            Discrete_Centroids(:,:,ii:startK)=Centroids(ii:startK,:,:);
+        
+        % if datasamples & distance computations process failed, redo everything simply using datasamples function
+        if denominator == 0 || isinf(denominator) || isnan(denominator)
+            
+            % no duplicate return values from 'datasample'
+            Discrete_Centroids(:, :, ii : startK) = datasample(S, P, startK - ii + 1, 3, 'Replace', false);
+            % Discrete_Centroids(:, :, ii : startK) = Centroids(ii : startK, :, :);
             break;
         end
-        sampleProbability = sampleProbability/denominator;
         
-        [Centroids(ii,:,:), idxcentroid(ii)] = datasample(S,P,1,1,'Replace',false,...
-            'Weights',sampleProbability);
-        Discrete_Centroids(:,:,ii)=Centroids(ii,:,:);
+        % normalization, array now sum to 1
+        sampleProbability = sampleProbability / denominator;
         
+        [Discrete_Centroids(:, :, ii), idxcentroid(ii)] = datasample(S, P, 1, 3, 'Replace', false,...
+            'Weights', sampleProbability);
+        % Discrete_Centroids(:, :, ii) = Centroids(ii, :, :);
     end
-    
-    
-    initialindex=idxcentroid;
+    initialindex = idxcentroid;
 end
 
 
-
-
-
-
-
-
-Discrete_Centroids = DiscreteDataMatrix(:,:,idxcentroid);
-Centroid =DataMatrix(:,:,idxcentroid);
+% Discrete_Centroids = DiscreteDataMatrix(:,:,idxcentroid);
+% Centroid =DataMatrix(:,:,idxcentroid);
 %     for i=2:startK
 %         centroidDistances = MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,Discrete_Centroids);
 %         sampleProbability = min(centroidDistances,[],2);
