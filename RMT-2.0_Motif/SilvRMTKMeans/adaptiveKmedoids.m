@@ -21,16 +21,28 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
     [C,mu,meanKmeans, D]=KmedoidsMStamp(DiscreteDataMatrix,allMotifDepd,startK,false,n_bit,DataMatrix);
 % labels of Clusters
     labels= unique(C);
+    D1 =zeros (size(D));
+
+    NumofIntancesforClusters=zeros(1,startK);
+    for i=1:length(labels)
+        D1(C==i,i)=D(C==i,i);    % save just the instances of the distances from  each centroid
+        NumofIntancesforClusters(1,i)=sum(C==i);
+        
+    end
+    
+      SUMD1 = sum(D1);
+      MeanD1 = SUMD1./NumofIntancesforClusters;
+      MeasureToUse=mean(MeanD1);
 %% computeinertia
        if(itr==1)
-         inertia=[inertia,meanKmeans];
+         inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          startK=startK+Step;
        else
-         inertia=[inertia,meanKmeans];
+         inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          error = abs(inertia(itr) - inertia(itr-1));
-            if error<=saturation || startK >= (size(DataMatrix,3)-2)
+            if error<=saturation || startK >= (size(DataMatrix,3)-2 || inertia(itr)<saturation)
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
                 isFound=true;
             end
