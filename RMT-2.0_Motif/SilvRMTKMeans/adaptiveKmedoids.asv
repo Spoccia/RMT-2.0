@@ -22,23 +22,27 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
 % labels of Clusters
     labels= unique(C);
     D1 =zeros (size(D));
-    D2=D1;
-    NumofIntancesforClusters=zeros(1,K_start);
+
+    NumofIntancesforClusters=zeros(1,startK);
     for i=1:length(labels)
-        D1(C1==i,i)=D(C1==i,i);    % save just the instances of the distances from  each centroid
-        NumofIntancesforClusters(1,i)=sum(C1==i);
-        D2(:,i)=D1(:,i)/maxdistance2instances;%/Maximum_D_C; %normalize the distances  with the max distance
+        D1(C==i,i)=D(C==i,i);    % save just the instances of the distances from  each centroid
+        NumofIntancesforClusters(1,i)=sum(C==i);
+        
     end
+    
+      SUMD1 = sum(D1);
+      MeanD1 = SUMD1./NumofIntancesforClusters;
+      MeasureToUse=mean(MeanD1);
 %% computeinertia
        if(itr==1)
-         inertia=[inertia,meanKmeans];
+         inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          startK=startK+Step;
        else
-         inertia=[inertia,meanKmeans];
+         inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          error = abs(inertia(itr) - inertia(itr-1));
-            if error<=saturation || startK >= (size(DataMatrix,3)-2 || inertia(itr)<saturation)
+            if error<=saturation || startK >= (size(DataMatrix,3)-2) || inertia(itr)<saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
                 isFound=true;
             end
