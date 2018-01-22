@@ -2,12 +2,12 @@ close all;
 clc;
 clear;
 
-DatasetInject=1;  % 1 Energy 2 Mocap
+DatasetInject=2;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RMT';%'RMT';%
+FeaturesRM ='RME';%'RMT';%
 
 %% Normalize the data?
 normalizeData=0;%1;
@@ -35,7 +35,7 @@ saveTSasImage = 1;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-for NAME =1:2%33%10:33%22:33%16:21
+for NAME =1:33%10:33%22:33%16:21 2%
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
@@ -434,7 +434,7 @@ for TSnumber = 1: 1
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.003,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
+                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
                         end
@@ -498,8 +498,8 @@ for TSnumber = 1: 1
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);%1);
-        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);%1);
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,0);%1);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,0);%1);
     end    
     
 %     % save images before pruning

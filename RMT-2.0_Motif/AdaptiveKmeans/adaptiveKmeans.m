@@ -41,7 +41,8 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
       MeanD1 = SUMD1./NumofIntancesforClusters;
 %       MeanD2= mean(D2>0);
       MeanD2 = SUMD2./NumofIntancesforClusters;
-       MeasureToUse=mean(MeanD2);
+      mean3 = sum(SUMD2)/sum(NumofIntancesforClusters);
+       MeasureToUse=mean(mean3);%MeanD2);
 %        MeasureToUse=sum(MeanD2);
 %         saturation = /mean(NumofIntancesforClusters);
 
@@ -61,7 +62,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
 %         inertia=[inertia,sum(SUMD1)/size(D,1)];
         tryK=[tryK,startK];
         error = abs(inertia(itr) - inertia(itr-1));
-        if error<=saturation || startK >= (size(features1,2)-1)
+        if error<=saturation || startK >= (size(features1,2)-1) || inertia(itr)<=saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
             isFound=true;
         end
