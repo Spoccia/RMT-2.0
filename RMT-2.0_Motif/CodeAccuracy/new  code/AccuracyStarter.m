@@ -2,9 +2,9 @@ clc; clear;
 
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-for NAME =1:33%22:33%16:21%:21
-TEST = ['Mocap_test',num2str(NAME)]%'Mocap_test11';
-
+for NAME =34:39%1:33%22:33%16:21%:21
+% TEST = ['Mocap_test',num2str(NAME)]%'Mocap_test11';
+TEST=['MoCap',num2str(NAME)]
 FeaturesRM ='RMT';%'RME';%
 kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
 measure='Descriptor';

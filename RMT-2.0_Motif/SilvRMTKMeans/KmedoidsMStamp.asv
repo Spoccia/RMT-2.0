@@ -83,7 +83,7 @@ else
         if denominator == 0 || isinf(denominator) || isnan(denominator)
             
             % no duplicate return values from 'datasample'
-            [Discrete_Centroids(:, :, ii : startK),idxcentroid(ii : startK)] = datasample(S, P, startK - ii + 1, 3, 'Replace', false);
+            Discrete_Centroids(:, :, ii : startK), = datasample(S, P, startK - ii + 1, 3, 'Replace', false);
 
             break;
         end
@@ -100,7 +100,6 @@ while true
     % Assign each sample to the nearest codeword (centroid)
 %     d=MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,Discrete_Centroids);
     d=MstampDfunction1(DiscreteDataMatrix,mDepd,n_bit,initialindex);
-    d(isnan(d))=inf;
     % 0-1 normalization of the  distances
     d= d/MaximumValue;%(d - MinimumDistance) /(MaximumValue-MinimumDistance);
     

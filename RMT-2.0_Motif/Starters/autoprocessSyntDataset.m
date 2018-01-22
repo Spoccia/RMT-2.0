@@ -7,15 +7,15 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RME';%'RMT';%
+FeaturesRM ='RMT';%'RMT';%
 
 %% Normalize the data?
 normalizeData=0;%1;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
-createDependencyScale = 1;%1;
+FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+createDependencyScale = 0;%1;
 Cluster = 1;%1;%
 CreateSubCluster=1;
 
@@ -35,12 +35,12 @@ saveTSasImage = 1;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-for NAME =1:33%10:33%22:33%16:21 2%
+for NAME =1:39%10:33%22:33%16:21 2%1:6%
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
      TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-    
+%     TEST=['MoCap',num2str(NAME)]
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -498,8 +498,8 @@ for TSnumber = 1: 1
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,0);%1);
-        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,0);%1);
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);%1);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,1);%1);
     end    
     
 %     % save images before pruning
