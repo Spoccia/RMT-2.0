@@ -18,7 +18,6 @@ saveMotifImages=1;
 % The script will only run when only one of the alternatives is uncomment
 
 %% alternative 1.a: the basic version
-
 % 
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\Datasets\Mocap\';
 ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%'D:\Motif_Results\Datasets\Mocap\MStamp\';
@@ -29,7 +28,6 @@ sublenght= 58;% 29;%   %[29,58];
 %          TEST=['MoCap',num2str(NAME)]
 %         TEST = ['Energy_Building',num2str(NAME)];
     TS_name=TEST;
-<<<<<<< HEAD
     data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
 
 %         data1= csvread([datasetPath,'data\',['MoCap',num2str(NAME-1)],'.csv'])';
@@ -39,17 +37,8 @@ sublenght= 58;% 29;%   %[29,58];
 %                                 / std(data, 1);
 %     data=data';
 
-=======
-    % data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
-    
-    data=csvread([datasetPath,'data/',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
-    %     data = (data - mean(data)) ...
-    %                                 / std(data, 1);
-    %     data=data';
-    
->>>>>>> e3f5fe473a087551ec4c43a0d6a1b7e5bcfdee93
     Time=[];
-    pro_mul=[];
+    pro_mul=[]; 
     pro_idx=[];
     motif_idx=[];
     motif_dim=[];
@@ -136,14 +125,12 @@ sublenght= 58;% 29;%   %[29,58];
             end
             close all;
         end
-        close all;
-    end
-    %         for i=1:size(MotifBag,2)
-    %             % apply matrix profile for the motif found
-    %             [pro_mul, pro_idx] = ...
-    %             mstamp(data, sub_len, must_dim, exc_dim);
-    %             % scan in all the matrtix profile for the motif to find all the minimum till the end of the  timeseries
-    %         end
+%         for i=1:size(MotifBag,2)
+%             % apply matrix profile for the motif found
+%             [pro_mul, pro_idx] = ...
+%             mstamp(data, sub_len, must_dim, exc_dim);
+%             % scan in all the matrtix profile for the motif to find all the minimum till the end of the  timeseries 
+%         end
     datasave= [ImageSavingPath,TS_name,'\'];
     save ([datasave,'Motif_output_',TS_name,'Lenght_',num2str(sub_len),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag_mstamp');
     xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],Time);
@@ -151,6 +138,6 @@ sublenght= 58;% 29;%   %[29,58];
 end
 %     end
 
-% save time and all the structures
-
+    % save time and all the structures
+    
 % end
