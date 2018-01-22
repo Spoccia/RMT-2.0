@@ -5,9 +5,9 @@ path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 FeaturesRM ='Mstamp';%'RMT';%'RME';%
 PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';
-for NAME =16:21
+for NAME =10:33
 testname=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-lenght=58;%29;%
+lenght=29;%58;%
 len=['Lenght_',num2str(lenght)];
 
 
@@ -21,7 +21,7 @@ Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\',testname,
 ListofInstances=[];
 for MID = 1:m
     
-    motifsStart  = MotifBag_mstamp{MID}.idx;
+    motifsStart  = MotifBag_mstamp{MID}.startIdx;
     motifvariate = MotifBag_mstamp{MID}.depd{1};
     for instance =1: size(motifsStart,1)
         MotifInstanceIdentification=[MID,instance,motifsStart(instance),motifsStart(instance)+lenght-1];        
@@ -35,7 +35,7 @@ for MID = 1:m
         DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,1))>0,Feature_Pos_Injected(injectedID,1));        
 %           InjectedDependency = Dependency_Injected(injectedID,1);
           TimeOverlapping    = computeTimeOverlap(motifsStart(instance),motifsStart(instance)+lenght-1,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
-          variateOverlapping = size(intersect(DI,motifvariate),1)/size(union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
+          variateOverlapping = size(intersect(DI,motifvariate),1)/size(DI,1);%union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
           if(TimeOverlapping >0 & variateOverlapping >0)
               % condition to modify the score
               if (TimeOverlapping *variateOverlapping > TimeScore*Varaitescore)
@@ -48,10 +48,10 @@ for MID = 1:m
         ListofInstances=[ListofInstances;[MotifInstanceIdentification,InjectedIDentifcation]];
     end
 end
-if(exist(strcat(path,FeaturesRM,'\',testname,'\Accuracy\'),'dir')==0)
-    mkdir(strcat(path,FeaturesRM,'\',testname,'\Accuracy\'));
+if(exist(strcat(path,FeaturesRM,'\Accuracy\'),'dir')==0)
+    mkdir(strcat(path,FeaturesRM,'\Accuracy\'));
 end
 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
-xlswrite([path,'',FeaturesRM,'\',testname,'\Accuracy\',testname,'_MStamp','.csv'],ListofInstances,len,'A2');
-xlswrite([path,'',FeaturesRM,'\',testname,'\Accuracy\',testname,'_MStamp','.csv'],col_header,len,'A1');
+xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances,len,'A2');
+xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],col_header,len,'A1');%'_MStamp',
 end

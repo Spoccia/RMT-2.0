@@ -21,9 +21,9 @@ saveMotifImages=1;
 % 
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\Datasets\Mocap\';
 ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%'D:\Motif_Results\Datasets\Mocap\MStamp\';
-for NAME =1:1
+for NAME =10:33
 FeaturesRM='MStamp';
-sublenght=58;%29;%     %[29,58];
+sublenght=29;% 58;%    %[29,58];
 % for TSnumber=20:184
     TEST =['Mocap_test',num2str(NAME)];%'Mocap_test11';%num2str(TSnumber)
     TS_name=TEST;
@@ -103,7 +103,7 @@ sublenght=58;%29;%     %[29,58];
 
         %% bag of motifs using MDL unconstrained search
         [allStartingMotifs,allMotifDepd] = unifyAllInstances (motif_idx,motif_dim,pro_idx);
-        MotifBag_mstamp = adaptiveKmedoids(data,allStartingMotifs,allMotifDepd,sub_len,n_bit,0.003);%data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
+        MotifBag_mstamp = adaptiveKmedoids(data,allStartingMotifs,allMotifDepd,sub_len,n_bit,0.02);%0.003);%data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
 %         MotifBag_mstamp = search_Instances(data,motif_idx,motif_dim,sub_len,n_bit, k,pro_idx);
         MotifBag=MotifBag_mstamp;
         Time=[Time,toc];
@@ -112,7 +112,7 @@ sublenght=58;%29;%     %[29,58];
         end
         if(saveMotifImages==1)
             for i=1:size(MotifBag,2)
-               figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
+               figure1 = plot_RMTmotif_on_data(data', MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
                         %plot_motif_on_data(data, sub_len, MotifBag{i}.idx, MotifBag{i}.depd);
 
                filename=[ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\TS_',TS_name,'BoM_',num2str(i),'.eps'];

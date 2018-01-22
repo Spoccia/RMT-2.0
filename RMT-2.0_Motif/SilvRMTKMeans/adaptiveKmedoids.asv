@@ -32,7 +32,8 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
     
       SUMD1 = sum(D1);
       MeanD1 = SUMD1./NumofIntancesforClusters;
-      MeasureToUse=mean(MeanD1);
+      MeanD2 = sum(SUMD1)/sum(NumofIntancesforClusters);
+      MeasureToUse=mean(MeanD2);
 %% computeinertia
        if(itr==1)
          inertia=[inertia,MeasureToUse];
@@ -42,9 +43,10 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
          inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          error = abs(inertia(itr) - inertia(itr-1));
-            if error<=saturation || startK >= (size(DataMatrix,3)-2) || inertia(itr)<saturation
+            if error<=saturation || startK >= (size(DataMatrix,3)-2) || inertia(itr)<=saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
                 isFound=true;
+                startK=startK-Step; 
             end
         startK=startK+Step;  
        end
@@ -53,17 +55,20 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
        end
     end
 MotifBag_mstamp=[];
+
 for i=1:startK
 IDX = C==i;
+MotifIDX = 1:size (allMotif,1);
 MotifBag_mstamp{i}.startIdx = allMotif(IDX);
-    for iterator=1:size(IDX,1)
-        MotifBag_mstamp{i}.depd{iterator}=allMotifDepd{IDX(iterator)};
-        MotifBag_mstamp{i}.Tscope{iterator}=allMotif(IDX(iterator))+ sub_len;
+MotifIDX = MotifIDX(IDX);
+    for iterator=1:size(MotifIDX,2)
+        MotifBag_mstamp{i}.depd{iterator}=allMotifDepd{MotifIDX(iterator)};
+        MotifBag_mstamp{i}.Tscope{iterator}= sub_len;%allMotif(MotifIDX(iterator))+
     end
 
 end
 
-'job done'
+
 
 
         
