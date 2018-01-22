@@ -9,7 +9,7 @@ end
 
 injectedDepdScale = [];
 
-pStep = 0;
+pStep = 1;
 Step = floor(size(rndWalks, 2) / NumInstances); % avoid injecting features in the same position
 
 if(sameVariateGroup == 0)
@@ -19,7 +19,7 @@ if(sameVariateGroup == 0)
     % compute variate group -- find variate group in graph, size same as mypatternDepdScale
     variateGroup = computeVariateGroup(nonZeropatternDepdScale, idm, DepdO, patternDepdScale);
     timeScope = patternFeature(4) * 3;
-    intervaltime = (max(round((patternFeature(2) - timeScope), 0)) : (min(round((patternFeature(2) + timeScope)), size(data, 2)))); % feature time scope (integer)
+    intervaltime = (max(round((patternFeature(2) - timeScope)), 1) : (min(round((patternFeature(2) + timeScope)), size(data, 2)))); % feature time scope (integer)
     motifData = data(:, intervaltime);
     [~, motifColumn] = size(motifData);
     
@@ -28,7 +28,12 @@ if(sameVariateGroup == 0)
     
     for i = 1 : NumInstances
         % insert same feature at different variate groups
-        starter = randi([pStep, max(pStep + Step - motifColumn, 0)],1,1);
+        if(pStep == 1)
+            starter = 1;
+        else
+            starter = randi([pStep, max(pStep + Step - motifColumn, 0)],1,1);
+        end
+        
         FeatPositions(i, :) = [i, patternFeature(2), starter, starter + motifColumn - 1];
         mypatternDepdScale = variateGroup(:, mod(i, size(variateGroup, 2)) + 1);
         injectedDepdScale = [injectedDepdScale, mypatternDepdScale];
