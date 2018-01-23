@@ -6,16 +6,16 @@ recallEntropyArray = zeros(numOfCluster, 1);
 FScoreEntryArray = zeros(numOfCluster, 1);
 
 for i = 1 : numOfCluster
-    precisionEntropyArray(i) = weightedEntropy(precisionMatrix(i, :));
-    recallEntropyArray(i) = weightedEntropy(recallMatrix(i, :));
-    FScoreEntryArray(i) = weightedEntropy(FScoreMatrix(i, :));
+    precisionEntropyArray(i) = unWeightedEntropy(precisionMatrix(i, :));
+    recallEntropyArray(i) = unWeightedEntropy(recallMatrix(i, :));
+    FScoreEntryArray(i) = unWeightedEntropy(FScoreMatrix(i, :));
 end
 precisionEntropy = mean(precisionEntropyArray);
 recallEntropy = mean(recallEntropyArray);
 FScoreEntropy = mean(FScoreEntryArray);
 end
 
-function [arrayEntropy] = weightedEntropy(array)
+function [arrayEntropy] = unWeightedEntropy(array)
 if(size(nonzeros(array), 1) == 0)
     arrayEntropy = 0;
 else
@@ -25,6 +25,7 @@ else
     array = array/denominator;
     % compute entropy on 'array'
     % eps is machine eps defined by matlab
-     arrayEntropy = (-sum(array.*log2(array + eps))) * numerator;
+    % arrayEntropy = (-sum(array.*log2(array + eps))) * numerator;
+    arrayEntropy = entropy(array) * numerator;
 end
 end
