@@ -19,7 +19,7 @@ function [ TimeforPruningClustering ] = KmeansPruning(TEST, imagepath,specificim
 %     end
    TimeforPruningClustering=[];
     Matlab=1;
-    saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',cleanfeatures,TEST,'\'];
+    saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',TEST,'\'];
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
     savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
     savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];   

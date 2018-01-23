@@ -69,8 +69,11 @@ else
     % Select the rest of the seeds by a probabilistic model
     for ii = 2 : startK
         % return the distance between all the features and all the centroids
-        distances_to_centroids = MstampDfunction1(DiscreteDataMatrix, mDepd, n_bit, idxcentroid(1));
-        distances_to_centroids(isnan(distances_to_centroids))=inf;
+%% Candan Distance        
+        distances_to_centroids = MstampDfunction1(DiscreteDataMatrix, mDepd, n_bit, idxcentroid(1:ii-1));
+        distances_to_centroids= distances_to_centroids/MaximumValue;%
+        distances_to_centroids(isnan(distances_to_centroids))=1; % impose the infinite distance to be 1 as 1 is the maximum distance
+%%  Silv distance       
 %         distances_to_centroids = MstampDfunction(DiscreteDataMatrix, mDepd, n_bit, Discrete_Centroids);
 
                % row-wise min
@@ -98,11 +101,14 @@ end
 
 while true
     % Assign each sample to the nearest codeword (centroid)
+%% Silv measure    
 %     d=MstampDfunction(DiscreteDataMatrix,mDepd,n_bit,Discrete_Centroids);
-    d=MstampDfunction1(DiscreteDataMatrix,mDepd,n_bit,initialindex);
-    d(isnan(d))=inf;
+%% Candan measure
+    d=MstampDfunction1(DiscreteDataMatrix,mDepd,n_bit,idxcentroid);
+    
     % 0-1 normalization of the  distances
     d= d/MaximumValue;%(d - MinimumDistance) /(MaximumValue-MinimumDistance);
+    d(isnan(d))=1;% changed to 1 thus 1 is the maximum distance in the space
     
     [dataNearClusterDist, Cluster] = min(d', [], 1);
     
@@ -137,9 +143,15 @@ while true
         for j=1: size(RealIndex,2)
             AllCdepd{j} = mDepd{RealIndex(j)};
         end
-        localDistances= MstampDfunction(AllQuantizedSeqC,AllCdepd,n_bit,disctrretizeaveragealllTS)/MaximumValue;%;
-        [~,newCentroidID] = min(localDistances);
-        idxcentroid(i)=newCentroidID;
+        localDistances = MstampDfunction1(AllQuantizedSeqC,AllCdepd,n_bit,1:size(AllQuantizedSeqC,3));
+         localDistances= localDistances/MaximumValue;%
+         localDistances(isnan(localDistances))=1;% 
+        [~,newCentroidID] = min(mean(localDistances));
+%% silv measure
+%         localDistances = MstampDfunction(AllQuantizedSeqC,AllCdepd,n_bit,disctrretizeaveragealllTS)/MaximumValue;%;
+%         [~,newCentroidID] = min(localDistances);
+
+        idxcentroid(i)=idx(newCentroidID);
         Discrete_Centroids(:,:,i) = AllQuantizedSeqC(:,:,newCentroidID);
         Centroid(:,:,i) = AllRealsequncesC(:,:,newCentroidID);
     end
