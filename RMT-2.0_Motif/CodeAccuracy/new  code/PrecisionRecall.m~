@@ -2,7 +2,7 @@ clear;
 clc;
 
 % iterate file to for upload
-testCaseIndex = 28 : 33;
+testCaseIndex = 16 : 21;
 
 % if stat is computed in a weighted manner
 weighted = 0;
@@ -10,12 +10,11 @@ weighted = 0;
 % MatrixProfileFilePath = ['./DataFolder/synt_diffTSize/1motif/Mstamp/Mocap_MStamp_test'];
 % RMTMotifFilePath = ['./DataFolder/synt_diffTSize/1motif/RMT/AP_Mocap_DepO_2_DepT_2_test'];
 
-GroundTruthFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/example_tests/examles/Groundtruth/2_Motif/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
-MatrixProfileFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/MStamp/2_Motif/Mocap_test'];
-RMTMotifFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/RMT_AVG_SUM/2_Motif/AP_DepO_2_DepT_2_Mocap_test'];
-
-savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder/2_Motif'];
-savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder/2_Motif'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/example_tests/examles/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/MStamp/1_Motif/Mocap_test'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/RMT_AVG_SUM/1_Motif/AP_DepO_2_DepT_2_Mocap_test'];
+savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder/1_Motif'];
+savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder/1_Motif'];
 
 
 MatrixProfileEntropy = [];
@@ -35,10 +34,12 @@ for ii = 1 : size(testCaseIndex, 2)
     
     windowSize = 58;
     if(weighted == 1)
+        
         algorithmType = 'MatrixProfile';
-        [currentMatrixProfileEntropy, precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile] = motifEvaluationWeighted(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize);
+        [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile] = motifEvaluation(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize, threshold);
         algorithmType = 'RMT';
         % [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold);
+ 
         [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluationWeighted(GroundTruthFile, RMTMotifFile, algorithmType, windowSize);
     else
         algorithmType = 'MatrixProfile';
@@ -65,9 +66,6 @@ for ii = 1 : size(testCaseIndex, 2)
     csvwrite(savePathRMTRecall, recallMatrixRMT);
     csvwrite(savePathRMTFScore, FScoreMatrixRMT);
 end
-
-
-% entropy: precision entropy, recall entropy, FScore entropy
 
 RMT_Entropy_Ouput_Path = [savePathRMT, '/RMTMotifEntropy.csv'];
 MatrixProfile_Entropy_Ouput_Path = [savePathMatrixProfile, '/MatrixProfileEntropy.csv'];

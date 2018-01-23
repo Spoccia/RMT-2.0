@@ -41,9 +41,10 @@ if(sameVariateGroup == 0)
         pStep = pStep + Step;
     end
 else
-    injectedDepdScale = patternDepdScale;
+    
     for i = 1 : NumInstances
         % mypatternDepdScale -- depd scales included are identical
+        injectedDepdScale = [injectedDepdScale, patternDepdScale];
         mypatternDepdScale = patternDepdScale(:, :) ~= 0;
         timeScope_1 = patternFeature(4, 1) * 3;
         timeScope_2 = patternFeature(4, 2) * 3;
