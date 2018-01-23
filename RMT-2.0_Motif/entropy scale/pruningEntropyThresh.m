@@ -18,11 +18,12 @@ function [features,dpscale,tostore] = pruningEntropyThresh(features,dpscale,Entr
 %         end
         iii=iii+1;
     end
-    avg = mean(EachFentropy);
-    toremove = EachFentropy>=avg;
+    maximum = max(EachFentropy);
+    thr = maximum*0.80;
+    toremove = EachFentropy>=thr;
     tostore = ones(1,size(features,2))-toremove;
-    features = features(:,EachFentropy<=avg);
-    dpscale = dpscale(:,EachFentropy<=avg);
+    features = features(:,EachFentropy<=thr);
+    dpscale = dpscale(:,EachFentropy<=thr);
 %     descriptors = features(11:end,:);
 %     Qdescr= globalQuantization(descriptors);
 %     Edescriptors=zeros(1,size(features,2));
