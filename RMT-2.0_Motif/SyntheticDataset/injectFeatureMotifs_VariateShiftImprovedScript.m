@@ -21,13 +21,16 @@ TS_name = num2str(TimeSeriesIndex);
 Data_Type = ['MoCap']; % MoCap
 
 % FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT';
-% FeaturePath = '/Users/sliu104/Desktop/EnergyTestData/RMT';
-FeaturePath = '/Users/sliu104/Desktop/MoCapTestData/RMT';
-FeaturePath = [FeaturePath, delimiter, num2str(TimeSeriesIndex), delimiter];
-
 % DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
-% DestDataPath = ['/Users/sliu104/Desktop/EnergyTestData/InjectedFeatures_', num2str(TimeSeriesIndex)];
-DestDataPath = ['/Users/sliu104/Desktop/MoCapTestData/InjectedFeatures_', num2str(TimeSeriesIndex)];
+if(strcmp(Data_Type, 'Energy_Building') == 1)
+    FeaturePath = '/Users/sliu104/Desktop/EnergyTestData/RMT';
+    DestDataPath = ['/Users/sliu104/Desktop/EnergyTestData/InjectedFeatures_', num2str(TimeSeriesIndex)];
+else
+    FeaturePath = '/Users/sliu104/Desktop/MoCapTestData/RMT';
+    DestDataPath = ['/Users/sliu104/Desktop/MoCapTestData/InjectedFeatures_', num2str(TimeSeriesIndex)];
+end
+
+FeaturePath = [FeaturePath, delimiter, num2str(TimeSeriesIndex), delimiter];
 
 motifInjectionOption = 'Random'; % 'RoundRobin'
 kindofBasicTS = 'randomWalk'; %'Sinusoidal';%'flat';%
@@ -83,6 +86,8 @@ variateFlag = 1;
 % datarows : variates
 % datacoln : time stamps
 [datarows, datacoln] = size(data);
+
+MoCap_Flat_Variate = [34 : 46];
 for nn = 1 : number_of_files
     TEST_1 = [Data_Type, num2str((nn - 1) * 2 + 1)];
     TEST_2 = [Data_Type, num2str((nn - 1) * 2 + 2)];
@@ -94,6 +99,13 @@ for nn = 1 : number_of_files
         % MoCap: No need to scale, Energy: scale to 10%
         time_stamps_scale = 1;
         [rndWalks1,rndWalks2] = rndWalkGenerationbigSize(size(data,1), floor(size(data, 2) * time_stamps_scale), data);
+        
+        % ignore flat variate in this case
+        if(strcmp(Data_Type, 'MoCap') == 1) 
+            rndWalks2(MoCap_Flat_Variate,:)=rndWalks1(MoCap_Flat_Variate,:);
+        end
+        
+        
     end
     
     origRW1 = rndWalks1;
@@ -108,6 +120,7 @@ for nn = 1 : number_of_files
     % count the injection location
     pStep = 0;
     
+    % dpscale_injected=[];
     if(multiScaleFeatureInjection == 1)
         % pick different locations, same group of variate for injection
         sameVariateGroup = 1;
@@ -136,6 +149,7 @@ for nn = 1 : number_of_files
         end
         [rndWalks1, FeatPositions1, injectedVariates1] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks1, FeatPositions, data, idm, DepdO);
         [rndWalks2, FeatPositions2, injectedVariates2] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks2, FeatPositions, data, idm, DepdO);
+        % dpscale_injected = [ dpscale_injected, patternVariates];
     end
     
     if(exist([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter], 'dir')==0)
@@ -147,15 +161,15 @@ for nn = 1 : number_of_files
     csvwrite([DestDataPath, delimiter, TEST_1,'.csv'], rndWalks1);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, 'rndData_', TEST_1, '.csv'], origRW1);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'FeaturePosition_', TEST_1, '.csv'], FeatPositions1);
-    csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'patternDpscale_', TEST_1, '.csv'], patternVariates);
-    csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'injectedDpscale_', TEST_1, '.csv'], injectedVariates1);
+    csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'dpscale_', TEST_1, '.csv'], injectedVariates1);
+    % csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'injectedDpscale_', TEST_1, '.csv'], injectedVariates1);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'FeaturesEmbedded_', TEST_1, '.csv'], patternFeature);
     
     csvwrite([DestDataPath, delimiter, TEST_2,'.csv'],rndWalks2);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, 'rndData_', TEST_2,'.csv'],origRW2);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'FeaturePosition_', TEST_2, '.csv'], FeatPositions2);
-    csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'patternDpscale_', TEST_2, '.csv'], patternVariates);
-    csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'injectedDpscale_', TEST_2, '.csv'], injectedVariates2);
+    csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'dpscale_', TEST_2, '.csv'], injectedVariates2);
+    % csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'injectedDpscale_', TEST_2, '.csv'], injectedVariates2);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'FeaturesEmbedded_', TEST_2, '.csv'], patternFeature);
 end
 
