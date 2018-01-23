@@ -25,6 +25,8 @@ else
     array = array/denominator;
     % compute entropy on 'array'
     % eps is machine eps defined by matlab
-     arrayEntropy = (-sum(array.*log2(array + eps))) * numerator;
+    
+    % arrayEntropy = (-sum(array.*log2(array + eps))) * numerator;
+    arrayEntropy = entropy(array + eps) * numerator;
 end
 end
