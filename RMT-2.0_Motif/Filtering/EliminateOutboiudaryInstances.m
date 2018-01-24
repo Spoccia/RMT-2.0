@@ -15,25 +15,46 @@ function timeforcleaning =  EliminateOutboiudaryInstances(TEST, imagepath,specif
     load(savepath3);
     for k=1:DeOctTime
        for j=1:DeOctDepd
+           
+       % iterate on motif bags
+       % for each motif bag read the timeseries section 
+       % for each timeseries represent it as a PAA
+       % compute the euclidean distance between the subsections
+       
            load (strcat(PrunedClusterPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'));
            numMotif = size(MotifBag,2);
+           MotifOK=[];
+           Contator=1;
            for motifID =1 :numMotif
                startIndex = MotifBag{motifID}.startIdx;
                TSSections=[];
                for iterator=1:size(MotifBag{motifID}.startIdx,1)
                   depd =  MotifBag{motifID}.depd{iterator};
                   timescope =  MotifBag{motifID}.Tscope{iterator};
-                  TSSection(:,:,iterator) = representation(data,startIndex,depd,timescope,NumWindows);
+                  TSSections(:,:,iterator) = representation(data,startIndex,depd,timescope,NumWindows);
                end
-               D= DistancesTS(TSSection);
+               D= DistancesTS(TSSections);
+               counts = sum(D <=eps);
+               SurvivedMotifInstances = counts>2;
+               if sum(SurvivedMotifInstances)>0
+                   IDX = 1:size(counts,2);
+                   IDX = IDX(SurvivedMotifInstances);
+                   MotifOK{Contator}.startIdx=startIndex(SurvivedMotifInstances);
+                   for  variateMotifs = 1:size(IDX,2)
+                       MotifOK{Contator}.depd{variateMotifs}   = MotifBag{motifID}.depd{IDX(variateMotifs)};
+                       MotifOK{Contator}.Tscope{variateMotifs} = MotifBag{motifID}.Tscope{IDX(variateMotifs)};
+                   end
+                   Contator=Contator+1;
+               end
+               
                'job done'
            end
-       
-       % iterate on motif bags
-       % for each motif bag read the timeseries section 
-       % for each timeseries represent it as a PAA
-       % compute the euclidean distance between the subsections
-       
+           MotifBag= MotifOK;
+           
+%            Plot motifs :))
+           
+           strcat(PrunedClusterPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat')
+           
        end
     end
 

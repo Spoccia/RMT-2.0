@@ -1,6 +1,9 @@
 function timeseries = representation(data,startIndex,depd,timescope,NumWindows)
-
-MotifInstance = data(depd,startIndex:startIndex+timescope);
+endinstance = startIndex+timescope;
+if endinstance > size(data,2)
+    endinstance =size(data,2);
+end
+MotifInstance = data(depd,startIndex:endinstance);
 [rowquest, data_len]      = size(MotifInstance);
 
 sizewindow = floor(data_len/NumWindows);
