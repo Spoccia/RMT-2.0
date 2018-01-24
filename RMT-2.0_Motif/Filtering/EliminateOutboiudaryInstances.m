@@ -33,23 +33,28 @@ function timeforcleaning =  EliminateOutboiudaryInstances(TEST, imagepath,specif
            prunedCluster = [];
            tic;
            for motifID =1 :numMotif
+%                motifID
+%                if motifID == 70
+%                    '70'
+%                end
                startIndex = MotifBag{motifID}.startIdx;
                TSSections=[];
                for iterator=1:size(MotifBag{motifID}.startIdx,1)
                   depd =  MotifBag{motifID}.depd{iterator};
                   timescope =  MotifBag{motifID}.Tscope{iterator};
-                  TSSections(:,:,iterator) = representation(data,startIndex,depd,timescope,NumWindows);
+                  TSSections(:,:,iterator) = representation(data,startIndex(iterator),depd,timescope,NumWindows);
                end
-               D= DistancesTS(TSSections);
-               counts = sum(D <=eps);
-               SurvivedMotifInstances = counts>2;
+%                [D,bestvariate]= DistancesTS(TSSections,NumWindows,MotifBag{motifID}.depd);
+%                counts = sum(D <=eps);
+%                SurvivedMotifInstances = counts>2;
+                D= DistancesTS_MP(TSSections,NumWindows,MotifBag{motifID}.depd);
                if sum(SurvivedMotifInstances)>0
                    IDX = 1:size(counts,2);
                    IDX = IDX(SurvivedMotifInstances);
                    MotifOK{Contator}.startIdx=startIndex(SurvivedMotifInstances);
                    MotifBag{Contator}.features = MotifBag{motifID}.features(:,SurvivedMotifInstances);
                    for  variateMotifs = 1:size(IDX,2)
-                       MotifOK{Contator}.depd{variateMotifs}   = MotifBag{motifID}.depd{IDX(variateMotifs)};
+                       MotifOK{Contator}.depd{variateMotifs}   =  MotifBag{motifID}.depd{IDX(variateMotifs)};%bestvariate{IDX(variateMotifs)};%
                        MotifOK{Contator}.Tscope{variateMotifs} = MotifBag{motifID}.Tscope{IDX(variateMotifs)};
                        
                    end
@@ -76,9 +81,10 @@ function timeforcleaning =  EliminateOutboiudaryInstances(TEST, imagepath,specif
            MotifBag= MotifOK;
            save(strcat(FinalPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'MotifBag');
            
+           close all;
            
        end
-       close all;
+
     end
 
 end

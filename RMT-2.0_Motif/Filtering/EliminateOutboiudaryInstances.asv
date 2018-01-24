@@ -13,6 +13,7 @@ function timeforcleaning =  EliminateOutboiudaryInstances(TEST, imagepath,specif
     load(savepath1);
     load(savepath2);
     load(savepath3);
+    timeforcleaning=[];
     FinalPath = strcat(PrunedClusterPath,prunewith);
     for k=1:DeOctTime
        for j=1:DeOctDepd
@@ -23,19 +24,27 @@ function timeforcleaning =  EliminateOutboiudaryInstances(TEST, imagepath,specif
        % compute the euclidean distance between the subsections
        
            load (strcat(PrunedClusterPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'));
+           
            numMotif = size(MotifBag,2);
            MotifOK=[];
            Contator=1;
            dependency =[];
+           prunedFeaturesCluster = [];
+           prunedCluster = [];
+           tic;
            for motifID =1 :numMotif
+               motifID
+               if motifID == 70
+                   '24'
+               end
                startIndex = MotifBag{motifID}.startIdx;
                TSSections=[];
                for iterator=1:size(MotifBag{motifID}.startIdx,1)
                   depd =  MotifBag{motifID}.depd{iterator};
                   timescope =  MotifBag{motifID}.Tscope{iterator};
-                  TSSections(:,:,iterator) = representation(data,startIndex,depd,timescope,NumWindows);
+                  TSSections(:,:,iterator) = representation(data,startIndex(iterator),depd,timescope,NumWindows);
                end
-               D= DistancesTS(TSSections);
+               D= DistancesTS(TSSections,NumWindows);
                counts = sum(D <=eps);
                SurvivedMotifInstances = counts>2;
                if sum(SurvivedMotifInstances)>0
@@ -49,30 +58,32 @@ function timeforcleaning =  EliminateOutboiudaryInstances(TEST, imagepath,specif
                        
                    end
                    if(saveMotifImages==1)
-                      if(exist([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
-                        mkdir([ImageSavingPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                      if(exist([FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
+                        mkdir([FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
                       end 
-                      figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
-                      filename=[FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.eps'];%'.jpg'];
+                      figure1 = plot_RMTmotif_on_data(data, MotifOK{Contator}.startIdx, MotifOK{Contator}.depd,MotifOK{Contator}.Tscope);
+                      filename=[FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(Contator),'.eps'];%'.jpg'];
                       saveas(figure1,filename,'epsc');
-                    end
+                   end
+                   
+                   prunedFeaturesCluster=[prunedFeaturesCluster,MotifBag{Contator}.features];
+            %      prunedDepScale = [prunedDepScale,B1];
+                   prunedsymbols = ones(1,size(MotifBag{Contator}.features,2))*Contator;
+                   prunedCluster=[prunedCluster,prunedsymbols];
+                   
                    Contator=Contator+1;
                end
 
-               prunedFeaturesCluster=[prunedFeaturesCluster,MotifBag{Contator}.features];
-    %            prunedDepScale = [prunedDepScale,B1];
-               prunedsymbols = ones(1,size(A1,2))*Contator;
-           end
-           MotifBag= MotifOK;
-           prunedCluster=[prunedCluster,prunedsymbols];
 
-%            Plot motifs :))
-           
-           
+           end
+           timeforcleaning = [timeforcleaning,toc];
+           MotifBag= MotifOK;
            save(strcat(FinalPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'MotifBag');
            
+           close all;
            
        end
+
     end
 
 end

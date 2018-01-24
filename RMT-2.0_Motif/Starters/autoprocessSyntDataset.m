@@ -7,23 +7,23 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RMT';%'RMT';%
+FeaturesRM ='RME';%'RMT';%
 
 %% Normalize the data?
 normalizeData=0;%1;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
-Cluster = 0;%1;%
-CreateSubCluster=0;
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
+Cluster = 1;%1;%
+CreateSubCluster=1;
 
 % motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 0;%1;%0
+pruneClusterDescrMatlab = 1;%1;%0
 
 
 savecaracteristics = 1;
@@ -35,14 +35,14 @@ saveTSasImage = 0;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-motifidentification = 1; % work on pruned features
+motifidentification = 0; % work on pruned features
 removefeatures =0;
 cleanfeatures ='';
 if removefeatures==1
     cleanfeatures= 'Clean_';
 end
 
-for NAME =1:33%10:33%22:33%16:21 2%1:6%
+for NAME =10:33%10:33%22:33%16:21 2%1:6%
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
@@ -561,7 +561,7 @@ for TSnumber = 1: 1
     
     
     if motifidentification ==1
-       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,1);
+       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
     end
 %     % save images before pruning
 %     if(motifidentificationBP ==1)

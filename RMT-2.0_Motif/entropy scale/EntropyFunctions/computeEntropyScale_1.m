@@ -7,7 +7,8 @@ for i=1:variate
      M_mask=Smatrix(i, :)>threshold;%0;
     for j=1:time
         timeslice = round(j-3*sigma) : round(j+3*sigma);
-        Y(j,i) = EntropySingVariate_mex(I(timeslice(timeslice>0 & timeslice<time),M_mask),-inf);
+        subTS = I(timeslice(timeslice>0 & timeslice<time),M_mask);
+        Y(j,i) = EntropySingVariate_mex(subTS,-inf);%entropy(subTS/max(subTS(:)));%
     end
 end
 % J = imsmooth(I,sigma) ;
