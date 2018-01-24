@@ -10,8 +10,8 @@ weighted = 0;
 % MatrixProfileFilePath = ['./DataFolder/synt_diffTSize/1motif/Mstamp/Mocap_MStamp_test'];
 % RMTMotifFilePath = ['./DataFolder/synt_diffTSize/1motif/RMT/AP_Mocap_DepO_2_DepT_2_test'];
 
-GroundTruthFilePath = ['/Users/sliu104/Desktop/motif/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
-MatrixProfileFilePath = ['/Users/sliu104/Desktop/motif/Mstamp/candanDistance/Mocap_test'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/motif/Groundtruth/Mocap_test'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/motif/Mstamp/Mocap_test'];
 RMTMotifFilePath = ['/Users/sliu104/Desktop/motif/RMT/normalAVGSum/AP_DepO_2_DepT_2_Mocap_test'];
 
 savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder'];
@@ -24,8 +24,8 @@ RMTMotifEntropy = [];
 % algorithm type: RMT, RME or MatrixProfile
 algorithmType = 'RMT';
 
-for ii = 14 : size(testCaseIndex, 2)
-    fprintf('Test case: %d .\n', testCaseIndex(ii));
+for ii = 1 : size(testCaseIndex, 2)
+    fprintf('Test case: %d')
     GroundTruthFile = [GroundTruthFilePath, num2str(testCaseIndex(ii)), '.csv'];
     MatrixProfileFile = [MatrixProfileFilePath, num2str(testCaseIndex(ii)), '.csv'];
     RMTMotifFile = [RMTMotifFilePath, num2str(testCaseIndex(ii)), '.csv'];
