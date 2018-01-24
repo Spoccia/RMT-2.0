@@ -561,7 +561,7 @@ for TSnumber = 1: 1
     
     
     if motifidentification ==1
-       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,4,0);
+       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,1);
     end
 %     % save images before pruning
 %     if(motifidentificationBP ==1)
