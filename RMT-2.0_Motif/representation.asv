@@ -1,0 +1,5 @@
+function timeseries = representation(data,startIndex,depd,timescope,NumWindows)
+
+MotifInstance = data(startIndex:startIndex+timescope,depd);
+[rowquest, data_len]      = size(data);
+end

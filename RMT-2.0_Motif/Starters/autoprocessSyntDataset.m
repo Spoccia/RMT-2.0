@@ -15,17 +15,17 @@ normalizeData=0;%1;
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 1;%1;
-Cluster = 1;%1;%
-CreateSubCluster=1;
+createDependencyScale = 0;%1;
+Cluster = 0;%1;%
+CreateSubCluster=0;
 
 % motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%1;%0
+pruneClusterDescrMatlab = 0;%1;%0
 
-motifidentification = 0; % work on pruned features
+
 savecaracteristics = 1;
 showOriginalImage = 0;
 mapdataintograyscale = 0;
@@ -35,14 +35,14 @@ saveTSasImage = 0;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-
-removefeatures =1;
+motifidentification = 1; % work on pruned features
+removefeatures =0;
 cleanfeatures ='';
 if removefeatures==1
     cleanfeatures= 'Clean_';
 end
 
-for NAME =1:6%10:33%22:33%16:21 2%1:6%
+for NAME =1:33%10:33%22:33%16:21 2%1:6%
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
@@ -307,7 +307,7 @@ for TSnumber = 1: 1
                 X=frame1(:,indexfeatureGroup);
                 A=X;
                 dpscale = csvread(strcat(saveFeaturesPath,EntropyPruningFolder,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'));
-                EntropyTHR=0.01;
+                EntropyTHR=0.8;
                 [A,dpscale,survivors] = pruningEntropyThresh(A,dpscale,EntropyTHR,data);
 
                 featureSurvive=[featureSurvive,A];
@@ -555,10 +555,14 @@ for TSnumber = 1: 1
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);%1);
-        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);%1);
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,0);%1);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,0);%1);
     end    
     
+    
+    if motifidentification ==1
+       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,4,0);
+    end
 %     % save images before pruning
 %     if(motifidentificationBP ==1)
 %         ShowKmedoidsCluster(TS_name,datasetPath,subfolderPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,histTSImage,FeaturesRM );
