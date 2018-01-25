@@ -40,7 +40,7 @@ for i = 1 : size(myClassID, 1)
     timeStart = statEntry(:, 3);
     timeEnd = statEntry(:, 4);
     
-    % injectedClassID = statEntry(:, 5);
+    injectedClassID = statEntry(:, 5);
     injectedID_Deprecated = statEntry(:, 6);
     
     injectedTimeStart = statEntry(:, 7);
@@ -51,22 +51,22 @@ for i = 1 : size(myClassID, 1)
     depdOverlap = statEntry(:, 10);
     
     % for each of these predicated class, precision and recall for each injected class
-    % currentInjectedClassID = unique(injectedClassID);
+    currentInjectedClassID = unique(injectedClassID);
     currentRetrievedSize = size(statEntry, 1); % used for precision
     
-    for j = 1 : size(motifClassCount, 2)
     % for j = 1 : size(currentInjectedClassID, 1)
         % update statMatrix
         % group feature scores
-        % if(currentInjectedClassID(j) == 0)
-        % else
-            relevantSize = motifClassCount(j);
-            [precision, recall] = groupFeatureScores(statEntry, j, relevantSize, currentRetrievedSize, threshold);
+        if(currentInjectedClassID(j) == 0)
+        else
+            relevantSize = motifClassCount(currentInjectedClassID(j));
+            [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID(j), relevantSize, currentRetrievedSize, threshold);
             
-            precisionMatrix(i, j) = precision;
-            recallMatrix(i, j) = recall;
-            FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
-        % end
+            precisionMatrix(i, currentInjectedClassID(j)) = precision;
+            recallMatrix(i, currentInjectedClassID(j)) = recall;
+            FScoreMatrix(i, currentInjectedClassID(j)) = 2 * precision * recall / (precision + recall);
+        end
+        
     end
     
 end

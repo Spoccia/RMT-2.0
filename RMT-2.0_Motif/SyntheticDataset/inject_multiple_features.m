@@ -68,11 +68,11 @@ else
         
         timeScope_1 = patternFeatures(4, round_robin_feature_index1) * 3;
         timeScope_2 = patternFeatures(4, round_robin_feature_index2) * 3;
-        intervaltime_1 = (max(round((patternFeatures(2, round_robin_feature_index1) - timeScope_1), 0)) : (min(round((patternFeatures(2, round_robin_feature_index1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
+        intervaltime_1 = (max(round((patternFeatures(2, round_robin_feature_index1) - timeScope_1)), 1) : (min(round((patternFeatures(2, round_robin_feature_index1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
         motifData_1 = data(:, intervaltime_1);
         [~, motifColumn_1] = size(motifData_1);
         
-        intervaltime_2 = (max(round((patternFeatures(2, round_robin_feature_index2) - timeScope_2), 0)) : (min(round((patternFeatures(2, round_robin_feature_index2) + timeScope_2)), size(data, 2)))); % feature time scope (integer)
+        intervaltime_2 = (max(round((patternFeatures(2, round_robin_feature_index2) - timeScope_2)), 1) : (min(round((patternFeatures(2, round_robin_feature_index2) + timeScope_2)), size(data, 2)))); % feature time scope (integer)
         motifData_2 = data(:, intervaltime_2);
         [~, motifColumn_2] = size(motifData_2);
         

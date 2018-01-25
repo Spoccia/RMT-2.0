@@ -124,10 +124,13 @@ for nn = 1 : number_of_files
         % [patternFeature, patternVariates] = pickLargestTimeSimgaFeaturesCutOff(featuresOfInterest, dpscale, cutOffRate);
         % [rndWalks, FeatPositions, injectedVariates] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
         num_of_features_to_pick = 5;
-        [patternFeatures, patternVariates] = pick_Features(featuresOfInterest, dpscale, num_of_features_to_pick);
+        [patternFeatures, patternVariates] = pick_Features_same_variate_group(featuresOfInterest, dpscale, num_of_features_to_pick);
         
         [rndWalks1, FeatPositions1, injectedVariates1] = inject_multiple_features(patternFeatures, patternVariates, sameVariateGroup, NumInstances, rndWalks1, FeatPositions, data, idm, DepdO);
         [rndWalks2, FeatPositions2, injectedVariates2] = inject_multiple_features(patternFeatures, patternVariates, sameVariateGroup, NumInstances, rndWalks2, FeatPositions, data, idm, DepdO);
+        
+        % put the big random walk into small random walks
+        [rndWalks3] = random_walk_replace(rndWalks1, rndWalks2, injectedVariates1);
     end
     
     if(differentVariateGroupInjection == 1)
@@ -141,7 +144,16 @@ for nn = 1 : number_of_files
         
         [rndWalks1, FeatPositions1, injectedVariates1] = inject_multiple_features(patternFeatures, patternVariates, sameVariateGroup, NumInstances, rndWalks1, FeatPositions, data, idm, DepdO);
         [rndWalks2, FeatPositions2, injectedVariates2] = inject_multiple_features(patternFeatures, patternVariates, sameVariateGroup, NumInstances, rndWalks2, FeatPositions, data, idm, DepdO);
+        
+        % put the big random walk into small random walks
+        [rndWalks3] = random_walk_replace(rndWalks1, rndWalks2, injectedVariates1);
     end
+    
+    
+    
+    
+    % save small random walk with big features, and scaled random walk with big features
+    % save rndWalks1 and rndWalks3
     
     if(exist([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter], 'dir')==0)
         mkdir([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter]);
@@ -156,7 +168,8 @@ for nn = 1 : number_of_files
     % csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'injectedDpscale_', TEST_1, '.csv'], injectedVariates1);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'FeaturesEmbedded_', TEST_1, '.csv'], patternFeatures);
     
-    csvwrite([DestDataPath, delimiter, TEST_2,'.csv'],rndWalks2);
+    % csvwrite([DestDataPath, delimiter, TEST_2,'.csv'], rndWalks2);
+    csvwrite([DestDataPath, delimiter, TEST_2,'.csv'], rndWalks3);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, 'rndData_', TEST_2,'.csv'],origRW2);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'FeaturePosition_', TEST_2, '.csv'], FeatPositions2);
     csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_2, delimiter, 'dpscale_', TEST_2, '.csv'], injectedVariates2);
