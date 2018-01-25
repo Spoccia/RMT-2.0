@@ -1,6 +1,6 @@
 clear;
 clc;
-for name =35 : 39
+for name =34 : 39
 FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\1\';
 kindofBasicTS='randomWalk';%'Sinusoidal';%'flat';%
 if(strcmp(kindofBasicTS,'flat')==1)
@@ -129,8 +129,9 @@ for ii =1:NumInstances
     pStep=pStep+Step;
 end
 
+randomwalklottlabig = rndWalks;
 for i=1:nummotifs
-    rndWalks(B((B(:,i)>0),i),:) = rndWalks1(B((B(:,i)>0),i),:);
+    randomwalklottlabig(B((B(:,i)>0),i),:) = rndWalks1(B((B(:,i)>0),i),:);
 end
 
 
@@ -144,7 +145,7 @@ csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturePosition_',TES
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','dpscale_',TEST,'.csv'],EachInstanceDependency);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturesEmbedded_',TEST,'.csv'],A);
 
-csvwrite([DestDataPath,'\',num2str(name+6),'.csv'],rndWalks1);
+csvwrite([DestDataPath,'\',num2str(name+6),'.csv'],randomwalklottlabig);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','rndData_',num2str(name+6),'.csv'],origRW1);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','FeaturePosition_',num2str(name+6),'.csv'],FeatPositions);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','dpscale_',num2str(name+6),'.csv'],EachInstanceDependency);

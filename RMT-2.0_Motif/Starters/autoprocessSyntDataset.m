@@ -14,7 +14,7 @@ normalizeData=0;%1;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 Cluster = 1;%1;%
 CreateSubCluster=1;
@@ -42,7 +42,7 @@ if removefeatures==1
     cleanfeatures= 'Clean_';
 end
 
-for NAME =32:32%10:33%22:33%16:21 2%1:6%
+for NAME =44:45%10:33%22:33%16:21 2%1:6%
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
@@ -491,7 +491,7 @@ for TSnumber = 1: 1
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.01,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
+                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,0,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
                         end
