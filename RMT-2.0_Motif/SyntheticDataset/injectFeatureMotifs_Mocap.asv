@@ -1,7 +1,11 @@
 clear;
 clc;
-for name =34 : 39
-FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\1\';
+
+listofTS= [1,16,21,45,67]
+
+for name =46 : 51
+FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\';%1\';
+FeaturePath1 = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\';%1\';
 kindofBasicTS='randomWalk';%'Sinusoidal';%'flat';%
 if(strcmp(kindofBasicTS,'flat')==1)
     KindOfDataset='FlatTS_MultiFeatureDiffClusters\';
@@ -13,49 +17,55 @@ end
 DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 DestLocationPath = 'D:\Motif_Results\Datasets\SynteticDataset\location';
 sinFreq=1;
-TEST = ['Mocap_test',num2str(name)];
 
-TS_name = num2str(1);
+    MotifsFeatures=[];
+    motifdpscale=[];
+for it = 1:5
+FeaturePath = [FeaturePath1,num2str(listofTS(it)),'\'];
+    TEST = ['Mocap_test',num2str(name)];
 
-TimeL =1500;
+    TS_name = num2str(listofTS(it));%1);
 
-DepO=2;
-DepT=2;
-offSpace=0;
+    TimeL =4000;
 
-nummotifs = 2;
-% numfeaturestoInject = 1;
-%numFeatureforClass=2;%1;
-NumInstances=20;
-dpscale=[];
-frame1=[];
+    DepO=2;
+    DepT=2;
+    offSpace=0;
+
+    nummotifs = 5;
+    % numfeaturestoInject = 1;
+    %numFeatureforClass=2;%1;
+    NumInstances=20;
+    dpscale=[];
+    frame1=[];
 
 
-    savepath1 = [FeaturePath,'feature_',TS_name,'.mat'];
-    savepath2 = [FeaturePath,'idm_',TS_name,'.mat'];
-    savepath3 = [FeaturePath,'MetaData_',TS_name,'.mat'];
-    load(savepath1);
-    load(savepath2);
-    load(savepath3);
-    
-%% get some features k
-indexfeatureGroup = (frame1(6,:)==2 & frame1(5,:)==2);
-X=frame1(:,indexfeatureGroup);
-[rows,colmn]= size(X);
-random= randi([1,colmn],1,nummotifs);
+        savepath1 = [FeaturePath,'feature_',TS_name,'.mat'];
+        savepath2 = [FeaturePath,'idm_',TS_name,'.mat'];
+        savepath3 = [FeaturePath,'MetaData_',TS_name,'.mat'];
+        load(savepath1);
+        load(savepath2);
+        load(savepath3);
 
-dpscale = csvread(strcat(FeaturePath,'DistancesDescriptor\DepdScale_IM_',TS_name,'_DepO_',num2str(DepO),'_TimeO_',num2str(DepT),'.csv'));
+    %% get some features k
+    indexfeatureGroup = (frame1(6,:)==2 & frame1(5,:)==2);
+    X=frame1(:,indexfeatureGroup);
+    [rows,colmn]= size(X);
+     random= randi([1,colmn],1,1);%nummotifs);
 
-MotifsFeatures=[];
-motifdpscale=[];
+    dpscale = csvread(strcat(FeaturePath,'DistancesDescriptor\DepdScale_IM_',TS_name,'_DepO_',num2str(DepO),'_TimeO_',num2str(DepT),'.csv'));
 
-for ii=1:nummotifs
-    A = X(:, random(ii));
-    B =dpscale(:,random(ii));
-    MotifsFeatures=[MotifsFeatures,A];
-    motifdpscale= [motifdpscale,B];
+%     MotifsFeatures=[];
+%     motifdpscale=[];
+
+%     for ii=1:nummotifs
+
+        A = X(:, random (1));%random(ii));
+        B =dpscale(:,random (1));%random(ii));
+        MotifsFeatures=[MotifsFeatures,A];
+        motifdpscale= [motifdpscale,B];
+%     end
 end
-
 [datarows,datacoln]= size(data);
 [rows,colmn]= size(MotifsFeatures);
 A = MotifsFeatures;
@@ -70,7 +80,7 @@ rndWalks1([34,46],:) = rndWalks([34,46],:);
 
 origRW   = rndWalks;
 origRW1  = rndWalks1;
-IDMotifInject=[1,2,1,2,2,1,1,2,1,1,2,2,2,1,2,1,2,1,2,1];
+IDMotifInject=[1,2,3,4,5,1,3,4,5,4,1,5,4,2,3,1,5,1,2,3,3,4,2,2,1,2,2,5,3,4,2,1,2,5,5,4,3,3,5,1,1,3,4,2,5,1,3,4,5,4];
 
 
 FeatPositions=zeros(NumInstances,4);
@@ -80,7 +90,11 @@ startInj=15;
 % startInj=[30,35,40];
 % percentage of scaling over time;
 
-percentageTimeScaling = [0.5,0.75,1,0.5,0.75,1,0.5,0.75,1,1,0.5,0.75,1,0.5,0.75,1,0.5,0.75,1,1];
+percentageTimeScaling = [0.5,0.75,1,0.5,0.75,1,0.5,0.75,1,1 ...
+                         1,0.5,1,0.75,0.5,1,1,0.75,1,0.5, ...                        
+                         0.5,0.75,1,0.5,0.75,1,0.5,0.75,1,1 ...
+                         1,0.5,1,0.75,0.5,1,1,0.75,1,0.5, ...
+                         0.5,0.75,1,0.5,0.75,1,0.5,0.75,1,1];
 EachInstanceDependency=[];
 for ii =1:NumInstances
     
@@ -145,9 +159,9 @@ csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturePosition_',TES
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','dpscale_',TEST,'.csv'],EachInstanceDependency);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\','FeaturesEmbedded_',TEST,'.csv'],A);
 
-csvwrite([DestDataPath,'\',num2str(name+6),'.csv'],randomwalklottlabig);
-csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','rndData_',num2str(name+6),'.csv'],origRW1);
-csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','FeaturePosition_',num2str(name+6),'.csv'],FeatPositions);
-csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','dpscale_',num2str(name+6),'.csv'],EachInstanceDependency);
-csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','FeaturesEmbedded_',num2str(name+6),'.csv'],A);
+csvwrite([DestDataPath,'\Mocap_test',num2str(name+6),'.csv'],randomwalklottlabig);
+csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','rndData_Mocap_test',num2str(name+6),'.csv'],origRW1);
+csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','FeaturePosition_Mocap_test',num2str(name+6),'.csv'],FeatPositions);
+csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','dpscale_Mocap_test',num2str(name+6),'.csv'],EachInstanceDependency);
+csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\','FeaturesEmbedded_Mocap_test',num2str(name+6),'.csv'],A);
 end

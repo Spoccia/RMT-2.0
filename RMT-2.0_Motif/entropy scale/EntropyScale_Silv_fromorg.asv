@@ -216,7 +216,7 @@ for sd=sdmin:sdmax
             else
                [SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT)] = smoothJustTimeSilv(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT-1)),dsigmaT,Smatrix);
                                                                                       %smoothTime(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT-1)),dsigmaT,Smatrix);
-               InputEntropyQuaantized= SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT);%globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));
+               InputEntropyQuaantized= globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT);%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));
                [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT)] = computeEntropyScale_1(InputEntropyQuaantized,dsigmaT,Smatrix,DepThreshold);
 %                ...  
 %                                                                 computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
@@ -233,7 +233,7 @@ for sd=sdmin:sdmax
                % just using the  dependency
                SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT) = smoothJustDependencySilv(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD-1, st+soT)),dsigmaT,Smatrix);
                                                                                            %smoothTime(squeeze(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD-1, st+soT)),0.5,Smatrix);
-               InputEntropyQuaantized= SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT);%globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));
+               InputEntropyQuaantized= globalQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));%SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT);%singlevariateQuantization(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD,st+soT));
                [SS.Entropyoctave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT)] = computeEntropyScale_1(InputEntropyQuaantized,dsigmaT,Smatrix,DepThreshold);
 %                ...  
 %                                                                 computeEntropyScale_1(squeeze(round(SS.octave{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD, st+soT))),dsigmaT,Smatrix,DepThreshold);%computeEntropyScale_1(EntropyInputData,dsigmat,Smatrix,threshold);%                                                                                                                                
