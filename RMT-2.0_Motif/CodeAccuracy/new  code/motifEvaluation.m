@@ -70,6 +70,9 @@ for i = 1 : size(myClassID, 1)
     end
     
 end
+
+[precisionMatrix, recallMatrix, FScoreMatrix] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
+
 % normMatrix = norm(FScoreMatrix);
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];

@@ -2,7 +2,8 @@ clear;
 clc;
 
 % iterate file to for upload
-testCaseIndex = 28 : 33;
+% testCaseIndex =  10 : 33;
+testCaseIndex =  32;
 
 % if stat is computed in a weighted manner
 weighted = 0;
@@ -10,12 +11,15 @@ weighted = 0;
 % MatrixProfileFilePath = ['./DataFolder/synt_diffTSize/1motif/Mstamp/Mocap_MStamp_test'];
 % RMTMotifFilePath = ['./DataFolder/synt_diffTSize/1motif/RMT/AP_Mocap_DepO_2_DepT_2_test'];
 
-GroundTruthFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/example_tests/examles/Groundtruth/2_Motif/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
-MatrixProfileFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/MStamp/2_Motif/Mocap_test'];
-RMTMotifFilePath = ['/Users/sliu104/Desktop/MoCapTestData_Motif/RMT_AVG_SUM/2_Motif/AP_DepO_2_DepT_2_Mocap_test'];
 
-savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder/2_Motif'];
-savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_Folder/2_Motif'];
+RMTClustering = ['cleanmyentropy08']; % cleanmyentropy08 normalAVGAVG normalAVGSum normalSUM cleanmatlabentropy09
+GroundTruthFilePath = ['/Users/sliu104/Desktop/motif/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/motif/Mstamp/candanDistance/Mocap_test'];
+% RMTMotifFilePath = ['/Users/sliu104/Desktop/motif/RMT/', RMTClustering, '/AP_DepO_2_DepT_2_Mocap_test'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/AP_DepO_2_DepT_2_Mocap_test'];
+
+savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/', RMTClustering];
+savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/', RMTClustering];
 
 
 MatrixProfileEntropy = [];
@@ -25,6 +29,7 @@ RMTMotifEntropy = [];
 algorithmType = 'RMT';
 
 for ii = 1 : size(testCaseIndex, 2)
+    fprintf('Test case: %d .\n', testCaseIndex(ii));
     GroundTruthFile = [GroundTruthFilePath, num2str(testCaseIndex(ii)), '.csv'];
     MatrixProfileFile = [MatrixProfileFilePath, num2str(testCaseIndex(ii)), '.csv'];
     RMTMotifFile = [RMTMotifFilePath, num2str(testCaseIndex(ii)), '.csv'];
