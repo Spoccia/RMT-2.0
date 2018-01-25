@@ -2,7 +2,7 @@ clc; clear;
 
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-for NAME =1:33%1:33%22:33%16:21%:21
+for NAME =32:32%1:33%22:33%16:21%:21
  TEST = ['Mocap_test',num2str(NAME)]%'Mocap_test11';
 % TEST=['MoCap',num2str(NAME)]
 FeaturesRM ='RMT';%'RME';%

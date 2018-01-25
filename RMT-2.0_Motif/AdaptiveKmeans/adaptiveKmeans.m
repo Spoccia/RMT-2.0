@@ -11,8 +11,13 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
     tryK=[];
     meanSilhouette=[];
     evaluation=[];
+    C1=[];
+    mu1=[];
    while(~isFound)
+      ProposedC1=C1;
+      Proposedmu=mu1;
       [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK,'Distance',distance,'Replicates',5);%'Display','final'
+
 %       figure
 %       [silh5,h] = silhouette(features1(11:end,:)',C1,'Euclidean');
 %       meanSilhouette=[meanSilhouette,mean(silh5)];
@@ -42,7 +47,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
 %       MeanD2= mean(D2>0);
       MeanD2 = sum(SUMD2)./NumofIntancesforClusters;
       mean3 = sum(SUMD2)/sum(NumofIntancesforClusters);
-       MeasureToUse=mean(mean3);%MeanD2);
+       MeasureToUse=mean(mean3);%MeanD2);% sum(SUMD2);%
 %        MeasureToUse=sum(MeanD2);
 %         saturation = /mean(NumofIntancesforClusters);
 
@@ -64,6 +69,8 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
         error = abs(inertia(itr) - inertia(itr-1));
         if error<=saturation || startK >= (size(features1,2)-1) || inertia(itr)<=saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
+%               C1=ProposedC1;
+%               mu1=Proposedmu;
             isFound=true;
         end
         startK=startK+Step;        

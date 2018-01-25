@@ -1,6 +1,6 @@
 clear;
 clc;
-for name =35 : 39
+for name =34 : 39
 FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\1\';
 kindofBasicTS='randomWalk';%'Sinusoidal';%'flat';%
 if(strcmp(kindofBasicTS,'flat')==1)
@@ -136,7 +136,7 @@ end
 
 if(exist([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\'],'dir')==0)
     mkdir([DestDataPath,'\IndexEmbeddedFeatures\',TEST,'\']);
-    mkdir([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\']);
+    mkdir([DestDataPath,'\IndexEmbeddedFeatures\',num2str(name+6),'\'])
  end    
 csvwrite([DestDataPath,'\',TEST,'.csv'],rndWalks);
 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','rndData_',TEST,'.csv'],origRW);
