@@ -50,16 +50,29 @@ if(sameVariateGroup == 0)
 else
     
     for i = 1 : NumInstances
+        
+        round_robin_feature_index1 = mod(i, size(patternFeatures, 2));
+        if(round_robin_feature_index1 == 0)
+            round_robin_feature_index1 = 5;
+        end
+        
+        round_robin_feature_index2 = mod(i+1, size(patternFeatures, 2));
+        if(round_robin_feature_index2 == 0)
+            round_robin_feature_index2 = 5;
+        end
+        
+        mypatternDepdScale = [patternDepdScales(:, round_robin_feature_index1) patternDepdScales(:, round_robin_feature_index2)];
         % mypatternDepdScale -- depd scales included are identical
-        injectedDepdScale = [injectedDepdScale, patternDepdScale];
-        mypatternDepdScale = patternDepdScale(:, :) ~= 0;
-        timeScope_1 = patternFeature(4, 1) * 3;
-        timeScope_2 = patternFeature(4, 2) * 3;
-        intervaltime_1 = (max(round((patternFeature(2, 1) - timeScope_1), 0)) : (min(round((patternFeature(2, 1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
+        injectedDepdScale = [injectedDepdScale, mypatternDepdScale];
+        % mypatternDepdScale = patternDepdScale(:, :) ~= 0;
+        
+        timeScope_1 = patternFeatures(4, round_robin_feature_index1) * 3;
+        timeScope_2 = patternFeatures(4, round_robin_feature_index2) * 3;
+        intervaltime_1 = (max(round((patternFeatures(2, round_robin_feature_index1) - timeScope_1), 0)) : (min(round((patternFeatures(2, round_robin_feature_index1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
         motifData_1 = data(:, intervaltime_1);
         [~, motifColumn_1] = size(motifData_1);
         
-        intervaltime_2 = (max(round((patternFeature(2, 2) - timeScope_2), 0)) : (min(round((patternFeature(2, 2) + timeScope_2)), size(data, 2)))); % feature time scope (integer)
+        intervaltime_2 = (max(round((patternFeatures(2, round_robin_feature_index2) - timeScope_2), 0)) : (min(round((patternFeatures(2, round_robin_feature_index2) + timeScope_2)), size(data, 2)))); % feature time scope (integer)
         motifData_2 = data(:, intervaltime_2);
         [~, motifColumn_2] = size(motifData_2);
         
@@ -78,11 +91,11 @@ else
             starter_2 = randi([pStep, max(pStep + Step - motifColumn_2, 0)],1,1);
         end
         
-        FeatPositions(2 * (i - 1) + 1, :) = [2 * (i - 1) + 1, patternFeature(2, 1), starter_1, starter_1 + motifColumn_1 - 1];
-        FeatPositions(2 * i, :) = [2 * i, patternFeature(2, 2), starter_2, starter_2 + motifColumn_2 - 1];
+        FeatPositions(2 * (i - 1) + 1, :) = [2 * (i - 1) + 1, patternFeatures(2, round_robin_feature_index1), starter_1, starter_1 + motifColumn_1 - 1];
+        FeatPositions(2 * i, :) = [2 * i, patternFeatures(2, round_robin_feature_index2), starter_2, starter_2 + motifColumn_2 - 1];
         
-        rndWalks(mypatternDepdScale(:, 1), starter_1 : starter_1 + motifColumn_1 - 1) = motifData_1(mypatternDepdScale(:, 1), :); % inject the features into random walk time series data
-        rndWalks(mypatternDepdScale(:, 1), starter_2 : starter_2 + motifColumn_2 - 1) = motifData_2(mypatternDepdScale(:, 1), :); % inject the features into random walk time series data
+        rndWalks(mypatternDepdScale(:, 1) ~=0, starter_1 : starter_1 + motifColumn_1 - 1) = motifData_1(mypatternDepdScale(:, 1) ~=0, :); % inject the features into random walk time series data
+        rndWalks(mypatternDepdScale(:, 2) ~=0, starter_2 : starter_2 + motifColumn_2 - 1) = motifData_2(mypatternDepdScale(:, 2) ~=0, :); % inject the features into random walk time series data
         
         pStep = pStep + Step;
     end

@@ -4,7 +4,11 @@ nonzero_depd_scope = sum(depdScale > 0);
 picked_features_index = [];
 [sorted_values, index] = sort(nonzero_depd_scope);
 
-smallest_coverage_feature_index = index(sorted_values == sorted_values(1));
+% find smallest multi-variate time series features
+feature_coverage_to_pick = 2;
+unique_values = unique(sorted_values);
+value_of_interest = unique_values(feature_coverage_to_pick);
+smallest_coverage_feature_index = index(sorted_values == value_of_interest);
 candidate_feature_size = size(smallest_coverage_feature_index, 2);
 
 current_picked_feature_index = [];

@@ -11,8 +11,8 @@ end
 
 TimeSeriesIndex = 2;
 TS_name = num2str(TimeSeriesIndex);
-Data_Type = ['Energy_Building']; % MoCap
-% Data_Type = ['MoCap']; % MoCap
+% Data_Type = ['Energy_Building']; % MoCap
+Data_Type = ['MoCap']; % MoCap
 
 % FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT';
 % DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
@@ -37,8 +37,8 @@ elseif(strcmp(kindofBasicTS, 'randomWalk') == 1)
 end
 
 % two values below not 1 or 0 at the same
-multiScaleFeatureInjection = 0; % 0;
-differentVariateGroupInjection = 1; % 0
+multiScaleFeatureInjection = 1; % 0;
+differentVariateGroupInjection = 0; % 0
 
 sinFreq = 1;
 
@@ -119,10 +119,15 @@ for nn = 1 : number_of_files
         % pick different locations, same group of variate for injection
         sameVariateGroup = 1;
         
-        cutOffRate = 0.5;
+        % cutOffRate = 0.5;
         % pick features of different time scales
-        [patternFeature, patternVariates] = pickLargestTimeSimgaFeaturesCutOff(featuresOfInterest, dpscale, cutOffRate);
-        [rndWalks, FeatPositions, injectedVariates] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
+        % [patternFeature, patternVariates] = pickLargestTimeSimgaFeaturesCutOff(featuresOfInterest, dpscale, cutOffRate);
+        % [rndWalks, FeatPositions, injectedVariates] = featureInject(patternFeature, patternVariates, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO);
+        num_of_features_to_pick = 5;
+        [patternFeatures, patternVariates] = pick_Features(featuresOfInterest, dpscale, num_of_features_to_pick);
+        
+        [rndWalks1, FeatPositions1, injectedVariates1] = inject_multiple_features(patternFeatures, patternVariates, sameVariateGroup, NumInstances, rndWalks1, FeatPositions, data, idm, DepdO);
+        [rndWalks2, FeatPositions2, injectedVariates2] = inject_multiple_features(patternFeatures, patternVariates, sameVariateGroup, NumInstances, rndWalks2, FeatPositions, data, idm, DepdO);
     end
     
     if(differentVariateGroupInjection == 1)
