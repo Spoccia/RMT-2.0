@@ -7,7 +7,7 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RMT';%'RME';%
+FeaturesRM ='RME';%'RME';%
 
 %% Normalize the data?
 normalizeData=0;%1;
@@ -42,7 +42,7 @@ if removefeatures==1
     cleanfeatures= 'Clean_';
 end
 
-for NAME =46:46%57%35:45%10:33%22:33%16:21 2%1:6%
+for NAME =46:57%35:45%10:33%22:33%16:21 2%1:6%
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
