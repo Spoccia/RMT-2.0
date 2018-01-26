@@ -21,9 +21,9 @@ saveMotifImages=1;
 % 
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\Datasets\Mocap\';
 ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%'D:\Motif_Results\Datasets\Mocap\MStamp\';
-for NAME =46:57%34:45%34:39
+for NAME =45:45%39:39%%46:57%34:45%34:39
 FeaturesRM='MStamp';
-sublenght= 58;% 29;%   %[29,58];
+sublenght= 29;% 58;%   %[29,58];
  TEST=['Mocap_test',num2str(NAME)]
 %          TEST=['MoCap',num2str(NAME)]
 %         TEST = ['Energy_Building',num2str(NAME)];
