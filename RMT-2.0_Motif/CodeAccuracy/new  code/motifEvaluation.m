@@ -1,7 +1,6 @@
 function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 
-% load feature count into motifFeatureCount
 motifFeatureCount = csvread(groundTruthFile);
 
 if(strcmp(algorithmType,'RMT') || strcmp(algorithmType,'RME') == 1)
@@ -10,12 +9,8 @@ else
     window = ['Lenght_', num2str(windowSize)];
     [num,txt,raw] = xlsread(motifFile, window);
 end
-
-
-% matlab unique function provides default sorting
 motifClass = unique(motifFeatureCount(:, 1));
 motifClassCount = [];
-
 % update motif class count
 for i = 1 : size(motifClass, 1)
     currentMotifClassCount = size(nonzeros(motifFeatureCount(:, 1) == i), 1);
@@ -55,25 +50,21 @@ for i = 1 : size(myClassID, 1)
     currentRetrievedSize = size(statEntry, 1); % used for precision
     
     for j = 1 : size(motifClassCount, 2)
-    % for j = 1 : size(currentInjectedClassID, 1)
         % update statMatrix
         % group feature scores
-        % if(currentInjectedClassID(j) == 0)
-        % else
-            relevantSize = motifClassCount(j);
-            [precision, recall] = groupFeatureScores(statEntry, j, relevantSize, currentRetrievedSize, threshold);
-            
-            precisionMatrix(i, j) = precision;
-            recallMatrix(i, j) = recall;
-            FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
-        % end
+        relevantSize = motifClassCount(j); % for this precision of current class
+        [precision, recall] = groupFeatureScores(statEntry, j, relevantSize, currentRetrievedSize, threshold);
+        
+        precisionMatrix(i, j) = precision;
+        recallMatrix(i, j) = recall;
+        FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
+        
     end
     
 end
 
 [precisionMatrix, recallMatrix, FScoreMatrix] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
 
-% normMatrix = norm(FScoreMatrix);
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
 end
