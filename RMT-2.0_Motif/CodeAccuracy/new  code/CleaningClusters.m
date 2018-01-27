@@ -35,27 +35,30 @@ function  [timeforcleaning]= CleaningClusters (TEST, imagepath,specificimagepath
               kmeansK=2; %% suppose my cluster is bad
               RelativeErrors = [];
 %               Quality = [];
-              centroid = pdist2(featuresCluster(11:end,:),featuresCluster(11:end,:));
-              centroid = mean(centroid);
+              centroid = mean (featuresCluster(11:end,:)');
+              globalDist = pdist2(featuresCluster(11:end,:),featuresCluster(11:end,:));
+              maxGlobalDist = max(globalDist(:));
               distancesF_C =pdist2(featuresCluster(11:end,:)',centroid);
-              Quality = sum(distancesF_C);
+              Quality = (sum(distancesF_C)/maxGlobalDist);%/size(featuresCluster,2);
               tentativeC=ones(size(featuresCluster,2),1); % clusterIndex
               tentativemu = centroid;
               while  ~fin
+                  
                 [C,m,SUMD,D] = kmeans(featuresCluster(11:end,:)',kmeansK,'Replicates',5);
-                distancesF_Ci = sum(SUMD);
+                distancesF_Ci = (sum(SUMD)/maxGlobalDist);%/size(featuresCluster,2);
                 Quality  = [Quality, distancesF_Ci];
-                RelativeErrors = [RelativeErrors,(abs(Quality(end)- Quality(end-1))/Quality(end-1))];
+                RelativeErrors = [RelativeErrors,(abs(Quality(end)- Quality(end-1)))];%/Quality(end - 1))];%/
                 SlidingError=inf;
                 if(size(RelativeErrors,2)>1)
                     SlidingError = RelativeErrors(end)-RelativeErrors(end-1);%abs();
                 end
-                  if (RelativeErrors(end)<0.2  || kmeansK == size(featuresCluster,2)-1 || Quality(end)<0.1)
+                  if (RelativeErrors(end)<0.3  | kmeansK >= size(featuresCluster,2)-1 )%| Quality(end)<RelativeErrors(end))
                       %the previus cluster wass a good one
-                      if(  kmeansK==2 & size(featuresCluster,2)~=3 )
-                          [~,bestclusterinstance] = min(Quality);
-                          C =tentativeC(:,end);
-                      end
+%                        if(  kmeansK==2 & size(featuresCluster,2)<=3 | Quality(end)<0.3 )
+%                            tentativeC = [tentativeC,C];
+%                           [~,bestclusterinstance] = max(Quality.*(Quality < 0.3));
+%                            C =tentativeC(:,bestclusterinstance);
+%                        end
                       % add the max value from Clusterused to C
                       if(size(Clusterused, 1) == 0)
                           max_value_cluster_used = 0;
@@ -67,24 +70,26 @@ function  [timeforcleaning]= CleaningClusters (TEST, imagepath,specificimagepath
                       labels = unique(C);%tentativeC);
                       for subclusterID =1 : length(labels)
                           IDXClusterF = C == subclusterID; %tentativeC==subclusterID;
-                          MotifBag1{Counter + subclusterID-1}.features = MotifBag{motifID}.features(:,IDXClusterF);
-                          MotifBag1{Counter + subclusterID-1}.startIdx = MotifBag{motifID}.startIdx(IDXClusterF);
-                          IDX = 1:size(MotifBag{motifID}.startIdx,1);
-                          IDX = IDX(IDXClusterF);
-                          for  variateMotifs = 1:size(IDX,2)
-                             MotifBag1{Counter + subclusterID-1}.depd{variateMotifs}   =  MotifBag{motifID}.depd{IDX(variateMotifs)};%bestvariate{IDX(variateMotifs)};%
-                             MotifBag1{Counter + subclusterID-1}.Tscope{variateMotifs} =  MotifBag{motifID}.Tscope{IDX(variateMotifs)};
-                          end
-                              %% printmotifs
-                          if(saveMotifImages==1)
-                            if(exist([FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
-                                mkdir([FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
-                            end 
-                            figure1 = plot_RMTmotif_on_data(data, MotifBag1{Counter + subclusterID-1}.startIdx, MotifBag1{Counter + subclusterID-1}.depd,MotifBag1{Counter + subclusterID-1}.Tscope);
-                            filename=[FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(Counter + subclusterID-1),'.eps'];%'.jpg'];
-                            saveas(figure1,filename,'epsc');
-                          end
+                          
+                              MotifBag1{Counter + subclusterID-1}.features = MotifBag{motifID}.features(:,IDXClusterF);
+                              MotifBag1{Counter + subclusterID-1}.startIdx = MotifBag{motifID}.startIdx(IDXClusterF);
+                              IDX = 1:size(MotifBag{motifID}.startIdx,1);
+                              IDX = IDX(IDXClusterF);
+                              for  variateMotifs = 1:size(IDX,2)
+                                 MotifBag1{Counter + subclusterID-1}.depd{variateMotifs}   =  MotifBag{motifID}.depd{IDX(variateMotifs)};%bestvariate{IDX(variateMotifs)};%
+                                 MotifBag1{Counter + subclusterID-1}.Tscope{variateMotifs} =  MotifBag{motifID}.Tscope{IDX(variateMotifs)};
+                              end
+                                  %% printmotifs
+                              if(saveMotifImages==1 & sum(IDXClusterF)>1)
+                                if(exist([FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
+                                    mkdir([FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                                end 
+                                figure1 = plot_RMTmotif_on_data(data, MotifBag1{Counter + subclusterID-1}.startIdx, MotifBag1{Counter + subclusterID-1}.depd,MotifBag1{Counter + subclusterID-1}.Tscope);
+                                filename=[FinalPath,'\octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(Counter + subclusterID-1),'.eps'];%'.jpg'];
+                                saveas(figure1,filename,'epsc');
+                              end                          
                       end
+                      close all;
 
                       Counter = Counter+subclusterID;
                       fin =true;
@@ -99,6 +104,8 @@ function  [timeforcleaning]= CleaningClusters (TEST, imagepath,specificimagepath
           end
           MotifBag=MotifBag1;
           save(strcat(FinalPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'MotifBag');
+          csvwrite([FinalPath,'ClusterClean',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'],Clusterused);
+
        end
     end
 end
