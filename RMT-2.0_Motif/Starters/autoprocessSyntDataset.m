@@ -16,14 +16,14 @@ normalizeData=0;%1;
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
 createDependencyScale = 0;%1;
-Cluster = 1;%1;%
-CreateSubCluster=1;
+Cluster = 0;%1;%
+CreateSubCluster=0;
 
 % motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%1;%0
+pruneClusterDescrMatlab = 0;%1;%0
 
 
 savecaracteristics = 1;
@@ -35,14 +35,14 @@ saveTSasImage = 0;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-motifidentification = 0; % work on pruned features
+motifidentification = 1; % work on pruned features
 removefeatures =0;
 cleanfeatures ='';
 if removefeatures==1
     cleanfeatures= 'Clean_';
 end
 
-for NAME =44:44%46:57%35:45%10:33%22:33%16:21 2%1:6%
+for NAME =44:44%46:57%35:45%10:33%22:33%16:21 2%1:6%44
 % Path Parameters
 TEST = ['Energy_Building',num2str(NAME)];
 if DatasetInject == 2 % MoCap
@@ -491,7 +491,7 @@ for TSnumber = 1: 1
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,1,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
+                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
                         end
@@ -561,7 +561,8 @@ for TSnumber = 1: 1
     
     
     if motifidentification ==1
-       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
+        timeforcleaning = CleaningClusters (TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\CleanSubclusters',distanceUsed ,FeaturesRM,cleanfeatures,1);
+%        timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
     end
 %     % save images before pruning
 %     if(motifidentificationBP ==1)
