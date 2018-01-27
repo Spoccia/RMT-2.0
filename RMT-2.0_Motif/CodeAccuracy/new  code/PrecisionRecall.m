@@ -3,28 +3,33 @@ clc;
 
 % iterate file to for upload
 % testCaseIndex = 34 : 45;
-testCaseIndex =  44;
+testCaseIndex =  22 : 33;
 
 weighted = 0;
 
-RMTClustering = []; % cleanmyentropy08 normalAVGAVG normalAVGSum normalSUM cleanmatlabentropy09 avgsum_GlobQuant_64 sumsum_GlobQuant_255
-GroundTruthFilePath = ['/Users/sliu104/Desktop/motif2/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
+RMTClustering = ['cleanmatlabentropy09']; % cleanmyentropy08 normalAVGAVG normalAVGSum normalSUM cleanmatlabentropy09 avgsum_GlobQuant_64 sumsum_GlobQuant_255
+% GroundTruthFilePath = ['/Users/sliu104/Desktop/motif2/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/motif/Groundtruth/IndexEmbeddedFeatures/FeaturePosition_Mocap_test'];
 
-MatrixProfileFilePath = ['/Users/sliu104/Desktop/motif2/Mstamp/Mocap_test'];
+% MatrixProfileFilePath = ['/Users/sliu104/Desktop/motif2/Mstamp/Mocap_test'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/motif/Mstamp/candanDistance/Mocap_test'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/motif/RMT/', RMTClustering, '/AP_DepO_2_DepT_2_Mocap_test'];
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/motif2/RMT/', RMTClustering, '/AP_DepO_2_DepT_2_Mocap_test'];
-RMTMotifFilePath = ['/Users/sliu104/Desktop/', RMTClustering, '/AP_DepO_2_DepT_2_Mocap_test'];
+% RMTMotifFilePath = ['/Users/sliu104/Desktop/', RMTClustering, '/AP_DepO_2_DepT_2_Mocap_test'];
 RMEMotifFilePath = ['/Users/sliu104/Desktop/motif2/RME/AP_DepO_2_DepT_2_Mocap_test'];
 
 savePathRME = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2', RMTClustering];
-savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2', RMTClustering];
-savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2', RMTClustering];
+% savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2', RMTClustering];
+savePathRMT = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/', RMTClustering];
+% savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2', RMTClustering];
+savePathMatrixProfile = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/', RMTClustering];
 
 MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
 RMEMotifEntropy = [];
 
 % algorithm type: RMT, RME or MatrixProfile
-algorithmType = 'RMT';
+% algorithmType = 'RMT';
 % algorithmType = 'RME';
 
 for ii = 1 : size(testCaseIndex, 2)
@@ -47,32 +52,32 @@ for ii = 1 : size(testCaseIndex, 2)
         % algorithmType = 'RME';
         % [currentRMEMotifEntropy, precisionMatrixRME, recallMatrixRME, FScoreMatrixRME] = motifEvaluationWeighted(GroundTruthFile, RMEMotifFile, algorithmType, windowSize);
     else
-        % algorithmType = 'MatrixProfile';
-        % [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile] = motifEvaluation(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize, threshold);
-        algorithmType = 'RMT';
-        [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold);
+        algorithmType = 'MatrixProfile';
+        [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile] = motifEvaluation(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize, threshold);
+        % algorithmType = 'RMT';
+        % [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold);
         % algorithmType = 'RME';
         % [currentRMEMotifEntropy, precisionMatrixRME, recallMatrixRME, FScoreMatrixRME] = motifEvaluation(GroundTruthFile, RMEMotifFile, algorithmType, windowSize, threshold);
     end
     
-    % MatrixProfileEntropy = [MatrixProfileEntropy ; currentMatrixProfileEntropy];
-    RMTMotifEntropy = [RMTMotifEntropy ; currentRMTMotifEntropy];
+    MatrixProfileEntropy = [MatrixProfileEntropy ; currentMatrixProfileEntropy];
+    % RMTMotifEntropy = [RMTMotifEntropy ; currentRMTMotifEntropy];
     % RMEMotifEntropy = [RMEMotifEntropy; currentRMEMotifEntropy];
     
     % save current Matrix to files
-%     savePathMatrixProfilePrecision = [savePathMatrixProfile, '/MatrixProfilePrecision_', num2str(testCaseIndex(ii)), '.csv'];
-%     savePathMatrixProfileRecall = [savePathMatrixProfile, '/MatrixProfileRecall_', num2str(testCaseIndex(ii)), '.csv'];
-%     savePathMatrixProfileFScore = [savePathMatrixProfile, '/MatrixProfileFScore_', num2str(testCaseIndex(ii)), '.csv'];
-%     csvwrite(savePathMatrixProfilePrecision, precisionMatrixMatrixProfile);
-%     csvwrite(savePathMatrixProfileRecall, recallMatrixMatrixProfile);
-%     csvwrite(savePathMatrixProfileFScore, FScoreMatrixMatrixProfile)
+    savePathMatrixProfilePrecision = [savePathMatrixProfile, '/MatrixProfilePrecision_', num2str(testCaseIndex(ii)), '.csv'];
+    savePathMatrixProfileRecall = [savePathMatrixProfile, '/MatrixProfileRecall_', num2str(testCaseIndex(ii)), '.csv'];
+    savePathMatrixProfileFScore = [savePathMatrixProfile, '/MatrixProfileFScore_', num2str(testCaseIndex(ii)), '.csv'];
+    csvwrite(savePathMatrixProfilePrecision, precisionMatrixMatrixProfile);
+    csvwrite(savePathMatrixProfileRecall, recallMatrixMatrixProfile);
+    csvwrite(savePathMatrixProfileFScore, FScoreMatrixMatrixProfile)
 
-    savePathRMTPrecision = [savePathRMT, '/RMTPrecision_', num2str(testCaseIndex(ii)), '.csv'];
-    savePathRMTRecall = [savePathRMT, '/RMTRecall_', num2str(testCaseIndex(ii)), '.csv'];
-    savePathRMTFScore = [savePathRMT, '/RMTFScore_', num2str(testCaseIndex(ii)), '.csv'];
-    csvwrite(savePathRMTPrecision, precisionMatrixRMT);
-    csvwrite(savePathRMTRecall, recallMatrixRMT);
-    csvwrite(savePathRMTFScore, FScoreMatrixRMT);
+%     savePathRMTPrecision = [savePathRMT, '/RMTPrecision_', num2str(testCaseIndex(ii)), '.csv'];
+%     savePathRMTRecall = [savePathRMT, '/RMTRecall_', num2str(testCaseIndex(ii)), '.csv'];
+%     savePathRMTFScore = [savePathRMT, '/RMTFScore_', num2str(testCaseIndex(ii)), '.csv'];
+%     csvwrite(savePathRMTPrecision, precisionMatrixRMT);
+%     csvwrite(savePathRMTRecall, recallMatrixRMT);
+%     csvwrite(savePathRMTFScore, FScoreMatrixRMT);
     
 %     savePathRMEPrecision = [savePathRME, '/RMEPrecision_', num2str(testCaseIndex(ii)), '.csv'];
 %     savePathRMERecall = [savePathRME, '/RMERecall_', num2str(testCaseIndex(ii)), '.csv'];
@@ -87,8 +92,8 @@ RME_Entropy_Ouput_Path = [savePathRME, '/RMEMotifEntropy.csv'];
 RMT_Entropy_Ouput_Path = [savePathRMT, '/RMTMotifEntropy.csv'];
 MatrixProfile_Entropy_Ouput_Path = [savePathMatrixProfile, '/MatrixProfileEntropy.csv'];
 
-csvwrite(RME_Entropy_Ouput_Path, RMEMotifEntropy);
+% csvwrite(RME_Entropy_Ouput_Path, RMEMotifEntropy);
 csvwrite(RMT_Entropy_Ouput_Path, RMTMotifEntropy);
-csvwrite(MatrixProfile_Entropy_Ouput_Path, MatrixProfileEntropy);
+% csvwrite(MatrixProfile_Entropy_Ouput_Path, MatrixProfileEntropy);
 
 fprintf('All done .\n');

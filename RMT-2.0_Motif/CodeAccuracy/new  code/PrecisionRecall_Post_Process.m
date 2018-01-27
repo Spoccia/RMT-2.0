@@ -3,13 +3,18 @@ clc;
 
 fprintf('Post procesing precision and recall files... \n');
 % iterate file to for upload
-testCaseIndex = 34 : 45;
+testCaseIndex = 22 : 33;
 
-algorithm_type = ['MatrixProfile']; % MatrixProfile RMT RME
+algorithm_type = ['MatrixProfile']; % MatrixProfile RMT RME cleanmatlabentropy09
 
-precision_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'Precision_'];
-recall_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'Recall_'];
-FScore_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'FScore_'];
+% precision_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'FScore_'];
+
+precision_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/cleanmatlabentropy09/', algorithm_type, 'Precision_'];
+recall_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/cleanmatlabentropy09/', algorithm_type, 'Recall_'];
+FScore_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/cleanmatlabentropy09/', algorithm_type, 'FScore_'];
+
 
 for i = 1 : size(testCaseIndex, 2)
     fprintf('Test case: %d .\n', testCaseIndex(i));

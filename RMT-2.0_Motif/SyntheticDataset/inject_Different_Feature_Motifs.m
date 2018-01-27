@@ -9,10 +9,10 @@ else
     delimiter = '/';
 end
 
-TimeSeriesIndex = 2;
+TimeSeriesIndex = 1;
 TS_name = num2str(TimeSeriesIndex);
 % Data_Type = ['Energy_Building']; % MoCap
-Data_Type = ['Energy_Building']; % MoCap Energy_Building
+Data_Type = ['MoCap']; % MoCap Energy_Building
 
 if(strcmp(Data_Type, 'Energy_Building') == 1)
     FeaturePath = '/Users/sliu104/Desktop/EnergyTestData/RMT';
@@ -71,8 +71,8 @@ featuresOfInterest = frame1(:, indexfeatureGroup);
 MoCap_Flat_Variate = [34 : 46];
 
 % two values below not 1 or 0 at the same
-multiScaleFeatureInjection = 1; % 0;
-differentVariateGroupInjection = 0; % 0
+multiScaleFeatureInjection = 0; % 0;
+differentVariateGroupInjection = 1; % 0
 
 for nn = 1 : number_of_files
     TEST_1 = [Data_Type, num2str((nn - 1) * 2 + 1)];
