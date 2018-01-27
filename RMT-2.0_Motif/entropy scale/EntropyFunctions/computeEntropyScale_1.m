@@ -8,7 +8,8 @@ for i=1:variate
     for j=1:time
         timeslice = round(j-3*sigma) : round(j+3*sigma);
         subTS = I(timeslice(timeslice>0 & timeslice<time),M_mask);
-        Y(j,i) = EntropySingVariate_mex(subTS,-inf);%entropy(subTS/max(subTS(:)));%
+        quantizesubTS= singlevariateQuantization(subTS );
+        Y(j,i) = entropy(quantizesubTS/max(quantizesubTS(:)));%EntropySingVariate_mex(quantizesubTS,-inf);%EntropySingVariate_mex(subTS,-inf);%entropy(subTS/max(subTS(:)));%
     end
 end
 % J = imsmooth(I,sigma) ;

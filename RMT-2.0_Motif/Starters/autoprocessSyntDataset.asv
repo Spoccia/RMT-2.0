@@ -23,7 +23,7 @@ CreateSubCluster=0;
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 0;%1;%0
+pruneClusterDescrMatlab = 1;%1;%0
 
 
 savecaracteristics = 1;
@@ -35,7 +35,7 @@ saveTSasImage = 0;
 PruningEntropy = 0;%1;%
 ShiftFeatures = 0;
 
-motifidentification = 1; % work on pruned features
+motifidentification = 0; % work on pruned features
 removefeatures =0;
 cleanfeatures ='';
 if removefeatures==1
@@ -561,8 +561,8 @@ for TSnumber = 1: 1
     
     
     if motifidentification ==1
-        timeforcleaning = CleaningClusters (TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\CleanSubclusters',distanceUsed ,FeaturesRM,cleanfeatures,1);
-%        timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
+        timeforcleaning = CleaningClusters (TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\CleanSubclusters',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
+       timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
     end
 %     % save images before pruning
 %     if(motifidentificationBP ==1)

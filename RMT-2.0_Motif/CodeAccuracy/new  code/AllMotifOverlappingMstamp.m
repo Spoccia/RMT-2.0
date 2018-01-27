@@ -5,9 +5,9 @@ path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 FeaturesRM ='Mstamp';%'RMT';%'RME';%
 PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';
-for NAME =10:33
+for NAME =45:45%46:57%34:45
 testname=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-lenght=29;%58;%
+lenght=58;%29;%
 len=['Lenght_',num2str(lenght)];
 
 

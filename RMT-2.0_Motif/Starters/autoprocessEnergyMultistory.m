@@ -11,7 +11,7 @@ normalizeData=0;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 Cluster = 0;%1;%
 CreateSubCluster=0;
@@ -58,7 +58,7 @@ end
 KindofFeatures= 0; % 1 for DoG 0 for DoE
 
 
-for TSnumber = 3:3%183: 709
+for TSnumber = 1:10%183: 709
     TEST =num2str(TSnumber); %'1';%
     TS_name=num2str(TSnumber);%
     distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
