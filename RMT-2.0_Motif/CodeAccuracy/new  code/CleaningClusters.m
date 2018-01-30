@@ -52,7 +52,7 @@ function  [timeforcleaning]= CleaningClusters (TEST, imagepath,specificimagepath
                 if(size(RelativeErrors,2)>1)
                     SlidingError = RelativeErrors(end)-RelativeErrors(end-1);%abs();
                 end
-                  if (RelativeErrors(end)<0.3  | kmeansK >= size(featuresCluster,2)-1 )%| Quality(end)<RelativeErrors(end))
+                  if (RelativeErrors(end)<0.05  | kmeansK >= size(featuresCluster,2)-1 )%(RelativeErrors(end)<0.3  | kmeansK >= size(featuresCluster,2)-1 )%| Quality(end)<RelativeErrors(end))
                       %the previus cluster wass a good one
 %                        if(  kmeansK==2 & size(featuresCluster,2)<=3 | Quality(end)<0.3 )
 %                            tentativeC = [tentativeC,C];
@@ -60,6 +60,21 @@ function  [timeforcleaning]= CleaningClusters (TEST, imagepath,specificimagepath
 %                            C =tentativeC(:,bestclusterinstance);
 %                        end
                       % add the max value from Clusterused to C
+                      tentativeC=[tentativeC,C];
+                      
+                      eva = evalclusters(featuresCluster(11:end,:)', tentativeC,'Silhouette','Distance','sqEuclidean');%'CalinskiHarabasz');
+                      Okey = eva.OptimalK;
+                      if(sum(eva.CriterionValues >0.8)>0)
+                        temp = eva.CriterionValues.*(eva.CriterionValues >0.8);
+                        temp(temp==0)=inf;
+                       [~,Okey]= min(temp);
+                      end
+                      
+                      
+                      C =tentativeC(:,Okey);
+%                       if(eva.OptimalK==2)
+%                           C=tentativeC(:,1);
+%                       end
                       if(size(Clusterused, 1) == 0)
                           max_value_cluster_used = 0;
                       else
@@ -104,7 +119,7 @@ function  [timeforcleaning]= CleaningClusters (TEST, imagepath,specificimagepath
           end
           MotifBag=MotifBag1;
           save(strcat(FinalPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'MotifBag');
-          csvwrite([FinalPath,'ClusterClean',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'],Clusterused);
+          csvwrite([FinalPath,'\ClusterClean_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'],Clusterused);
 
        end
     end

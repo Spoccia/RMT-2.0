@@ -31,8 +31,8 @@ function [ TimeforPruningClustering ] = KmeansPruning(TEST, imagepath,specificim
     load(savepath3);
         TS =data;
         clustindfix=0;
-    for k=1:DeOctTime
-       for j=1:DeOctDepd
+    for k=2:DeOctTime
+       for j=2:DeOctDepd
            MotifBag=[];
            clustindfix=clustindfix+1;
            indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);     

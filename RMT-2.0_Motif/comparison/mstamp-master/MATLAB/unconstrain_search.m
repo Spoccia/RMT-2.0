@@ -23,7 +23,7 @@
 %
 %numexcvariate is added by silv to remove the last 2 cases
 function [motif_idx, motif_dim] = unconstrain_search(...
-    data, sub_len, pro_mul, pro_idx, n_bit, k,numexcvariate)
+    data, sub_len, pro_mul, pro_idx, n_bit, k)%,numexcvariate)
 exc_zone = round(0.5 * sub_len);
 tot_dim = size(data, 2);
 if isinf(k)
@@ -35,7 +35,7 @@ base_bit = n_bit * tot_dim * sub_len * 2;
 for i = 1:k
     fprintf('finding motif %d ... \n', i);
     [val, idx_1] = min(pro_mul, [], 1);
-    if any(isinf(val(1:length(val)-numexcvariate)))
+    if any(isinf(val(1:length(val))))%-numexcvariate)))%
         motif_idx = motif_idx(1:k-1);
         motif_dim = motif_dim(1:k-1);
         break;
@@ -44,7 +44,7 @@ for i = 1:k
     bit_sz = zeros(tot_dim, 1);
     idx_2 = zeros(tot_dim, 1);
     dim = cell(tot_dim, 1);
-    for j = 1:tot_dim
+    for j = 1:tot_dim %-numexcvariate%
         idx_2(j) = pro_idx(idx_1(j), j);
         motif_1 = data(idx_1(j):idx_1(j) + sub_len - 1, :);
 %         if(isnan(   idx_2(j)))

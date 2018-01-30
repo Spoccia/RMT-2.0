@@ -5,15 +5,15 @@ path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 FeaturesRM ='Mstamp';%'RMT';%'RME';%
 PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';
-for NAME =45:45%46:57%34:45
-testname=['Mocap_test',num2str(NAME)]%'Mocap_test11';
+for NAME =1:30%46:57%34:45
+testname=['Motif2_35_instance_',num2str(NAME)]%'Mocap_test11';
 lenght=58;%29;%
 len=['Lenght_',num2str(lenght)];
 
 
 load([PathMP,testname,'\Motif_output_',testname,len,'.mat']);
-Feature_Pos_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\',testname,'\FeaturePosition_',testname,'.csv']);
-Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\',testname,'\dpscale_',testname,'.csv']);
+Feature_Pos_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',testname,'.csv']);%\',testname,'
+Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',testname,'.csv']);%\',testname,'
 [fi_n,fi_m] = size(Feature_Pos_Injected);
 
 [n,m]= size(MotifBag_mstamp);

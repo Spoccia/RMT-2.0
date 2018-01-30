@@ -12,6 +12,6 @@ temp1=temp;
                         / std(RW, 1); %znormalization
         temp(i,:)  = (rndWalks-min(rndWalks))/(max(rndWalks)-min(rndWalks)) ;
         
-        temp1(i,:) = (temp(i,:)*(maximumV(i)-minimumV(i)))-minimumV(i);
+        temp1(i,:) = (temp(i,:)*(maximumV(i)-minimumV(i)))+minimumV(i);
     end
 end

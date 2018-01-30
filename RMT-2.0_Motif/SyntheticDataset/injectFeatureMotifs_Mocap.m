@@ -1,8 +1,10 @@
 clear;
 clc;
-for name =34 : 39%10:15%
-% FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\1\';
-FeaturePath = 'D:\Motif_Results\Datasets\Building_MultiStory\Features_RMT\3\';
+for name =60 : 66%10:15%
+
+TS = randi([1,184],1,1);
+ FeaturePath = ['D:\Motif_Results\Datasets\Mocap\Features_RMT\',num2str(TS),'\'];
+% FeaturePath = ['D:\Motif_Results\Datasets\Building_MultiStory\Features_RMT\',num2str(TS),'\'];
 
 kindofBasicTS='randomWalk';%'Sinusoidal';%'flat';%
 if(strcmp(kindofBasicTS,'flat')==1)
@@ -16,10 +18,10 @@ DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 DestLocationPath = 'D:\Motif_Results\Datasets\SynteticDataset\location';
 sinFreq=1;
 
-% TEST = ['Mocap_test',num2str(name)];
-TEST = ['Energy_test',num2str(name)];
+ TEST = ['Mocap_test',num2str(name)];
+% TEST = ['Energy_test',num2str(name)];
 
-TS_name = num2str(3);
+TS_name = num2str(TS);
 
 TimeL =1500;
 
@@ -27,7 +29,7 @@ DepO=2;
 DepT=2;
 offSpace=0;
 
-nummotifs = 2;
+nummotifs = 3;
 % numfeaturestoInject = 1;
 %numFeatureforClass=2;%1;
 NumInstances=20;
@@ -42,9 +44,12 @@ frame1=[];
     load(savepath2);
     load(savepath3);
     
+    
 %% get some features k
 indexfeatureGroup = (frame1(6,:)==2 & frame1(5,:)==2);
 X=frame1(:,indexfeatureGroup);
+IndexBadFeatures = sum(X(11:end,:)>0)>=65 & sum(X(11:end,:)>0)<=98;
+X= X(:,IndexBadFeatures);
 [rows,colmn]= size(X);
 random= randi([1,colmn],1,nummotifs);
 

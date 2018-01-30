@@ -15,8 +15,8 @@ load(savepath2);
 load(savepath3);
 
 timeforSubclustering=[];
-for timeOctave = 1:DeOctTime
-    for depdOctave = 1:DeOctDepd
+for timeOctave = 2:DeOctTime
+    for depdOctave = 2:DeOctDepd
         if(exist(strcat(ClusterPath, '\Cluster_IM_', TS_name, '_DepO_', num2str(depdOctave), '_TimeO_', num2str(timeOctave), '.csv'), 'file')~=0)
             
             % for features from each octave

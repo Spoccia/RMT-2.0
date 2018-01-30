@@ -7,7 +7,7 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RME';%'RME';%
+FeaturesRM ='RMT';%'RME';%
 
 %% Normalize the data?
 normalizeData=0;%1;
@@ -23,7 +23,7 @@ CreateSubCluster=1;
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%1;%0
+pruneClusterDescrMatlab = 1;%0
 
 
 savecaracteristics = 1;
@@ -41,13 +41,15 @@ cleanfeatures ='';
 if removefeatures==1
     cleanfeatures= 'Clean_';
 end
-
-for NAME =55:57%34:45%46:57%35:45%10:33%22:33%16:21 2%1:6%44
+pippo = [24,35,85,127];
+for pip=1:4
+for NAME = 1:10%40%100:105%66:72%34:46%55:57%34:45%46:57%35:45%10:33%22:33%16:21 2%1:6%44
 % Path Parameters
-TEST = ['Energy_Building',num2str(NAME)];
+TEST = ['Energy_test',num2str(NAME)];
 if DatasetInject == 2 % MoCap
-      TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-%      TEST=['MoCap',num2str(NAME)]
+%       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
+%       TEST=['MoCap',num2str(NAME)]
+      TEST= ['Motif2_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85  
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -254,6 +256,7 @@ for TSnumber = 1: 1
         %             X1 = frame1(:,Parse==0);
         %             frame1 =X1;
         %
+        frame1(7,:) = [];
         feature = frame1;
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
@@ -469,8 +472,8 @@ for TSnumber = 1: 1
         load(savepath3);
         
         clustindfix=0;
-        for k=1:DeOctTime
-            for j=1:DeOctDepd
+        for k=2:DeOctTime
+            for j=2:DeOctDepd
                 clustindfix=clustindfix+1;
                 indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
                 X=frame1(:,indexfeatureGroup);
@@ -491,11 +494,23 @@ for TSnumber = 1: 1
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
                             [C,mu] = kmeans(X(11:size(X,1),:)',DictionarySizeApplied,'Distance','sqeuclidean');%);%'cosine');%
                     elseif(strcmp(typeofCluster,'Cluster_AKmeans')==1)
-                       [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.05,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default
-                        if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
-                            mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
-                        end
-                        csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\Cl_behavior_IM_',TS_name,'_DO_',num2str(j),'_TO_',num2str(k),'.csv'),[inertia',tryK']);%Matlab_    
+                        
+%                          X1= pca(X(11:end,:),'NumComponents',10);%  sum(X(11:end,:));
+%                          X1 = [X(7:10,:)',X1];
+%                            media = sum(X(11:end,:));
+%                            IDXStoringFeatures= media>=mean(media);
+%                            X=X(:,IDXStoringFeatures);
+%                            X2 =pca(X(11:end,:),'NumComponents',10);
+%                          X1=[X(1,:);X(8:end,:)];%X(7:10,:);X2(:,:)'];%
+                         [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
+%                         [C,mu] = kmeans(X1,4,'Distance','sqeuclidean');%
+                       %adaptiveKmedoidsRMT(X,3,0.1,2);
+                       %
+                       
+%                         if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
+%                             mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
+%                         end
+%                         csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\Cl_behavior_IM_',TS_name,'_DO_',num2str(j),'_TO_',num2str(k),'.csv'),[inertia',tryK']);%Matlab_    
                     end
                     if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'),'dir')==0)
                         mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\'));
@@ -561,7 +576,7 @@ for TSnumber = 1: 1
     
     
     if motifidentification ==1
-        timeforcleaning = CleaningClusters (TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\CleanSubclusters',distanceUsed ,FeaturesRM,cleanfeatures,1);
+        timeforcleaning = CleaningClusters (TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\CleanSubclusters',distanceUsed ,FeaturesRM,cleanfeatures,0);
 %        timeforcleaning =  EliminateOutboiudaryInstances(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,'\PAA',distanceUsed ,FeaturesRM,cleanfeatures,4,0);
     end
 %     % save images before pruning
@@ -608,3 +623,4 @@ for TSnumber = 1: 1
     end
 end
 end
+ end

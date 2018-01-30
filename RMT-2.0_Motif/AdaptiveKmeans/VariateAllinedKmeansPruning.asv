@@ -231,7 +231,6 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %                 save(strcat(PrunedClusterPath,'\Histdatacluster_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'histdataid');%save(savepath1,'data', 'gss1', 'frame1','depd1');
                 csvwrite(strcat(PrunedClusterPath,'\PrunedCluster_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedCluster);
                 csvwrite(strcat(PrunedClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),mu);
-                csvwrite(strcat(PrunedClusterPath,'\Centroids_subCluster_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),SubclusterDescriptors);
                 csvwrite(strcat(PrunedClusterPath,'\PrunedFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedFeaturesCluster);
                 %[depdScale1] = computeDepdScale(prunedFeaturesCluster, gss1, idm1);
                 csvwrite(strcat(PrunedClusterPath,'\PrunedDepScaleFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedDepScale);

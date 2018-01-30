@@ -1,0 +1,101 @@
+
+originalTSID=24;%[24,50,85,127];
+featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];
+randomWalkPath =  ['D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_'];
+TimeSeriesPath = ['D:\Motif_Results\Datasets\Mocap\data\'];
+
+DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
+
+num_of_motif = 2; % NumOfMotifs = 1;
+motif_instances = 10; % MotifInstances= 10;
+length_percentage = [1,0.75,0.5];%0.5;% length_percentage = 
+
+random_walk_scale = [0.1,0.5,0.75,1];%0.1;% randomWalkScale = 
+descr_non_zero_entry = 10; % percentage 10, 50
+
+random_walk_instance = 5;
+
+
+testNAME = ['Motif',num2str(num_of_motif)];
+% load  the features and the data
+FeaturesToInject = xlsread([featuresToInjectPath,'Features',num2str(originalTSID),'_',num2str(descr_non_zero_entry),'.csv']);
+DepdToInject = xlsread([featuresToInjectPath,'depd',num2str(originalTSID),'_',num2str(descr_non_zero_entry),'.csv']);
+TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+
+
+FeatureToInject= FeaturesToInject(:,1:num_of_motif);
+DepdToInject = DepdToInject(:,num_of_motif);
+MotifsSections=[];
+
+for MotifId =1: num_of_motif
+    timescope= FeatureToInject(4,MotifId)*3;
+    intervaltime=(round((FeatureToInject(2,MotifId)-timescope(i))) : (round((FeatureToInject(2,MotifId)+timescope(i)+offSpace))));
+    MotifsSections{MotifId}.data = data(:,intervaltime((intervaltime>0 & intervaltime<=size(data,2))));
+    MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
+    MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
+end
+startInj=15;
+Step= floor( size(TSdata,2)/(motif_instances*num_of_motif));
+startTime =zeros(1,motif_instances*num_of_motif);
+starterTime(1) = startInj ;
+LabelMotif = [];
+for i =1: num_of_motif
+    LabelMotif=[LabelMotif,ones(1,motif_instances)*i];
+end
+LabelMotif = LabelMotif( randperm(length(LabelMotif))) ;
+for i=2:motif_instances*num_of_motif
+    motifclmn = MotifsSections{LabelMotif(i)}.cols;
+    starterTime (i)= randi([pStep,pStep+Step-motifclmn],1,1);
+    pStep=pStep+Step;
+end
+Counter =1;
+for rwscale = 1 : size(random_walk_scale,2)
+    for i =1: random_walk_instance
+        % read the 0-1 randomwalk
+
+        testNAME = [testNAME,'_instance_',num2str(Counter)]
+
+
+        EachInstanceDependency=[];
+        randomwalkData = csvread([randomWalkPath,num2str(i),'.csv']);
+
+        Motif1RW = scaleRW(randomwalkData,maxvalueTS,minvalueTS,random_walk_scale(rwscale));
+
+        FeatPositions = zeros(motif_instances*num_of_motif,4);
+        for motifInstance = 1: motif_instances*num_of_motif
+            MotifID=LabelMotif(motifInstance);
+            minvalueTS = min(TSdata);
+            maxvalueTS = max(TSdata);
+
+            length_index = mod(motifInstance, length_percentage);
+            if(length_index == 0)
+                length_index = size(length_percentage, 2);
+            end
+            M1 = imresize( MotifsSections{MotifId}.data,[size( MotifsSections{MotifId}.data,1), length_percentage(length_index)]);
+            [~,scalingTime] =size(M1,2);
+
+            Motif1RW(MotifsSections{MotifId}.depd((MotifsSections{MotifId}.depd(:,i)>0),i),starterTime:starterTime+scalingTime-1) = ...
+                M1(MotifsSections{MotifId}.depd(MotifsSections{MotifId}.depd(:,i)>0,i),:);
+
+            FeatPositions(ii,:)=[MotifID,motifInstance,starter,starter+scalingTime];
+            EachInstanceDependency=[EachInstanceDependency, MotifsSections{MotifId}.depd ];
+        end
+
+        if(exist([DestDataPath,'\IndexEmbeddedFeatures\',testNAME,'\'],'dir')==0)
+            mkdir([DestDataPath,'\IndexEmbeddedFeatures\',testNAME,'\']);
+        end
+        csvwrite([DestDataPath,'\',testNAME,'.csv'],Motif1RW);
+        csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',testNAME,'\','FeaturePosition_',testNAME,'.csv'],FeatPositions);
+        csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',testNAME,'\','dpscale_',testNAME,'.csv'],EachInstanceDependency);
+        csvwrite([DestDataPath,'\IndexEmbeddedFeatures\',testNAME,'\','Parameters_',testNAME,'.csv'],[originalTSID;num_of_motif;motif_instances;i;random_walk_scale(rwscale)]);
+    end
+    Counter=Counter+1;
+    %     mkdir([DestDataPath,'\IndexEmbeddedFeatures\Mocap_test',num2str(name+6),'\']);
+end
+
+
+
+
+
+
+

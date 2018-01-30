@@ -16,9 +16,9 @@ function AP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,Clu
 
 %% data injected and groundtruth
 data = csvread([path,kindofinj,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
-Position_F_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\',TEST,'\FeaturePosition_',TEST,'.csv']);
-Feature_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\',TEST,'\FeaturesEmbedded_',TEST,'.csv']);
-Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\',TEST,'\dpscale_',TEST,'.csv']);
+Position_F_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',TEST,'.csv']);%TEST,
+% Feature_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturesEmbedded_',TEST,'.csv']);
+Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',TEST,'.csv']);%\',TEST,'
 
 %% read the clusters to check the motifs.
 featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\AP\Cluster_AKmeans\'];

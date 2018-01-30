@@ -28,8 +28,8 @@ for i =1: length(symbols)
     end
 end
 
-for k=1:DeOctTime
-    for j=1:DeOctDepd
+for k=2:DeOctTime
+    for j=2:DeOctDepd
         if(exist(strcat(ClusterPath,'\Cluster_IM_',imagename,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),'file')~=0)
             indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
             X=frame1(:,indexfeatureGroup);
