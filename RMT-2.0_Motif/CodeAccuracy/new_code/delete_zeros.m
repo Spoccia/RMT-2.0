@@ -1,4 +1,4 @@
-function [precisionMatrix, recallMatrix, FScoreMatrix] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix)
+function [precisionMatrix, recallMatrix, FScoreMatrix, total_index] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 identified_class = size(precisionMatrix, 1);
 injected_class = size(precisionMatrix, 2);
@@ -16,6 +16,9 @@ for i = 1 : identified_class
         target_rows = [target_rows; i];
     end
 end
+total_index = 1 : size(precisionMatrix, 1);
+total_index = total_index';
+total_index(target_rows) = [];
 precisionMatrix(target_rows, :) = [];
 recallMatrix(target_rows, :) = [];
 FScoreMatrix(target_rows, :) = [];

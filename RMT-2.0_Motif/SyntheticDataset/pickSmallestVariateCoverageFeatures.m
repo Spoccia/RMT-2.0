@@ -13,6 +13,6 @@ for i = 1 : size(depdScale, 2)
 end
 
 % manullay fixed
-myIndex = 1;
+myIndex = 154;
 myPick_Variate = featuresOfInterest(:, myIndex);
 variates = depdScale(:, myIndex);

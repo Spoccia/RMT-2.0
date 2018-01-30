@@ -5,6 +5,7 @@ myStatEntry = statEntry(statEntry(:, 5) == currentInjectedClassID, :);
 uniqueSize = size(uniqueRows, 1);
 precisionScore = zeros(relevantSize, 1);
 recallBestScore = zeros(uniqueSize, 1);
+% time overlap at least 25% 
 
 for i = 1 : uniqueSize
     resultIndex = find(membershipIndex(:) == i);
@@ -12,7 +13,7 @@ for i = 1 : uniqueSize
     bestVO = max(myStatEntry(resultIndex, 10));
     
     recallBestScore(i) = bestTO * bestVO;
-    if(recallBestScore(i) >= threshold)
+    if(bestTO >= 0.25 && recallBestScore(i) >= threshold)
         recallBestScore(i) = 1;
     else
         recallBestScore(i) = 0;
@@ -24,11 +25,18 @@ for i = 1 : size(myStatEntry, 1)
     score_VO = myStatEntry(i, 10);
     
     precisionScore(i) = score_TO * score_VO;
-    if(precisionScore(i) >= threshold)
+    if(score_TO >= 0.25 && precisionScore(i) >= threshold)
         precisionScore(i) = 1;
     else
         precisionScore(i) = 0;
     end
 end
-precision = sum(precisionScore) / currentRetrievedSize;
-recall = sum(recallBestScore) / relevantSize;
+
+if(sum(precisionScore) == 1 || sum(recallBestScore) == 1)
+    % skip the case that in the cluster there is only one motif matched the inserted one
+    precision = 0;
+    recall = 0;
+else
+    precision = sum(precisionScore) / currentRetrievedSize;
+    recall = sum(recallBestScore) / relevantSize;
+end

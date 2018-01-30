@@ -3,18 +3,18 @@ clc;
 
 fprintf('Post procesing precision and recall files... \n');
 % iterate file to for upload
-testCaseIndex = 22 : 33;
+testCaseIndex = 1 : 40;
+% testCaseIndex = 34 : 45;
 
-algorithm_type = ['MatrixProfile']; % MatrixProfile RMT RME cleanmatlabentropy09
+algorithm_type = ['RMT']; % MatrixProfile RMT RME cleanmatlabentropy09
 
-% precision_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'Precision_'];
-% recall_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'Recall_'];
-% FScore_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif2/', algorithm_type, 'FScore_'];
+precision_file_path = ['/Users/sliu104/Desktop/RMT_Motif_Result/Motif2_35/', algorithm_type, 'Precision_'];
+recall_file_path = ['/Users/sliu104/Desktop/RMT_Motif_Result/Motif2_35/', algorithm_type, 'Recall_'];
+FScore_file_path = ['/Users/sliu104/Desktop/RMT_Motif_Result/Motif2_35/', algorithm_type, 'FScore_'];
 
-precision_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/cleanmatlabentropy09/', algorithm_type, 'Precision_'];
-recall_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/cleanmatlabentropy09/', algorithm_type, 'Recall_'];
-FScore_file_path = ['/Users/sliu104/Desktop/MoCapTestData_Motif/Output_motif/cleanmatlabentropy09/', algorithm_type, 'FScore_'];
-
+% precision_file_path = ['/Users/sliu104/Desktop/MatrixProfile_Motif_Result/Motif2_35/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/MatrixProfile_Motif_Result/Motif2_35/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/MatrixProfile_Motif_Result/Motif2_35/', algorithm_type, 'FScore_'];
 
 for i = 1 : size(testCaseIndex, 2)
     fprintf('Test case: %d .\n', testCaseIndex(i));
@@ -78,9 +78,9 @@ for i = 1 : size(testCaseIndex, 2)
        new_FScore_matrix(size(new_FScore_matrix, 1), j) = sum(new_FScore_matrix(number_index, j)) / (size(number_index, 1) - 1);
     end
     
-    % save_precision_file = [savePathRMT, '/RMTPrecision_', num2str(testCaseIndex(ii)), '.csv'];
-    % save_recall_file = [savePathRMT, '/RMTRecall_', num2str(testCaseIndex(ii)), '.csv'];
-    % save_FScore_file = [savePathRMT, '/RMTFScore_', num2str(testCaseIndex(ii)), '.csv'];
+%     save_precision_file = [savePathRMT, '/RMTPrecision_', num2str(testCaseIndex(ii)), '.csv'];
+%     save_recall_file = [savePathRMT, '/RMTRecall_', num2str(testCaseIndex(ii)), '.csv'];
+%     save_FScore_file = [savePathRMT, '/RMTFScore_', num2str(testCaseIndex(ii)), '.csv'];
     
     save_precision_file = precision_file;
     save_recall_file = recall_file;

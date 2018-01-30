@@ -15,7 +15,7 @@ else
     delimiter = '/';
 end
 
-TimeSeriesIndex = 2;
+TimeSeriesIndex = 1;
 TS_name = num2str(TimeSeriesIndex);
 % Data_Type = ['Energy_Building']; % MoCap
 Data_Type = ['MoCap']; % MoCap

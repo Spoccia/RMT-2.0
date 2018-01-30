@@ -1,16 +1,18 @@
-function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold)
+function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix] = motifEvaluation_clean_cluster_format(groundTruthFile, motifFile, clean_cluster_file, algorithmType, windowSize, threshold)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 
 motifFeatureCount = csvread(groundTruthFile);
-
 if(strcmp(algorithmType,'RMT') || strcmp(algorithmType,'RME') == 1)
     [num,txt,raw] = xlsread(motifFile, 'AP_all_SubC');
 else
     window = ['Lenght_', num2str(windowSize)];
     [num,txt,raw] = xlsread(motifFile, window);
 end
+clean_cluster = csvread(clean_cluster_file);
+num(:, 1) = clean_cluster;
 motifClass = unique(motifFeatureCount(:, 1));
 motifClassCount = [];
+
 % update motif class count
 for i = 1 : size(motifClass, 1)
     currentMotifClassCount = size(nonzeros(motifFeatureCount(:, 1) == i), 1);
@@ -20,7 +22,6 @@ end
 % loop through classID
 classID = num(:, 1);
 myClassID = unique(classID);
-
 
 % ignore single cluster elements
 [myClassID, classID, num] = filter_single_cluster(myClassID, classID, num);
@@ -67,7 +68,7 @@ for i = 1 : size(myClassID, 1)
     
 end
 
-[precisionMatrix, recallMatrix, FScoreMatrix, total_index] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
+[precisionMatrix, recallMatrix, FScoreMatrix] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
 
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
