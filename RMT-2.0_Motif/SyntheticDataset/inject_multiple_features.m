@@ -1,4 +1,4 @@
-function [rndWalks, FeatPositions, injectedDepdScale] = inject_multiple_features(patternFeatures, patternDepdScales, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO)
+function [rndWalks, FeatPositions, injectedDepdScale] = inject_multiple_features(patternFeatures, patternDepdScales, sameVariateGroup, NumInstances, rndWalks, FeatPositions, data, idm, DepdO, num_of_features_to_pick)
 % sameVariateGroup = 1: feature injected to same group of variates
 % sameVariateGroup = 0: feature injected to different group of variates
 
@@ -17,12 +17,13 @@ if(sameVariateGroup == 0)
     % nonZeropatternDepdScale = patternDepdScale(patternDepdScale > 0);
     
     % inject the same pattern
-    variateGroups = compute_mutiple_variate_group(patternDepdScales, idm, DepdO);
+    
     for i = 1 : NumInstances
         round_robin_feature_index = mod(i, size(patternFeatures, 2));
         if(round_robin_feature_index == 0)
-            round_robin_feature_index = 3;
+            round_robin_feature_index = num_of_features_to_pick;
         end
+        variateGroups = compute_mutiple_variate_group(patternDepdScales(:, round_robin_feature_index), idm, DepdO);
         % compute variate group -- find variate group in graph, size same as mypatternDepdScale
         variateGroup = variateGroups{round_robin_feature_index};
         nonZeropatternDepdScale = nonzeros(patternDepdScales(:, round_robin_feature_index));
@@ -53,12 +54,12 @@ else
         
         round_robin_feature_index1 = mod(i, size(patternFeatures, 2));
         if(round_robin_feature_index1 == 0)
-            round_robin_feature_index1 = 5;
+            round_robin_feature_index1 = num_of_features_to_pick;
         end
         
         round_robin_feature_index2 = mod(i+1, size(patternFeatures, 2));
         if(round_robin_feature_index2 == 0)
-            round_robin_feature_index2 = 5;
+            round_robin_feature_index2 = num_of_features_to_pick;
         end
         
         mypatternDepdScale = [patternDepdScales(:, round_robin_feature_index1) patternDepdScales(:, round_robin_feature_index2)];
@@ -68,11 +69,11 @@ else
         
         timeScope_1 = patternFeatures(4, round_robin_feature_index1) * 3;
         timeScope_2 = patternFeatures(4, round_robin_feature_index2) * 3;
-        intervaltime_1 = (max(round((patternFeatures(2, round_robin_feature_index1) - timeScope_1), 0)) : (min(round((patternFeatures(2, round_robin_feature_index1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
+        intervaltime_1 = (max(round((patternFeatures(2, round_robin_feature_index1) - timeScope_1)), 1) : (min(round((patternFeatures(2, round_robin_feature_index1) + timeScope_1)), size(data, 2)))); % feature time scope (integer)
         motifData_1 = data(:, intervaltime_1);
         [~, motifColumn_1] = size(motifData_1);
         
-        intervaltime_2 = (max(round((patternFeatures(2, round_robin_feature_index2) - timeScope_2), 0)) : (min(round((patternFeatures(2, round_robin_feature_index2) + timeScope_2)), size(data, 2)))); % feature time scope (integer)
+        intervaltime_2 = (max(round((patternFeatures(2, round_robin_feature_index2) - timeScope_2)), 1) : (min(round((patternFeatures(2, round_robin_feature_index2) + timeScope_2)), size(data, 2)))); % feature time scope (integer)
         motifData_2 = data(:, intervaltime_2);
         [~, motifColumn_2] = size(motifData_2);
         

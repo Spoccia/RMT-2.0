@@ -43,6 +43,7 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
          inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          error = abs(inertia(itr) - inertia(itr-1));
+%            error = abs(inertia(itr) - inertia(itr-1))/inertia(itr-1);
             if error<=saturation || startK >= (size(DataMatrix,3)-2) || inertia(itr)<=saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
                 isFound=true;
