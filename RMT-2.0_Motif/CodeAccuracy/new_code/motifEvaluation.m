@@ -1,4 +1,4 @@
-function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold)
+function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 
 motifFeatureCount = csvread(groundTruthFile);
@@ -20,6 +20,10 @@ end
 % loop through classID
 classID = num(:, 1);
 myClassID = unique(classID);
+
+
+% ignore single cluster elements
+[myClassID, classID, num] = filter_single_cluster(myClassID, classID, num);
 
 % stateMatrix: predicated_class_size x injected_class_size
 precisionMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
@@ -63,7 +67,7 @@ for i = 1 : size(myClassID, 1)
     
 end
 
-[precisionMatrix, recallMatrix, FScoreMatrix] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
+[precisionMatrix, recallMatrix, FScoreMatrix, total_index] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
 
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
