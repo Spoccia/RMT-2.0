@@ -1,7 +1,0 @@
-function RW = scaleRW (randomwalkData,maxvalueTS,minvalueTS,percentage)
-RW=[];
-
-    for i=1:n        
-        temp1(i,:) = (temp(i,:)*(maxvalueTS(i)-minvalueTS(i)))-minvalueTS(i);
-    end
-end

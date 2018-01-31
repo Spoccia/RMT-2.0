@@ -6,15 +6,16 @@ fprintf('Post procesing precision and recall files... \n');
 testCaseIndex = 1 : 40;
 % testCaseIndex = 34 : 45;
 
-algorithm_type = ['RMT']; % MatrixProfile RMT RME cleanmatlabentropy09
+num_of_motif = 1;
+algorithm_type = ['MatrixProfile']; % MatrixProfile RMT RME cleanmatlabentropy09
 
-precision_file_path = ['/Users/sliu104/Desktop/RMT_Motif_Result/Motif2_35/', algorithm_type, 'Precision_'];
-recall_file_path = ['/Users/sliu104/Desktop/RMT_Motif_Result/Motif2_35/', algorithm_type, 'Recall_'];
-FScore_file_path = ['/Users/sliu104/Desktop/RMT_Motif_Result/Motif2_35/', algorithm_type, 'FScore_'];
+precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/MatrixProfile_Motif1/', algorithm_type, 'Precision_'];
+recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/MatrixProfile_Motif1/', algorithm_type, 'Recall_'];
+FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/MatrixProfile_Motif1/', algorithm_type, 'FScore_'];
 
-% precision_file_path = ['/Users/sliu104/Desktop/MatrixProfile_Motif_Result/Motif2_35/', algorithm_type, 'Precision_'];
-% recall_file_path = ['/Users/sliu104/Desktop/MatrixProfile_Motif_Result/Motif2_35/', algorithm_type, 'Recall_'];
-% FScore_file_path = ['/Users/sliu104/Desktop/MatrixProfile_Motif_Result/Motif2_35/', algorithm_type, 'FScore_'];
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/RMT_Motif1/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/RMT_Motif1/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/RMT_Motif1/', algorithm_type, 'FScore_'];
 
 for i = 1 : size(testCaseIndex, 2)
     fprintf('Test case: %d .\n', testCaseIndex(i));
@@ -95,9 +96,9 @@ aggregated_precision_file = [precision_file_path, 'aggregated.csv'];
 aggregated_recall_file = [recall_file_path, 'aggregated.csv'];
 aggregated_FScore_file = [FScore_file_path, 'aggregated.csv'];
 
-aggregated_precision = zeros(size(testCaseIndex, 2), 3+1);
-aggregated_recall = zeros(size(testCaseIndex, 2), 3+1);
-aggregated_FScore = zeros(size(testCaseIndex, 2), 3+1);
+aggregated_precision = zeros(size(testCaseIndex, 2), num_of_motif+1+1);
+aggregated_recall = zeros(size(testCaseIndex, 2), num_of_motif+1+1);
+aggregated_FScore = zeros(size(testCaseIndex, 2), num_of_motif+1+1);
 for i = 1 : size(testCaseIndex, 2)
     precision_file = [precision_file_path, num2str(testCaseIndex(i)), '.csv'];
     recall_file = [recall_file_path, num2str(testCaseIndex(i)), '.csv'];

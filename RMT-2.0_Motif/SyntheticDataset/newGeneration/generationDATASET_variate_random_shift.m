@@ -10,6 +10,7 @@ DestDataPath = '/Users/sliu104/Desktop/RandomWalks_Injection_Generated';
 num_of_motif = 1; % NumOfMotifs = 1;
 motif_instances = 10; % MotifInstances= 10;
 random_walk_instance = 10;
+depd_scale_length = 62;
 
 length_percentage = [1,0.75,0.5];%0.5;% length_percentage =
 RWlength = 2500;
@@ -92,19 +93,9 @@ for i = 1 : random_walk_instance
         current_variate_group = MotifsSections{MotifID}.depd(:,1);
         Depd_O = 2;
         
-        nonZeropatternDepdScale = current_variate_group(current_variate_group ~= 0);
-        variate_groups = computeVariateGroup(nonZeropatternDepdScale, idm, Depd_O, current_variate_group);
-        
-        % round robin to pick variate group
-        length_index = mod(motifInstance, length(length_percentage)); % round robin manner if more than one motifs to be injected
-        if(length_index == 0)
-            length_index = size(length_percentage, 2);
-        end
-        variate_group_index = mod(motifInstance, motif_instances * num_of_motif);
-        if(variate_group_index == 0)
-            variate_group_index = size(variate_groups, 2);
-        end
-        variate_group_for_injection = variate_groups(:, variate_group_index);
+        nonZeroDepdScale = current_variate_group(current_variate_group ~= 0);
+        % randomly pick variate_graoup_for_injection
+        variate_group_for_injection = random_variate_selection(nonZeroDepdScale, depd_scale_length);
         
         Motif1RW(variate_group_for_injection, starterTime(motifInstance) : starterTime(motifInstance) + scalingTime - 1) = ...
             M1(MotifsSections{MotifID}.depd(current_variate_group > 0, 1),:);

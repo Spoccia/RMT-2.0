@@ -17,7 +17,6 @@ GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/GroudTruth/Featu
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_28/RMT_Motif/Accuracy/AP_DepO_2_DepT_2_Motif2_35_instance_'];
 RMTMotifFilePath = ['/Users/sliu104/Desktop/AP_DepO_2_DepT_2_Motif2_35_instance_'];
 
-
 % RMEMotifFilePath = ['/Users/sliu104/Desktop/syntRST/motif/RME/avgsum_LocalQuant_16/AP_DepO_2_DepT_2_Mocap_test'];
 
 savePathRMT = ['/Users/sliu104/Desktop/cosine_new_result'];
