@@ -1,9 +1,9 @@
-function [temp,temp1] = rndWalkGenerationbigSize(n,m,data)
+function [temp] = rndWalkGenerationbigSize(n,m)
 %% this function generate n randomwalk Z-Normalized of lenght m
 % n = number of randomWalk
 % m = size of each randomwalk
-minimumV = min(data');
-maximumV = max(data');
+% minimumV = min(data');
+% maximumV = max(data');
 temp = zeros(n,m);%rndWalks = zeros(n,m);
 temp1=temp;
     for i=1:n
@@ -12,6 +12,6 @@ temp1=temp;
                         / std(RW, 1); %znormalization
         temp(i,:)  = (rndWalks-min(rndWalks))/(max(rndWalks)-min(rndWalks)) ;
         
-        temp1(i,:) = (temp(i,:)*(maximumV(i)-minimumV(i)))+minimumV(i);
+%         temp1(i,:) = (temp(i,:)*(maximumV(i)-minimumV(i)))+minimumV(i);
     end
 end

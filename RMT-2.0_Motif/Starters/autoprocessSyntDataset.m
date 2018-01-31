@@ -49,7 +49,7 @@ TEST = ['Energy_test',num2str(NAME)];
 if DatasetInject == 2 % MoCap
 %       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
 %       TEST=['MoCap',num2str(NAME)]
-      TEST= ['Motif2_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85  
+      TEST= ['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85  
 end
 % Global Variables
 SizeFeaturesforImages = [];

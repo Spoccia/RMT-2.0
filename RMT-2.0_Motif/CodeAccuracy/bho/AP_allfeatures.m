@@ -1,7 +1,7 @@
 %% Accuracy best timeoverlapping
 % clc; clear;
-function  AP_allfeatures_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,DepO,DepT)
-% %% Analize Results
+function AP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,DepO,DepT)
+%% Analize Results
 % path='D:\Motif_Results\Datasets\SynteticDataset\';
 % kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 % TEST = 'test1';
@@ -16,12 +16,12 @@ function  AP_allfeatures_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster
 
 %% data injected and groundtruth
 data = csvread([path,kindofinj,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
-Position_F_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',TEST,'.csv']);%\',TEST,'
+Position_F_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',TEST,'.csv']);%TEST,
 % Feature_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturesEmbedded_',TEST,'.csv']);
-Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',TEST,'.csv']);
+Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',TEST,'.csv']);%\',TEST,'
 
 %% read the clusters to check the motifs.
-featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\SplitVariate\AP_VA\Cluster_AKmeans\'];
+featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',kindofCluster,'\AP\Cluster_AKmeans\'];
 % load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat'])
 % load([path,kindofinj,'Features\',TEST,'\DistancesDescriptors\',kindofCluster,measure,'\afterPruning\',ClusterAlg,'\datacluster_1_DepO_',DepO,'_DepT_',DepT,'.mat']);
 
@@ -29,7 +29,6 @@ Dependencypruned = csvread([featurespath,'\PrunedDepScaleFeatures_IM_',TEST,'_De
 Featurepruned    = csvread([featurespath,'\PrunedFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
 Clusterpruned = csvread([featurespath,'\PrunedCluster_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
 Centroidpruned = csvread([featurespath,'\Centroids_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
-
 
 %% Check to with cluster each feature refers
 Interv_Features_Cluster=[];
@@ -49,6 +48,7 @@ for i=1: nCluster
     
 end
 
+
 %% Sort the Feature on the index of  the name of the specific feature.
 FeatureClassCount=[];
 for i=1: size(Interv_Features_Cluster,1)
@@ -61,7 +61,7 @@ for i=1: size(Interv_Features_Cluster,1)
         InjectedIDentifcation=[0,0,0,0,TimeScore,Varaitescore];
 
     for j=1:size(Position_F_Injected,1)
-         DI=Dependency_Injected(Dependency_Injected(:,Position_F_Injected(j,2))>0,Position_F_Injected(j,2));
+         DI=Dependency_Injected(Dependency_Injected(:,Position_F_Injected(j,1))>0,Position_F_Injected(j,1));
          DC=DescriptorSortedbyCluster(DescriptorSortedbyCluster(:,i)>0,i);
          TimeOverlapping=computeTimeOverlap(IdentifiedTimePeriod(1),IdentifiedTimePeriod(end),Position_F_Injected(j,3),Position_F_Injected(j,4));
          variateOverlapping = size(intersect(DI,DC),1)/size(DI,1);%(union(DI,DC),1);
@@ -81,10 +81,8 @@ if(exist(strcat(path,'Features_',FeaturesRM,'\Accuracy\'),'dir')==0)%'\',TEST,
 end
 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
 FileName=[path,'Features_',FeaturesRM,'\Accuracy\','AP_','DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];%'\',TEST,%'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];
-xlswrite(FileName,FeatureClassCount,'AP_all_SubC','A2');
-xlswrite(FileName,col_header,'AP_all_SubC','A1');
-
-
+xlswrite(FileName,FeatureClassCount,'AP_all','A2');
+xlswrite(FileName,col_header,'AP_all','A1');
 %   Position_F_Injected(:,2)=[];
 % % [q,I] = sort(Position_F_Injected(:,2));
 % % [q1, I_IntervFeat]= sort(ItervalFeatures(:,2));
@@ -178,10 +176,9 @@ xlswrite(FileName,col_header,'AP_all_SubC','A1');
 %     mkdir(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\'));
 % end
 %     col_header={'Class','ID','Start','End','ClassInj','StartInj','EndInj','dep_Overlapping','found'}; 
-% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount,'AP_all_SubC','A2');
-% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],col_header,'AP_all_SubC','A1');
-% % csvread([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_all_SubC_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount);
-% 
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount,'AP_all','A2');
+% xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],col_header,'AP_all','A1');
+% % csvwrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_all_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.csv'],FeatureClassCount);
 % % %% Sort the Feature on the index of  the name of the specific feature.
 % % [q,I] = sort(Position_F_Injected(:,2));
 % % % [q1, I_IntervFeat]= sort(ItervalFeatures(:,2));
@@ -260,8 +257,8 @@ xlswrite(FileName,col_header,'AP_all_SubC','A1');
 % %                  found,miss];
 % %     FeatureClassCount=[FeatureClassCount;ActualName];
 % % end
-% % if(exist(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\'),'dir')==0)
-% %     mkdir(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\'));
+% % if(exist(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\'),'dir')==0)
+% %     mkdir(strcat(path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\'));
 % % end
-% % xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\subcluster\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.xls'],FeatureClassCount);
+% % xlswrite([path,'Features_',FeaturesRM,'\',TEST,'\Accuracy\','AP_',TEST,'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'.xls'],FeatureClassCount);
 % 

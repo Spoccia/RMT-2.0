@@ -1,11 +1,12 @@
 clc;
 clear;
 
-originalTSID = 2;%85;%35;%24;%[24,35,85,127];
 featuresToInjectPath=['/Users/sliu104/Desktop/Features_To_Inject/'];
 randomWalkPath =  ['/Users/sliu104/Desktop/RandomWalks_Generated/RandomWalk_'];
 TimeSeriesPath = ['/Users/sliu104/Desktop/TS_Data/'];
 DestDataPath = '/Users/sliu104/Desktop/RandomWalks_Injection_Generated';
+
+
 
 num_of_motif = 1; % NumOfMotifs = 1;
 motif_instances = 10; % MotifInstances= 10;
@@ -15,7 +16,7 @@ length_percentage = [1,0.75,0.5];%0.5;% length_percentage =
 RWlength = 2500;
 random_walk_scale = [0.1,0.5,0.75,1];%0.1;% randomWalkScale =
 
-descr_non_zero_entry = 10;%50;% %  percentage 10, 50
+descr_non_zero_entry = 50;%10;% %  percentage 10, 50
 
 % name used for output
 testNAME = ['Motif',num2str(num_of_motif)];
