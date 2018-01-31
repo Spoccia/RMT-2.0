@@ -67,7 +67,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
         inertia=[inertia,MeasureToUse];%mean(SUMD1)];
 %         inertia=[inertia,sum(SUMD1)/size(D,1)];
         tryK=[tryK,startK];
-        error = abs(inertia(itr) - inertia(itr-1))/inertia(itr-1);
+        error = abs(inertia(itr) - inertia(itr-1));
         if error<=saturation || startK >= (size(features1,2)-1) || inertia(itr)<=saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
 %               C1=ProposedC1;

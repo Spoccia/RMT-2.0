@@ -2,7 +2,7 @@ clc;
 clear;
 
 
-originalTSID=127;%85;%35;%24;%[24,35,85,127];
+originalTSID=35;%127;%24;%85;%[24,35,85,127];
 featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];
 randomWalkPath =  ['D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_'];
 TimeSeriesPath = ['D:\Motif_Results\Datasets\Mocap\data\'];
@@ -15,7 +15,7 @@ length_percentage = [1,0.75,0.5];%0.5;% length_percentage =
 RWlength = 2500;
 random_walk_scale = [0.1,0.5,0.75,1];%0.1;% randomWalkScale = 
 
-descr_non_zero_entry = 10;%50;% %  percentage 10, 50
+descr_non_zero_entry = 50;%10;% %  percentage 10, 50
 
 random_walk_instance = 10;
 

@@ -5,10 +5,8 @@ path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 FeaturesRM ='Mstamp';%'RMT';%'RME';%
 PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';
-pippo = [24,35,85,127];
-for pip=1:4
-for NAME =1:10%30%46:57%34:45
-testname=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)]%'Mocap_test11';
+for NAME =1:30%46:57%34:45
+testname=['Motif2_35_instance_',num2str(NAME)]%'Mocap_test11';
 lenght=58;%29;%
 len=['Lenght_',num2str(lenght)];
 
@@ -34,7 +32,7 @@ for MID = 1:m
         
         for injectedID =1:fi_n
 %           InjectedTimePeriod = Position_F_Injected(injectedID,2):Position_F_Injected(injectedID,3);
-        DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,2))>0,Feature_Pos_Injected(injectedID,2));        
+        DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,1))>0,Feature_Pos_Injected(injectedID,1));        
 %           InjectedDependency = Dependency_Injected(injectedID,1);
           TimeOverlapping    = computeTimeOverlap(motifsStart(instance),motifsStart(instance)+lenght-1,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
           variateOverlapping = size(intersect(DI,motifvariate),1)/size(DI,1);%union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
@@ -56,5 +54,4 @@ end
 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
 xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances,len,'A2');
 xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],col_header,len,'A1');%'_MStamp',
-end
 end
