@@ -2,12 +2,18 @@ clc; clear;
 
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-pippo = [24,35,85,127];
-for pip=1:4
+ pippo = [35,85,127,24];
+ for pip=1:4
 for NAME = 1:10%40%100:105%46:57%61:72%46:46%57%1:33%22:33%16:21%:21
 % TEST = ['Mocap_test',num2str(NAME)]%'Mocap_test11';
- TEST=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)]  %['MoCap',num2str(NAME)]
-FeaturesRM ='RMT';%'RME';%
+
+  TEST=['Motif1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]  %['MoCap',num2str(NAME)]
+%  TEST=['MotifShift1_2_instance_',num2str(NAME)]
+% TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
+%  TEST=['Motif_15_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %
+
+%    TEST=['MoCap',num2str(NAME)]
+FeaturesRM ='RME';%'RMT';%
 kindofCluster='Cluster_AKmeans';%'ClusterMatlab';%'ClusterKmedoids';%
 measure='Descriptor';
 ClusterAlg = 'ClusterMatlab';
@@ -24,7 +30,7 @@ for DepO =2:2
 %         BP_MAX_OverlappingInTime(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
 %         BP_MAX_OverlappingInTime_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
    
-%         AP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
+%          AP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
         AP_allfeatures_subcluster_1(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
 
 %         AP_MAX_OverlappingInTime(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,subfolderClusterLabel,num2str(DepO),num2str(DepT));
@@ -39,4 +45,4 @@ for DepO =2:2
     end
 end
 end
-end
+ end

@@ -14,7 +14,7 @@ load(savepath1);
 load(savepath2);
 load(savepath3);
 
-timeforSubclustering=[];
+timeforSubclustering=zeros(1,4);
 for timeOctave = 2:DeOctTime
     for depdOctave = 2:DeOctDepd
         if(exist(strcat(ClusterPath, '\Cluster_IM_', TS_name, '_DepO_', num2str(depdOctave), '_TimeO_', num2str(timeOctave), '.csv'), 'file')~=0)
@@ -92,7 +92,7 @@ for timeOctave = 2:DeOctTime
                     end
                 end
             end % end marking current cluster at interesting octave
-            timeforSubclustering=[timeforSubclustering,toc];
+            timeforSubclustering(timeOctave*depdOctave)=toc;
             if(exist([ClusterPath,'\SplitVariate\'],'dir')==0)
                 mkdir([ClusterPath,'\SplitVariate\']);
             end

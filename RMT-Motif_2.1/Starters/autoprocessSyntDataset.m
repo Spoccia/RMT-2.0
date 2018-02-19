@@ -7,7 +7,7 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RME';%'RME';%
+FeaturesRM ='RMT';%'RME';%
 
 %% Normalize the data?
 normalizeData=0;%1;

@@ -33,7 +33,7 @@ motif_idx = zeros(k, 1);
 motif_dim = cell(k, 1);
 base_bit = n_bit * tot_dim * sub_len * 2;
 for i = 1:k
-    fprintf('finding motif %d ... \n', i);
+%     fprintf('finding motif %d ... \n', i);
     [val, idx_1] = min(pro_mul, [], 1);
     if any(isinf(val(1:length(val))))%-numexcvariate)))%
         motif_idx = motif_idx(1:k-1);

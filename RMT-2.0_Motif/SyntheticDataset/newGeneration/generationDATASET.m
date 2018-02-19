@@ -1,11 +1,15 @@
 clc;
 clear;
 
-featuresToInjectPath=['/Users/sliu104/Desktop/Features_To_Inject/'];
-randomWalkPath =  ['/Users/sliu104/Desktop/RandomWalks_Generated/RandomWalk_'];
-TimeSeriesPath = ['/Users/sliu104/Desktop/TS_Data/'];
-DestDataPath = '/Users/sliu104/Desktop/RandomWalks_Injection_Generated';
+% featuresToInjectPath=['/Users/sliu104/Desktop/Features_To_Inject/'];
+% randomWalkPath =  ['/Users/sliu104/Desktop/RandomWalks_Generated/RandomWalk_'];
+% TimeSeriesPath = ['/Users/sliu104/Desktop/TS_Data/'];
+% DestDataPath = '/Users/sliu104/Desktop/RandomWalks_Injection_Generated';
 
+featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];
+randomWalkPath =  ['D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_'];
+TimeSeriesPath = ['D:\Motif_Results\Datasets\Mocap\data\'];
+DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 
 
 num_of_motif = 1; % NumOfMotifs = 1;
@@ -19,7 +23,7 @@ random_walk_scale = [0.1,0.5,0.75,1];%0.1;% randomWalkScale =
 descr_non_zero_entry = 50;%10;% %  percentage 10, 50
 
 % name used for output
-testNAME = ['Motif',num2str(num_of_motif)];
+testNAME = ['MotifVariateSync',num2str(num_of_motif)];
 
 % load  the features and the data
 FeaturesToInject = csvread([featuresToInjectPath,'Features',num2str(originalTSID),'_',num2str(descr_non_zero_entry),'.csv']);

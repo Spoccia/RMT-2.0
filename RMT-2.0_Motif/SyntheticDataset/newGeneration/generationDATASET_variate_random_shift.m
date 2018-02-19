@@ -2,10 +2,15 @@ clc;
 clear;
 
 originalTSID = 2;%85;%35;%24;%[24,35,85,127];
-featuresToInjectPath=['/Users/sliu104/Desktop/Features_To_Inject/'];
-randomWalkPath =  ['/Users/sliu104/Desktop/RandomWalks_Generated/RandomWalk_'];
-TimeSeriesPath = ['/Users/sliu104/Desktop/TS_Data/'];
-DestDataPath = '/Users/sliu104/Desktop/RandomWalks_Injection_Generated';
+% featuresToInjectPath=['/Users/sliu104/Desktop/Features_To_Inject/'];
+% randomWalkPath =  ['/Users/sliu104/Desktop/RandomWalks_Generated/RandomWalk_'];
+% TimeSeriesPath = ['/Users/sliu104/Desktop/TS_Data/'];
+% DestDataPath = '/Users/sliu104/Desktop/RandomWalks_Injection_Generated';
+
+featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\data\Features_To_Inject_variate\'];
+randomWalkPath =  ['D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_'];
+TimeSeriesPath = ['D:\Motif_Results\Datasets\Mocap\data\'];
+DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
 
 num_of_motif = 1; % NumOfMotifs = 1;
 motif_instances = 10; % MotifInstances= 10;
@@ -19,7 +24,7 @@ random_walk_scale = [0.1,0.5,0.75,1];%0.1;% randomWalkScale =
 descr_non_zero_entry = 10;%50;% %  percentage 10, 50
 
 % name used for output
-testNAME = ['Motif',num2str(num_of_motif)];
+testNAME = ['MotifShift',num2str(num_of_motif)];
 
 % load  the features and the data
 FeaturesToInject = csvread([featuresToInjectPath,'Features',num2str(originalTSID),'_',num2str(descr_non_zero_entry),'.csv']);
@@ -80,6 +85,10 @@ for i = 1 : random_walk_instance
     FeatPositions = zeros(motif_instances * num_of_motif,4);
     
     % do the job
+    MotifID = LabelMotif(1);
+    current_variate_group = MotifsSections{MotifID}.depd(:,1);
+    nonZeroDepdScale = current_variate_group(current_variate_group ~= 0);
+    variate_group_for_injection=nonZeroDepdScale;
     for motifInstance = 1: motif_instances * num_of_motif
         MotifID = LabelMotif(motifInstance);
         length_index = mod(motifInstance, length(length_percentage)); % round robin manner if more than one motifs to be injected
@@ -90,15 +99,15 @@ for i = 1 : random_walk_instance
         scalingTime =size(M1,2);
         
         % shift motif variate group
-        current_variate_group = MotifsSections{MotifID}.depd(:,1);
+        
         Depd_O = 2;
-        
-        nonZeroDepdScale = current_variate_group(current_variate_group ~= 0);
+
         % randomly pick variate_graoup_for_injection
-        variate_group_for_injection = random_variate_selection(nonZeroDepdScale, depd_scale_length);
-        
         Motif1RW(variate_group_for_injection, starterTime(motifInstance) : starterTime(motifInstance) + scalingTime - 1) = ...
             M1(MotifsSections{MotifID}.depd(current_variate_group > 0, 1),:);
+        variate_group_for_injection = random_variate_selection(nonZeroDepdScale, depd_scale_length);
+        
+        
         
         FeatPositions(motifInstance,:) = [ MotifID,motifInstance, starterTime(motifInstance), starterTime(motifInstance)+scalingTime-1 ];
         EachInstanceDependency = [ EachInstanceDependency, variate_group_for_injection ];

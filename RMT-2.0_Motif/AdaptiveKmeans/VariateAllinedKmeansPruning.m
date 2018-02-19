@@ -18,7 +18,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %         return;
 %     end
     Matlab=1;
-    TimeforPruningSubClustering=[];
+    TimeforPruningSubClustering=zeros(1,4);
     
     saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',cleanfeatures,TEST,'\'];
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
@@ -82,6 +82,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
                     [featsize,numfeatures]= size(A);
                     descr = A(11:featsize,:);
                    
+
                     single_std_cluster= std(descr')';
                     single_avg_cluster = mean(descr')';
                     SubclusterDescriptors= [SubclusterDescriptors;single_avg_cluster];
@@ -99,7 +100,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
                     if(strcmp(prunewith,'Descriptor')==1 || strcmp(prunewith,'Amplitude_Descriptor')==1 ||strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
 %                        'Prune using just Descriptors'
                         for k1=1:numfeatures
-                            IdxClFeat(1,k1)= sum(distancecentroid(:,k1) <= single_std_cluster*3)==128;
+                            IdxClFeat(1,k1)= sum(distancecentroid(:,k1) <= single_std_cluster*3)==size(distancecentroid,1);
                         end
                         A1= A(:,IdxClFeat==1);
                         B1= B(:,IdxClFeat==1);
@@ -220,7 +221,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %                     end
 %                     
                 end
-                 TimeforPruningSubClustering=[TimeforPruningSubClustering,sum(TimeforPruningSubClustering_0)];
+                 TimeforPruningSubClustering(k*j)=sum(TimeforPruningSubClustering_0);
                 if(exist(PrunedClusterPath,'dir')==0)
                     mkdir(PrunedClusterPath);
                 end    
