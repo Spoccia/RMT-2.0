@@ -197,14 +197,13 @@ for otact=1: Ot
     TIMESCALE(1)=TIMESCALE(1)+timestart1;
 end
 
-function SS = Smooth_Asyn(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)
-%     sigmatimeused=[];
-%     sigmadepdused=[];
+function [SS] = Smooth_Asyn(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)
 for sd=sdmin:sdmax
+    sigmatimeused=[];
     if sd==(sdmin)
         for st=stmin+1:stmax
             dsigmaT =  ktime^(st) * sigmaTscaleStep ;%ktime^(st+1) * sigmaTscaleStep ;
-% sigmatimeused =[sigmatimeused;dsigmaT];
+sigmatimeused =[sigmatimeused;]
             if st== (stmin)
                 % this scale is already computed
             else
@@ -214,7 +213,6 @@ for sd=sdmin:sdmax
         end
     else
         dsigmaD = kdepd^(sd) * sigmaDscaleStep ;%kdepd^(sd+1) * sigmaDscaleStep ;
-%         sigmadepdused =[sigmadepdused;dsigmaD];
         Smatrix = ComputeDependencyScale(depd{CurrentDepdOct}, dsigmaD);
         SS.smoothmatrix{CurrentTimeOct,CurrentDepdOct}(:,:,sd+soD) = Smatrix;
         for st=stmin:stmax

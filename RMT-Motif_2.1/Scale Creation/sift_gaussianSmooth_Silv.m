@@ -33,7 +33,8 @@ sdmin=0;%-1;
 otmin=0;
 odmin=0;
 
-[gss, depd, idm,TIMESCALE] = gaussianss_Silv_fromorg(I, LocM, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
+%   [gss, depd, idm,TIMESCALE] = gaussianss_Silv_fromorg(I, LocM, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
+ [gss, depd, idm,TIMESCALE] = gaussianss_Silv_fromorg_justUserOctave(I, LocM, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
 
 %[gss, depd, idm] = gaussianss_asynchronousMote_Silv_2(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
 timee(1) = 0;%timee(1)+ toc(p);
@@ -41,11 +42,16 @@ TIMEKEYPOINTSDESCRIPTORS=zeros(1,4);
 counter=1;
 
 %p = tic;
-dogss = diffss_asynchronous(gss);
+% dogss = diffss_asynchronous(gss);
+dogss = diffss_asynchronous_justUserOctave(gss,Od,Ot);
+
 % dogss = diffss_asynchronousTest(gss);
 % timee(2) = timee(2)+ toc(p);
-for otime = 1: size(gss.octave,1)
-    for  odepd = 1: size(gss.octave,2)
+
+otime = Ot;
+odepd = Od;
+% for otime = 1: size(gss.octave,1)
+%     for  odepd = 1: size(gss.octave,2)
 %         p = tic;
         tic;
         % Local maxima of the DOG octave
@@ -202,8 +208,8 @@ for otime = 1: size(gss.octave,1)
         clear fOframes bOframes fgss
         
         timeDescr(otime, odepd) = timeDescr(otime, odepd)+toc(p);
-    end
+%     end
     
-end
+% end
 time = TIMEKEYPOINTSDESCRIPTORS+TIMESCALE;
 end

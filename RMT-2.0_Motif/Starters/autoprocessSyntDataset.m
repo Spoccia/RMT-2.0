@@ -7,14 +7,14 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RME';%'RME';%
+FeaturesRM ='RMT';%'RME';%
 
 %% Normalize the data?
 normalizeData=0;%1;
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 0;%1;
 Cluster = 0;%1;%
 CreateSubCluster=0;
@@ -23,10 +23,10 @@ CreateSubCluster=0;
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%0
+pruneClusterDescrMatlab = 0;%0
 
 
-savecaracteristics = 1;
+savecaracteristics = 0;
 showOriginalImage = 0;
 mapdataintograyscale = 0;
 saveTSasImage = 0;
@@ -42,8 +42,8 @@ if removefeatures==1
     cleanfeatures= 'Clean_';
 end
  pippo = [35,85,127,24];
- for pip=2:4
-for NAME = 1:4%40%100:105%66:72%34:46%55:57%34:45%46:57%35:45%10:33%22:33%16:21 2%1:6%44
+ for pip=1:1
+for NAME = 1:1%40%100:105%66:72%34:46%55:57%34:45%46:57%35:45%10:33%22:33%16:21 2%1:6%44
 % Path Parameters
 Time4Clustering=zeros(1,4);
 TIMEFOROCTAVE=zeros(1,4);

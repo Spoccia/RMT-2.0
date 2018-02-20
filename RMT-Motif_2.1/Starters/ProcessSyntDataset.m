@@ -11,8 +11,8 @@ FeaturesRM ='RMT';
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
 Cluster = 0;%1;%
 CreateSubCluster=0;
 
@@ -100,7 +100,7 @@ for pip=1:1
 
         %% Features Extraction
         if(FeatureExtractionFlag==1) 
-            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\',EntropyPruningFolder];
+            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];%,EntropyPruningFolder];
             if(exist(saveFeaturesPath,'dir')==0)
                 mkdir(saveFeaturesPath);
                 mkdir([saveFeaturesPath,'GaussianSmoothing\']);

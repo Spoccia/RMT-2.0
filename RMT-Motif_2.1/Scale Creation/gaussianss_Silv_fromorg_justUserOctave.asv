@@ -132,81 +132,81 @@ while(~isover)
         % smooth of 2sigmadepd and 2sigmatime over both
         
         Smatrix =ComputeDependencyScale(depd{odcur}, doubleSigmaDepd);
-        SS = Smooth_Asyn_justDiagonal(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, Smatrix,soT,soD);
-        %         [SS.octave{otact,odact}(:,:,Sd,St),SS.smoothmatrix{otcur,odcur}(:,:,Sd)] = smooth(squeeze(SS.octave{otact,odact}(:,:,1,1)), Smatrix, doubleSigmaTime);
+% %         SS = Smooth_Asyn_justDiagonal(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, Smatrix,soT,soD);
+                [SS.octave{otact,odact}(:,:,Sd,St),SS.smoothmatrix{otcur,odcur}(:,:,Sd)] = smooth(squeeze(SS.octave{otact,odact}(:,:,1,1)), Smatrix, doubleSigmaTime);
         % increase the octave time and depd
         
         otact=otact+1;
         odact=odact+1;
         % reduce  bothsize
-        sbest_time = min(sminT + St, smaxT) ;
-        sbest_Dep = min(sminD + Sd, smaxD) ;
-        TMP=halveSizeTime(squeeze(SS.octave{otact-1,odact-1}(:,:,sbest_Dep+soD,sbest_time+soT)));
-        target_sigmaT = sigmaT0 * ktime^sminT ;
-        prev_sigmaT = sigmaT0 * ktime^(sbest_time - St) ;
-        target_sigmaD = sigmaD0 * kdepd^sminD ;
-        prev_sigmaD = sigmaD0 * kdepd^(sbest_Dep - Sd) ;
-        if(target_sigmaD > prev_sigmaD)
-            Smatrix=ComputeDependencyScale(depd{odcur},sqrt(target_sigmaD^2 - prev_sigmaD^2));
-            TMP = smoothJustDependencySilv(TMP, sqrt(target_sigmaT^2 - prev_sigmaT^2),Smatrix ) ;
-        end
-        if(target_sigmaT > prev_sigmaT)
-            TMP = smoothJustTimeSilv(TMP, sqrt(target_sigmaT^2 - prev_sigmaT^2),Smatrix ) ;
-        end
-        [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(TMP));
-        DistM = computeDist(LocMTemp, IDM, odcur);
-        %% Silv Normalization
-        maxim = max(DistM(:));
-        minim = min(DistM(:));
-        DistM= (DistM - minim) /abs(maxim-minim);
-        %% Silv Normalization
-        DepThreshold = DepThreshold*1.1;
-        H = dependencyALL(DistM , DepThreshold, IDM, odcur);
+% %         sbest_time = min(sminT + St, smaxT) ;
+% %         sbest_Dep = min(sminD + Sd, smaxD) ;
+% %         TMP=halveSizeTime(squeeze(SS.octave{otact-1,odact-1}(:,:,sbest_Dep+soD,sbest_time+soT)));
+% %         target_sigmaT = sigmaT0 * ktime^sminT ;
+% %         prev_sigmaT = sigmaT0 * ktime^(sbest_time - St) ;
+% %         target_sigmaD = sigmaD0 * kdepd^sminD ;
+% %         prev_sigmaD = sigmaD0 * kdepd^(sbest_Dep - Sd) ;
+% %         if(target_sigmaD > prev_sigmaD)
+% %             Smatrix=ComputeDependencyScale(depd{odcur},sqrt(target_sigmaD^2 - prev_sigmaD^2));
+% %             TMP = smoothJustDependencySilv(TMP, sqrt(target_sigmaT^2 - prev_sigmaT^2),Smatrix ) ;
+% %         end
+% %         if(target_sigmaT > prev_sigmaT)
+% %             TMP = smoothJustTimeSilv(TMP, sqrt(target_sigmaT^2 - prev_sigmaT^2),Smatrix ) ;
+% %         end
+% %         [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(TMP));
+% %         DistM = computeDist(LocMTemp, IDM, odcur);
+% %         %% Silv Normalization
+% %         maxim = max(DistM(:));
+% %         minim = min(DistM(:));
+% %         DistM= (DistM - minim) /abs(maxim-minim);
+% %         %% Silv Normalization
+% %         DepThreshold = DepThreshold*1.1;
+% %         H = dependencyALL(DistM , DepThreshold, IDM, odcur);
         
-        %         TMP=halveSizeTime(squeeze(SS.octave{otact-1,otact-1}(:,:,Sd,St)));
-        %         [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(TMP));
-        %         DistM = computeDist(LocMTemp, IDM, odcur);
-        %         %% Silv Normalization
-        %         maxim = max(DistM(:));
-        %         minim = min(DistM(:));
-        %         DistM= (DistM - minim) /abs(maxim-minim);
-        %         %% Silv Normalization
-        %         DepThreshold = DepThreshold*1.1;
-        %         H = dependencyALL(DistM , DepThreshold, IDM, odcur);
+                TMP=halveSizeTime(squeeze(SS.octave{otact-1,otact-1}(:,:,Sd,St)));
+                [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(TMP));
+                DistM = computeDist(LocMTemp, IDM, odcur);
+                %% Silv Normalization
+                maxim = max(DistM(:));
+                minim = min(DistM(:));
+                DistM= (DistM - minim) /abs(maxim-minim);
+                %% Silv Normalization
+                DepThreshold = DepThreshold*1.1;
+                H = dependencyALL(DistM , DepThreshold, IDM, odcur);
         if(otact==Ot & odact==Od)
             isover=true;
         end
         COMEFROM=1;
     elseif(otact==Ot & odact<Od)
         %         smooth of 2 sigmadepd over depd
-        %         Smatrix=ComputeDependencyScale(depd{odcur},doubleSigmaDepd);
-        %        [SS.octave{otact,odact}(:,:,Sd,1)] = smoothJustDependencySilv(squeeze(SS.octave{otact,odact}(:,:,1,1)), 0,Smatrix ) ;
-        SS = Smooth_Asyn_justDepd(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, Smatrix,soT,soD);
+                Smatrix=ComputeDependencyScale(depd{odcur},doubleSigmaDepd);
+               [SS.octave{otact,odact}(:,:,Sd,1)] = smoothJustDependencySilv(squeeze(SS.octave{otact,odact}(:,:,1,1)), 0,Smatrix ) ;
+% %         SS = Smooth_Asyn_justDepd(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, Smatrix,soT,soD);
         % increase the octave depd
         odact=odact+1;
         % reduce  over dependency size
-        sbest_Dep = min(sminD + Sd, smaxD) ;
-        %half size dependency
-        [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(SS.octave{otact,odact-1}(:,:,sbest_Dep+soD,1)));
-        %distance matrix
-        DistM = computeDist(LocMTemp, IDM, odcur);
-        %% Silv Normalization of distance matrix
-        maxim = max(DistM(:));
-        minim = min(DistM(:));
-        DistM= (DistM - minim) /abs(maxim-minim);
-        %% Silv Normalization
-        DepThreshold = DepThreshold*1.1;
-        H = dependencyALL(DistM , DepThreshold, IDM, odcur);
+% %         sbest_Dep = min(sminD + Sd, smaxD) ;
+% %         %half size dependency
+% %         [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(SS.octave{otact,odact-1}(:,:,sbest_Dep+soD,1)));
+% %         %distance matrix
+% %         DistM = computeDist(LocMTemp, IDM, odcur);
+% %         %% Silv Normalization of distance matrix
+% %         maxim = max(DistM(:));
+% %         minim = min(DistM(:));
+% %         DistM= (DistM - minim) /abs(maxim-minim);
+% %         %% Silv Normalization
+% %         DepThreshold = DepThreshold*1.1;
+% %         H = dependencyALL(DistM , DepThreshold, IDM, odcur);
         
-        %        [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(SS.octave{otact,odact}(:,:,Sd,1)));
-        %        DistM = computeDist(LocMTemp, IDM, odcur);
-        %        %% Silv Normalization
-        %        maxim = max(DistM(:));
-        %        minim = min(DistM(:));
-        %        DistM= (DistM - minim) /abs(maxim-minim);
-        %        %% Silv Normalization
-        %        DepThreshold = DepThreshold*1.1;
-        %        H = dependencyALL(DistM , DepThreshold, IDM, odcur);
+               [SS.octave{otact,odact}(:,:,1,1), LocMTemp, IDM] = HalfDependencyMote(LocMTemp, squeeze(SS.octave{otact,odact}(:,:,Sd,1)));
+               DistM = computeDist(LocMTemp, IDM, odcur);
+               %% Silv Normalization
+               maxim = max(DistM(:));
+               minim = min(DistM(:));
+               DistM= (DistM - minim) /abs(maxim-minim);
+               %% Silv Normalization
+               DepThreshold = DepThreshold*1.1;
+               H = dependencyALL(DistM , DepThreshold, IDM, odcur);
         if(otact==Ot & odact==Od)
             isover=true;
         end
