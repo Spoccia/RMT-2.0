@@ -34,7 +34,8 @@ for si_T= sminT:St+1
             StartPos= floor(ScopeDependency+1);
             VariatePosScale(1,si_D+soD)=StartPos;
             V_i_rearrange(:,StartPos)= octave(:,V_i,si_D+soD,si_T+soT);
-            fgss{si_D+soD,si_T+soT,V_i} =zeros(M_Time, N_variate);
+             fgss{si_D+soD,si_T+soT,V_i} =zeros(M_Time, N_variate);
+%             fgss(:,:,si_D+soD,si_T+soT,V_i) = zeros(M_Time, N_variate);
             for i= 1:ScopeDependency
                 % construct matrix on right side
                 temp = (H^(i)*octave(:,:,si_D+soD,si_T+soT)')';
@@ -47,6 +48,7 @@ for si_T= sminT:St+1
                 end
             end
            fgss{si_D+soD,si_T+soT,V_i}=V_i_rearrange;
+           
         end
 
     end
