@@ -1,0 +1,31 @@
+[frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_SV(I, Ot, St, sigmaTime, NBP, gthresh, r,sBoundary, eBoundary)
+featureTimeScale = [];
+featureDepdScale = [];
+% thresh = 0.04 / St / 2 ;
+thresh = 0.04 / 3 / 2 ; %value picked from the vivaldi code
+NBO    = 8;
+NBP_Time = 4;
+NBP_Depd = 4;
+magnif = 3.0;
+% frames      = [] ;
+tempFrames = [];
+descriptors = [] ;
+descriptor_silv=[];
+ktime = 2^(1/(St-3));
+kdepd = 2^(1/(Sd-3));
+
+p = tic;
+% Compute scale spaces
+% Try this function
+stmin=0;%-1;
+sdmin=0;%-1;
+otmin=0;
+odmin=0;
+
+[gss] = gaussianss_time(I, Ot,St,otmin,stmin,St+1, sigmaTime,gthresh,-1,-1);
+
+
+
+                                                              
+                                                              
+                                                              
