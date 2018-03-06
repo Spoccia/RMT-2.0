@@ -1,4 +1,4 @@
-function [gss] = gaussianss_time(I,Ot,St,ominT,sminT,smaxT,sigmaT0,dsigmaT0)
+function [SS,DiffoG] = gaussianss_time(I,Ot,St,ominT,sminT,smaxT,sigmaT0,dsigmaT0)
 
 %I : timeseries column are variate rows are timedata,
 %LocM: location matrix
@@ -44,17 +44,29 @@ otcur = 1;
 % Index offset
 soT = -sminT+1 ;
 
-SS.octave{otcur} = zeros(N,smaxT) ;
+SS.octave{otcur} = zeros(N,M,smaxT) ;
+% DiffoG.octave{otcur} = zeros(M,smaxT-1);
 
 % From first octave
 STimegsigmafor_OT1_OD1 = sqrt((sigmaT0*ktime^sminT)^2  - (sigmaNT/2^ominT)^2);
 
-[SS.octave{otcur}(:,1)] = smoothJustTimeSilv(I, STimegsigmafor_OT1_OD1);
+[SS.octave{otcur}(1,:,1)] = smoothJustTimeSilv(I, STimegsigmafor_OT1_OD1);
 for otact=1: Ot
     if((otact==1))
         SS = Smooth_Asyn(SS, otact, ktime, sminT,smaxT,dsigmaT0,soT);
+        DiffoG.octave{otact} = SS.octave{otact}(1,:,1:end-1)-SS.octave{otact}(1,:,2:end);
     else
+        sbest_time = min(sminT + St, smaxT) ;
+        %half size of time
+        TMP= halveSizeTime(squeeze(SS.octave{otact-1}(:,sbest_time+soT)));
+        target_sigmaT = sigmaT0 * ktime^sminT ;
+        prev_sigmaT = sigmaT0 * ktime^(sbest_time - St) ;
+        if(target_sigmaT > prev_sigmaT)
+            TMP = smoothJustTimeSilv(TMP, sqrt(target_sigmaT^2 - prev_sigmaT^2)) ;
+        end
+        SS.octave{otact}(:,1)=TMP;
         SS = Smooth_Asyn(SS, otact, ktime, sminT,smaxT,dsigmaT0,soT);
+        DiffoG.octave{otcur} = SS.octave{otcur}(1,:,1:end-1)-SS.octave{otcur}(1,:,2:end);
     end
 end
 
@@ -62,13 +74,12 @@ end
 
 
     function [SS] = Smooth_Asyn(SS, CurrentTimeOct, ktime,stmin, stmax,sigmaTscaleStep,soT)
-        
         for st=stmin+1:stmax
             dsigmaT =  ktime^(st) * sigmaTscaleStep ;%ktime^(st+1) * sigmaTscaleStep ;
             if st== (stmin)
                 % this scale is already computed
             else
-                [SS.octave{CurrentTimeOct}(:,st+soT)] = smoothJustTimeSilv(squeeze(SS.octave{CurrentTimeOct}(:, st+soT-1)),dsigmaT);
+                [SS.octave{CurrentTimeOct}(1,:,st+soT)] = smoothJustTimeSilv(squeeze(SS.octave{CurrentTimeOct}(1,:, st+soT-1)),dsigmaT);
             end
         end
-    end
+    

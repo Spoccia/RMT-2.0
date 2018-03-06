@@ -44,29 +44,30 @@ otcur = 1;
 % Index offset
 soT = -sminT+1 ;
 
-SS.octave{otcur} = zeros(M,smaxT) ;
+SS.octave{otcur} = zeros(M,3,smaxT) ;
 % DiffoG.octave{otcur} = zeros(M,smaxT-1);
 
 % From first octave
 STimegsigmafor_OT1_OD1 = sqrt((sigmaT0*ktime^sminT)^2  - (sigmaNT/2^ominT)^2);
 
-[SS.octave{otcur}(:,1)] = smoothJustTimeSilv(I, STimegsigmafor_OT1_OD1);
+%  temp = smoothJustTimeSilv(I, STimegsigmafor_OT1_OD1);
+[SS.octave{otcur}(:,:,1)] = smoothJustTimeSilv(I, STimegsigmafor_OT1_OD1);
 for otact=1: Ot
     if((otact==1))
         SS = Smooth_Asyn(SS, otact, ktime, sminT,smaxT,dsigmaT0,soT);
-        DiffoG.octave{otcur} = SS.octave{otcur}(:,1:end-1)-SS.octave{otcur}(:,2:end);
+        DiffoG.octave{otact} = SS.octave{otact}(:,:,1:end-1)-SS.octave{otact}(:,:,2:end);
     else
         sbest_time = min(sminT + St, smaxT) ;
         %half size of time
-        TMP= halveSizeTime(squeeze(SS.octave{otact-1}(:,sbest_time+soT)));
+        TMP= halveSizeTime(squeeze(SS.octave{otact-1}(:,:,sbest_time+soT)));
         target_sigmaT = sigmaT0 * ktime^sminT ;
         prev_sigmaT = sigmaT0 * ktime^(sbest_time - St) ;
         if(target_sigmaT > prev_sigmaT)
-            TMP = smoothJustTimeSilv(TMP, sqrt(target_sigmaT^2 - prev_sigmaT^2)) ;
+            TMP = smoothJustTimeSilv(TMP(:,2), sqrt(target_sigmaT^2 - prev_sigmaT^2)) ;
         end
-        SS.octave{otact}(:,1)=TMP;
+        SS.octave{otact}(:,:,1)=TMP;
         SS = Smooth_Asyn(SS, otact, ktime, sminT,smaxT,dsigmaT0,soT);
-        DiffoG.octave{otcur} = SS.octave{otcur}(:,1:end-1)-SS.octave{otcur}(:,2:end);
+        DiffoG.octave{otact} = SS.octave{otact}(:,:,1:end-1)-SS.octave{otact}(:,:,2:end);
     end
 end
 
@@ -79,7 +80,7 @@ end
             if st== (stmin)
                 % this scale is already computed
             else
-                [SS.octave{CurrentTimeOct}(:,st+soT)] = smoothJustTimeSilv(squeeze(SS.octave{CurrentTimeOct}(:, st+soT-1)),dsigmaT);
+                [SS.octave{CurrentTimeOct}(:,:,st+soT)] = smoothJustTimeSilv(squeeze(SS.octave{CurrentTimeOct}(:,2, st+soT-1)),dsigmaT);
             end
         end
     
