@@ -1,5 +1,5 @@
-function  TimeComputationDepdScale = Crete_saveDepdScale(savepath1,savepath2,savepath3,USER_OT_targhet,USER_OD_targhet)
-load(savepath1);
+function  TimeComputationDepdScale = Crete_saveDepdScale(savepath1,savepath2,savepath3,USER_OT_targhet,USER_OD_targhet,saveCSVDepd,savevectorDepd,folderDestpath)
+            load(savepath1);
             load(savepath2);
             load(savepath3);
             %% filter the features to get the ones just from the desired octave
@@ -15,9 +15,9 @@ load(savepath1);
                 DepdScopeVector(actVector,i)=1;
             end
             
-            if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\'),'dir')==0)
-                mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\'));
+            if(exist(folderDestpath,'dir')==0)
+                mkdir(folderDestpath);
             end
-            csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),depdScale1);
-            csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScopeVector_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),DepdScopeVector);
+            csvwrite(saveCSVDepd,depdScale1);
+            csvwrite(savevectorDepd,DepdScopeVector);
 end

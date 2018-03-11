@@ -19,9 +19,9 @@ random_walk_scale = [0,0.1,0.5,0.75,1];%0.1;% randomWalkScale =
 
 random_walk_instance = 10;
 
-id_test_name='Motif_';
+id_test_name='Motif';
 % testNAME = ['100_Motif_',num2str(motif_instances),'_',num2str(num_of_motif)];
-testNAME = [id_test_name,num2str(motif_instances),'_',num2str(num_of_motif)];
+testNAME = [id_test_name,num2str(num_of_motif)];%,'_',num2str(originalTSID)];%num2str(motif_instances),'_',num2str(num_of_motif)];
 
 % load  the features and the data
 FeaturesToInject = xlsread([featuresToInjectPath,'Features',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
