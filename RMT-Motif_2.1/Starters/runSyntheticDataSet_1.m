@@ -1,45 +1,51 @@
-close all;
-clc;
-clear;
+function runSyntheticDataSet_1()
+
+scriptIndex = 1;
+inputRange = [1, Num_SyntSeries];
 
 DatasetInject=2;  % 1 Energy 2 Mocap
 
-SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
-subfolderPath= '';%'Z_A_Temp_C\';%
+SubDSPath='data/';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
+datasetPath= 'D:/Motif_Results/Datasets/SynteticDataset/';
+
+% For Silvestro-Checking
+subfolderPath= num2str(scriptIndex); % '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
-%% clustering abilitation
+
+% clustering abilitation
 Cluster = 1;%1;%
 StrategyClustering=3; % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
 % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
 % 3 - old approach do clustering  then subclustering
-justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
-%% Parameter for kmeans: distance measure to use
+justSubCluster=0; % in the case of strategy 3 we can do just subclustering
+
+% Parameter for kmeans: distance measure to use
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
 distanceUsed='Descriptor';% use just descriptors to  cluster
 kindOfClustring= 'AKmeans'; % the algorithm of clustering to use
 
-%% cluster pruning and printing of the  motifs
+% cluster pruning and printing of the  motifs
 pruneCluster = 1;%0 % execute  the pruning using #prunewith removing the  outbound features in each  cluster
 prunewith='Descriptor';% use this strategy to prune  the outbound features ina  cluster
 
-%% printing functionality
+% printing functionality
 saveMotifBP = 0; % show the clusters before pruning
 saveMotifAP = 1; % show the clusters after  pruning
 
 savecaracteristics = 1;
 % showOriginalImage = 0;
 
-%% Parameters
-Num_SyntSeries=1; % num of instances of one motif
+% Parameters
+% For Silvestro-Checking
+% Num_SyntSeries=1; % num of instances of one motif
 Name_OriginalSeries = [35,85,127,24]; % name of the original  series from with we  got the  motif instances to inject
 
-%% sift parameters
+% sift parameters
 % x - variate
 % y - time
 % oframes - octaves
@@ -67,11 +73,14 @@ elseif DatasetInject == 2 % MoCap
 end
 thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
 DeSpatialBins = 4; %NUMBER OF BINs
-r= 10; %5 threshould variates
-percentagerandomwalk=0; %0.1;%0.5;%0.75;%1;%
+r = 10; %5 threshould variates
+percentagerandomwalk = 0; %0.1;%0.5;%0.75;%1;%
 
 for pip=2:2
-    for NAME = 1:Num_SyntSeries
+    % for NAME = 1:Num_SyntSeries
+    
+    % For Silvestro-Checking
+    for NAME = inputRange(1): inputRange(2)
         Time4Clustering=0;%zeros(1,4);
         TIMEFOROCTAVE=0;%zeros(1,4);
         TimeComputationDepdScale =0;% zeros(1,4);
@@ -89,27 +98,27 @@ for pip=2:2
             %   TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
         end
         
-        %% read location matrix
+        % read location matrix
         TS_name=TEST;
         distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
         if DatasetInject == 2 % MoCap
             distanceVaraiteTS=[datasetPath,'LocationMatrixMocap.csv'];%
         end
         % read coordinates
-        coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));
+        coordinates=csvread(strcat(datasetPath,'location/LocationSensor_aggregate.csv'));
         if DatasetInject == 2 % MoCap
-            coordinates=csvread(strcat(datasetPath,'location\LocationMatrixMocap.csv'));%
+            coordinates=csvread(strcat(datasetPath,'location/LocationMatrixMocap.csv'));%
         end
         RELATION=coordinates;
         
         data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
         
-        %% Features Extraction
+        % Features Extraction
         if(FeatureExtractionFlag==1)
-            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];%,EntropyPruningFolder];
+            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'/',TS_name,'/'];%,EntropyPruningFolder];
             if(exist(saveFeaturesPath,'dir')==0)
                 mkdir(saveFeaturesPath);
-                mkdir([saveFeaturesPath,'GaussianSmoothing\']);
+                mkdir([saveFeaturesPath,'GaussianSmoothing/']);
             end
             sBoundary=1;
             eBoundary=size(data',1);
@@ -157,22 +166,22 @@ for pip=2:2
             save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
             save(savepath5, 'depd1');
         end
-        %% create dependency
+        % create dependency
         if(createDependencyScale==1)
-            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
-            %% read the features
+            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'/',TEST,'/'];
+            % read the features
             savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
             savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
             savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
-            saveCSVDepd= strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScale_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv');
-            savevectorDepd = strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScopeVector_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv');
+            saveCSVDepd= strcat(saveFeaturesPath,'Distances',distanceUsed,'/DepdScale_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv');
+            savevectorDepd = strcat(saveFeaturesPath,'Distances',distanceUsed,'/DepdScopeVector_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv');
             %             TimeComputationDepdScale(USER_OT_targhet+USER_OD_targhet-1) = Crete_saveDepdScale(savepath1,savepath2,savepath3,USER_OT_targhet,USER_OD_targhet,saveCSVDepd,savevectorDepd,strcat(saveFeaturesPath,'Distances',distanceUsed,'\'));
             TimeComputationDepdScale = Crete_saveDepdScale(savepath1,savepath2,savepath3,USER_OT_targhet,USER_OD_targhet,saveCSVDepd,savevectorDepd,strcat(saveFeaturesPath,'Distances',distanceUsed,'\'));
         end
         
         if (Cluster==1 | justSubCluster==1)
-            %% read the  features
-            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+            % read the  features
+            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'/',TS_name,'/'];
             savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
             savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
             savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
@@ -182,9 +191,9 @@ for pip=2:2
             load(savepath3);
             indexfeatureGroup = (frame1(6,:)==USER_OT_targhet & frame1(5,:)==USER_OD_targhet);
             X=frame1(:,indexfeatureGroup);
-            DepdScopeVector=csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'\DepdScopeVector_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'));
+            DepdScopeVector=csvread(strcat(saveFeaturesPath,'Distances',distanceUsed,'/DepdScopeVector_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'));
             tic
-            if (StrategyClustering == 1) %% we are interested into  same dependency scope
+            if (StrategyClustering == 1) % we are interested into  same dependency scope
                 possibleset= unique(X(1,:));
                 AlltheCluster=[];
                 Allthefeatures=[];
@@ -204,7 +213,7 @@ for pip=2:2
                 C=AlltheCluster;
                 mu=Centroids;
                 X=Allthefeatures;
-            elseif(StrategyClustering == 2) %% we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
+            elseif(StrategyClustering == 2) % we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
                 % we first use the depdscopevector to cluster  the features
                 % with similar depepndency scope  hten we use the
                 % descriptor to cluster on the base of the time property
@@ -236,19 +245,19 @@ for pip=2:2
             end
             Time4Clustering=toc;
             if (StrategyClustering ~= 3 | (StrategyClustering == 3 & justSubCluster==0))
-                if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\'),'dir')==0)
-                    mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\'));
+                if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'/ClusterStrategy_',num2str(StrategyClustering),'/'),'dir')==0)
+                    mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'/ClusterStrategy_',num2str(StrategyClustering),'/'));
                 end
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Cluster_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),C);
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Centroids_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),mu);
-                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Features_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),X);
+                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'/ClusterStrategy_',num2str(StrategyClustering),'/Cluster_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),C);
+                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'/ClusterStrategy_',num2str(StrategyClustering),'/Centroids_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),mu);
+                csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'/ClusterStrategy_',num2str(StrategyClustering),'/Features_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),X);
             end
             %             if(pruneCluster==1)
             %                 TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);
             %             end
             %
             if (StrategyClustering == 3)
-                saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+                saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'/',TS_name,'/'];
                 depdOverLapThreshold = 1;
                 timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,num2str(StrategyClustering),distanceUsed,depdOverLapThreshold,USER_OT_targhet,USER_OD_targhet);
             end
@@ -270,7 +279,7 @@ for pip=2:2
         end
         
         if(savecaracteristics==1)
-            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'/',TS_name,'/'];
             savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
             savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
             savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
@@ -298,3 +307,5 @@ for pip=2:2
         end
     end
 end
+end
+
