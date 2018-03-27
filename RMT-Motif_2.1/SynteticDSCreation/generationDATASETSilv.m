@@ -1,15 +1,16 @@
 clc;
 clear;
-
-
-originalTSID=85;%127;%[24,35,85,127];85;%24;%35;%
+originalTSIDArray=[85,24,35,127];
+for orgID =2:4
+originalTSID=originalTSIDArray(orgID);%85;%127;%[24,35,85,127];85;%24;%35;%
 featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];
 randomWalkPath =  ['D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\RW_'];
 TimeSeriesPath = ['D:\Motif_Results\Datasets\Mocap\data\'];
 
 DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data';
-
-num_of_motif = 1; % NumOfMotifs = 1;
+possibleMotifNUM=[1,2,3];
+for pssMotID = 1:3
+num_of_motif = possibleMotifNUM(pssMotID);%3; % NumOfMotifs = 1;
 motif_instances = 10; % MotifInstances= 10;
 length_percentage = [1,0.75,0.5];%0.5;% length_percentage = 
 RWlength = 2500;
@@ -110,3 +111,5 @@ TSNAMEFIX=testNAME;
     
     %     mkdir([DestDataPath,'\IndexEmbeddedFeatures\Mocap_test',num2str(name+6),'\']);
  end
+end
+end

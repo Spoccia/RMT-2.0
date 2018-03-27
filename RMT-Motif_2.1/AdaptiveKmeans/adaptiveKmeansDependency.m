@@ -1,7 +1,7 @@
 function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeansDependency(DepdScopeVector,K_start,saturation,Step,distance)%adaptiveKmeans(features1,K_start,saturation,Step,distance)
    isFound=false;
    inertia=[];
-   AllFeaturesDistances = pdist2(features1(11:end,:)',features1(11:end,:)');
+   AllFeaturesDistances = pdist2(DepdScopeVector',DepdScopeVector',distance);
    maxdistance2instances= max(AllFeaturesDistances(:));
    if Step==0
        Step=2;
@@ -16,7 +16,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeansDependency(DepdScopeVector,
    while(~isFound)
       ProposedC1=C1;
       Proposedmu=mu1;
-      [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK,'Distance',distance,'Replicates',5);%'Display','final'
+      [C1,mu1,SUMD, D]=kmeans(DepdScopeVector',startK,'Distance',distance,'Replicates',5);%'Display','final'
 
 %       figure
 %       [silh5,h] = silhouette(features1(11:end,:)',C1,'Euclidean');
@@ -68,7 +68,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeansDependency(DepdScopeVector,
 %         inertia=[inertia,sum(SUMD1)/size(D,1)];
         tryK=[tryK,startK];
         error = abs(inertia(itr) - inertia(itr-1));
-        if error<=saturation || startK >= (size(features1,2)-1) || inertia(itr)<=saturation
+        if error<=saturation || startK >= (size(DepdScopeVector,2)-1) || inertia(itr)<=saturation
 %             eva = evalclusters(features1(11:end,:)',evaluation,'CalinskiHarabasz');
 %               C1=ProposedC1;
 %               mu1=Proposedmu;

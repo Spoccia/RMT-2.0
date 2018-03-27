@@ -52,113 +52,113 @@ clusterLabel = unique(C);
 nCluster     = length(clusterLabel);
 
 TimeforPruningClustering_0=[];
-for i=1:nCluster
-    tic;
-    Centroid_desriptor = mu(:, i);
-    %% features and depscale of each feature in cluster i
-    A = X(:, C == clusterLabel(i));
-    B =dpscale(:,C == clusterLabel(i));
-    [featsize,numfeatures]= size(A);
-    descr = A(11:featsize,:);
-    
-    single_std_cluster=std(descr')';
-    single_avg_cluster = mean(descr')';
-    
-    CentroidCalc= repmat(single_avg_cluster,1,numfeatures);%Centroid_desriptor
-    
-    std_cluster = std2(descr');
-    avg_cluster = mean2(descr');
-    
-    %%calculate  descriptor distance between  the  centroid descriptor
-    distancecentroid =abs(CentroidCalc-descr);% pdist2(Centroid_desriptor',descr');%,KmeansDescmetric);
-    %                     for k1=1:numfeatures
-    %                         centroid_distDescriptors(1,k1)= pdist([act_centroid';descr(:,k1)'],KmeansDescmetric);
-    %                     end
-    IdxClFeat=zeros(1,numfeatures);
-    if(strcmp(prunewith,'Descriptor')==1 || strcmp(prunewith,'Amplitude_Descriptor')==1 ||strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
-        %                        'Prune using just Descriptors'
-        for k1=1:numfeatures
-            IdxClFeat(1,k1)= sum(distancecentroid(:,k1) <= single_std_cluster*3)==128;
-        end
-        A1= A(:,IdxClFeat==1);
-        B1= B(:,IdxClFeat==1);
-        A=A1;
-        B=B1;
-        %FinalScore= descr_Score(distancecentroid,numfeatures);
-    end
-    if(strcmp(prunewith,'Amplitude_Descriptor')==1 || strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
-        'Prune using  Descriptors + Amplitude'
-        X_Amp1=amplitudediff(TS,A,gss1,idm1);
-        [~,numfeaturesAMP]= size(A);
-        AVG_AMP=sum(X_Amp1)/size(X_Amp1,1);
-        %% compute amplitude similarity of the features
-        AMP_Score= zeros(1,numfeaturesAMP);
-        for iii=1:numfeaturesAMP
-            Dist2 = abs(X_Amp1(iii)-AVG_AMP)/(X_Amp1(iii)+AVG_AMP);
-            AMP_Score(1,iii) = 1/(1+Dist2);
-        end
-        A1=A(:,AMP_Score > 0.9);
-        B1=B(:,AMP_Score > 0.9);
-        A=A1;
-        B=B1;
-        %FinalScore= Amp_descr_Score(distancecentroid,numfeatures,X_Amp1,AVG_AMP); % 1-combinedscore
-    end
-    if(strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
-        'Prune using  Descriptors + Amplitude + overlappingvariates'
-        %% use overlapping to prune  the feature selected
-        %B = depd scale of the cluster
-        %[A1,B1]=pruneoverlap(A,B);
+    for i=1:nCluster
+        tic;
+        Centroid_desriptor = mu(:, i);
+        %% features and depscale of each feature in cluster i
+        A = X(:, C == clusterLabel(i));
+        if (size(A,2)>1)
+            B =dpscale(:,C == clusterLabel(i));
+            [featsize,numfeatures]= size(A);
+            descr = A(11:featsize,:);
 
-    end
-    
-    
-    A1=A;
-    B1=B;
-    TimeforPruningClustering_0=[TimeforPruningClustering_0,toc];
-    %                      tempMinScope1 = min(3*A1(4, :)); % temporal scope of the features in cluster i
-    if (size(A1,2)>0)
-        timescope= A1(4,:)*3;
-    end
-    if(size(A1,2)>1)
-        MotifBag{i}.features=A1;
-        StartID= round(A1(2,:)-timescope);
-        StartID(StartID <1)=1;
-        MotifBag{i}.startIdx = StartID';%round(A1(2,:)-timescope)';
-        %                         MotifBag{i}.depd=B1;
-        %                         MotifBag{i}.Tscope= 2* timescope(:);
-        
-        for iterator=1:size(MotifBag{i}.startIdx,1)
-            MotifBag{i}.depd{iterator}=B1(B1(:,iterator)>0,iterator);
-            intervaltime=(round((A1(2,iterator)-timescope(iterator))) : (round((A1(2,iterator)+timescope(iterator)))));
-            MotifBag{i}.Tscope{iterator}= size(intervaltime(intervaltime>0 & intervaltime<=size(data,2)),2);%2* timescope(:);
-        end
-        if(saveMotifImages==1)
-            if(exist([ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
-                mkdir([ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+            single_std_cluster=std(descr')';
+            single_avg_cluster = mean(descr')';
+
+            CentroidCalc= repmat(single_avg_cluster,1,numfeatures);%Centroid_desriptor
+
+            std_cluster = std2(descr');
+            avg_cluster = mean2(descr');
+
+            %%calculate  descriptor distance between  the  centroid descriptor
+            distancecentroid =abs(CentroidCalc-descr);% pdist2(Centroid_desriptor',descr');%,KmeansDescmetric);
+            %                     for k1=1:numfeatures
+            %                         centroid_distDescriptors(1,k1)= pdist([act_centroid';descr(:,k1)'],KmeansDescmetric);
+            %                     end
+            IdxClFeat=zeros(1,numfeatures);
+            if(strcmp(prunewith,'Descriptor')==1 || strcmp(prunewith,'Amplitude_Descriptor')==1 ||strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
+                %                        'Prune using just Descriptors'
+                for k1=1:numfeatures
+                    IdxClFeat(1,k1)= sum(distancecentroid(:,k1) <= single_std_cluster*3)==128;
+                end
+                A1= A(:,IdxClFeat==1);
+                B1= B(:,IdxClFeat==1);
+                A=A1;
+                B=B1;
+                %FinalScore= descr_Score(distancecentroid,numfeatures);
             end
-            %                         figure1=figure;
-            figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
-            filename=[ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.eps'];
-            saveas(figure1,filename,'epsc');
-        end
-        prunedFeaturesCluster=[prunedFeaturesCluster,A1];
-        prunedDepScale = [prunedDepScale,B1];
-        prunedsymbols = ones(1,size(A1,2))*i;
-        prunedCluster=[prunedCluster,prunedsymbols];
-    end
-    
-end
-TimeforPruningClustering = sum(TimeforPruningClustering_0(:));
-if(exist(PrunedClusterPath,'dir')==0)
-    mkdir(PrunedClusterPath);
-end
-save(strcat(PrunedClusterPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'MotifBag');
-close all;
-csvwrite(strcat(PrunedClusterPath,'\PrunedCluster_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedCluster);
-csvwrite(strcat(PrunedClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),mu);
-csvwrite(strcat(PrunedClusterPath,'\PrunedFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedFeaturesCluster);
-csvwrite(strcat(PrunedClusterPath,'\PrunedDepScaleFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedDepScale);
+            if(strcmp(prunewith,'Amplitude_Descriptor')==1 || strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
+                'Prune using  Descriptors + Amplitude'
+                X_Amp1=amplitudediff(TS,A,gss1,idm1);
+                [~,numfeaturesAMP]= size(A);
+                AVG_AMP=sum(X_Amp1)/size(X_Amp1,1);
+                %% compute amplitude similarity of the features
+                AMP_Score= zeros(1,numfeaturesAMP);
+                for iii=1:numfeaturesAMP
+                    Dist2 = abs(X_Amp1(iii)-AVG_AMP)/(X_Amp1(iii)+AVG_AMP);
+                    AMP_Score(1,iii) = 1/(1+Dist2);
+                end
+                A1=A(:,AMP_Score > 0.9);
+                B1=B(:,AMP_Score > 0.9);
+                A=A1;
+                B=B1;
+                %FinalScore= Amp_descr_Score(distancecentroid,numfeatures,X_Amp1,AVG_AMP); % 1-combinedscore
+            end
+            if(strcmp(prunewith,'Amplitude_Descriptor_overlapping')==1)
+                'Prune using  Descriptors + Amplitude + overlappingvariates'
+                %% use overlapping to prune  the feature selected
+                %B = depd scale of the cluster
+                %[A1,B1]=pruneoverlap(A,B);
 
+            end
+
+
+            A1=A;
+            B1=B;
+            TimeforPruningClustering_0=[TimeforPruningClustering_0,toc];
+            %                      tempMinScope1 = min(3*A1(4, :)); % temporal scope of the features in cluster i
+            if (size(A1,2)>0)
+                timescope= A1(4,:)*3;
+            end
+            if(size(A1,2)>1)
+                MotifBag{i}.features=A1;
+                StartID= round(A1(2,:)-timescope);
+                StartID(StartID <1)=1;
+                MotifBag{i}.startIdx = StartID';%round(A1(2,:)-timescope)';
+                %                         MotifBag{i}.depd=B1;
+                %                         MotifBag{i}.Tscope= 2* timescope(:);
+
+                for iterator=1:size(MotifBag{i}.startIdx,1)
+                    MotifBag{i}.depd{iterator}=B1(B1(:,iterator)>0,iterator);
+                    intervaltime=(round((A1(2,iterator)-timescope(iterator))) : (round((A1(2,iterator)+timescope(iterator)))));
+                    MotifBag{i}.Tscope{iterator}= size(intervaltime(intervaltime>0 & intervaltime<=size(data,2)),2);%2* timescope(:);
+                end
+                if(saveMotifImages==1)
+                    if(exist([ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j)],'dir')==0)
+                        mkdir([ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\']);
+                    end
+                    %                         figure1=figure;
+                    figure1 = plot_RMTmotif_on_data(data, MotifBag{i}.startIdx, MotifBag{i}.depd,MotifBag{i}.Tscope);
+                    filename=[ImageSavingPath,'octaveT_',num2str(k),'_octaveD_',num2str(j),'\TS_',imagename,'_octT_',num2str(k),'_octD_',num2str(j),'_M_',num2str(i),'.eps'];
+                    saveas(figure1,filename,'epsc');
+                end
+                prunedFeaturesCluster=[prunedFeaturesCluster,A1];
+                prunedDepScale = [prunedDepScale,B1];
+                prunedsymbols = ones(1,size(A1,2))*i;
+                prunedCluster=[prunedCluster,prunedsymbols];
+            end
+        end
+    end
+    TimeforPruningClustering = sum(TimeforPruningClustering_0(:));
+    if(exist(PrunedClusterPath,'dir')==0)
+        mkdir(PrunedClusterPath);
+    end
+    save(strcat(PrunedClusterPath,'\Motif_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.mat'),'MotifBag');
+    close all;
+    csvwrite(strcat(PrunedClusterPath,'\PrunedCluster_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedCluster);
+    csvwrite(strcat(PrunedClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),mu);
+    csvwrite(strcat(PrunedClusterPath,'\PrunedFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedFeaturesCluster);
+    csvwrite(strcat(PrunedClusterPath,'\PrunedDepScaleFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedDepScale);
 
 end
 
