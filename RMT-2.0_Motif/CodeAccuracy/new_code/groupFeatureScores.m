@@ -13,7 +13,7 @@ for i = 1 : uniqueSize
     bestVO = max(myStatEntry(resultIndex, 10));
     
     recallBestScore(i) = bestTO * bestVO;
-    if(bestTO >= 0.10 && recallBestScore(i) >= threshold)
+    if(bestTO >= 0.1 && recallBestScore(i) >= threshold)
         recallBestScore(i) = 1;
     else
         recallBestScore(i) = 0;
@@ -25,14 +25,14 @@ for i = 1 : size(myStatEntry, 1)
     score_VO = myStatEntry(i, 10);
     
     precisionScore(i) = score_TO * score_VO;
-    if(score_TO >= 0.10 && precisionScore(i) >= threshold)
+    if(score_TO >= 0.1 && precisionScore(i) >= threshold)
         precisionScore(i) = 1;
     else
         precisionScore(i) = 0;
     end
 end
 
-if(sum(precisionScore) == 1 || sum(recallBestScore) == 1)
+if(sum(precisionScore) == 0.75 || sum(recallBestScore) == 1)
     % skip the case that in the cluster there is only one motif matched the inserted one
     precision = 0;
     recall = 0;
