@@ -1,4 +1,4 @@
-function [ SS,depd, IDMall] = gaussianss_Silv_fromorg(I,LocM,Ot,Od,St,Sd,ominT,ominD,sminT,sminD,smaxD,smaxT,sigmaT0,sigmaD0,DepThreshold,dsigmaT0,dsigmaD0)%
+function [ SS,depd, IDMall,TIMESCALE] = gaussianss_Silv_fromorg(I,LocM,Ot,Od,St,Sd,ominT,ominD,sminT,sminD,smaxD,smaxT,sigmaT0,sigmaD0,DepThreshold,dsigmaT0,dsigmaD0)%
 
 %I : timeseries column are variate rows are timedata,
 %LocM: location matrix
@@ -21,6 +21,9 @@ function [ SS,depd, IDMall] = gaussianss_Silv_fromorg(I,LocM,Ot,Od,St,Sd,ominT,o
 % defineStepFactor: it is a flag to define a diferent step factor between different scales.
 
 % Scale multiplicative step
+TIMESCALE= zeros(1,4);
+timestart1=0;
+tic
 ktime = 2^(1/St) ;
 kdepd = 2^(1/Sd) ;
 
@@ -105,15 +108,21 @@ Smatrix = ComputeDependencyScale(depd{odcur}, SDepdsigmafor_OT1_OD1); %% can be 
 STimegsigmafor_OT1_OD1 = sqrt((sigmaT0*ktime^sminT)^2  - (sigmaNT/2^ominT)^2);
 
 [SS.octave{otcur,odcur}(:,:,1,1),SS.smoothmatrix{otcur,odcur}(:,:,1,1)] = smooth(I, Smatrix, STimegsigmafor_OT1_OD1);
-
+timestart1=    toc;
 %% this will be more clear if  splitted in 2 with a smoothboth and a saving of the Smatrix we will save 1 function.
+counter=1;
 for otact=1: Ot
+    timestart2=0;
+    tic
     if (otact-1)~=0
         SS.ds{otact, odact} = [SS.ds{otact-1, odact}(1)+1, SS.ds{otact-1, odact}(2)];
     end
     LocMTemp = LocM;
+    timestart2=toc;
     for odact=1: Od
-        fprintf('otact: %d, odact: %d\n', otact, odact);
+        Timestart3 = 0;
+        tic;
+%         fprintf('otact: %d, odact: %d\n', otact, odact);
         if((otact==1)&&(odact==1))
             SS = Smooth_Asyn(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,dsigmaD0,depd, Smatrix,soT,soD);
             %(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)
@@ -175,12 +184,17 @@ for otact=1: Ot
             SS.smoothmatrix{otact, odact} = zeros(size(SS.octave{otact, odact},2),size(SS.octave{otact, odact},2),size(SS.octave{otact, odact},3));
             SS = Smooth_Asyn(SS, otact, odact, ktime, kdepd, sminT, sminD,smaxT, smaxD ,dsigmaT0,      dsigmaD0,        depd, Smatrix,soT,soD);
             %SS = Smooth_Asyn(SS, otact, odact, ktime, kdepd, stmax, sdmax,dsigmaT0,dsigmaD0,depd, Smatrix,soT,soD);
+            
         end
         if odact ~= 1
             SS.ds{otact, odact} = [SS.ds{otact, odact-1}(1), SS.ds{otact, odact-1}(2)+1];
         end
+        Timestart3=toc;
+        TIMESCALE(counter)=Timestart3+timestart2;
+        counter=counter+1;
     end
     odact=1;
+    TIMESCALE(1)=TIMESCALE(1)+timestart1;
 end
 
 function [SS] = Smooth_Asyn(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)

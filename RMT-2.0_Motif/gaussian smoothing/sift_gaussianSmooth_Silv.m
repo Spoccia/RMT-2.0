@@ -33,19 +33,21 @@ sdmin=0;%-1;
 otmin=0;
 odmin=0;
 
-[gss, depd, idm] = gaussianss_Silv_fromorg(I, LocM, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
+[gss, depd, idm,TIMESCALE] = gaussianss_Silv_fromorg(I, LocM, Ot,Od,St,Sd,otmin,odmin,stmin,sdmin,St+1,Sd+1, sigmaTime, sigmaDepd,gthresh,-1,-1);
 
 %[gss, depd, idm] = gaussianss_asynchronousMote_Silv_2(I, LocM, Ot, Od,St, Sd, sigmaTime, sigmaDepd, gthresh);
-timee(1) = timee(1)+ toc(p);
+timee(1) = 0;%timee(1)+ toc(p);
+TIMEKEYPOINTSDESCRIPTORS=zeros(1,4);
+counter=1;
 
-p = tic;
+%p = tic;
 dogss = diffss_asynchronous(gss);
 % dogss = diffss_asynchronousTest(gss);
-timee(2) = timee(2)+ toc(p);
-
+% timee(2) = timee(2)+ toc(p);
 for otime = 1: size(gss.octave,1)
     for  odepd = 1: size(gss.octave,2)
-        p = tic;
+%         p = tic;
+        tic;
         % Local maxima of the DOG octave
         scaleDiff = St - 1;
         % forwardIdx = siftlocalmax_directed_bak12142015(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
@@ -70,7 +72,7 @@ for otime = 1: size(gss.octave,1)
         backwardIdx = siftlocalmax_directed_100(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % backwardIdx = siftlocalmax_directed_999(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
         % backwardIdx = siftlocalmax_directed_998(dogss.octave{otime, odepd}{3},dogss.octave{otime, odepd}{2},dogss.octave{otime, odepd}{1}, 0.8*thresh, NormalizeF(depd{odepd}), NormalizeB(depd{odepd}'), scaleDiff);
-        time(otime, odepd) =  time(otime, odepd) + toc(p);
+        time(otime, odepd) = 0;% time(otime, odepd) + toc(p);
         [i,j, s1] = ind2sub( size( gss.octave{otime, odepd} ), backwardIdx ) ;
         y=i-1;
         x=j-1;
@@ -130,7 +132,7 @@ for otime = 1: size(gss.octave,1)
             % sigma = 2^(o-1+gss.omin) * gss.sigma0 * 2.^(oframes(3,:)/gss.S) ;
             sigmad =  2^(odepd-1+gss.odmin) * gss.sigmad * 2.^(oframes(3,:)/gss.Sd);
             %sigmad =  sigmaDepd*2^(odepd-1)*kdepd.^(dependencyScale-1) ;%gss.sigmat = sigmatimezero  SICONG
-            sigmat =  2^(otime-1+gss.odmin) * gss.sigmat * 2.^(oframes(3,:)/gss.Sd);
+            sigmat =  2^(otime-1+gss.otmin) * gss.sigmat * 2.^(oframes(3,:)/gss.St);
             %sigmat =  (sigmaTime*2^(otime-1))*ktime.^(timeScale-1);%gss.sigmat = sigmatimezero SICONG
             
             % append difference-of-Gausssian values to output
@@ -150,7 +152,8 @@ for otime = 1: size(gss.octave,1)
         [fgss_silv,Pseudo_centerVaraite]= computeFeatureMatrix_Silv(gss.octave{otime, odepd},gss.sminT,gss.sminD,gss.sigmad,gss.St,gss.Sd,NormalizeByRow(depd{odepd}),NormalizeByRow(depd{odepd}'),1);
         % Descriptors
         if(size(oframes, 2) > 0)
-            p = tic;
+%             p = tic;
+
 %            fgss = computeFeatureMatrix_directed_bak12112015(gss.octave{otime, odepd}, oframes, NormalizeByRow(depd{odepd}));
             % for f=1:size(oframes,2)
             for f=1:size(oframes,2)
@@ -192,10 +195,15 @@ for otime = 1: size(gss.octave,1)
 %                     'NumOrientBins', NBO) ;
 %                 descriptors = [descriptors, sh] ;
             end
+          
         end
+        TIMEKEYPOINTSDESCRIPTORS(counter)= toc;
+            counter=counter+1;
         clear fOframes bOframes fgss
+        
         timeDescr(otime, odepd) = timeDescr(otime, odepd)+toc(p);
     end
     
 end
+time = TIMEKEYPOINTSDESCRIPTORS+TIMESCALE;
 end

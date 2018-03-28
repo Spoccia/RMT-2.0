@@ -8,7 +8,11 @@ PathMP='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';
 pippo = [24,35,85,127];
 for pip=1:4
 for NAME =1:10%30%46:57%34:45
-testname=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)]%'Mocap_test11';
+% testname=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)]%'Mocap_test11';
+%  testname=['MotifShift1_2_instance_',num2str(NAME)]
+%  testname=['MoCap',num2str(NAME)]
+%  testname=['Motif_15_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
+testname=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
 lenght=58;%29;%
 len=['Lenght_',num2str(lenght)];
 

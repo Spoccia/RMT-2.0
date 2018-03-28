@@ -15,18 +15,18 @@ normalizeData=0;%1;
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
-createDependencyScale = 1;%1;
-Cluster = 1;%1;%
-CreateSubCluster=1;
+createDependencyScale = 0;%1;
+Cluster = 0;%1;%
+CreateSubCluster=0;
 
 % motifidentificationBP = 0; %2;% work on all the features
 motifidentificationBP_MatlabDescr = 0;%1
 
 % pruneCluster = 0;
-pruneClusterDescrMatlab = 1;%0
+pruneClusterDescrMatlab = 0;%0
 
 
-savecaracteristics = 1;
+savecaracteristics = 0;
 showOriginalImage = 0;
 mapdataintograyscale = 0;
 saveTSasImage = 0;
@@ -41,15 +41,25 @@ cleanfeatures ='';
 if removefeatures==1
     cleanfeatures= 'Clean_';
 end
-pippo = [24,35,85,127];
-for pip=1:4
-for NAME = 1:10%40%100:105%66:72%34:46%55:57%34:45%46:57%35:45%10:33%22:33%16:21 2%1:6%44
+ pippo = [35,85,127,24];
+ for pip=1:1
+for NAME = 1:1%40%100:105%66:72%34:46%55:57%34:45%46:57%35:45%10:33%22:33%16:21 2%1:6%44
 % Path Parameters
+Time4Clustering=zeros(1,4);
+TIMEFOROCTAVE=zeros(1,4);
+TimeComputationDepdScale = zeros(1,4);
+TimeforPruningClustering =zeros(1,4);
+TimeforPruningSubClustering=zeros(1,4);
 TEST = ['Energy_test',num2str(NAME)];
 if DatasetInject == 2 % MoCap
 %       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-%       TEST=['MoCap',num2str(NAME)]
-      TEST= ['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85  
+%         TEST=['MoCap',num2str(NAME)]
+ TEST=['Motif1_',num2str(pippo(pip)),'_instance_',num2str(NAME)] 
+
+%       TEST=['MotifShift1_2_instance_',num2str(NAME)]
+
+%         TEST=['Motif_15_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85  
+%   TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
 end
 % Global Variables
 SizeFeaturesforImages = [];
@@ -258,7 +268,7 @@ for TSnumber = 1: 1
         %
         frame1(7,:) = [];
         feature = frame1;
-        
+        TIMEFOROCTAVE=time;
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
         savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
         savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
@@ -346,13 +356,15 @@ for TSnumber = 1: 1
         load(savepath1);
         load(savepath2);
         load(savepath3);
-        
+
         for k=1:DeOctTime
             for j=1:DeOctDepd
                 indexfeatureGroup = (frame1(6,:)==k & frame1(5,:)==j);
                 X=frame1(:,indexfeatureGroup);
                 % save dependency of each feature
+                tic;
                 [depdScale1] = computeDepdScale(X, gss1, idm1);
+                TimeComputationDepdScale(k+j-1)=toc;
                 if(exist(strcat(saveFeaturesPath,EntropyPruningFolder,'Distances',distanceUsed,'\'),'dir')==0)
                     mkdir(strcat(saveFeaturesPath,EntropyPruningFolder,'Distances',distanceUsed,'\'));
                 end
@@ -462,6 +474,7 @@ for TSnumber = 1: 1
     if (Cluster==1)
         % execute K-means Cluster k = DictionarySize;
         % A Dictionary for each cluster
+        
         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',cleanfeatures,TS_name,'\'];
         
         savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
@@ -470,7 +483,7 @@ for TSnumber = 1: 1
         load(savepath1);
         load(savepath2);
         load(savepath3);
-        
+        counter=1;
         clustindfix=0;
         for k=2:DeOctTime
             for j=2:DeOctDepd
@@ -488,7 +501,7 @@ for TSnumber = 1: 1
                     DictionarySizeApplied = DictionarySize(clustindfix);
                 end
                 
-                        'Cluster on Descriptors'
+%                         'Cluster on Descriptors'
                     if(strcmp(typeofCluster,'ClusterKmedoid')==1)
                             [C,mu] = cvKmeans (X, DictionarySizeApplied,KmedoidsCoefTerm ,'@Distance_RMT_DESC',false,data,gss1,idm1,KmeansDescmetric);
                     elseif(strcmp(typeofCluster,'ClusterMatlab')==1)
@@ -502,7 +515,11 @@ for TSnumber = 1: 1
 %                            X=X(:,IDXStoringFeatures);
 %                            X2 =pca(X(11:end,:),'NumComponents',10);
 %                          X1=[X(1,:);X(8:end,:)];%X(7:10,:);X2(:,:)'];%
+                         tic
                          [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
+                         Time4Clustering(k*j)=toc;
+                         
+                         
 %                         [C,mu] = kmeans(X1,4,'Distance','sqeuclidean');%
                        %adaptiveKmedoidsRMT(X,3,0.1,2);
                        %
@@ -519,6 +536,7 @@ for TSnumber = 1: 1
                     csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\Cluster_',SizeofK,'\Centroids_IM_',TS_name,'_DepO_',num2str(j),'_TimeO_',num2str(k),'.csv'),mu);%Matlab_
             end
         end
+        
     end
     
     % threshould clustering
@@ -559,7 +577,7 @@ for TSnumber = 1: 1
     if (CreateSubCluster==1)
         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',cleanfeatures,TS_name,'\'];
         depdOverLapThreshold = 1;
-        subCluster_Varaites(saveFeaturesPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,depdOverLapThreshold);
+        timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,K_valuesCalc,distanceUsed,typeofCluster,depdOverLapThreshold);
         
     end
     
@@ -570,8 +588,8 @@ for TSnumber = 1: 1
     
     % Prune the clusters
     if(pruneClusterDescrMatlab==1)
-        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,0);%1);
-        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,0);%1);
+        TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);%1);
+        TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);%1);
     end    
     
     
@@ -620,7 +638,12 @@ for TSnumber = 1: 1
         end
         SizeFeaturesforImages=[SizeFeaturesforImages;a];
         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
+%         col_header={'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
+%         rowHeader ={'FeatureEstraction';'ComputationDepdScale';'AKmeans';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
+%         xlswrite(strcat(saveFeaturesPath,'TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
+%         xlswrite(strcat(saveFeaturesPath,'TIME1.xls'),rowHeader,'TIME','A2');
+%         xlswrite(strcat(saveFeaturesPath,'TIME1.xls'),col_header,'TIME','B1');
     end
 end
 end
- end
+  end

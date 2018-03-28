@@ -84,7 +84,7 @@ last_prod = zeros(pro_len, n_dim);
 drop_val = zeros(1, n_dim);
 for i = 1:pro_len
     % compute the distance profile
-    fprintf('%d %d\n', i, pro_len);
+%     fprintf('%d %d\n', i, pro_len);
     query = data(i:i+sub_len-1, :);
     if i==1
         for j = 1:n_dim

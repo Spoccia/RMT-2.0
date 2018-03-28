@@ -17,7 +17,7 @@ function [ TimeforPruningClustering ] = KmeansPruning(TEST, imagepath,specificim
 %     pause;
 %         return;
 %     end
-   TimeforPruningClustering=[];
+   TimeforPruningClustering=zeros(1,4);
     Matlab=1;
     saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',cleanfeatures,TEST,'\'];
     savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
@@ -205,7 +205,7 @@ function [ TimeforPruningClustering ] = KmeansPruning(TEST, imagepath,specificim
 %                     end
                     
                 end
-                TimeforPruningClustering=[TimeforPruningClustering,sum(TimeforPruningClustering_0)];
+                TimeforPruningClustering(k*j) = sum(TimeforPruningClustering_0(:));
                 if(exist(PrunedClusterPath,'dir')==0)
                     mkdir(PrunedClusterPath);
                 end    
