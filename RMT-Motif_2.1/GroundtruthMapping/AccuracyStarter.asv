@@ -1,11 +1,11 @@
 clc; clear;
-warning off;
+
 path='D:\Motif_Results\Datasets\SynteticDataset\';
 dataLocation='data\';
 
 Num_SyntSeries=10; % num of instances of one motif
 PossibleMotifInjected = [1,2,3];
-for idmotInj =2: size(PossibleMotifInjected,2)
+for idmotInj =1: size(PossibleMotifInjected,2)
     motifinjected = num2str(PossibleMotifInjected(idmotInj));
     Name_OriginalSeries = [85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
     percent=[0; 0.1;0.5;0.75;1];
@@ -15,7 +15,7 @@ for idmotInj =2: size(PossibleMotifInjected,2)
         strategy=[1,2,3,4,5,6];
         DepO =2;
         DepT =2;
-        for strID =1:size(strategy,2)
+        for strID =:size(strategy,2)
             StrategyClustering= strategy(strID);%3;%2;%
             
             for pip=1:size(Name_OriginalSeries,2)
