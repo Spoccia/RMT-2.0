@@ -23,5 +23,4 @@ precisionMatrix(target_rows, :) = [];
 recallMatrix(target_rows, :) = [];
 FScoreMatrix(target_rows, :) = [];
 
-fprintf('process done. \n');
 end
