@@ -10,7 +10,8 @@ num_of_motif = 1;
 num_of_motif_injected = 15;
 % GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/Variate_Shifted_GroundTruth/FeaturePosition_MotifShift'];
 % GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/GroundTruth_All/FeaturePosition_100_Motif_'];
-GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/GroundTruth_All/FeaturePosition_Motif_'];
+% GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/GroundTruth_All/FeaturePosition_Motif_'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/Results_Motif/Synthetic_Dataset/data/IndexEmbeddedFeatures/FeaturePosition_Motif_'];
 
 % MatrixProfileFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/Motif3/MatrixProfile_Accuracy/Motif'];
 % MatrixProfileFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/MatrixProfile_Accuracy_Variate_Shifted_Flexible/MoCap'];
@@ -21,11 +22,14 @@ GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/GroundTruth_All/
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/Motif3/RMT_Accuracy/AP_DepO_2_DepT_2_Motif'];
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_Variate_Shifted_Flexible/AP_DepO_2_DepT_2_MoCap'];
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_Motif1_5_instances/AP_DepO_2_DepT_2_Motif_'];
-RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_Motif1_15_instances/AP_DepO_2_DepT_2_Motif_'];
+% RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_Motif1_15_instances/AP_DepO_2_DepT_2_Motif_'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/Results_Motif/Synthetic_Dataset/RMT_Accuracy_Motif1_15_instances/AP_DepO_2_DepT_2_Motif_'];
+
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_size100_Motif_1/AP_DepO_2_DepT_2_100_Motif_'];
 % RMEMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_size100_Motif_1/AP_DepO_2_DepT_2_100_Motif_'];
 
-savePathRMT = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_Motif1_15_instances'];
+savePathRMT = ['/Users/sliu104/Desktop/Results_Motif/Synthetic_Dataset/RMT_Accuracy_Motif1_15_instances'];
+% savePathRMT = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_Motif1_15_instances'];
 % savePathMatrixProfile = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_Motif1_15_instances'];
 % savePathRMT = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_Motif1_5_instances'];
 % savePathMatrixProfile = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_Motif1_5_instances'];
