@@ -17,7 +17,7 @@ if(sameVariateGroup == 0)
     nonZeropatternDepdScale = patternDepdScale(patternDepdScale ~= 0);
     
     % compute variate group -- find variate group in graph, size same as mypatternDepdScale
-    variateGroup = computeVariateGroup(nonZeropatternDepdScale, idm, DepdO, patternDepdScale);
+    variateGroup = computeVariateGroup_target_size(size(nonZeropatternDepdScale, 1), idm, DepdO, patternDepdScale);
     timeScope = patternFeature(4) * 3;
     intervaltime = (max(round((patternFeature(2) - timeScope)), 1) : (min(round((patternFeature(2) + timeScope)), size(data, 2)))); % feature time scope (integer)
     motifData = data(:, intervaltime);

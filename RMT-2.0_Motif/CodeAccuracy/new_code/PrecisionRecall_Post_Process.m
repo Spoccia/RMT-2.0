@@ -6,16 +6,36 @@ fprintf('Post procesing precision and recall files... \n');
 testCaseIndex = 1 : 40;
 % testCaseIndex = 34 : 45;
 
-num_of_motif = 1;
-algorithm_type = ['MatrixProfile']; % MatrixProfile RMT RME cleanmatlabentropy09
+num_of_motif = 3;
+algorithm_type = ['RME']; % MatrixProfile RMT RME cleanmatlabentropy09
 
-precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/MatrixProfile_Motif1/', algorithm_type, 'Precision_'];
-recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/MatrixProfile_Motif1/', algorithm_type, 'Recall_'];
-FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/MatrixProfile_Motif1/', algorithm_type, 'FScore_'];
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif3/MatrixProfile_Motif3/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif3/MatrixProfile_Motif3/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif3/MatrixProfile_Motif3/', algorithm_type, 'FScore_'];
 
-% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/RMT_Motif1/', algorithm_type, 'Precision_'];
-% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/RMT_Motif1/', algorithm_type, 'Recall_'];
-% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif1/RMT_Motif1/', algorithm_type, 'FScore_'];
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif_Shifted/MatrixProfile_Motif1/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif_Shifted/MatrixProfile_Motif1/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif_Shifted/MatrixProfile_Motif1/', algorithm_type, 'FScore_'];
+
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif3/RMT_Motif3/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif3/RMT_Motif3/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/Motif3/RMT_Motif3/', algorithm_type, 'FScore_'];
+
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_Motif1_15_instances/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_Motif1_15_instances/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_Motif1_15_instances/', algorithm_type, 'FScore_'];
+
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_size100_Motif_1/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_size100_Motif_1/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_size100_Motif_1/', algorithm_type, 'FScore_'];
+
+% precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_size100_Motif_1/', algorithm_type, 'Precision_'];
+% recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_size100_Motif_1/', algorithm_type, 'Recall_'];
+% FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RMT_Accuracy_size100_Motif_1/', algorithm_type, 'FScore_'];
+
+precision_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RME_Accuray_Motif3/', algorithm_type, 'Precision_'];
+recall_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RME_Accuray_Motif3/', algorithm_type, 'Recall_'];
+FScore_file_path = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/RME_Accuray_Motif3/', algorithm_type, 'FScore_'];
 
 for i = 1 : size(testCaseIndex, 2)
     fprintf('Test case: %d .\n', testCaseIndex(i));
