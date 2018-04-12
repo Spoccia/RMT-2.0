@@ -19,29 +19,30 @@ saveMotifImages=1;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';%'D:\Motif_Results\Datasets\Mocap\';
-ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%'D:\Motif_Results\Datasets\Mocap\MStamp\';
+datasetPath= 'D:\Motif_Results\Datasets\Mocap\';%'D:\Motif_Results\Datasets\SynteticDataset\';%
+ImageSavingPath='D:\Motif_Results\Datasets\Mocap\MStampB\';%'D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%
 pippo = [35,85,127,24];
-for pip=2:4
+%for pip=2:4
+RW =csvread('D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\RW_1.csv');
     for NAME =1:1 %100:105%71:72%39:39%%46:57%34:45%34:39
         FeaturesRM='MStamp';
         sublenght= 58;% 29;%   %[29,58];
         % TEST=['Motif2_35_instance_',num2str(NAME)]%['MoCap',num2str(NAME)]
-%         TEST=['MoCap',num2str(NAME)]
+         TEST=[num2str(1)]
         
 %         TEST=['Motif_5_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
 %         TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
-         TEST=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)] 
+%          TEST=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)] 
         %  TEST=['Mocap_test',num2str(NAME)]
         
         %          TEST=['MoCap',num2str(NAME)]
         %         TEST = ['Energy_Building',num2str(NAME)];
         TS_name=TEST;
-        data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
+        data=csvread([datasetPath,'data\',TS_name,'.csv']);%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
         
         % data1= csvread('D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_1.csv')';
-        %       data(1,[34,46]) =0;
-        %       data(end,[34,46]) =1;
+                 data(:,[34,46]) = RW([34,46],1:size(data,1))';
+%                data(end,[34,46]) =1;
         %       data(1,[34,46]) = 1;%data1(:,[34,46]);
         %      data(end,[34,46]) = 1;
         %     data = (data - mean(data)) ...
@@ -59,12 +60,15 @@ for pip=2:4
         %         sub_len=sublenght(j);
         sub_len=sublenght;
         must_dim = [];
-        exc_dim =[];% [34,46]; %[];%[];%% for mocap we have o exclude flat timeseries
+        exc_dim =[];%[34,46]; %[];%[];%% for mocap we have o exclude flat timeseries
         % if big portion of the timeseries is flat we have perhaps to exclude that variates
          tic;
         [pro_mul, pro_idx] = ...
             mstamp(data, sub_len, must_dim, exc_dim);
         TIME(1)= toc;
+         pro_mul = pro_mul(:, 1:end-length(exc_dim));
+         pro_idx = pro_idx(:, 1:end-length(exc_dim));
+         data(:,[34,46]) = [];
         
         %% alternative 1.b: the inclusion
         % in the toy data, the first dimension only consist of random walk.
@@ -158,7 +162,7 @@ for pip=2:4
         xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],col_header,'TIME','B1');
         clc;
     end
-end
+%end
 
     % save time and all the structures
     

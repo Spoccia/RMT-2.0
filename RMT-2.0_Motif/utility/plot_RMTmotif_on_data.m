@@ -31,7 +31,7 @@ for i = 1:length(motif_idx)
         sub_len=motif_lenght{i};
         motif_location = motif_idx(i):motif_idx(i) + sub_len - 1;
         motif = data(motif_location, motif_dim{i}(k));
-        plot(motif_location, motif, 'LineWidth',1.2, 'color', 'r');
+        plot(motif_location, motif, 'LineWidth',2, 'color', 'r');
     end
 end
   ylabel('Variate');

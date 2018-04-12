@@ -1,4 +1,4 @@
-function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,strategy,prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifImages )
+function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imagepath,specificimagepath,imagename,typeofCluster,strategy,prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifImages,PathOldFeatures )
 %(TEST, imagepath,specificimagepath,imagename,typeofCluster,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histdataimage,FeaturesRM,cleanfeatures,saveMotifImages )
 %KMEANSPRUNING Summary of this function goes here
 % imagepath=path of the original timeseries
@@ -22,6 +22,9 @@ Matlab=1;
 TimeforPruningSubClustering=0;
 
 saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',TEST,'\'];
+if(isempty(PathOldFeatures)==false)
+    saveFeaturesPath=[PathOldFeatures,TEST,'\'];
+end
 savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
 savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];

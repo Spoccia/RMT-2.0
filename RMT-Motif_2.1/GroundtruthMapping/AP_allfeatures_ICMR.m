@@ -1,6 +1,6 @@
 %% Accuracy best timeoverlapping
 % clc; clear;
-function AP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,StrategyClustering,DepO,DepT)
+function AP_allfeatures_ICMR(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,StrategyClustering,DepO,DepT,pathGT)
 %% Analize Results
 % path='D:\Motif_Results\Datasets\SynteticDataset\';
 % kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
@@ -13,16 +13,20 @@ function AP_allfeatures(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,Clu
 % subfolderClusterLabel='Clusterlabel\ClusterLabel_';
 % DepO=num2str(2);
 % DepT=num2str(2);
-
+if(isempty(pathGT))
+    pathGT = path;
+end
 
 %% data injected and groundtruth
-data = csvread([path,kindofinj,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
-Position_F_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',TEST,'.csv']);%TEST,
+data = csvread([pathGT,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
+Position_F_Injected = csvread([pathGT,'IndexEmbeddedFeatures\FeaturePosition_',TEST,'.csv']);%TEST,
 % Feature_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturesEmbedded_',TEST,'.csv']);
-Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',TEST,'.csv']);%\',TEST,'
+Dependency_Injected = csvread([pathGT,'IndexEmbeddedFeatures\dpscale_',TEST,'.csv']);%\',TEST,'
 
 %% read the clusters to check the motifs.
-featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',ClusterAlg,'\AP\',kindofCluster,'\'];
+featurespath=[path...
+    ,TEST,'\Distances',measure,'\',ClusterAlg,'\AP\',kindofCluster,'\'];
+  %  'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',ClusterAlg,'\AP\',kindofCluster,'\'];
 % load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat'])
 % load([path,kindofinj,'Features\',TEST,'\DistancesDescriptors\',kindofCluster,measure,'\afterPruning\',ClusterAlg,'\datacluster_1_DepO_',DepO,'_DepT_',DepT,'.mat']);
 
