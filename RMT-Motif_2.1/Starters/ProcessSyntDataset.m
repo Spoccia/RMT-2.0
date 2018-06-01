@@ -215,7 +215,7 @@ for percentid=1:size(percent,1)
                                 C=ones(size(ActFeatures,2),1)+allclusterid;
                                 mu=ActFeatures(11:end,1)';
                             else
-                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.45);
+                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.5);
                                 labels = unique(C);
                                 mu=zeros(size(labels,1),128);
                                 for clusterlabels=1:size(labels,1);
@@ -256,7 +256,7 @@ for percentid=1:size(percent,1)
                                 C=ones(size(ActFeatures,2),1)+allclusterid;
                                 mu=ActFeatures(11:end,1)';
                             else
-                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.45);
+                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.5);
                                 labels = unique(C);
                                 mu=zeros(size(labels,1),128);
                                 for clusterlabels=1:size(labels,1);
@@ -277,7 +277,7 @@ for percentid=1:size(percent,1)
                     if(strcmp(kindOfClustring,'AKmeans')==1)
                         [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
                     elseif(strcmp(kindOfClustring,'DBScan')==1) % strategy==6
-                        [C, varType] = dbscan(X(11:end,:)', 2,'euclidean',0.45);
+                        [C, varType] = dbscan(X(11:end,:)', 2,'euclidean',0.5);
                         labels = unique(C);
                         mu=zeros(size(labels,1),128);
                         for clusterlabels=1:size(labels,1);
