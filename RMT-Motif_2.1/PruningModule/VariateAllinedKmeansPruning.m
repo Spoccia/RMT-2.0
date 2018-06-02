@@ -22,9 +22,9 @@ Matlab=1;
 TimeforPruningSubClustering=0;
 
 saveFeaturesPath=[imagepath,specificimagepath,'Features_',FeaturesRM,'\',TEST,'\'];
-if(isempty(PathOldFeatures)==false)
-    saveFeaturesPath=[PathOldFeatures,TEST,'\'];
-end
+% if(isempty(PathOldFeatures)==false)
+%     saveFeaturesPath=[PathOldFeatures,TEST,'\'];
+% end
 savepath1 = [saveFeaturesPath,'feature_',imagename,'.mat'];
 savepath2 = [saveFeaturesPath,'idm_',imagename,'.mat'];
 savepath3 = [saveFeaturesPath,'MetaData_',imagename,'.mat'];

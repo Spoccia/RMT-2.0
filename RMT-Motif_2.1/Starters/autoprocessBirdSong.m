@@ -2,22 +2,22 @@ close all;
 clc;
 clear;
 
-DatasetInject=2;  % 1 Energy 2 Mocap
+DatasetInject=1;  % 1 BirdSong 2 syntethic BirdSong
 
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
+datasetPath= 'D:\Motif_Results\Datasets\BirdSong\';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 %% clustering abilitation
 Cluster = 1;%1;%
 strategy=[1,2,3,4,5,6];
-for strID =1:6
-StrategyClustering= strategy(strID);%2;%1;%3;%
+%for strID =1:6
+StrategyClustering= strategy(3);%2;%1;%3;%
 % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
 % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
 % 3 - old approach do clustering  then subclustering
@@ -30,7 +30,6 @@ kindOfClustring= 'AKmeans';
 if StrategyClustering >3
    kindOfClustring= 'DBScan';%
 end
-%                 
 
 %% cluster pruning and printing of the  motifs
 pruneCluster = 1;%0 % execute  the pruning using #prunewith removing the  outbound features in each  cluster
@@ -38,14 +37,12 @@ prunewith='Descriptor';% use this strategy to prune  the outbound features ina  
 
 %% printing functionality
 saveMotifBP = 0; % show the clusters before pruning
-saveMotifAP = 0; % show the clusters after  pruning
+saveMotifAP = 1; % show the clusters after  pruning
 
 savecaracteristics = 1;
-% showOriginalImage = 0;
 
 %% Parameters
-Num_SyntSeries=10; % num of instances of one motif
-Name_OriginalSeries = [85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
+Num_SyntSeries=154; % num of instances of one motif
 
 %% sift parameters
 % x - variate
@@ -59,27 +56,19 @@ USER_OD_targhet=2;
 
 DeOctTime = USER_OT_targhet;
 DeOctDepd = USER_OD_targhet;
-DeLevelTime = 4;%6;
-DeLevelDepd = 4;%6;
-DeSigmaDepd = 0.4;%
-DeSigmaTime = 1.6*2^(1/DeLevelTime);%
-DeGaussianThres = 0.1;%
-if DatasetInject == 1 % Energy Building
-    DeSigmaDepd = 0.5;%0.6;%0.5;%0.4;%
-    DeSigmaTime = 1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
-    DeGaussianThres = 0.2;%0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
-elseif DatasetInject == 2 % MoCap
-    DeSigmaDepd = 0.5;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
-    DeSigmaTime = 4*sqrt(2)/2;%
-    DeGaussianThres = 0.1;%
-end
-thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
+DeLevelTime = 4;%6;%
+DeLevelDepd = 4;%6;%
+DeSigmaDepd = 0.5;%0.4;%0.6;
+DeSigmaTime = 1.6149;%4*sqrt(2)/2;%3.2298;%4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%4*sqrt(2)/2;%
+%4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
+thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
+DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
 DeSpatialBins = 4; %NUMBER OF BINs
 r= 10; %5 threshould variates
-percent=[0];% 0.1;0.5;0.75;1];
-for percentid=1:size(percent,1)
-    percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
-    for pip=1:4
+% percent=[0];% 0.1;0.5;0.75;1];
+% for percentid=1:size(percent,1)
+%     percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
+%     for pip=1:4
         for NAME = 1:Num_SyntSeries
             Time4Clustering=0;%zeros(1,4);
             TIMEFOROCTAVE=0;%zeros(1,4);
@@ -87,40 +76,15 @@ for percentid=1:size(percent,1)
             TimeforPruningClustering =0;%zeros(1,4);
             TimeforPruningSubClustering=0;%zeros(1,4);
             timeforSubclustering=0;
-            TEST = ['Energy_test',num2str(NAME)];
-            if DatasetInject == 1 %Energy
-                
-            elseif DatasetInject == 2 % MoCap
-                %       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-                %         TEST=['MoCap',num2str(NAME)]
+            TEST = [];%['Energy_test',num2str(NAME)];
+            if DatasetInject == 1 % birdsong
+                TEST = [num2str(NAME)];
+            elseif DatasetInject == 2 % synteticBirdsong
                 TEST=['Motif2_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                
-                %       TEST=['MotifShift1_2_instance_',num2str(NAME)]
-                
-                %         TEST=['Motif_15_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85
-                %   TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
             end
-            
-            %% read location matrix
             TS_name=TEST;
-            distanceVaraiteTS=[];
-            if DatasetInject == 1 %Energy
-                distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
-            elseif DatasetInject == 2 % MoCap
-                distanceVaraiteTS=[datasetPath,'LocationMatrixMocap.csv'];%
-            end
-            % read coordinates
-            coordinates=[];
-            if DatasetInject == 1 %Energy
-                coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));
-            elseif DatasetInject == 2 % MoCap
-                coordinates=csvread(strcat(datasetPath,'location\LocationMatrixMocap.csv'));%
-            end
-            RELATION=coordinates;
+            data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%
             
-            data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-            
-            %% Features Extraction
             if(FeatureExtractionFlag==1)
                 saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];%,EntropyPruningFolder];
                 if(exist(saveFeaturesPath,'dir')==0)
@@ -139,10 +103,177 @@ for percentid=1:size(percent,1)
                 timee=[];
                 timeDescr=[];
                 p=tic;
+                
+                IDM1 = [1:13];
+IDM2 = [2,2,3,3,4,4,1,5,5,6,6,7,7];%[1,1,2,2,3,3,4,5,5,6,6,7,7];%[1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+IDM3 = [2,2,3,1,3,4,4];%[1,1,2,3,2,4,4];%[1, 2, 3, 3, 4, 4];
+idm2{1} = IDM1;
+idm2{2} = IDM2;
+idm2{3} = IDM3;
+%%% first octave location matrix
+LocM1 = zeros(13, 13);
+for i = 1 : 13
+    LocM1(i, i) = 1;
+    if(i == 1)
+        LocM1(i, i+1) = 1;
+        LocM1(i+1, i) = 1;
+%         LocM1(i+2, i) = 1;%silv
+%         LocM1(i, i+2) = 1;%silv
+    elseif(i == 13)
+        LocM1(i, i-1) = 1;
+        LocM1(i-1, i) = 1;
+%         LocM1(i, i-2) = 1;%silv
+%         LocM1(i-2, i) = 1;%silv
+    else
+        LocM1(i-1, i) = 1;
+        LocM1(i+1, i) = 1;
+        LocM1(i, i-1) = 1;
+        LocM1(i, i+1) = 1;
+%         if(i>2 & i<12)%silv
+%             LocM1(i-2, i) = 1;
+%             LocM1(i+2, i) = 1;
+%             LocM1(i, i-2) = 1;
+%             LocM1(i, i+2) = 1;
+%         end
+    end
+end
+LocM1_1 =  [1	1	0	0	0	0	0	0	0	0	0	0	0
+            1	1	0	0	0	0	0	0	0	0	0	0	0
+            0	0	1	1	0	0	0	0	0	0	0	0	0
+            0	0	1	1	0	0	0	0	0	0	0	0	0
+            0	0	0	0	1	1	0	0	0	0	0	0	0
+            0	0	0	0	1	1	0	0	0	0	0	0	0
+            0	0	0	0	0	0	1	0	0	0	0	0	0
+            0	0	0	0	0	0	0	1	1	0	0	0	0
+            0	0	0	0	0	0	0	1	1	0	0	0	0
+            0	0	0	0	0	0	0	0	0	1	1	0	0
+            0	0	0	0	0	0	0	0	0	1	1	0	0
+            0	0	0	0	0	0	0	0	0	0	0	1	1
+            0	0	0	0	0	0	0	0	0	0	0	1	1
+            ];
+LocM1_2 =  [1	1	1	0	0	0	0	0	0	0	0	0	0
+            1	1	1	0	0	0	0	0	0	0	0	0	0
+            1	1	1	0	0	0	0	0	0	0	0	0	0
+            0	0	0	1	1	1	0	0	0	0	0	0	0
+            0	0	0	1	1	1	0	0	0	0	0	0	0
+            0	0	0	1	1	1	0	0	0	0	0	0	0
+            0	0	0	0	0	0	1	0	0	0	0	0	0
+            0	0	0	0	0	0	0	1	1	1	0	0	0
+            0	0	0	0	0	0	0	1	1	1	0	0	0
+            0	0	0	0	0	0	0	1	1	1	0	0	0
+            0	0	0	0	0	0	0	0	0	1	1	1	1
+            0	0	0	0	0	0	0	0	0	0	1	1	1
+            0	0	0	0	0	0	0	0	0	0	1	1	1
+            ];
+LocM1_3 =  [1	1	1	1	0	0	0	0	0	0	0	0	0
+            1	1	1	1	0	0	0	0	0	0	0	0	0
+            1	1	1	1	1	1	0	0	0	0	0	0	0
+            1	1	1	1	1	1	0	0	0	0	0	0	0
+            0	0	1	1	1	1	0	0	0	0	0	0	0
+            0	0	1	1	1	1	0	0	0	0	0	0	0
+            0	0	0	0	0	0	1	0	0	0	0	0	0
+            0	0	0	0	0	0	0	1	1	1	1	0	0
+            0	0	0	0	0	0	0	1	1	1	1	0	0
+            0	0	0	0	0	0	0	1	1	1	1	1	1
+            0	0	0	0	0	0	0	1	1	1	1	1	1
+            0	0	0	0	0	0	0	0	0	1	1	1	1
+            0	0	0	0	0	0	0	0	0	1	1	1	1
+            ];        
+ LocM1 = LocM1_1 - eye([13 13]);
+
+%%% second octave location matrix
+LocM2 = zeros(7, 7);
+for i = 1 : 7
+    LocM2(i, i) = 1;
+    if(i == 1)
+        LocM2(i, i+1) = 1;
+        LocM2(i+1, i) = 1;
+%         LocM2(i+2, i) = 1;%silv
+%         LocM2(i, i+2) = 1;%silv
+    elseif(i == 7)
+        LocM2(i, i-1) = 1;
+        LocM2(i-1, i) = 1;
+%         LocM2(i, i-2) = 1;%silv
+%         LocM2(i-2, i) = 1;%silv
+    else
+        LocM2(i-1, i) = 1;
+        LocM2(i+1, i) = 1;
+        LocM2(i, i-1) = 1;
+        LocM2(i, i+1) = 1;
+    end
+end
+LocM2_1 =  [1	1	0	0	0	0	0
+            1	1	0	0	0	0	0
+            0	0	1	0	1	0	0
+            0	0	0	1	0	0	0
+            0	0	1	0	1	0	0
+            0	0	0	0	0	1	1
+            0	0	0	0	0	1	1
+            ];
+LocM2_2 =  [1	1	1	0	1	0	0
+            1	1	1	0	1	0	0
+            1	1	1	0	1	1	1
+            0	0	0	1	0	0	0
+            1	1	1	0	1	1	1
+            0	0	1	0	1	1	1
+            0	0	1	0	1	1	1
+            ];
+% LocM2 = LocM2 - eye([7 7]);
+LocM2 = LocM2_1 - eye([7 7]);
+
+LocM3=zeros(4,4);
+for i=1:4
+    LocM3(i,i)=1;
+    if(i==1)
+        LocM3(i,i+1)=1;
+        LocM3(i+1,i)=1;      
+%         LocM3(i+2, i) = 1;%silv
+%         LocM3(i, i+2) = 1;%silv
+    elseif(i==4)
+        LocM3(i,i-1)=1;
+        LocM3(i-1,i)=1;
+%         LocM3(i,i-2)=1;%silv
+%         LocM3(i-2,i)=1;%silv
+    else
+        LocM3(i,i+1)=1;
+        LocM3(i+1,i)=1;
+        LocM3(i,i-1)=1;
+        LocM3(i-1,i)=1;
+%         if(i>2 & i<12)%silv
+%         LocM3(i,i+2)=1;
+%         LocM3(i+2,i)=1;
+%         LocM3(i,i-2)=1;
+%         LocM3(i-2,i)=1;
+%         end
+    end
+end
+LocM3_1 = [1	1	0	0
+           1	1	1	1 
+           0	1	1	1
+           0	1	1	1
+                          ];
+LocM3_2 =  [1	1	0	0
+            1	1	0	1
+            0	0	1	0
+            0	1	0	1
+            ];         
+LocM3_3 =  [1	1	0	1
+            1	1	0	1
+            0	0	1	0
+            1	1	0	1
+            ];             
+% LocM3 = LocM3 - eye([4 4]);
+ LocM3 = LocM3_3-eye([4 4]);
+                
                 if(strcmp(FeaturesRM,'RMT')) % we can add other  features methods
-                    [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
-                        DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
-                        DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
+                    [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = ...
+                                                                                        sift_gaussianSmooth_BirdSong(data,...
+                                                                                        LocM1 ,LocM2,LocM3,IDM1, IDM2, IDM3, DeOctTime, DeOctDepd,...
+                                                                                        DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
+                                                                                        DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
+%     sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
+%                         DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
+%                         DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
                 end
                 while(size(frames1,2)==0)
                     frames1 = zeros(4,1);
@@ -347,8 +478,3 @@ for percentid=1:size(percent,1)
                 xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
             end
         end
-    end
-    
-end
-FeatureExtractionFlag = 0;
-end

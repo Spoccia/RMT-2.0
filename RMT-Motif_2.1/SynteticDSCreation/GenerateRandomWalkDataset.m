@@ -1,10 +1,10 @@
 clc;
 clear;
-RW_varaiteSize = 62;
+RW_varaiteSize =22; %ASL %13;%'BSONG' %27;%Energy %62;%Mocap
 RW_timelength  = 2500;
-NormInterval=[zeros(62,1),ones(62,1)];
-
-DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\';
+NormInterval=[zeros(RW_varaiteSize,1),ones(RW_varaiteSize,1)];
+Dset='ASL';%'BSONG';%Bird Song %'Energy';%'data';%for Mocap
+DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\RW_0_1\'];
 
 numInstances= 20;
 znorm=0; % 0 not znormalization; 1 do a znormalization
