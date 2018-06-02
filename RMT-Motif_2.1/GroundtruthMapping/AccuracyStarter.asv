@@ -1,11 +1,11 @@
 clc; clear;
 warning off;
-path='D:\Motif_Results\Datasets\SynteticDataset\BSONG\';
+path='D:\Motif_Results\Datasets\SynteticDataset\';
 dataLocation='data\';
 
 Num_SyntSeries=10; % num of instances of one motif
 PossibleMotifInjected = [1,2,3];
-for idmotInj =1: size(PossibleMotifInjected,2)
+for idmotInj =2: size(PossibleMotifInjected,2)
     motifinjected = num2str(PossibleMotifInjected(idmotInj));
     Name_OriginalSeries = [64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
     percent=[0; 0.1;0.5;0.75;1];

@@ -10,7 +10,7 @@ close all;
 clear
 clc
 
-saveMotifImages=0;
+saveMotifImages=1;
 % load('toy_data.mat');
 
 %% compute the multidimensional matrix profile
@@ -19,32 +19,33 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BSONG\';
-%'D:\Motif_Results\Datasets\BirdSong\';
+datasetPath= 'D:\Motif_Results\Datasets\BirdSong\';
 %'D:\Motif_Results\Datasets\Mocap\';%'D:\Motif_Results\Datasets\SynteticDataset\';%
-ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\BSONG\MStampB\'
-%'D:\Motif_Results\Datasets\BirdSong\MStampB\';
+ImageSavingPath='D:\Motif_Results\Datasets\BirdSong\MStampB\';
                %'D:\Motif_Results\Datasets\Mocap\MStampB\';%'D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%
-Name_OriginalSeries = [64,70,80,147];%[35,85,127,24];
+pippo = [35,85,127,24];
 %for pip=2:4
-% RW =csvread('D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\RW_1.csv');
+RW =csvread('D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\RW_1.csv');
    % for NAME =23:154 %100:105%71:72%39:39%%46:57%34:45%34:39
- percent=[0];% 0.1;0.5;0.75;1];
-% for percentid=1:size(percent,1)
-     percentagerandomwalk=percent(1);   
-     for pip=1:3
+     for pip=4:4
 for numMotifInjected =1:3
         for NAME = 1:10
 
-%      try
+     try
          FeaturesRM='MStamp';
         sublenght= 32;%58;% 29;%   %[29,58];
-
-%         TEST=[NAME]
-        TEST=['Motif',num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-
+        % TEST=['Motif2_35_instance_',num2str(NAME)]%['MoCap',num2str(NAME)]
+         TEST=[NAME]
+        
+%         TEST=['Motif_5_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
+%         TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
+%          TEST=['Motif3_',num2str(pippo(pip)),'_instance_',num2str(NAME)] 
+        %  TEST=['Mocap_test',num2str(NAME)]
+        
+        %          TEST=['MoCap',num2str(NAME)]
+        %         TEST = ['Energy_Building',num2str(NAME)];
         TS_name=num2str(TEST);
-        data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
+        data=csvread([datasetPath,'data\',TS_name,'.csv']);%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
         data(isnan(data))=0;
         % data1= csvread('D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_1.csv')';
         %        data(:,[34,46]) = RW([34,46],1:size(data,1))';
@@ -171,8 +172,11 @@ for numMotifInjected =1:3
         xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],rowHeader,'TIME','A2');
         xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],col_header,'TIME','B1');
         clc;
-%      catch
-%      end
-    end
-end 
+     catch
      end
+    end
+%end
+
+    % save time and all the structures
+    
+% end

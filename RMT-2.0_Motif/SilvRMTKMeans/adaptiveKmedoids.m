@@ -1,6 +1,15 @@
 function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len,n_bit,saturation)
 
     startK = 3;
+    if (size(allMotif,1)<=startK)
+        i=1;
+            MotifBag_mstamp{i}.startIdx = allMotif;
+            for iterator=1:size(allMotifDepd,2)
+                MotifBag_mstamp{i}.depd{iterator}=allMotifDepd{iterator};
+                MotifBag_mstamp{i}.Tscope{iterator}= sub_len;%allMotif(MotifIDX(iterator))+
+            end
+        
+    else
     Step =2;
     split_pt = get_desc_split_pt(n_bit);
     %% Discretize the timeseries sections
@@ -39,6 +48,9 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
          inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          startK=startK+Step;
+        if startK>size(allMotifDepd,2)
+            isFound=true;
+        end
        else
          inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
@@ -49,7 +61,10 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
                 isFound=true;
                 startK=startK-Step; 
             end
-        startK=startK+Step;  
+        startK=startK+Step;
+        if startK>size(allMotifDepd,2)
+            isFound=true;
+        end
        end
        if(~isFound)
          itr=itr+1;
@@ -69,10 +84,7 @@ MotifIDX = MotifIDX(IDX);
 
 end
 
-
-
-
-        
+ end
         
 function disc = discretization(motif, split_pt)
     for i = 1:size(motif, 2)
