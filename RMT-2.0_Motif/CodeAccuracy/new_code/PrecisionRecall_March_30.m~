@@ -30,7 +30,7 @@ RMTMotifFilePath = ['/Users/sicongliu/Desktop/MyMotif/ComputeAccuracy/AccuracyRM
 % RMEMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_size100_Motif_1/AP_DepO_2_DepT_2_100_Motif_'];
 
 savePathRMT = ['/Users/sicong/Desktop/Results_Motif_Save_NewlyAdded/RMT/Motif'];
-% savePathMatrixProfile = ['/Users/sicong/Desktop/Results_Motif_Save_NewlyAdded/MatrixProfile/Motif'];
+% savePathMatrixProfile = ['/Users/sicong/Desktop/Results_Motif_Save_NewlyAdded/Mat/Motif'];
 
 % savePathMatrixProfile = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_Motif1_5_instances'];
 % savePathMatrixProfile = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_size100_Motif_1/'];
