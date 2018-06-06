@@ -6,7 +6,7 @@ weighted = 0;
 testCaseIndex = 1 : 10;
 % TS_index = [24, 35, 85, 127];
 
-TS_index = [1, 3, 6, 7]; % BirdSong dataset
+TS_index = [1, 3, 6]; % BirdSong dataset
 % TS_index = [1, 3, 6, 7]; % BirdSong dataset
 % TS_index = [23, 35, 86, 111]; % BirdSong dataset
 
@@ -15,7 +15,7 @@ TS_index = [1, 3, 6, 7]; % BirdSong dataset
 
 % strategy = [1 : 6];
 strategy = 3;
-num_of_motif = [1 : 3];
+% num_of_motif = [1 : 3];
 % num_of_motif = [10];
 % amp_scale = [0, 0.1, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 amp_scale = 0;
@@ -41,7 +41,7 @@ savePathMatrixProfile = ['/Users/sicongliu/Desktop/Results_Energy_Motif_Save_New
 MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
 
-timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
+% timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
 for tt = 1 : size(timeOverlapThresholds, 2)
     for ss = 1 : size(strategy, 2)
         for i = 1 : size(num_of_motif, 2)

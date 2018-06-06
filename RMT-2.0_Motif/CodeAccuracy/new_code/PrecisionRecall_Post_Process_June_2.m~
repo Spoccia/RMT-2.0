@@ -6,10 +6,10 @@ testCaseIndex = 1 : 40;
 
 strategy = 3;
 num_of_motif = [1:3];
-% num_of_motif = [3];
+% num_of_motif = [10];
 algorithm_type = ['RMT']; % MatrixProfile RMT RME cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
-% timeOverlapThresholds = [0.75];
+% timeOverlapThresholds = [1];
 amp_scale = 0;
 
 for tt = 1 : size(timeOverlapThresholds, 2)
@@ -26,15 +26,13 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                 
                 fprintf('num_of_motif: %d, strategy: %d, algorithm_type: %s, time overlap threshold: %f . \n', cur_num_of_motif, cur_strategy, cur_algorithm_type, timeOverlapThreshold);
                 
-                sharedFolder = ['/Users/sicongliu/Desktop/Results_Energy_Motif_Save_NewlyAdded/', algorithm_type, '/Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+                sharedFolder = ['/Users/sicongliu/Desktop/Results_MoCap_Motif_Save_NewlyAdded/', algorithm_type, '/Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
                 precision_file_path = [sharedFolder, '/', algorithm_type, 'Precision_'];
                 recall_file_path = [sharedFolder, '/', algorithm_type, 'Recall_'];
                 FScore_file_path = [sharedFolder, '/', algorithm_type, 'FScore_'];
                 for ii = 1 : size(testCaseIndex, 2)
                     fprintf('Test case: %d .\n', testCaseIndex(ii));
-                    if( testCaseIndex(ii) == 2)
-                        fprintf('jere')
-                    end
+                    
                     precision_file = [precision_file_path, num2str(testCaseIndex(ii)), '.csv'];
                     recall_file = [recall_file_path, num2str(testCaseIndex(ii)), '.csv'];
                     FScore_file = [FScore_file_path, num2str(testCaseIndex(ii)), '.csv'];
@@ -115,7 +113,6 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                 aggregated_recall = zeros(size(testCaseIndex, 2), cur_num_of_motif+1+1);
                 aggregated_FScore = zeros(size(testCaseIndex, 2), cur_num_of_motif+1+1);
                 for ii = 1 : size(testCaseIndex, 2)
-                    fprintf('this is where we are: %d .\n', testCaseIndex(ii))
                     precision_file = [precision_file_path, num2str(testCaseIndex(ii)), '.csv'];
                     recall_file = [recall_file_path, num2str(testCaseIndex(ii)), '.csv'];
                     FScore_file = [FScore_file_path, num2str(testCaseIndex(ii)), '.csv'];
