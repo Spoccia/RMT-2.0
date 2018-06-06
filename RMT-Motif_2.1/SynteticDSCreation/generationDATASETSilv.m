@@ -1,23 +1,27 @@
 clc;
 clear;
-originalTSIDArray=[64,70,80,147];%BirdSong; %[85,24,35,127];%Mocap
-for orgID =1:4
+originalTSIDArray=[23,35,86,111];%[1,3,6,7];%Energy %[64,70,80,147];%BirdSong; %[85,24,35,127];%Mocap
+for orgID =1:2
 originalTSID=originalTSIDArray(orgID);%85;%127;%[24,35,85,127];85;%24;%35;%
-featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\BSONG\FeaturesToInject\'];
+featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\Mocap\FeaturesToInject\'];
+%['D:\Motif_Results\Datasets\SynteticDataset\BSONG\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];%MOCAP
-randomWalkPath = ['D:\Motif_Results\Datasets\SynteticDataset\BSONG\RW_0_1\RW_'];
+randomWalkPath = ['D:\Motif_Results\Datasets\SynteticDataset\Mocap\RW_0_1\RW_'];
+%['D:\Motif_Results\Datasets\SynteticDataset\BSONG\RW_0_1\RW_'];
 % ['D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\RW_'];
-TimeSeriesPath = ['D:\Motif_Results\Datasets\BirdSong\data\'];
+TimeSeriesPath = ['D:\Motif_Results\Datasets\Mocap\data\'];
+%['D:\Motif_Results\Datasets\BirdSong\data\'];
 %['D:\Motif_Results\Datasets\Mocap\data\'];
 
-DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\BSONG';
+DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\Mocap';
+                                                         %\BSONG';
                                                          %\data'; %for MOCAP
-possibleMotifNUM=[1,2,3];
-for pssMotID = 1:3
+possibleMotifNUM=[1,2,3,10];
+for pssMotID = 4:4
 num_of_motif = possibleMotifNUM(pssMotID);%3; % NumOfMotifs = 1;
 motif_instances = 10; % MotifInstances= 10;
 length_percentage = [1,0.75,0.5];%0.5;% length_percentage = 
-RWlength = 2500;
+RWlength = 8000;
 random_walk_scale = [0];%,0.1,0.5,0.75,1];%0.1;% randomWalkScale = 
 
 % descr_non_zero_entry =  10;% 10;% percentage 10, 50
@@ -31,7 +35,7 @@ testNAME = [id_test_name,num2str(num_of_motif)];%,'_',num2str(originalTSID)];%nu
 % load  the features and the data
 FeaturesToInject = xlsread([featuresToInjectPath,'Features',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
 DepdToInject = xlsread([featuresToInjectPath,'depd',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
-TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';% remove ' for Energy;
 
 
 FeatureToInject= FeaturesToInject(:,1:num_of_motif);

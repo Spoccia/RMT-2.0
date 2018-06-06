@@ -177,7 +177,7 @@ odepd = Od;
             end
           
         end
-        TIMEDESCRIPTORS(otime + odepd)= toc;
+        TIMEDESCRIPTORS(otime + odepd)= 0;%toc;
 %             counter=counter+1;
         clear fOframes bOframes fgss
         

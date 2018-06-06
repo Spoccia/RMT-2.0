@@ -26,8 +26,18 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
     itr=1;
    isFound=false;
    while(~isFound)
+% if(startK >= size(allMotifDepd,2)/2)
+%     startK=floor(size(allMotifDepd,2)/2)-1;
+%     isFound=true;
+% end
 
+try
     [C,mu,meanKmeans, D]=KmedoidsMStamp(DiscreteDataMatrix,allMotifDepd,startK,false,n_bit,DataMatrix);
+catch
+    startK=startK-Step;
+    [C,mu,meanKmeans, D]=KmedoidsMStamp(DiscreteDataMatrix,allMotifDepd,startK,false,n_bit,DataMatrix);
+    isFound=true;
+end
 % labels of Clusters
     labels= unique(C);
     D1 =zeros (size(D));
@@ -48,7 +58,7 @@ function [MotifBag_mstamp] = adaptiveKmedoids(data,allMotif,allMotifDepd,sub_len
          inertia=[inertia,MeasureToUse];
          tryK=[tryK,startK];
          startK=startK+Step;
-        if startK>size(allMotifDepd,2)
+        if startK>=size(allMotifDepd,2)
             isFound=true;
         end
        else

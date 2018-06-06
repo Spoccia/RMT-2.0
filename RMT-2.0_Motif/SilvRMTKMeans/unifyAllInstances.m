@@ -8,6 +8,11 @@ for i = 1: size(motif_idx,1)
     count=count+1;
     mappedid=pro_idx(motif_idx(i),size(motif_dim{i},2));
     if(size(intersect(mappedid,motif_idx),1)==1)
+        if(size(motif_idx,1)==1)
+        allmotif=[allmotif;mappedid];
+        allmotifdepd{count}=motif_dim{i};
+        count=count+1;
+        end
     else
         allmotif=[allmotif;mappedid];
         allmotifdepd{count}=motif_dim{i};

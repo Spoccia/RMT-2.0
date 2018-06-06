@@ -98,9 +98,9 @@ for TSnumber = 1:10%183: 709
     DeLevelTime = 4;%6;
     DeLevelDepd = 4;%6;
     DeSigmaDepd = 0.5;%0.6;%0.5;%0.3;%
-    DeSigmaTime = 1.6*2^(1/DeLevelTime)*2;%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
+    DeSigmaTime = 4*sqrt(2)/2;%1.6*2^(1/DeLevelTime);%*2;%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
-    DeGaussianThres = 0.2;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
+    DeGaussianThres = 0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     
