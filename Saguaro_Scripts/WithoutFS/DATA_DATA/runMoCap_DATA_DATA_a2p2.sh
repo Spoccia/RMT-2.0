@@ -1,0 +1,8 @@
+sbatch runMoCap_DATA_DATA_a2p2_1.sh
+sbatch runMoCap_DATA_DATA_a2p2_2.sh
+sbatch runMoCap_DATA_DATA_a2p2_3.sh
+sbatch runMoCap_DATA_DATA_a2p2_4.sh
+sbatch runMoCap_DATA_DATA_a2p2_5.sh
+sbatch runMoCap_DATA_DATA_a2p2_6.sh
+sbatch runMoCap_DATA_DATA_a2p2_7.sh
+sbatch runMoCap_DATA_DATA_a2p2_8.sh
