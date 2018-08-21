@@ -5,7 +5,7 @@ myStatEntry = statEntry(statEntry(:, 5) == currentInjectedClassID, :);
 uniqueSize = size(uniqueRows, 1);
 precisionScore = zeros(relevantSize, 1);
 recallBestScore = zeros(uniqueSize, 1);
-fprintf('relevant size: %d, unique size: %d. \n', relevantSize, uniqueSize);
+% fprintf('relevant size: %d, unique size: %d. \n', relevantSize, uniqueSize);
 % time overlap at least 25% 
 
 for i = 1 : uniqueSize
