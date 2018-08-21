@@ -48,7 +48,7 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
 %       MeanD2= mean(D2>0);
       MeanD2 = SUMD2./NumofIntancesforClusters;
       mean3  = sum(SUMD2)/sum(NumofIntancesforClusters);
-       MeasureToUse=mean3;%sum(SUMD2)%sum(SUMD1);%;%mean(mean3);%MeanD2);% sum(SUMD2);%
+       MeasureToUse=mean3;%sum(SUMD);%sum(SUMD2)%sum(SUMD1);%;%mean(mean3);%MeanD2);% sum(SUMD2);%
 %        MeasureToUse=sum(MeanD2);
 %         saturation = /mean(NumofIntancesforClusters);
 

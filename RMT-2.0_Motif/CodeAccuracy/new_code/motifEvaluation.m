@@ -62,13 +62,27 @@ for i = 1 : size(myClassID, 1)
         
         precisionMatrix(i, j) = precision;
         recallMatrix(i, j) = recall;
-        FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
-        
+        if(precision == 0 || recall ==0)
+            FScoreMatrix(i, j) = 0;
+        else
+            FScoreMatrix(i, j) = 2 * precision * recall / (precision + recall);
+        end
     end
     
 end
 
 [precisionMatrix, recallMatrix, FScoreMatrix, total_index] = delete_zeros(precisionMatrix, recallMatrix, FScoreMatrix);
+if(size(precisionMatrix, 1) == 0)
+    precisionMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
+end
+
+if(size(recallMatrix, 1) == 0)
+    recallMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
+end
+
+if(size(FScoreMatrix, 1) == 0)
+    FScoreMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
+end
 
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];

@@ -11,12 +11,12 @@ FeaturesRM ='RMT';
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 %% clustering abilitation
 Cluster = 1;%1;%
 strategy=[1,2,3,4,5,6];
-for strID =3:3
+for strID =6:6
 StrategyClustering= strategy(strID);%2;%1;%3;%
 % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
 % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -46,7 +46,7 @@ savecaracteristics = 1;
 %% Parameters
 Num_SyntSeries=10; % num of instances of one motif
 Name_OriginalSeries = [85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
-
+PathOldFeatures = 'D:\Motif_Results\Datasets\SynteticDataset\Features_RMT_new\ICMR\USED RESULTS\';%Motif1-3\';
 %% sift parameters
 % x - variate
 % y - time
@@ -76,11 +76,11 @@ end
 thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
 DeSpatialBins = 4; %NUMBER OF BINs
 r= 10; %5 threshould variates
-percent=[0; 0.1;0.5;0.75;1];
-for percentid=1:1%5
-    percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
-    for pip=1:1%4
-        for NAME = 1:1%Num_SyntSeries
+% percent=[0; 0.1;0.5;0.75;1];
+ %for motifid=1:3
+    percentagerandomwalk='';%percent(percentid);%0; %0.1;%0.5;%0.75;%
+    for pip=1:4
+        for NAME = 1:Num_SyntSeries
             Time4Clustering=0;%zeros(1,4);
             TIMEFOROCTAVE=0;%zeros(1,4);
             TimeComputationDepdScale =0;% zeros(1,4);
@@ -89,18 +89,17 @@ for percentid=1:1%5
             timeforSubclustering=0;
             TEST = ['Energy_test',num2str(NAME)];
             if DatasetInject == 2 % MoCap
-                %       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-                %         TEST=['MoCap',num2str(NAME)]
-                TEST=['Motif1_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+
+%                 TEST=['Motif',num2str(motifid),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];%,'_',num2str(percentagerandomwalk)];
                 
                 %       TEST=['MotifShift1_2_instance_',num2str(NAME)]
                 
-                %         TEST=['Motif_15_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85
+                         TEST=['Motif_5_1_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)]; %'35','_instance_',num2str(NAME)]%85
                 %   TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
             end
             
             %% read location matrix
-            TS_name=TEST;
+            TS_name=TEST
             distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
             if DatasetInject == 2 % MoCap
                 distanceVaraiteTS=[datasetPath,'LocationMatrixMocap.csv'];%
@@ -112,10 +111,11 @@ for percentid=1:1%5
             end
             RELATION=coordinates;
             
-            data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-            
+          
             %% Features Extraction
             if(FeatureExtractionFlag==1)
+                  data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
+            
                 saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];%,EntropyPruningFolder];
                 if(exist(saveFeaturesPath,'dir')==0)
                     mkdir(saveFeaturesPath);
@@ -169,7 +169,7 @@ for percentid=1:1%5
             end
             %% create dependency
             if(createDependencyScale==1)
-                saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TEST,'\'];
+                saveFeaturesPath=[PathOldFeatures,TEST,'\'];
                 %% read the features
                 savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
                 savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
@@ -182,7 +182,7 @@ for percentid=1:1%5
             
             if (Cluster==1 | justSubCluster==1)
                 %% read the  features
-                saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+                saveFeaturesPath=[PathOldFeatures,TS_name,'\'];
                 savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
                 savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
                 savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
@@ -216,7 +216,7 @@ for percentid=1:1%5
                                 mu=ActFeatures(11:end,1)';
                             else
                                 [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.45);
-                                labels = unique(C)
+                                labels = unique(C);
                                 mu=zeros(size(labels,1),128);
                                 for clusterlabels=1:size(labels,1);
                                     mu(clusterlabels,:)= mean(ActFeatures(11:end,C==labels(clusterlabels))');
@@ -257,7 +257,7 @@ for percentid=1:1%5
                                 mu=ActFeatures(11:end,1)';
                             else
                                 [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.45);
-                                labels = unique(C)
+                                labels = unique(C);
                                 mu=zeros(size(labels,1),128);
                                 for clusterlabels=1:size(labels,1);
                                     mu(clusterlabels,:)= mean(ActFeatures(11:end,C==labels(clusterlabels))');
@@ -273,12 +273,12 @@ for percentid=1:1%5
                     mu=Centroids;
                     X=Allthefeatures;
                     
-                elseif(StrategyClustering == 3 & justSubCluster==0)% classic strategy  we cluster all the features
+                elseif((StrategyClustering == 3 | StrategyClustering == 6) & justSubCluster==0)% classic strategy  we cluster all the features
                     if(strcmp(kindOfClustring,'AKmeans')==1)
                         [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
                     elseif(strcmp(kindOfClustring,'DBScan')==1) % strategy==6
                         [C, varType] = dbscan(X(11:end,:)', 2,'euclidean',0.45);
-                        labels = unique(C)
+                        labels = unique(C);
                         mu=zeros(size(labels,1),128);
                         for clusterlabels=1:size(labels,1);
                             mu(clusterlabels,:)= mean(X(11:end,C==labels(clusterlabels))');
@@ -286,34 +286,27 @@ for percentid=1:1%5
                     end
                 end
                 Time4Clustering=toc;
-                if (StrategyClustering ~= 3 | (StrategyClustering == 3 & justSubCluster==0))
+               % if (StrategyClustering ~= 3 | (StrategyClustering == 3 & justSubCluster==0))
                     if(exist(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\'),'dir')==0)
                         mkdir(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\'));
                     end
                     csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Cluster_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),C);
                     csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Centroids_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),mu);
                     csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Features_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),X);
-                end
-                %             if(pruneCluster==1)
-                %                 TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);
-                %             end
-                %
+               % end
+               
                 if (StrategyClustering == 3 | StrategyClustering == 6)
-                    saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+                    saveFeaturesPath=[PathOldFeatures,TS_name,'\'];
                     depdOverLapThreshold = 1;
                     timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,num2str(StrategyClustering),distanceUsed,depdOverLapThreshold,USER_OT_targhet,USER_OD_targhet);
                 end
-                %
-                %             if(prunesubCluster==1)
-                %                 TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,K_valuesCalc,prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,1);
-                %             end
                 
             end
             
             if(pruneCluster==1)
-                if StrategyClustering == 3
-                    TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);%1);
-                    TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);
+                if (StrategyClustering == 3 |StrategyClustering == 6 )
+                    TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP,PathOldFeatures);%1);
+                    TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP,PathOldFeatures);
                     %(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,saveMotifAP);%1);
                 else
                     TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);
@@ -321,7 +314,7 @@ for percentid=1:1%5
             end
             
             if(savecaracteristics==1)
-                saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+                saveFeaturesPath=[PathOldFeatures,TS_name,'\'];
                 savepath1 = [saveFeaturesPath,'feature_',TS_name,'.mat'];
                 savepath2 = [saveFeaturesPath,'idm_',TS_name,'.mat'];
                 savepath3 = [saveFeaturesPath,'MetaData_',TS_name,'.mat'];
@@ -348,7 +341,7 @@ for percentid=1:1%5
                 xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
             end
         end
-    end
+ %    end
     
 end
 FeatureExtractionFlag = 0;

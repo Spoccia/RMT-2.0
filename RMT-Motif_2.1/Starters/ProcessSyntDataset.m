@@ -4,8 +4,8 @@ clear;
 
 DatasetInject=2;  % 1 Energy 2 Mocap
 
-SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\';
+SubDSPath='data\';           %'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\';%Energy\';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 
@@ -14,9 +14,9 @@ CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 %% clustering abilitation
-Cluster = 1;%1;%
+Cluster =  1;%1;%
 strategy=[1,2,3,4,5,6];
-for strID =4:6
+for strID =3:3%1:6
 StrategyClustering= strategy(strID);%2;%1;%3;%
 % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
 % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -45,7 +45,7 @@ savecaracteristics = 1;
 
 %% Parameters
 Num_SyntSeries=10; % num of instances of one motif
-Name_OriginalSeries = [85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
+Name_OriginalSeries = [23,35,86,111];% MOCap Motif10 %[1,3,6,7];%ENERGY %[85,35,127,24];MOCAP % name of the original  series from with we  got the  motif instances to inject
 
 %% sift parameters
 % x - variate
@@ -66,8 +66,8 @@ DeSigmaTime = 1.6*2^(1/DeLevelTime);%
 DeGaussianThres = 0.1;%
 if DatasetInject == 1 % Energy Building
     DeSigmaDepd = 0.5;%0.6;%0.5;%0.4;%
-    DeSigmaTime = 1.6*2^(1/DeLevelTime);%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
-    DeGaussianThres = 0.2;%0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
+    DeSigmaTime = 4*sqrt(2)/2;%1.6*2^(1/DeLevelTime)*2;%4*sqrt(2);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
+    DeGaussianThres = 0.3;%0.3;%0.1;%0.4;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
 elseif DatasetInject == 2 % MoCap
     DeSigmaDepd = 0.5;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
     DeSigmaTime = 4*sqrt(2)/2;%
@@ -76,22 +76,25 @@ end
 thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
 DeSpatialBins = 4; %NUMBER OF BINs
 r= 10; %5 threshould variates
-percent=[0; 0.1;0.5;0.75;1];
-for percentid=1:5
+percent=[0];% 0.1;0.5;0.75;1];
+for percentid=1:size(percent,1)
     percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
+    for MOTIFNUMber =10:10%1:3
     for pip=1:4
-        for NAME = 2:Num_SyntSeries
+        for NAME = 1:Num_SyntSeries
             Time4Clustering=0;%zeros(1,4);
             TIMEFOROCTAVE=0;%zeros(1,4);
             TimeComputationDepdScale =0;% zeros(1,4);
             TimeforPruningClustering =0;%zeros(1,4);
             TimeforPruningSubClustering=0;%zeros(1,4);
             timeforSubclustering=0;
-            TEST = ['Energy_test',num2str(NAME)];
-            if DatasetInject == 2 % MoCap
+            TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
+            if DatasetInject == 1 %Energy
+                
+            elseif DatasetInject == 2 % MoCap
                 %       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
                 %         TEST=['MoCap',num2str(NAME)]
-                TEST=['Motif1_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                 
                 %       TEST=['MotifShift1_2_instance_',num2str(NAME)]
                 
@@ -101,13 +104,17 @@ for percentid=1:5
             
             %% read location matrix
             TS_name=TEST;
-            distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
-            if DatasetInject == 2 % MoCap
+            distanceVaraiteTS=[];
+            if DatasetInject == 1 %Energy
+                distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
+            elseif DatasetInject == 2 % MoCap
                 distanceVaraiteTS=[datasetPath,'LocationMatrixMocap.csv'];%
             end
             % read coordinates
-            coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));
-            if DatasetInject == 2 % MoCap
+            coordinates=[];
+            if DatasetInject == 1 %Energy
+                coordinates=csvread(strcat(datasetPath,'location\LocationSensor_aggregate.csv'));
+            elseif DatasetInject == 2 % MoCap
                 coordinates=csvread(strcat(datasetPath,'location\LocationMatrixMocap.csv'));%
             end
             RELATION=coordinates;
@@ -215,7 +222,7 @@ for percentid=1:5
                                 C=ones(size(ActFeatures,2),1)+allclusterid;
                                 mu=ActFeatures(11:end,1)';
                             else
-                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.45);
+                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.5);
                                 labels = unique(C);
                                 mu=zeros(size(labels,1),128);
                                 for clusterlabels=1:size(labels,1);
@@ -256,7 +263,7 @@ for percentid=1:5
                                 C=ones(size(ActFeatures,2),1)+allclusterid;
                                 mu=ActFeatures(11:end,1)';
                             else
-                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.45);
+                                [C, varType] = dbscan(ActFeatures(11:end,:)',2,'euclidean',0.5);
                                 labels = unique(C);
                                 mu=zeros(size(labels,1),128);
                                 for clusterlabels=1:size(labels,1);
@@ -277,7 +284,7 @@ for percentid=1:5
                     if(strcmp(kindOfClustring,'AKmeans')==1)
                         [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
                     elseif(strcmp(kindOfClustring,'DBScan')==1) % strategy==6
-                        [C, varType] = dbscan(X(11:end,:)', 2,'euclidean',0.45);
+                        [C, varType] = dbscan(X(11:end,:)', 2,'euclidean',0.5);
                         labels = unique(C);
                         mu=zeros(size(labels,1),128);
                         for clusterlabels=1:size(labels,1);
@@ -342,7 +349,7 @@ for percentid=1:5
             end
         end
     end
-    
+    end
 end
 FeatureExtractionFlag = 0;
 end

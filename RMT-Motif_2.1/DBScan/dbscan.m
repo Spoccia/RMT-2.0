@@ -114,7 +114,18 @@ for i = 1:nobs
 end
 
 kdist = sort(kdist, 'descend');
+kdistAVGFilter = movAVGfilter(kdist,round(length(kdist)/10));
+kdistMedianFilter= medfilt1(kdist,round(length(kdist)/10));
+kdistMovMedianFilter= movMedianFilter(kdist,round(length(kdist)/10));
 figure;
 plot(kdist);
+hold on;
+plot(kdistAVGFilter);
+hold on;
+plot(kdistMedianFilter);
+hold on;
+plot(kdistMovMedianFilter);
+hold off;
+legend('kdist','MovAVGfilter','MedianFilter','kdistMovMedianFilter');
 
 end
