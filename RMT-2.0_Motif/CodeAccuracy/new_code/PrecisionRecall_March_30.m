@@ -9,7 +9,8 @@ TS_index = [24, 35, 85, 127];
 % motif1 -> stragety 1 - 6
 % motif2 -> stragety 1 - 6
 
-strategy = [1 : 6];
+% strategy = [1 : 6];
+strategy = [3, 6];
 num_of_motif = [1 : 3];
 amp_scale = [0, 0.1, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 
