@@ -13,9 +13,9 @@ normalizeData=0;
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
-Cluster = 1;%1;%
+Cluster = 0;%1;%
 
-pruneCluster = 1;
+pruneCluster = 0;
 
 motifidentification = 0; % work on pruned features
 savecaracteristics = 0;
@@ -45,7 +45,7 @@ end
 %
 
 %% cluster pruning and printing of the  motifs
-pruneCluster = 1;%0 % execute  the pruning using #prunewith removing the  outbound features in each  cluster
+pruneCluster = 0;%0 % execute  the pruning using #prunewith removing the  outbound features in each  cluster
 prunewith='Descriptor';% use this strategy to prune  the outbound features ina  cluster
 
 %% printing functionality
@@ -128,7 +128,7 @@ IDM3=[];
 idm2{1} = IDM1;
 idm2{2} = IDM2;
 idm2{3} = IDM3;
-for TSnumber = 1:10%183: 709
+for TSnumber = 11:100%183: 709
     TEST =num2str(TSnumber); %'1';%
     TS_name=num2str(TSnumber);%
     distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
