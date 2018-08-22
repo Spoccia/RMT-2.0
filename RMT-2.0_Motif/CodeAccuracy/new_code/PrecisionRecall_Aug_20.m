@@ -12,7 +12,8 @@ TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66, 67, 71, 88, 95, 96, 102, 106, 
 
 % strategy = [1 : 9]; % strategy 7, 8, 9 currently have problems
 
-strategy = [1 : 6];
+strategy = [1 : 9];
+% num_of_motif = [1 : 3];
 num_of_motif = [1 : 3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 
