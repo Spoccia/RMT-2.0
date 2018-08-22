@@ -81,6 +81,6 @@ if(exist(strcat(path,'Features_',FeaturesRM,'\Accuracy\Strategy_',num2str(Strate
 end
 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
 FileName=[path,'Features_',FeaturesRM,'\Accuracy\Strategy_',num2str(StrategyClustering),'\','AP_','DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];%'\',TEST,%'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];
-xlswrite(FileName,FeatureClassCount,'AP_all','A2');
-xlswrite(FileName,col_header,'AP_all','A1');
+xlswrite(FileName,FeatureClassCount,'AP_all_SubC','A2');
+xlswrite(FileName,col_header,'AP_all_SubC','A1');
 end
