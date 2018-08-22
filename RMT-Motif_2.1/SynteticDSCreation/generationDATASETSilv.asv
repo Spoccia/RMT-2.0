@@ -43,9 +43,8 @@ for orgID =1:length(originalTSIDArray)%2
         DepdToInject = csvread([featuresToInjectPath,'depd',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
         
         %% MOCAP
-%        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
-        %% Energy
-        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
+        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';% remove ' for Energy;
+        %% 
         
         FeatureToInject= FeaturesToInject(:,1:num_of_motif);
         DepdToInject = DepdToInject(:,1:num_of_motif);
