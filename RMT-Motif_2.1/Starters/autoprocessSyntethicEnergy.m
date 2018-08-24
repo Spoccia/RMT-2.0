@@ -126,7 +126,7 @@ r= 10; %5 threshould variates
 percent=[0; 0.1;0.25;0.5;0.75;1];
 
 strategy=[1,2,3,4,5,6,7,8,9];
-for strID =1:9%1:6
+for strID =9:9%1:6
     StrategyClustering= strategy(strID);%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -140,7 +140,8 @@ for strID =1:9%1:6
         kindOfClustring= 'DBScan';%
     end
     for percentid=1:size(percent,1)
-        percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
+        percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
+        
         for MOTIFNUMber =1:3
             for pip=1:10   %TSnames
                 for NAME = 1:Num_SyntSeries
@@ -150,7 +151,7 @@ for strID =1:9%1:6
                     TimeforPruningClustering =0;%zeros(1,4);
                     TimeforPruningSubClustering=0;%zeros(1,4);
                     timeforSubclustering=0;
-                    TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
+                    TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
                     %TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     
                     
@@ -303,7 +304,7 @@ for strID =1:9%1:6
                             C=AlltheCluster;
                             mu=Centroids;
                             X=Allthefeatures;
-                        elseif(StrategyClustering == 2 | StrategyClustering == 5) %% we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
+                        elseif(StrategyClustering == 2 | StrategyClustering == 5 | StrategyClustering == 8) %% we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
                             % we first use the depdscopevector to cluster  the features
                             % with similar depepndency scope  hten we use the
                             % descriptor to cluster on the base of the time property
@@ -381,7 +382,7 @@ for strID =1:9%1:6
                         csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Features_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),X);
                         % end
                         
-                        if (StrategyClustering == 3 | StrategyClustering == 6)
+                        if (StrategyClustering == 3 | StrategyClustering == 6| StrategyClustering == 9)
                             saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
                             depdOverLapThreshold = 1;
                             timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,num2str(StrategyClustering),distanceUsed,depdOverLapThreshold,USER_OT_targhet,USER_OD_targhet);
@@ -418,14 +419,21 @@ for strID =1:9%1:6
                         %                 end
                         %             end
                         %             SizeFeaturesforImages=[SizeFeaturesforImages;a];
-                        xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
+                        csvwrite(strcat(saveFeaturesPath,'NumFeatures.csv'),SizeFeaturesforImages);
+%                         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
                         
-                        col_header={char(strcat('OT',num2str(USER_OT_targhet),'_OD',num2str(USER_OD_targhet)))};%{'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
-                        rowHeader ={'FeatureEstraction';'ComputationDepdScale';'Clustering';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
-                        xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
-                        xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
-                        xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
+%                         col_header={char(strcat('OT',num2str(USER_OT_targhet),'_OD',num2str(USER_OD_targhet)))};%{'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
+%                         rowHeader ={'FeatureEstraction';'ComputationDepdScale';'Clustering';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
+csvwrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.csv'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering]);
+%xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
+%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
+%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
                     end
+                    
+%                     pause(1)
+%                     clear('a','ActFeatures','allclusterid','AlltheCluster','AllthefeaturesAllTS','C','Centroids','data','depd1','DepdScopeVector','descr1','frame1','gss1','idm1','idactfeatures',...
+%                         'indexfeaturesGroup','mu','possibleset','rowHeader','X','AlltheCluster','Allthefeatures','col_header')
+%                     
                 end
             end
         end

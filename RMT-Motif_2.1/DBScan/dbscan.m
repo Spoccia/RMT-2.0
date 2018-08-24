@@ -132,11 +132,23 @@ kdistMedianFilter= medfilt1(kdist,round(length(kdist)/10));
 % hold on;
 % %plot(kdistMovMedianFilter);
 % %hold off;
-
-legend('kdist','MovAVGfilter','MedianFilter');%,'kdistMovMedianFilter');
+% 
+% legend('kdist','MovAVGfilter','MedianFilter');%,'kdistMovMedianFilter');
+% usedistance = kdistAVGFilter(1:end-1) - kdistAVGFilter(2:end);
+% id = find(usedistance<0.01);
+% epsylon = kdist(id(1)); 
+% Maximum = id(1);%length(kdist)-id(1);
+% legend('kdist','MovAVGfilter','MedianFilter');%,'kdistMovMedianFilter');
 usedistance = kdistAVGFilter(1:end-1) - kdistAVGFilter(2:end);
-id = find(usedistance<0.01);
+id = find(usedistance<0.02);
+    epsylon = 0.5;
+    Maximum=2;
+if size(id,1)==0
+    epsylon = kdist(end);
+ %   Maximum=2;
+else
 epsylon = kdist(id(1)); 
-Maximum = id(1);%length(kdist)-id(1);
+%Maximum = id(1);%length(kdist)-id(1);
+end
 end
 end

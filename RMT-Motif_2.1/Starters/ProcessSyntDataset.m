@@ -247,7 +247,7 @@ for strID =4:5%1:6
                             C=AlltheCluster;
                             mu=Centroids;
                             X=Allthefeatures;
-                        elseif(StrategyClustering == 2 | StrategyClustering == 5) %% we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
+                        elseif(StrategyClustering == 2 | StrategyClustering == 5| StrategyClustering == 8) %% we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
                             % we first use the depdscopevector to cluster  the features
                             % with similar depepndency scope  hten we use the
                             % descriptor to cluster on the base of the time property
@@ -325,7 +325,7 @@ for strID =4:5%1:6
                         csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Features_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),X);
                         % end
                         
-                        if (StrategyClustering == 3 | StrategyClustering == 6)
+                        if (StrategyClustering == 3 | StrategyClustering == 6| StrategyClustering == 9)
                             saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
                             depdOverLapThreshold = 1;
                             timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,num2str(StrategyClustering),distanceUsed,depdOverLapThreshold,USER_OT_targhet,USER_OD_targhet);
