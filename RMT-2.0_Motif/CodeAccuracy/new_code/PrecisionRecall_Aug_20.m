@@ -12,21 +12,22 @@ TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66, 67, 71, 88, 95, 96, 102, 106, 
 
 % strategy = [1 : 9]; % strategy 7, 8, 9 currently have problems
 
-strategy = [1 : 9];
+% strategy = [1 : 9];
+strategy = [8 : 9];
 % num_of_motif = [1 : 3];
-num_of_motif = [1 : 3];
+num_of_motif = [3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 
-GroundTruthFilePath = ['/Users/sicongliu/Desktop/MyMotif/Silvestro_Aug_20/GroundTruthMocap/FeaturePosition_Motif'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/GroundTruthMocap/FeaturePosition_Motif'];
 
 % MatrixProfileFilePath = ['/Users/sicongliu/Desktop/MyMotif/EnergyComputeAccuracy/AccuracyMstamp'];
-MatrixProfileFilePath = ['/Users/sicongliu/Desktop/MyMotif/Silvestro_Aug_20/Accuracy'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Accuracy'];
 
 % RMTMotifFilePath = ['/Users/sicongliu/Desktop/MyMotif/EnergyComputeAccuracy/AccuracyRMT'];
-RMTMotifFilePath = ['/Users/sicongliu/Desktop/MyMotif/Silvestro_Aug_20/AccuracyMotif'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/AccuracyMotif'];
 
-savePathRMT = ['/Users/sicongliu/Desktop/MyMotif/Silvestro_Aug_20/Result_RMT_Motif'];
-savePathMatrixProfile = ['/Users/sicongliu/Desktop/MyMotif/Silvestro_Aug_20/Result_MStamp_Motif'];
+savePathRMT = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Result_RMT_Motif'];
+savePathMatrixProfile = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Result_MStamp_Motif'];
 
 MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
