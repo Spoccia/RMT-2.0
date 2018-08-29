@@ -5,7 +5,9 @@ weighted = 0;
 
 % iterate file to for upload
 testCaseIndex = 1 : 10;
-TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66, 67, 71, 88, 95, 96, 102, 106, 110, 112, 118, 121, 126, 136, 138, 140, 148, 150, 151, 153, 154]; % MoCap Dataset
+% TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66, 67, 71, 88, 95, 96, 102, 106, 110, 112, 118, 121, 126, 136, 138, 140, 148, 150, 151, 153, 154]; % MoCap Dataset
+% TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66]; % MoCap Dataset
+TS_index = [67, 71, 88, 95, 96, 102, 106, 110, 112, 118]; % MoCap Dataset
 
 % motif1 -> stragety 1 - 6
 % motif2 -> stragety 1 - 6
@@ -13,10 +15,11 @@ TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66, 67, 71, 88, 95, 96, 102, 106, 
 % strategy = [1 : 9]; % strategy 7, 8, 9 currently have problems
 
 % strategy = [1 : 9];
-strategy = [8 : 9];
+strategy = [1 : 9];
 % num_of_motif = [1 : 3];
-num_of_motif = [3];
+num_of_motif = [1:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
+% amp_scale = [1]; % 0.5 0.75 0 1
 
 GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/GroundTruthMocap/FeaturePosition_Motif'];
 
@@ -33,15 +36,16 @@ MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
 
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
-for tt = 1 : size(timeOverlapThresholds, 2)
-    for i = 1 : size(num_of_motif, 2)
-        for ss = 1 : size(strategy, 2)
-            for m = 1 : size(amp_scale, 2)
+% timeOverlapThresholds = [0.25, 0.5, 0.75, 1];
+for i = 1 : size(num_of_motif, 2)
+    for ss = 1 : size(strategy, 2)
+        for m = 1 : size(amp_scale, 2)
+            for tt = 1 : size(timeOverlapThresholds, 2)
                 index_count = 1; % keep track of same motif but different number of instances
                 for j = 1 : size(TS_index, 2)
                     for k = 1 : size(testCaseIndex, 2)
                         
-                        fprintf('Strategy: %d, Num of motif: %d, TS index: %d, instance: %d, amp scale: %f .\n', strategy(ss), num_of_motif(i), TS_index(j), testCaseIndex(k), amp_scale(m));
+                        fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
                         GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
                         
                         MatrixProfileFile = [MatrixProfileFilePath, '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
@@ -80,7 +84,7 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                         MStampsharedFolder = [savePathMatrixProfile, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
                         
                         if(exist(RMTsharedFolder,'dir')==0)
-                             mkdir(RMTsharedFolder);
+                            mkdir(RMTsharedFolder);
                         end
                         
                         if(exist(MStampsharedFolder,'dir')==0)
