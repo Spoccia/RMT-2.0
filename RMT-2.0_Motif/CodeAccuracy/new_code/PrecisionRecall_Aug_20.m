@@ -17,7 +17,7 @@ TS_index = [67, 71, 88, 95, 96, 102, 106, 110, 112, 118]; % MoCap Dataset
 % strategy = [1 : 9];
 strategy = [1 : 9];
 % num_of_motif = [1 : 3];
-num_of_motif = [1:3];
+num_of_motif = [2:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 % amp_scale = [1]; % 0.5 0.75 0 1
 
