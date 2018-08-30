@@ -3,7 +3,7 @@ clc;
 
 fprintf('Post procesing precision and recall files... \n');
 testCaseIndex = 1 : 100; % 30 time series used, 10 instances each
-strategy = [6:9];
+strategy = [1:9];
 num_of_motif = [3];
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];

@@ -7,19 +7,13 @@ weighted = 0;
 testCaseIndex = 1 : 10;
 % TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66, 67, 71, 88, 95, 96, 102, 106, 110, 112, 118, 121, 126, 136, 138, 140, 148, 150, 151, 153, 154]; % MoCap Dataset
 % TS_index = [3, 4, 11, 31, 45, 47, 57, 62, 63, 66]; % MoCap Dataset
-TS_index = [67, 71, 88, 95, 96, 102, 106, 110, 112, 118]; % MoCap Dataset
+% TS_index = [67, 71, 88, 95, 96, 102, 106, 110, 112, 118]; % MoCap Dataset
+TS_index = [121, 126, 136, 138, 140, 148, 150, 151, 153, 154]; % MoCap Dataset
 
-% motif1 -> stragety 1 - 6
-% motif2 -> stragety 1 - 6
 
-% strategy = [1 : 9]; % strategy 7, 8, 9 currently have problems
-
-% strategy = [1 : 9];
 strategy = [1 : 9];
-% num_of_motif = [1 : 3];
-num_of_motif = [2:3];
+num_of_motif = [1:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
-% amp_scale = [1]; % 0.5 0.75 0 1
 
 GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/GroundTruthMocap/FeaturePosition_Motif'];
 
@@ -36,7 +30,6 @@ MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
 
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
-% timeOverlapThresholds = [0.25, 0.5, 0.75, 1];
 for i = 1 : size(num_of_motif, 2)
     for ss = 1 : size(strategy, 2)
         for m = 1 : size(amp_scale, 2)
