@@ -10,7 +10,7 @@ algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatl
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1];
 
-shared_directory = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Second_10_Result_Backup'];
+shared_directory = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Third_10_Result_Backup'];
 for i = 1 : size(num_of_motif, 2)
     cur_num_of_motif = num_of_motif(i);
     
