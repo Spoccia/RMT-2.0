@@ -44,6 +44,9 @@ for i = 1 : size(num_of_motif, 2)
                 cur_algorithm_type = algorithm_type{kk};
                 
                 % table_column{kk}
+                mean_precision = [];
+                mean_recall = [];
+                mean_FScore = [];
                 for tt = 1 : size(timeOverlapThresholds, 2)
                     timeOverlapThreshold = timeOverlapThresholds(tt);
                     
@@ -64,6 +67,10 @@ for i = 1 : size(num_of_motif, 2)
                     precision_table_column{kk} = [precision_table_column{kk} precision];
                     recall_table_column{kk} = [recall_table_column{kk} recall];
                     FScore_table_column{kk} = [FScore_table_column{kk} FScore];
+                    
+                    mean_precision = [mean_precision; mean(precision)];
+                    mean_recall = [mean_recall; mean(recall)];
+                    mean_FScore = [mean_FScore; mean(FScore)];
                 end
             end
             % put together as a table
@@ -73,6 +80,15 @@ for i = 1 : size(num_of_motif, 2)
             recall_Table = table(clusterID, recall_table_column{1}, recall_table_column{2});
             FScore_Table = table(clusterID, FScore_table_column{1}, FScore_table_column{2});
             
+            mean_table_column = {'10%', '25%', '50%', '75%', '100%'};
+            mean_precision_table = table(mean_table_column, mean_precision);
+            mean_recall_table = table(mean_table_column, mean_recall);
+            mean_FScore_table = table(mean_table_column, mean_FScore);
+            
+            mean_precision_table.Properties.VariableNames = {'TimeOverlap', 'RMT', 'MStamp'};
+            mean_recall_table.Properties.VariableNames = {'TimeOverlap', 'RMT', 'MStamp'};
+            mean_FScore_table.Properties.VariableNames = {'TimeOverlap', 'RMT', 'MStamp'};
+            
             precison_Table.Properties.VariableNames = {'ClusterID', 'RMT', 'MStamp'};
             recall_Table.Properties.VariableNames = {'ClusterID', 'RMT', 'MStamp'};
             FScore_Table.Properties.VariableNames = {'ClusterID', 'RMT', 'MStamp'};
@@ -80,6 +96,10 @@ for i = 1 : size(num_of_motif, 2)
             precision_sheet = ['amp_scale_', num2str(amp_scale(aa)), '_precision'];
             recall_sheet = ['amp_scale_', num2str(amp_scale(aa)), '_recall'];
             FScore_sheet = ['amp_scale_', num2str(amp_scale(aa)), '_FScore'];
+            
+            writetable(mean_precision_table, excel_file_name, 'Sheet', precision_sheet, 'Range', 'A1');
+            writetable(mean_recall_table, excel_file_name, 'Sheet', recall_sheet, 'Range', 'A1');
+            writetable(mean_FScore_table, excel_file_name, 'Sheet', FScore_sheet, 'Range', 'A1');
             
             writetable(precison_Table, excel_file_name, 'Sheet', precision_sheet, 'Range', 'A10');
             writetable(recall_Table, excel_file_name, 'Sheet', recall_sheet, 'Range', 'A10');
