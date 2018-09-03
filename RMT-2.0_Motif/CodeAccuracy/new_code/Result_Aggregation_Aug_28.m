@@ -3,14 +3,14 @@ clc;
 
 % Aggregate RMT & MStamp in one table, output as txt file
 fprintf('Aggregating precision and recall files... \n');
-testCaseIndex = 1 : 100; % 30 time series used, 10 instances each
+testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 strategy = [1:9];
 num_of_motif = [1:3];
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1];
 
-shared_directory = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Third_10_Result_Backup'];
+shared_directory = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Aug_20/Merged'];
 for i = 1 : size(num_of_motif, 2)
     cur_num_of_motif = num_of_motif(i);
     
@@ -40,13 +40,22 @@ for i = 1 : size(num_of_motif, 2)
             FScore_table_column{1} = [];
             FScore_table_column{2} = [];
             
+            mean_precision = [];
+            mean_recall = [];
+            mean_FScore = [];
+            
+            mean_precision{1} = [];
+            mean_recall{1} = [];
+            mean_FScore{1} = [];
+            
+            mean_precision{2} = [];
+            mean_recall{2} = [];
+            mean_FScore{2} = [];
             for kk = 1 : size(algorithm_type, 2)
                 cur_algorithm_type = algorithm_type{kk};
                 
                 % table_column{kk}
-                mean_precision = [];
-                mean_recall = [];
-                mean_FScore = [];
+                
                 for tt = 1 : size(timeOverlapThresholds, 2)
                     timeOverlapThreshold = timeOverlapThresholds(tt);
                     
@@ -68,9 +77,9 @@ for i = 1 : size(num_of_motif, 2)
                     recall_table_column{kk} = [recall_table_column{kk} recall];
                     FScore_table_column{kk} = [FScore_table_column{kk} FScore];
                     
-                    mean_precision = [mean_precision; mean(precision)];
-                    mean_recall = [mean_recall; mean(recall)];
-                    mean_FScore = [mean_FScore; mean(FScore)];
+                    mean_precision{kk} = [mean_precision{kk}; mean(precision)];
+                    mean_recall{kk} = [mean_recall{kk}; mean(recall)];
+                    mean_FScore{kk} = [mean_FScore{kk}; mean(FScore)];
                 end
             end
             % put together as a table
@@ -80,10 +89,10 @@ for i = 1 : size(num_of_motif, 2)
             recall_Table = table(clusterID, recall_table_column{1}, recall_table_column{2});
             FScore_Table = table(clusterID, FScore_table_column{1}, FScore_table_column{2});
             
-            mean_table_column = {'10%', '25%', '50%', '75%', '100%'};
-            mean_precision_table = table(mean_table_column, mean_precision);
-            mean_recall_table = table(mean_table_column, mean_recall);
-            mean_FScore_table = table(mean_table_column, mean_FScore);
+            mean_table_column = {'10%', '25%', '50%', '75%', '100%'}';
+            mean_precision_table = table(mean_table_column, mean_precision{1}, mean_precision{2});
+            mean_recall_table = table(mean_table_column, mean_recall{1}, mean_recall{2});
+            mean_FScore_table = table(mean_table_column, mean_FScore{1}, mean_FScore{2});
             
             mean_precision_table.Properties.VariableNames = {'TimeOverlap', 'RMT', 'MStamp'};
             mean_recall_table.Properties.VariableNames = {'TimeOverlap', 'RMT', 'MStamp'};
