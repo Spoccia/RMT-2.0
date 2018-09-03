@@ -83,6 +83,6 @@ end
 FileName=[path,'Features_',FeaturesRM,'\Accuracy\Strategy_',num2str(StrategyClustering),'\','AP_','DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];%'\',TEST,%'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];
 csvwrite(FileName,FeatureClassCount);
 
-% xlswrite(FileName,FeatureClassCount,'AP_all_SubC','A2');
-% xlswrite(FileName,col_header,'AP_all_SubC','A1');
+%  xlswrite(FileName,FeatureClassCount,'AP_all_SubC','A2');
+%  xlswrite(FileName,col_header,'AP_all_SubC','A1');
 end

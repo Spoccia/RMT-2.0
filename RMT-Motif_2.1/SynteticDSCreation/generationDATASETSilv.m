@@ -17,7 +17,9 @@ NUM_VARIATE = 27;%Energy; %62;%MoCap;
 random_walk_instance = 10;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1];%0.1;% randomWalkScale =
 possibleMotifNUM=[1,2,3,10];%AllTS;%
-length_percentage = [1,0.75,0.5];%0.5;% length_percentage =
+length_percentage = [1,0.75,0.5];
+%                      0.75,0.5,1;
+%                      1,0.5,0.75];%0.5;% length_percentage =
 %originalTSIDArray=[23,35,86,111];%[1,3,6,7];%Energy %[64,70,80,147];%BirdSong; %[85,24,35,127];%Mocap
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
@@ -52,7 +54,7 @@ for orgID =1:length(originalTSIDArray)%2
         MotifsSections=[];
         offSpace=0;
         for MotifId =1: num_of_motif
-            timescope= FeatureToInject(4,MotifId)*3;
+            timescope= FeatureToInject(4,MotifId)*3; % 29
             intervaltime=(round((FeatureToInject(2,MotifId)-timescope)) : (round((FeatureToInject(2,MotifId)+timescope+offSpace))));
             MotifsSections{MotifId}.data = TSdata(:,intervaltime((intervaltime>0 & intervaltime<=size(TSdata,2))));
             MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
@@ -121,7 +123,7 @@ for orgID =1:length(originalTSIDArray)%2
                 csvwrite([DestDataPath,'\',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],Motif1RW);
                 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','FeaturePosition_',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],FeatPositions);%,testNAME,'\'
                 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','dpscale_',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],EachInstanceDependency);
-                csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','ORGRW',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],randomwalkData);
+ %               csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','ORGRW',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],randomwalkData);
                 csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','Parameters_',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],[originalTSID;num_of_motif;motif_instances;i;random_walk_scale(rwscale)]);
                 %         Counter=Counter+1;
             end

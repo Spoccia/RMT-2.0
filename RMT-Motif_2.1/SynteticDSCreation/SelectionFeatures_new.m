@@ -2,7 +2,7 @@
 
 
 
-FeaturePath = 'D:\Motif_Results\Datasets\Building_MultiStory\Features_RMT\';
+FeaturePath = 'D:\Motif_Results\Datasets\Energy\Features_RMT\';
              %'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
 DestDataPath = 'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';
 DepO=2;
@@ -27,6 +27,9 @@ for numberofTS=1:TSCOnsidered
     [rows,colmn]= size(X);
     dpscale = csvread(strcat(FeaturePath,TS_name,'/DistancesDescriptor\DepdScale_IM_',TS_name,'_DepO_',num2str(DepO),'_TimeO_',num2str(DepT),'.csv'));
     dpscale(:,Check<=64)=[];
+    indexfeatureGroup= (X(4,:)==max(X(4,:)));
+    X=X(:,indexfeatureGroup) ;
+    dpscale=(dpscale(:,indexfeatureGroup)); 
     Features=[];
     Dependency=[];
     i=1;

@@ -50,8 +50,6 @@ for prcentid=1:size(percent,2)
                 TS_name=num2str(TEST);
                 data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
                 data(isnan(data))=0;
-                data(1,:)=0;
-                data(end,:)=1;
                 % data1= csvread('D:\Motif_Results\Datasets\SynteticDataset\data\RandomWalks\RandomWalk_1.csv')';
                 %        data(:,[34,46]) = RW([34,46],1:size(data,1))';
                 %                data(end,[34,46]) =1;
@@ -181,8 +179,8 @@ for prcentid=1:size(percent,2)
                 %rowHeader ={'MSTAMP';'FindMotifInstance';'AKmedoids'};
                 csvwrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.csv'],TIME');
                 %xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],TIME','TIME','B2');
-%                 xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],rowHeader,'TIME','A2');
-%                 xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],col_header,'TIME','B1');
+                xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],rowHeader,'TIME','A2');
+                xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],col_header,'TIME','B1');
                 clc;
                 %      catch
                 %      end
