@@ -2,66 +2,50 @@ clear;
 clc;
 
 weighted = 0;
-% iterate file to for upload
+
 testCaseIndex = 1 : 10;
-% TS_index = [24, 35, 85, 127];
 
-TS_index = [1, 3, 6, 7]; % BirdSong dataset
-% TS_index = [1, 3, 6, 7]; % BirdSong dataset
-% TS_index = [23, 35, 86, 111]; % BirdSong dataset
+TS_index = [2, 10, 11, 12, 16, 17, 20, 21, 23, 24, 26, 28, 33, 34, 36, 39, 42, 43, 44, 46, 47, 53, 61, 66, 70, 73, 79, 82, 87, 88]; % Energy Dataset
 
-% motif1 -> stragety 1 - 6
-% motif2 -> stragety 1 - 6
+% strategy = [1 : 9];
+strategy = [9];
 
-% strategy = [1 : 6];
-strategy = 3;
-num_of_motif = [1 : 3];
-% num_of_motif = [10];
-% amp_scale = [0, 0.1, 0.5, 0.75, 1]; % 0.5 0.75 0 1
-amp_scale = 0;
+% num_of_motif = [1:3];
+num_of_motif = [3];
 
-% GroundTruthFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/GroundTruth_All/FeaturePosition_Motif_'];
-GroundTruthFilePath = ['/Users/sicongliu/Desktop/MyMotif/EnergyComputeAccuracy/GroundTruth/IndexEmbeddedFeatures/FeaturePosition_Motif'];
+amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 
-% MatrixProfileFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/MatrixProfile_Accuracy_size100_Motif_1/100_Motif_'];
-MatrixProfileFilePath = ['/Users/sicongliu/Desktop/MyMotif/EnergyComputeAccuracy/AccuracyMstamp'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/data/IndexEmbeddedFeatures/FeaturePosition_Motif'];
 
-% RMTMotifFilePath = ['/Users/sicong/Desktop/Results_Motif/Synthetic_Dataset/Features_RMT/Accuracy_Motif'];
-RMTMotifFilePath = ['/Users/sicongliu/Desktop/MyMotif/EnergyComputeAccuracy/AccuracyRMT'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/MStampEnergy/Accuracy_Motif'];
 
-% RMTMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_size100_Motif_1/AP_DepO_2_DepT_2_100_Motif_'];
-% RMEMotifFilePath = ['/Users/sliu104/Desktop/Test_Case_Jan_30/RMT_Accuracy_size100_Motif_1/AP_DepO_2_DepT_2_100_Motif_'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/Accuracy_Motif'];
 
-savePathRMT = ['/Users/sicongliu/Desktop/Results_Energy_Motif_Save_NewlyAdded/RMT/Motif'];
-savePathMatrixProfile = ['/Users/sicongliu/Desktop/Results_Energy_Motif_Save_NewlyAdded/MStamp/Motif'];
-
-% savePathMatrixProfile = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_Motif1_5_instances'];
-% savePathMatrixProfile = ['/Users/sliu104/Desktop/Test_Case_Jan_30_Results/MatrixProfile_Accuracy_size100_Motif_1/'];
+savePathRMT = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/Result_RMT_Motif'];
+savePathMatrixProfile = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/Result_MStamp_Motif'];
 
 MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
 
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
-for tt = 1 : size(timeOverlapThresholds, 2)
+for i = 1 : size(num_of_motif, 2)
     for ss = 1 : size(strategy, 2)
-        for i = 1 : size(num_of_motif, 2)
-            for m = 1 : size(amp_scale, 2)
-                
-                index_count = 1;
+        for m = 1 : size(amp_scale, 2)
+            for tt = 1 : size(timeOverlapThresholds, 2)
+                index_count = 1; % keep track of same motif but different number of instances
                 for j = 1 : size(TS_index, 2)
                     for k = 1 : size(testCaseIndex, 2)
                         
-                        fprintf('Strategy: %d, Num of motif: %d, TS index: %d, instance: %d, amp scale: %f .\n', strategy(ss), num_of_motif(i), TS_index(j), testCaseIndex(k), amp_scale(m));
+                        fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
                         GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
                         
-                        MatrixProfileFile = [MatrixProfileFilePath, '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        % need update
+                        MatrixProfileFile = [MatrixProfileFilePath, num2str(num_of_motif(i)), '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                         
-                        RMTMotifFile = [RMTMotifFilePath, '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        RMTMotifFile = [RMTMotifFilePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                         
                         threshold = eps; % if it is non-zero
-                        
                         timeOverlapThreshold = timeOverlapThresholds(tt);
-                        % windowSize = 58;
                         % windowSize = 32; % BirdSong configuration
                         windowSize = 58; % Energy dataset configuration
                         if(weighted == 1)
@@ -74,10 +58,10 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                             % [currentRMEMotifEntropy, precisionMatrixRME, recallMatrixRME, FScoreMatrixRME] = motifEvaluationWeighted(GroundTruthFile, RMEMotifFile, algorithmType, windowSize);
                         else
                             algorithmType = 'MatrixProfile';
-                            [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile, total_index_MStamp] = motifEvaluation(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize, threshold, timeOverlapThreshold);
+                            [currentMatrixProfileEntropy,  precisionMatrixMatrixProfile, recallMatrixMatrixProfile, FScoreMatrixMatrixProfile, total_index_MStamp] = motifEvaluation_Energy(GroundTruthFile, MatrixProfileFile, algorithmType, windowSize, threshold, timeOverlapThreshold);
                             
                             algorithmType = 'RMT';
-                            [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT, total_index_RMT] = motifEvaluation(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold, timeOverlapThreshold);
+                            [currentRMTMotifEntropy, precisionMatrixRMT, recallMatrixRMT, FScoreMatrixRMT, total_index_RMT] = motifEvaluation_Energy(GroundTruthFile, RMTMotifFile, algorithmType, windowSize, threshold, timeOverlapThreshold);
                             
                         end
                         
@@ -92,7 +76,7 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                         MStampsharedFolder = [savePathMatrixProfile, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
                         
                         if(exist(RMTsharedFolder,'dir')==0)
-                             mkdir(RMTsharedFolder);
+                            mkdir(RMTsharedFolder);
                         end
                         
                         if(exist(MStampsharedFolder,'dir')==0)
@@ -118,15 +102,21 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                         csvwrite(savePathRemainIndex, total_index_MStamp);
                         
                         index_count = index_count + 1;
-                        if(index_count == 21)
-                            fprintf('here');
-                        end
-                        
                     end
-                    % entropy: precision entropy, recall entropy, FScore entropy
-                    % RMT_Entropy_Ouput_Path = [savePathRMT, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold), '/RMTMotifEntropy.csv'];
-                    RMT_Entropy_Ouput_Path = [savePathRMT, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold), '/RMTMotifEntropy.csv'];
-                    MStamp_Entropy_Ouput_Path = [savePathMatrixProfile, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold), '/MStampMotifEntropy.csv'];
+                    
+                    save_RMT_Entropy_Folder = [savePathRMT, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                    save_MStamp_Entropy_Folder= [savePathMatrixProfile, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                    
+                    if(exist(save_RMT_Entropy_Folder,'dir')==0)
+                        mkdir(save_RMT_Entropy_Folder);
+                    end
+                    
+                    if(exist(save_MStamp_Entropy_Folder,'dir')==0)
+                        mkdir(save_MStamp_Entropy_Folder);
+                    end
+                    
+                    RMT_Entropy_Ouput_Path = [save_RMT_Entropy_Folder, '/RMTMotifEntropy.csv'];
+                    MStamp_Entropy_Ouput_Path = [save_MStamp_Entropy_Folder, '/MStampMotifEntropy.csv'];
                     
                     csvwrite(MStamp_Entropy_Ouput_Path, MatrixProfileEntropy);
                     csvwrite(RMT_Entropy_Ouput_Path, RMTMotifEntropy);
