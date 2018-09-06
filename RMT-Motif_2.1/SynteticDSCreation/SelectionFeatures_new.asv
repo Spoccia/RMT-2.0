@@ -10,7 +10,7 @@ DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\'];
 DepO=2;
 DepT=2;
 nummotifs=3;
-TSCOnsidered=90;
+TSCOnsidered=50;
 AllTS= randperm(154,TSCOnsidered);%randi([1,154],1,TSCOnsidered);
 for numberofTS=1:TSCOnsidered
     TS_name = num2str(AllTS(numberofTS));
@@ -36,10 +36,9 @@ for numberofTS=1:TSCOnsidered
     Dependency=[];
     i=1;
     if size(X,2)==0
-     
+     'remove'
      TS_name
     end
-    try
     while i<=nummotifs %& size(X,2)>nummotifs %for i=1:nummotifs
         random= randi([1,size(X,2)],1,1);
         A = X(:, random);
@@ -68,9 +67,7 @@ for numberofTS=1:TSCOnsidered
         X(:,index) =[];
         
     end
-    catch
-        TS_name
-    end
+    
     if(exist([DestDataPath,'\FeaturesToInject\'],'dir')==0)
         mkdir([DestDataPath,'\FeaturesToInject\']);
     end

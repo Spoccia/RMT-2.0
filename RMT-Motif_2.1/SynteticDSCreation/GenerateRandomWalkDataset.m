@@ -1,9 +1,9 @@
 clc;
 clear;
-RW_varaiteSize =27;%Energy %13;%'BSONG' %62; %ASL %62;%Mocap
+RW_varaiteSize =13;%'BSONG' %27;%Energy %62; %ASL %62;%Mocap
 RW_timelength  = 2500;
 NormInterval=[zeros(RW_varaiteSize,1),ones(RW_varaiteSize,1)];
-Dset='Energy';%'Mocap';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
+Dset='BirdSong';%'Energy';%'Mocap';%Bird Song %'ASL';%'data';%for Mocap
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\RW_0_1\'];
 
 numInstances= 10;

@@ -1,6 +1,6 @@
 clc;
 clear;
-DatasetTouse='Energy';
+DatasetTouse='BirdSong';%'Energy';
 featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\BSONG\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];%MOCAP
@@ -13,7 +13,7 @@ TimeSeriesPath = ['D:\Motif_Results\Datasets\',DatasetTouse,'\data\'];
 
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse];
 %\BSONG';
-NUM_VARIATE = 27;%Energy; %62;%MoCap;
+NUM_VARIATE = 13;%BirdSong %27;%Energy; %62;%MoCap;
 random_walk_instance = 10;
 motif_instances = 10; % MotifInstances= 10;
 RWlength = 2500;
@@ -23,15 +23,15 @@ length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5
 length_percentage=[];
 for pssMotID =1:3
   randid= randperm(motif_instances);
-  length_percentage=[length_percentage;length_percentage(randid)];
+  length_percentage=[length_percentage;length_percentage_1(randid)];
 end
 %                      0.75,0.5,1;
 %                      1,0.5,0.75];%0.5;% length_percentage =
 %originalTSIDArray=[23,35,86,111];%[1,3,6,7];%Energy %[64,70,80,147];%BirdSong; %[85,24,35,127];%Mocap
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
-for orgID =1:length(originalTSIDArray)%2
-    originalTSID=originalTSIDArray(orgID);%85;%127;%[24,35,85,127];85;%24;%35;%
+for orgID =1:30%length(originalTSIDArray)%2
+    originalTSID=originalTSIDArray(orgID)%85;%127;%[24,35,85,127];85;%24;%35;%
     %\data'; %for MOCAP
    
     for pssMotID = 1: 3%length(possibleMotifNUM)%4:4
@@ -49,10 +49,10 @@ for orgID =1:length(originalTSIDArray)%2
         FeaturesToInject = csvread([featuresToInjectPath,'Features',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
         DepdToInject = csvread([featuresToInjectPath,'depd',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
         
-        %% MOCAP
-%        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+        %% MOCAP BirdSong
+       TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
         %% Energy
-        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
+%         TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
         
         FeatureToInject= FeaturesToInject(:,1:num_of_motif);
         DepdToInject = DepdToInject(:,1:num_of_motif);
@@ -111,11 +111,11 @@ for orgID =1:length(originalTSIDArray)%2
                     
                     length_index = length_percentage(MotifID,idxMotifID(MotifID));
                     %  length_index =  mod(motifInstance, length(length_percentage));
-                    idxMotifID(MotifID)=idxMotifID(MotifID)+1
+                    idxMotifID(MotifID)=idxMotifID(MotifID)+1;
                     if(length_index == 0)
                         length_index = size(length_percentage, 2);
                     end
-                    M1 = imresize( MotifsSections{MotifID}.data,[size( MotifsSections{MotifID}.data,1), size( MotifsSections{MotifID}.data,2)*length_percentage(length_index)]);
+                    M1 = imresize( MotifsSections{MotifID}.data,[size( MotifsSections{MotifID}.data,1), size( MotifsSections{MotifID}.data,2)*length_index]);%length_percentage(length_index)]);
                     scalingTime =size(M1,2);
                     
                     Motif1RW(MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1),starterTime(motifInstance):starterTime(motifInstance)+scalingTime-1) = ...
