@@ -127,7 +127,7 @@ percent=[0; 0.1;0.25;0.5;0.75;1];
 
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
 for strID =1:size(strategy,2)%9%1:6
-    StrategyClustering= strategy(strID);%2;%1;%3;%
+    StrategyClustering= strategy(strID)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
     % 3 - old approach do clustering  then subclustering
@@ -142,8 +142,8 @@ for strID =1:size(strategy,2)%9%1:6
     for percentid=1:size(percent,1)
         percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
         
-        for MOTIFNUMber =1:3
-            for pip=1:20   %TSnames
+        for MOTIFNUMber =3:3
+            for pip=1:30   %TSnames
                 for NAME = 1:Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
                     TIMEFOROCTAVE=0;%zeros(1,4);
