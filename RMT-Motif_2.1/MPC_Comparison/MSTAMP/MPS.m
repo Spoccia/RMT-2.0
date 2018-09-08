@@ -19,11 +19,11 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%BirdSong\';%Mocap\';
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\';%Energy\';%Mocap\';
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';%Building_MultiStory\';%BSONG\';
 %'D:\Motif_Results\Datasets\BirdSong\';
 %'D:\Motif_Results\Datasets\Mocap\';%'D:\Motif_Results\Datasets\SynteticDataset\';%
-ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\Energy\MStamp\';%BirdSong\MStamp\';%\Mocap\MStamp\';
+ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\BirdSong\MStamp\';%Energy\MStamp\';%\Mocap\MStamp\';
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\MStamp\';%Mocap\MStamp\';%Building_MultiStory\MStampB\';%BSONG\MStampB\';
 %'D:\Motif_Results\Datasets\BirdSong\MStampB\';
 %'D:\Motif_Results\Datasets\Mocap\MStampB\';%'D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%
@@ -34,15 +34,15 @@ Name_OriginalSeries = AllTS;%[1,3,6,7];%ENERGY %[23,35,86,111];% MOCap Motif10[6
 % for NAME =23:154 %100:105%71:72%39:39%%46:57%34:45%34:39
 percent=[0; 0.1;0.25;0.5;0.75;1];% 0.1;0.5;0.75;1];
 % for percentid=1:size(percent,1)
-for prcentid=1:6%6%size(percent,1)
+for prcentid=4:6%6%size(percent,1)
     percentagerandomwalk=percent(prcentid);
-    for numMotifInjected =3:3%10:10%3
-        for pip=8:30
-            for NAME = 3:10
+    for numMotifInjected =1:3%10:10%3
+        for pip=1:30
+            for NAME = 1:10
                 MotifBag_mstamp=[];
                 %      try
                 FeaturesRM='MStamp';
-                sublenght= 58;%ENERGY32;%Bsong% %58;%ENERGY %58;%MOCAP 29;  %[29,58];77;%12;%
+                sublenght= 32;%Bsong%58;%ENERGY %58;%ENERGY %58;%MOCAP 29;  %[29,58];77;%12;%
                 
                 %           TEST=[NAME]
                 TEST=['Motif',num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
