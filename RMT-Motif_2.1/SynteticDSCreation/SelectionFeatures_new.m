@@ -2,9 +2,9 @@
 
 
 
-FeaturePath = 'D:\Motif_Results\Datasets\BirdSong\Features_RMT\';
+FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
              %'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
-Dset='BirdSong';%'Energy';%'Mocap';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
+Dset='Mocap';%'BirdSong';%'Energy';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\'];
 %DestDataPath = 'D:\Motif_Results\Datasets\BirdSong\';%Energy\';%Mocap\';
 DepO=2;
@@ -49,12 +49,12 @@ for numberofTS=1:TSCOnsidered
             isokthefeature=zeros(1,size(Dependency,2));
             for actDEPD=1:size(Dependency,2)
                 isokthefeature(actDEPD)= size(intersect(Dependency(Dependency(:,actDEPD)>0,actDEPD),B(B(:,1)>0,1)),1); %For everithing
-                %% if else for Birdsong
-                if size(intersect(Dependency(Dependency(:,actDEPD)>0,actDEPD),B(B(:,1)>0,1)),1) ~= size(B(B(:,1)>0,1),1)%  size(union(Dependency(Dependency(:,actDEPD)>0,actDEPD),B(B(:,1)>0,1)),1)
-                    isokthefeature(actDEPD)=0;
-                else
-                    isokthefeature(actDEPD)=1;
-                end
+%                 %% if else for Birdsong
+%                 if size(intersect(Dependency(Dependency(:,actDEPD)>0,actDEPD),B(B(:,1)>0,1)),1) ~= size(B(B(:,1)>0,1),1)%  size(union(Dependency(Dependency(:,actDEPD)>0,actDEPD),B(B(:,1)>0,1)),1)
+%                     isokthefeature(actDEPD)=0;
+%                 else
+%                     isokthefeature(actDEPD)=1;
+%                 end
             end
         end
         isokthefeature=sum(isokthefeature);

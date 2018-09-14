@@ -5,19 +5,19 @@ clear;
 DatasetInject=2;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';           %'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'E:\Motif_Results\Datasets\SynteticDataset\Mocap\';
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\';
 %'D:\Motif_Results\Datasets\SynteticDataset\Mocap\';%Energy\';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
 %% clustering abilitation
 Cluster =  1;%1;%
-strategy=[1,2,3,4,5,6,7,8,9];
-for strID =4:5%1:6
+strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
+for strID =5:size(strategy,2);%1:6
     StrategyClustering= strategy(strID);%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -79,9 +79,9 @@ for strID =4:5%1:6
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1];
-    for percentid=2:size(percent,1)
+    for percentid=1:size(percent,1)
         percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
-        for MOTIFNUMber =1:3
+        for MOTIFNUMber =2:3
             for pip=1:30   %TSnames
                 for NAME = 1:Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
@@ -122,7 +122,10 @@ for strID =4:5%1:6
                     RELATION=coordinates;
                     
                     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-                    
+                    if(StrategyClustering > 1)
+                        FeatureExtractionFlag=0;
+                        createDependencyScale=0;
+                    end 
                     %% Features Extraction
                     if(FeatureExtractionFlag==1)
                         saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];%,EntropyPruningFolder];
@@ -362,13 +365,14 @@ for strID =4:5%1:6
                         %                 end
                         %             end
                         %             SizeFeaturesforImages=[SizeFeaturesforImages;a];
-                        xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
-                        
-                        col_header={char(strcat('OT',num2str(USER_OT_targhet),'_OD',num2str(USER_OD_targhet)))};%{'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
-                        rowHeader ={'FeatureEstraction';'ComputationDepdScale';'Clustering';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
-                        xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
-                        xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
-                        xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
+%                         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
+                        csvwrite(strcat(saveFeaturesPath,'NumFeatures.csv'),SizeFeaturesforImages);
+                          csvwrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.csv'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering]);
+%                         col_header={char(strcat('OT',num2str(USER_OT_targhet),'_OD',num2str(USER_OD_targhet)))};%{'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
+%                         rowHeader ={'FeatureEstraction';'ComputationDepdScale';'Clustering';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
+%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
+%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
+%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
                     end
                 end
             end
