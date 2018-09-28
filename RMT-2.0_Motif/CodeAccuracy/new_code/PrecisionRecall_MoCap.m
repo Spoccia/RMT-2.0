@@ -14,7 +14,7 @@ strategy = [3];
 % num_of_motif = [1:3];
 num_of_motif = [2:3];
 % amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
-amp_scale = [0, 0.1]; % 0.5 0.75 0 1
+amp_scale = [0.1, 1]; % 0.5 0.75 0 1
 
 GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/GroundTruthMocap/FeaturePosition_Motif'];
 
