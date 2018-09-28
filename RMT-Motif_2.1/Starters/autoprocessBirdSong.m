@@ -40,7 +40,7 @@ justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
 distanceUsed='Descriptor';% use just descriptors to  cluster
 % the algorithm of clustering to use
-for strategyIDentifier =5:size(strategy,2)
+for strategyIDentifier =1:size(strategy,2)
     clc;
     StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
