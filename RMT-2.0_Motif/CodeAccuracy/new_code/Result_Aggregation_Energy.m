@@ -8,13 +8,13 @@ testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 strategy = [1, 3, 4, 6, 7, 9];
 
 % num_of_motif = [1:3];
-num_of_motif = [3];
+num_of_motif = [2:3];
 
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1];
 
-shared_directory = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy'];
+shared_directory = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy'];
 for i = 1 : size(num_of_motif, 2)
     cur_num_of_motif = num_of_motif(i);
     

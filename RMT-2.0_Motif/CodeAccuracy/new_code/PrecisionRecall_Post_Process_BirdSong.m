@@ -7,7 +7,8 @@ testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 strategy = [1, 3, 4, 6, 7, 9];
 
 % num_of_motif = [1:3];
-num_of_motif = [1:2];
+% num_of_motif = [1:2];
+num_of_motif = [3];
 
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];

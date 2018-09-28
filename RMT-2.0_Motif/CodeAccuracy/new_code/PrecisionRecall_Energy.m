@@ -12,24 +12,24 @@ TS_index = [2, 6, 9, 11, 18, 19, 24, 26, 28, 30, 31, 33, 34, 37, 42, 51, 53, 54,
 strategy = [1, 3, 4, 6, 7, 9];
 
 % num_of_motif = [1:3];
-num_of_motif = [3];
+num_of_motif = [2:3];
 
 % amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 
 % GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/data/IndexEmbeddedFeatures/FeaturePosition_Motif'];
-GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy/GroundTruth/FeaturePosition_Motif'];
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/GroundTruth/FeaturePosition_Motif'];
 
 % MatrixProfileFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/MStampEnergy/Accuracy_Motif'];
-MatrixProfileFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy/MStampEnergy/Accuracy_Motif'];
+MatrixProfileFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
 
 % RMTMotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/Accuracy_Motif'];
-RMTMotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy/Accuracy_Motif'];
+RMTMotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Accuracy_Motif2_3'];
 
 % savePathRMT = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/Result_RMT_Motif'];
 % savePathMatrixProfile = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_3_Energy/Result_MStamp_Motif'];
-savePathRMT = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy/Result_RMT_Motif'];
-savePathMatrixProfile = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy/Result_MStamp_Motif'];
+savePathRMT = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_RMT_Motif'];
+savePathMatrixProfile = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_MStamp_Motif'];
 
 MatrixProfileEntropy = [];
 RMTMotifEntropy = [];
@@ -47,8 +47,12 @@ for i = 1 : size(num_of_motif, 2)
                         GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
                         
                         % need update
-                        MatrixProfileFile = [MatrixProfileFilePath, num2str(num_of_motif(i)), '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
-                        RMTMotifFile = [RMTMotifFilePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        % MatrixProfileFile = [MatrixProfileFilePath, num2str(num_of_motif(i)), '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        % RMTMotifFile = [RMTMotifFilePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        MatrixProfileFile = [MatrixProfileFilePath, '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        RMTMotifFile = [RMTMotifFilePath, '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                        
+                        
                         
                         threshold = eps; % if it is non-zero
                         timeOverlapThreshold = timeOverlapThresholds(tt);

@@ -7,7 +7,7 @@ testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 strategy = [1, 3, 4, 6, 7, 9];
 
 % num_of_motif = [1:3];
-num_of_motif = [3];
+num_of_motif = [2:3];
 
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
@@ -24,7 +24,7 @@ for tt = 1 : size(timeOverlapThresholds, 2)
                     cur_num_of_motif = num_of_motif(i);
                     
                     fprintf('num_of_motif: %d, strategy: %d, algorithm_type: %s, amplitude scale: %f, time overlap threshold: %f . \n', cur_num_of_motif, cur_strategy, cur_algorithm_type, amp_scale(aa), timeOverlapThreshold);
-                    sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_7_Energy/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+                    sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
                     precision_file_path = [sharedFolder, '/', cur_algorithm_type, 'Precision_'];
                     recall_file_path = [sharedFolder, '/', cur_algorithm_type, 'Recall_'];
                     FScore_file_path = [sharedFolder, '/', cur_algorithm_type, 'FScore_'];

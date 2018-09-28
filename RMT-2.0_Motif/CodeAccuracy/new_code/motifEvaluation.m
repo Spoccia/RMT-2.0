@@ -3,13 +3,16 @@ function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index
 
 motifFeatureCount = csvread(groundTruthFile);
 
-if(strcmp(algorithmType,'RMT') || strcmp(algorithmType,'RME') == 1)
-    [num,txt,raw] = xlsread(motifFile, 'AP_all_SubC');
-    %[num,txt,raw] = xlsread(motifFile, 'AP_all');
-else
-    window = ['Lenght_', num2str(windowSize)];
-    [num,txt,raw] = xlsread(motifFile, window);
-end
+% if(strcmp(algorithmType,'RMT') || strcmp(algorithmType,'RME') == 1)
+%     [num,txt,raw] = xlsread(motifFile, 'AP_all_SubC');
+%     %[num,txt,raw] = xlsread(motifFile, 'AP_all');
+% else
+%     window = ['Lenght_', num2str(windowSize)];
+%     [num,txt,raw] = xlsread(motifFile, window);
+% end
+
+num = csvread(motifFile);
+
 motifClass = unique(motifFeatureCount(:, 1));
 motifClassCount = [];
 % update motif class count
