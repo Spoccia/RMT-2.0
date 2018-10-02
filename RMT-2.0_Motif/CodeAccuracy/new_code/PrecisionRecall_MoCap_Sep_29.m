@@ -1,20 +1,29 @@
-% clear;
-% clc;
+clear;
+clc;
 
 % iterate file to for upload
 testCaseIndex = 1 : 10;
-TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 
-% algorithm_type = {'RMT', 'MStamp'};
-algorithm_type = {'RMT'};
-% strategy = [1 : 9];
+% MoCap
+% TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
+
+% Energy dataset
+TS_index = [2, 6, 9, 11, 18, 19, 24, 26, 28, 30, 31, 33, 34, 37, 42, 51, 53, 54, 57, 58, 68, 75, 78, 81, 85, 90, 91, 95, 96, 100]; % Energy Dataset
+
+algorithm_type = {'MStamp'};
+% algorithm_type = {'RMT'};
 strategy = [1, 3, 4, 6, 7, 9];
-% num_of_motif = [1:3];
 num_of_motif = [2:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
-GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/GroundTruthMocap/FeaturePosition_Motif'];
-MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/AccuracyMotif2_3'];
+% GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/GroundTruthMocap/FeaturePosition_Motif'];
+% MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/AccuracyMotif2_3'];
+
+% Energy Dataset
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/GroundTruth/FeaturePosition_Motif'];
+% MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Accuracy_Motif2_3'];
+MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
+
 
 for i = 1 : size(num_of_motif, 2)
     for ss = 1 : size(strategy, 2)
@@ -27,13 +36,18 @@ for i = 1 : size(num_of_motif, 2)
                     current_iteration_FScore = cell(size(TS_index, 2) * size(testCaseIndex, 2), 1);
                     cur_algorithm_type = algorithm_type{kk};
                     
-                    savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type,'_Motif'];
+                    % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type,'_Motif'];
+                    savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type,'_Motif'];
                     index_count = 1; % keep track of same motif but different number of instances
                     for j = 1 : size(TS_index, 2)
                         for k = 1 : size(testCaseIndex, 2)
                             fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
                             GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
-                            MotifFile = [MotifFilePath, '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                            if(cur_algorithm_type == 'MStamp')
+                                MotifFile = [MotifFilePath, '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                            else
+                                MotifFile = [MotifFilePath, '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                            end
                             
                             threshold = eps; % if it is non-zero
                             timeOverlapThreshold = timeOverlapThresholds(tt);
@@ -69,7 +83,9 @@ for i = 1 : size(num_of_motif, 2)
                     cur_num_of_motif = num_of_motif(i);
                     fprintf('Aggregating... \n');
                     
-                    sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                    % sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                    sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                    
                     if(exist(sharedFolder,'dir')==0)
                         mkdir(sharedFolder);
                     end
@@ -141,7 +157,12 @@ for i = 1 : size(num_of_motif, 2)
                             nan_index = isnan(temp_matrix(:, jj));
                             number_index = find(nan_index ~= 1);
                             temp_array = nonzeros(temp_matrix(number_index, jj));
-                            new_recall_matrix(size(new_recall_matrix, 1), jj) = sum(temp_array) / (size(temp_array, 1)) ;
+                            if( size(temp_array, 1) == 0)
+                                new_recall_matrix(size(new_recall_matrix, 1), jj) = 0;
+                            else
+                                new_recall_matrix(size(new_recall_matrix, 1), jj) = sum(temp_array) / (size(temp_array, 1)) ;
+                            end
+                            
                         end
                         
                         temp_matrix = new_FScore_matrix(1 : end - 1, :);
@@ -149,7 +170,12 @@ for i = 1 : size(num_of_motif, 2)
                             nan_index = isnan(temp_matrix(:, jj));
                             number_index = find(nan_index ~= 1);
                             temp_array = nonzeros(temp_matrix(number_index, jj));
-                            new_FScore_matrix(size(new_FScore_matrix, 1), jj) = sum(temp_array) / (size(temp_array, 1)) ;
+                            if( size(temp_array, 1) == 0)
+                                new_FScore_matrix(size(new_FScore_matrix, 1), jj) = 0;
+                            else
+                                new_FScore_matrix(size(new_FScore_matrix, 1), jj) = sum(temp_array) / (size(temp_array, 1)) ;
+                            end
+                            
                         end
                         
                         aggregated_precision(ii, 1) = ii;
