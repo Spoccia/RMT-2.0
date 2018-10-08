@@ -1,8 +1,7 @@
-function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold, timeOverlapThreshold)
+function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation_Energy(groundTruthFile, motifFile, algorithmType, windowSize, threshold, timeOverlapThreshold)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 
 motifFeatureCount = csvread(groundTruthFile);
-
 % if(strcmp(algorithmType,'RMT') || strcmp(algorithmType,'RME') == 1)
 %     [num,txt,raw] = xlsread(motifFile, 'AP_all_SubC');
 %     %[num,txt,raw] = xlsread(motifFile, 'AP_all');
@@ -12,7 +11,6 @@ motifFeatureCount = csvread(groundTruthFile);
 % end
 
 num = csvread(motifFile);
-
 motifClass = unique(motifFeatureCount(:, 1));
 motifClassCount = [];
 % update motif class count
@@ -37,6 +35,21 @@ FScoreMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
 for i = 1 : size(myClassID, 1)
     currentClassIndex = classID == myClassID(i);
     statEntry = num(currentClassIndex, :);
+    
+    % compute recall and precision for each entry
+    featureID = statEntry(:, 2);
+    timeStart = statEntry(:, 3);
+    timeEnd = statEntry(:, 4);
+    
+    % injectedClassID = statEntry(:, 5);
+    injectedID_Deprecated = statEntry(:, 6);
+    
+    injectedTimeStart = statEntry(:, 7);
+    injectedTimeEnd = statEntry(:, 8);
+    
+    % depd overlap computed from Jaccard similarity
+    timeOverlap = statEntry(:, 9);
+    depdOverlap = statEntry(:, 10);
     
     % for each of these predicated class, precision and recall for each injected class
     % currentInjectedClassID = unique(injectedClassID);
