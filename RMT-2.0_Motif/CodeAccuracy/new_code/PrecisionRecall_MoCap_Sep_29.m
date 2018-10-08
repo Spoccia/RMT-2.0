@@ -8,21 +8,26 @@ testCaseIndex = 1 : 10;
 % TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 
 % Energy dataset
-TS_index = [2, 6, 9, 11, 18, 19, 24, 26, 28, 30, 31, 33, 34, 37, 42, 51, 53, 54, 57, 58, 68, 75, 78, 81, 85, 90, 91, 95, 96, 100]; % Energy Dataset
+% TS_index = [2, 6, 9, 11, 18, 19, 24, 26, 28, 30, 31, 33, 34, 37, 42, 51, 53, 54, 57, 58, 68, 75, 78, 81, 85, 90, 91, 95, 96, 100]; % Energy Dataset
 
-algorithm_type = {'MStamp'};
-% algorithm_type = {'RMT'};
+% BirdSong dataset
+TS_index = [3, 6, 8, 11, 21, 24, 32, 50, 53, 55, 59, 64, 70, 76, 79, 91, 93, 94, 95, 100, 101, 105, 114, 116, 124, 126, 133, 139, 149, 153]; % BirdSong Dataset
+
+algorithm_type = {'RMT', 'MStamp'};
+% algorithm_type = {'MStamp'};
 strategy = [1, 3, 4, 6, 7, 9];
-num_of_motif = [2:3];
+num_of_motif = [1:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1]; % 0.5 0.75 0 1
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
+
+GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/GroundTruthBirdSong/FeaturePosition_Motif'];
 % GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/GroundTruthMocap/FeaturePosition_Motif'];
 % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/AccuracyMotif2_3'];
 
 % Energy Dataset
-GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/GroundTruth/FeaturePosition_Motif'];
+% GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/GroundTruth/FeaturePosition_Motif'];
 % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Accuracy_Motif2_3'];
-MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
+% MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
 
 
 for i = 1 : size(num_of_motif, 2)
@@ -35,15 +40,23 @@ for i = 1 : size(num_of_motif, 2)
                     current_iteration_recall = cell(size(TS_index, 2) * size(testCaseIndex, 2), 1);
                     current_iteration_FScore = cell(size(TS_index, 2) * size(testCaseIndex, 2), 1);
                     cur_algorithm_type = algorithm_type{kk};
-                    
+                    if(strcmp(cur_algorithm_type,'MStamp') == 1)
+                        % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
+                        % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/MStampMoCap'];
+                        MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/MStampBirdSong'];
+                    else
+                        % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Accuracy_Motif2_3'];
+                        MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/Accuracy'];
+                    end
+                    savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/Result_', cur_algorithm_type,'_Motif'];
                     % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type,'_Motif'];
-                    savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type,'_Motif'];
+                    % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type,'_Motif'];
                     index_count = 1; % keep track of same motif but different number of instances
                     for j = 1 : size(TS_index, 2)
                         for k = 1 : size(testCaseIndex, 2)
                             fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
                             GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
-                            if(cur_algorithm_type == 'MStamp')
+                            if(strcmp(cur_algorithm_type,'MStamp') == 1)
                                 MotifFile = [MotifFilePath, '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                             else
                                 MotifFile = [MotifFilePath, '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
@@ -83,8 +96,9 @@ for i = 1 : size(num_of_motif, 2)
                     cur_num_of_motif = num_of_motif(i);
                     fprintf('Aggregating... \n');
                     
+                    sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
                     % sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
-                    sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                    % sharedFolder = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
                     
                     if(exist(sharedFolder,'dir')==0)
                         mkdir(sharedFolder);
