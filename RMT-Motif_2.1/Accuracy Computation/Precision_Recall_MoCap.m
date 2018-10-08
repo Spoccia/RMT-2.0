@@ -188,7 +188,7 @@ for i = 1 : size(num_of_motif, 2)
                             nan_index = isnan(temp_matrix(:, jj));
                             number_index = find(nan_index ~= 1);
                             temp_array = nonzeros(temp_matrix(number_index, jj));
-                            if (size(temp_array,1)==0) %% the case thaqt in one experiment   we do not find any cluster about motif i
+                            if (size(temp_array,1)==0) %% the case that in one experiment   we do not find any cluster about motif i
                                 new_FScore_matrix(size(new_FScore_matrix, 1), jj) = 0;
                             else
                                 new_FScore_matrix(size(new_FScore_matrix, 1), jj) = sum(temp_array) / (size(temp_array, 1)) ;

@@ -74,10 +74,10 @@ for strategyIDentifier =1:size(strategy,2)
     DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
-    percent=[0; 0.1;0.25;0.5;0.75;1];
+    percent=[0; 0.1;0.25;0.5;0.75;1;2];
     for numMotifInjected =1:3
         numMotifInjected
-        for percentid=1:size(percent,1)
+        for percentid=7:7%1:size(percent,1)
             percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
             for pip=1:30
                 for NAME = 1:Num_SyntSeries

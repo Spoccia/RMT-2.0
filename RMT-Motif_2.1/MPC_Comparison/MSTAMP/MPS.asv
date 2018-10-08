@@ -19,7 +19,7 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\';%Energy\';%Mocap\';%
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';%Building_MultiStory\';%BSONG\';
 %'D:\Motif_Results\Datasets\BirdSong\';
 %'D:\Motif_Results\Datasets\Mocap\';%'D:\Motif_Results\Datasets\SynteticDataset\';%
