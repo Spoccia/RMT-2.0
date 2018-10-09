@@ -12,11 +12,11 @@ Name_OriginalSeries = AllTS;
 
 Num_SyntSeries=10; % num of instances of one motif
 PossibleMotifInjected = [1,2,3,10];
-for idmotInj =2:2% size(PossibleMotifInjected,2)-1
+for idmotInj =1:3% size(PossibleMotifInjected,2)-1
     motifinjected = num2str(PossibleMotifInjected(idmotInj));
   %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
-    percent=[0; 0.1;0.25;0.5;0.75;1];%;
-    for percentid=6:6%size(percent,1)
+    percent=[0; 0.1;0.25;0.5;0.75;1;2];%;
+    for percentid=7:7%size(percent,1)
         percentagerandomwalk=percent(percentid);
         % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
         %strategy=[1,2,3,4,5,6];
