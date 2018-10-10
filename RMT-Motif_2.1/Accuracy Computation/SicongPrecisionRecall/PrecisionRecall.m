@@ -1,9 +1,9 @@
 clear;
 clc;
-Ds_Name= 'Energy';%'Mocap';
+Ds_Name= 'BirdSong';%'Energy';%'Mocap';
 Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name];
-% windowSize = 32; % BirdSong configuration
-windowSize = 58; % Energy dataset configuration
+ windowSize = 32; % BirdSong configuration
+%windowSize = 58; % Energy dataset configuration
 % iterate file to for upload
 testCaseIndex = 1 : 10;
 load([Path,'\data\FeaturesToInject\allTSid.mat']);
@@ -35,7 +35,7 @@ GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_Motif']
 % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
 
 
-for i = 3 : size(num_of_motif, 2)
+for i = 1 : size(num_of_motif, 2)
     for ss = 1 : size(strategy, 2)
         for m = 1 : size(amp_scale, 2)
             for tt = 1 : size(timeOverlapThresholds, 2)
