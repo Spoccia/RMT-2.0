@@ -22,6 +22,7 @@ random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1, 2, 3, 10];
 %% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
 length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
+                      [1,1,1,1,1,1,1,1,1,1,1,1]; 
 length_percentage=[];
 for pssMotID =1:num_of_motif%3
     randid= randperm(motif_instances);
@@ -61,14 +62,14 @@ for orgID = 1:30 %length(originalTSIDArray)%2
 %         TEST_1 = [DataType,'MVSyncMotif',num2str(num_of_motif),'_' ,num2str(originalTSID)];
 %         
         % read random walk files
-%         random_walk_file = [randomWalkPath, num2str(1), '.csv'];
-%         rndWalks1 = csvread(random_walk_file);
+         random_walk_file = [randomWalkPath, num2str(1), '.csv'];
+         rndWalks1 = csvread(random_walk_file);
 %         
 %         % FeatPositions: class label, time center of original features, time start, time end
-%         FeatPositions = zeros(NumInstances, 4);
+         FeatPositions = zeros(NumInstances, 4);
 %         
 %         % avoid injecting features in the same position
-%         Step = floor(size(rndWalks1, 2) / NumInstances);
+         Step = floor(size(rndWalks1, 2) / NumInstances);
         
         % count the injection location
         pStep = 0;
@@ -87,7 +88,7 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             %             MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
             MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
             LabelMotif=[LabelMotif,ones(1,motif_instances)*MotifId];
-            [~,~,MotifsVariateSet{i}]= featureInject(FeatureToInject(:,MotifId), DepdToInject(:,MotifId), sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO,MotifId);
+            [~,~,MotifsVariateSet{MotifId}]= featureInject(FeatureToInject(:,MotifId), DepdToInject(:,MotifId), sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO,MotifId);
         end
         LabelMotif = LabelMotif( randperm(length(LabelMotif))) ; %%this label  ahve to be readed and used to inject  a motif instance selecting gthe variate assigned to the specific istance
         %%
@@ -102,9 +103,11 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             pStep=pStep+Step;
         end
         %%
+        TSNAMEFIX=testNAME;
         for rwscale = 1 : size(random_walk_scale,2)
             for i =1 : random_walk_instance
 %                 TEST_1 = [DataType,'MVSyncMotif',num2str(num_of_motif),'_' ,num2str(originalTSID) ,'_instance_',num2str(i)];
+                testNAME = [TSNAMEFIX,'_',num2str(originalTSID),'_instance_',num2str(i)];
                 EachInstanceDependency=[];
                 randomwalkData = csvread([randomWalkPath,num2str(i),'.csv']);
                 NormInterval=[zeros(NUM_VARIATE,1),ones(NUM_VARIATE,1)];
@@ -156,10 +159,11 @@ for orgID = 1:30 %length(originalTSIDArray)%2
 %         csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'dpscale_', TEST_1, '.csv'], injectedVariates1);
 %         csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'FeaturesEmbedded_', TEST_1, '.csv'], patternFeature);
 %         
-        fprintf('Feature Injection done .\n');
+        
     end
-end
 
+end
+    fprintf('Feature Injection done .\n');
 
 
 %         MotifsSections=[];

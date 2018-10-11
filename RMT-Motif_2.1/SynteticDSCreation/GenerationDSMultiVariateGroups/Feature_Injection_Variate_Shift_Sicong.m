@@ -21,7 +21,8 @@ RWlength = 2500;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1, 2, 3, 10];
 %% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
-length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
+% length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
+length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1]; 
 length_percentage=[];
 for pssMotID =1:num_of_motif%3
     randid= randperm(motif_instances);
