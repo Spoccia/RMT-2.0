@@ -1,13 +1,14 @@
 clear;
 clc;
-Ds_Name= 'BirdSong';%'Energy';%'Mocap';
+Ds_Name= 'Mocap';%'BirdSong';%'Energy';%
 Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name];
- windowSize = 32; % BirdSong configuration
-%windowSize = 58; % Energy dataset configuration
+% windowSize = 32; % BirdSong configuration
+windowSize = 58; % Energy dataset configuration
 % iterate file to for upload
 testCaseIndex = 1 : 10;
 load([Path,'\data\FeaturesToInject\allTSid.mat']);
 TS_index = AllTS(1:30);
+overlapping='Overlapping';
 % MoCap
 % TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 
@@ -22,7 +23,7 @@ algorithm_type = {'RMT', 'MStamp'};
 strategy = [1, 3, 4, 6, 7, 9];
 num_of_motif = [1:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2]; % 0.5 0.75 0 1
-timeOverlapThresholds = [0.1,0.25, 0.5, 0.75, 0.90,0.95, 1];
+timeOverlapThresholds = [0.1,0.25, 0.5, 0.75, 0.90,0.95,0.98, 1];
 
 GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_Motif'];
 %GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/GroundTruthBirdSong/FeaturePosition_Motif'];
@@ -116,9 +117,9 @@ for i = 1 : size(num_of_motif, 2)
                     precision_file_path = [sharedFolder, '/', cur_algorithm_type, 'Precision_'];
                     recall_file_path = [sharedFolder, '/', cur_algorithm_type, 'Recall_'];
                     FScore_file_path = [sharedFolder, '/', cur_algorithm_type, 'FScore_'];
-                    aggregated_precision_file = [precision_file_path, 'aggregated.csv'];
-                    aggregated_recall_file = [recall_file_path, 'aggregated.csv'];
-                    aggregated_FScore_file = [FScore_file_path, 'aggregated.csv'];
+                    aggregated_precision_file = [precision_file_path, overlapping,'aggregated.csv'];
+                    aggregated_recall_file = [recall_file_path, overlapping,'aggregated.csv'];
+                    aggregated_FScore_file = [FScore_file_path,overlapping, 'aggregated.csv'];
                     
                     aggregated_precision = zeros(index_count, cur_num_of_motif+1+1);
                     aggregated_recall = zeros(index_count, cur_num_of_motif+1+1);

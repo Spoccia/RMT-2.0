@@ -1,8 +1,8 @@
 clear;
 clc;
-DS_Name ='Mocap';
+DS_Name ='Mocap';%'Energy';%'BirdSong';%
 Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name];
-
+overlapping='Overlapping';%'';%
 fprintf('Post procesing precision and recall files... \n');
 testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 % strategy = [1:9];
@@ -11,9 +11,12 @@ num_of_motif = [1:3];
 strategy = [1, 3, 4, 6, 7, 9];
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 % algorithm_type = {'RMT'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
-timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75, 1];
+timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75,0.90,0.95,0.98, 1];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2];
-
+col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
+Labels1 = {'Strategy','Time Overlapping', 'SMM_M1_RW0', 'MPC_M1_RW0','AvgSMM_RW0','AvgMPC_RW0','Time Overlapping', 'SMM_M1_RW0.1', 'MPC_M1_RW0.1','AvgSMM_RW0.1','AvgMPC_RW0.1','Time Overlapping', 'SMM_M1_RW0.25', 'MPC_M1_RW0.25','AvgSMM_RW0.25','AvgMPC_RW0.25','Time Overlapping', 'SMM_M1_RW0.5', 'MPC_M1_RW0.5','AvgSMM_RW0.5','AvgMPC_RW0.5','Time Overlapping', 'SMM_M1_RW0.75', 'MPC_M1_RW0.75','AvgSMM_RW0.75','AvgMPC_RW0.75','Time Overlapping', 'SMM_M1_RW1', 'MPC_M1_RW1','AvgSMM_RW1','AvgMPC_RW1','Time Overlapping', 'SMM_M1_RW2', 'MPC_M1_RW2','AvgSMM_RW2','AvgMPC_RW2'};
+Labels2 = {'Strategy','Time Overlapping', 'SMM_M1_RW0','SMM_M2_RW0', 'MPC_M1_RW0','MPC_M2_RW0','AvgSMM_RW0','AvgMPC_RW0','Time Overlapping', 'SMM_M1_RW0.1','SMM_M2_RW0.1', 'MPC_M1_RW0.1','MPC_M2_RW0.1','AvgSMM_RW0.1','AvgMPC_RW0.1','Time Overlapping', 'SMM_M1_RW0.25','SMM_M2_RW0.25', 'MPC_M1_RW0.25','MPC_M2_RW0.25','AvgSMM_RW0.25','AvgMPC_RW0.25','Time Overlapping', 'SMM_M1_RW0.5','SMM_M2_RW0.5', 'MPC_M1_RW0.5','MPC_M2_RW0.5','AvgSMM_RW0.5','AvgMPC_RW0.5','Time Overlapping', 'SMM_M1_RW0.75','SMM_M2_RW0.75', 'MPC_M1_RW0.75','MPC_M2_RW0.75','AvgSMM_RW0.75','AvgMPC_RW0.75','Time Overlapping', 'SMM_M1_RW1','SMM_M2_RW1', 'MPC_M1_RW1','MPC_M2_RW1','AvgSMM_RW1','AvgMPC_RW1','Time Overlapping', 'SMM_M1_RW2','SMM_M2_RW2', 'MPC_M1_RW2','MPC_M2_RW2','AvgSMM_RW2','AvgMPC_RW2'};
+Labels3 = {'Strategy','Time Overlapping', 'SMM_M1_RW0','SMM_M2_RW0','SMM_M3_RW0', 'MPC_M1_RW0','MPC_M2_RW0','MPC_M3_RW0','AvgSMM_RW0','AvgMPC_RW0','Time Overlapping', 'SMM_M1_RW0.1','SMM_M2_RW0.1','SMM_M3_RW0.1', 'MPC_M1_RW0.1','MPC_M2_RW0.1','MPC_M3_RW0.1','AvgSMM_RW0.1','AvgMPC_RW0.1','Time Overlapping', 'SMM_M1_RW0.25','SMM_M2_RW0.25','SMM_M3_RW0.25', 'MPC_M1_RW0.25','MPC_M2_RW0.25','MPC_M3_RW0.25','AvgSMM_RW0.25','AvgMPC_RW0.25','Time Overlapping', 'SMM_M1_RW0.5','SMM_M2_RW0.5','SMM_M3_RW0.5', 'MPC_M1_RW0.5','MPC_M2_RW0.5','MPC_M3_RW0.5','AvgSMM_RW0.5','AvgMPC_RW0.5','Time Overlapping', 'SMM_M1_RW0.75','SMM_M2_RW0.75','SMM_M3_RW0.75', 'MPC_M1_RW0.75','MPC_M2_RW0.75','MPC_M3_RW0.75','AvgSMM_RW0.75','AvgMPC_RW0.75','Time Overlapping', 'SMM_M1_RW1','SMM_M2_RW1','SMM_M3_RW1', 'MPC_M1_RW1','MPC_M2_RW1','MPC_M3_RW1','AvgSMM_RW1','AvgMPC_RW1','Time Overlapping', 'SMM_M1_RW2','SMM_M2_RW2','SMM_M3_RW2', 'MPC_M1_RW2','MPC_M2_RW2','MPC_M3_RW2','AvgSMM_RW2','AvgMPC_RW2'};
 allresults=[];
 
 for i = 1 : size(num_of_motif, 2)
@@ -25,16 +28,18 @@ for i = 1 : size(num_of_motif, 2)
         RecallRWScale=[];
         FscoreRWScale=[];
         for aa = 1 : size(amp_scale, 2)
+            PrecisionAggregatedMAtrix = [];
+            RecallAggregatedMAtrix = [];
+            FscoreAggregatedMAtrix = [];
             for tt = 1 : size(timeOverlapThresholds, 2)
                 timeOverlapThreshold = timeOverlapThresholds(tt);
-                PrecisionAggregatedMAtrix = [];
-                RecallAggregatedMAtrix = [];
-                FscoreAggregatedMAtrix = [];
+                
+                PrecisionforPercentage = [];
+                RecallforPercentage = [];
+                FscoreforPercentage = [];
                 for kk = 1 : size(algorithm_type, 2)
                     
-                    PrecisionforPercentage = [];
-                    RecallforPercentage = [];
-                    FscoreforPercentage = [];
+                    
                     
                     %dataAggregatedMAtrix (:,1)= timeOverlapThresholds';
                     
@@ -124,12 +129,15 @@ for i = 1 : size(num_of_motif, 2)
                     %                         csvwrite(save_FScore_file, new_FScore_matrix);
                     %                     end
                     
-                    aggregated_precision_file = csvread([precision_file_path, 'aggregated.csv']);
-                    aggregated_recall_file = csvread([recall_file_path, 'aggregated.csv']);
-                    aggregated_FScore_file = csvread([FScore_file_path, 'aggregated.csv']);
-                    PrecisionforPercentage = [PrecisionforPercentage,mean(aggregated_precision_file)];
-                    RecallforPercentage = [RecallforPercentage,mean(aggregated_recall_file)];
-                    FscoreforPercentage = [FscoreforPercentage,mean(aggregated_FScore_file)];
+                    aggregated_precision_file = csvread([precision_file_path, overlapping,'aggregated.csv']);
+                    aggregated_recall_file = csvread([recall_file_path, overlapping,'aggregated.csv']);
+                    aggregated_FScore_file = csvread([FScore_file_path, overlapping,'aggregated.csv']);
+                    meantemp= mean(aggregated_precision_file);
+                    PrecisionforPercentage = [PrecisionforPercentage,meantemp(:,2:end-1)];
+                    meantemp= mean(aggregated_recall_file)
+                    RecallforPercentage = [RecallforPercentage,meantemp(:,2:end-1)];
+                    meantemp=mean(aggregated_FScore_file);
+                    FscoreforPercentage = [FscoreforPercentage,meantemp(:,2:end-1)];
                     
                     
                     %                     aggregated_precision = zeros(size(testCaseIndex, 2), cur_num_of_motif+1+1);
@@ -162,19 +170,32 @@ for i = 1 : size(num_of_motif, 2)
                 FscoreAggregatedMAtrix = [FscoreAggregatedMAtrix;FscoreforPercentage];
             end
             
-            PrecisionRWScale=[PrecisionRWScale,[PrecisionAggregatedMAtrix,zeros(size(PrecisionAggregatedMAtrix,1),i)]];
-            RecallRWScale=[RecallRWScale,[RecallAggregatedMAtrix,zeros(size(RecallAggregatedMAtrix,1),i)]];
-            FscoreRWScale=[FscoreRWScale,[FscoreAggregatedMAtrix,zeros(size(FscoreAggregatedMAtrix,1),i)]];
+            PrecisionRWScale=[PrecisionRWScale,[timeOverlapThresholds',PrecisionAggregatedMAtrix,zeros(size(PrecisionAggregatedMAtrix,1),2)]];
+            RecallRWScale=[RecallRWScale,[timeOverlapThresholds',RecallAggregatedMAtrix,zeros(size(RecallAggregatedMAtrix,1),2)]];
+            FscoreRWScale=[FscoreRWScale,[timeOverlapThresholds',FscoreAggregatedMAtrix,zeros(size(FscoreAggregatedMAtrix,1),2)]];
             
         end
         AllStrategy_Precision=[AllStrategy_Precision;[ones(size(PrecisionAggregatedMAtrix,1),1)*strategy(j),PrecisionRWScale]];
         AllStrategy_Recall=[AllStrategy_Recall;[ones(size(PrecisionAggregatedMAtrix,1),1)*strategy(j),RecallRWScale]];
         AllStrategy_Fscore=[AllStrategy_Fscore;[ones(size(PrecisionAggregatedMAtrix,1),1)*strategy(j),FscoreRWScale]];
-        finalpath = [Path,'/Result/', '_Motif', num2str(cur_num_of_motif)];
-        csvwrite([finalpath,'_Precision.csv'],[timeOverlapThresholds',AllStrategy_Precision])
-        csvwrite([finalpath,'_Recall.csv'], [timeOverlapThresholds',AllStrategy_Recall]);
-        csvwrite([finalpath,'_Fscore.csv'], [timeOverlapThresholds',AllStrategy_Fscore]);
     end
+    finalpath = [Path,'/Result/', 'Motif', num2str(cur_num_of_motif)];
+    label = Labels1;
+    if (i==2)
+        label = Labels2;
+    end
+    if (i==3)
+        label = Labels3;
+    end
+    xlswrite([finalpath,'_Results',overlapping,'.xls'],label,'Precision','A1');
+    xlswrite([finalpath,'_Results',overlapping,'.xls'],AllStrategy_Precision,'Precision','A2');
+    xlswrite([finalpath,'_Results',overlapping,'.xls'],label,'Recall','A1');
+    xlswrite([finalpath,'_Results',overlapping,'.xls'],AllStrategy_Recall,'Recall','A2');
+    xlswrite([finalpath,'_Results',overlapping,'.xls'],label,'Fscore','A1');
+    xlswrite([finalpath,'_Results',overlapping,'.xls'],AllStrategy_Fscore,'Fscore','A2');
+%     csvwrite([finalpath,'_Precision.csv'],[AllStrategy_Precision])
+%     csvwrite([finalpath,'_Recall.csv'], [AllStrategy_Recall]);
+%     csvwrite([finalpath,'_Fscore.csv'], [AllStrategy_Fscore]);
 end
 
 fprintf('All done .\n');

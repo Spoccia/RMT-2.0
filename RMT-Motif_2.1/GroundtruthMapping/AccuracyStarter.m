@@ -8,7 +8,7 @@ dataLocation='data\';
 load([path,'data\FeaturesToInject\allTSid.mat']);
 Num_SyntSeries=10; % num of instances of one motif
 PossibleMotifInjected = [1,2,3,10];
-for idmotInj =3:3% size(PossibleMotifInjected,2)-1
+for idmotInj =2:2% size(PossibleMotifInjected,2)-1
     motifinjected = num2str(PossibleMotifInjected(idmotInj));
 %     Name_OriginalSeries = [23,35,86,111];% MOCap Motif10%
     Name_OriginalSeries = AllTS;%[1,3,6,7];%ENERGY [64,70,80,147];Bsong%[85,35,127,24];Mocap % name of the original  series from with we  got the  motif instances to inject
@@ -19,7 +19,7 @@ for idmotInj =3:3% size(PossibleMotifInjected,2)-1
         strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
         DepO =2;
         DepT =2;
-        for strID =1:3%3:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
+        for strID =1:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
             StrategyClustering= strategy(strID);%3;%2;%
             
             for pip=1:30%size(Name_OriginalSeries,2)
