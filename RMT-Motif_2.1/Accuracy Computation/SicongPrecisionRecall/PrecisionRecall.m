@@ -1,14 +1,14 @@
 clear;
 clc;
-Ds_Name= 'Mocap';%'BirdSong';%'Energy';%
+Ds_Name= 'BirdSong';%'Energy';%'Mocap';%
 Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name];
-% windowSize = 32; % BirdSong configuration
-windowSize = 58; % Energy dataset configuration
+ windowSize = 32; % BirdSong configuration
+%windowSize = 58; % Energy dataset configuration
 % iterate file to for upload
 testCaseIndex = 1 : 10;
 load([Path,'\data\FeaturesToInject\allTSid.mat']);
 TS_index = AllTS(1:30);
-overlapping='Overlapping';
+overlapping='Overlapping';%'';
 % MoCap
 % TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 

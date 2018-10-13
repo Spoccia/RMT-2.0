@@ -1,6 +1,6 @@
 clear;
 clc;
-DS_Name ='Mocap';%'Energy';%'BirdSong';%
+DS_Name ='BirdSong';%'Mocap';%'Energy';%
 Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name];
 overlapping='Overlapping';%'';%
 fprintf('Post procesing precision and recall files... \n');

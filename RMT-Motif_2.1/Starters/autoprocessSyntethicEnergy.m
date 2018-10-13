@@ -30,21 +30,24 @@ LocM1 =[0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
     0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0
     ];
 
-LocM2=[0	1	1	0	0	0	0	0	0	0	0	0
-    1	0	0	0	0	0	0	0	0	0	0	0
-    1	0	0	0	0	0	0	0	0	0	0	0
-    0	0	0	0	1	1	0	0	0	0	0	0
-    0	0	0	1	0	0	0	0	0	0	0	0
-    0	0	0	1	0	0	0	0	0	0	0	0
-    0	0	0	0	0	0	0	1	1	0	0	0
-    0	0	0	0	0	0	1	0	0	0	0	0
-    0	0	0	0	0	0	1	0	0	0	0	0
-    0	0	0	0	0	0	0	0	0	0	1	1
-    0	0	0	0	0	0	0	0	0	1	0	0
-    0	0	0	0	0	0	0	0	0	1	0	0];
+LocM2 = zeros(9,9);
+% LocM2=[0	1	1	0	0	0	0	0	0	0	0	0
+%     1	0	0	0	0	0	0	0	0	0	0	0
+%     1	0	0	0	0	0	0	0	0	0	0	0
+%     0	0	0	0	1	1	0	0	0	0	0	0
+%     0	0	0	1	0	0	0	0	0	0	0	0
+%     0	0	0	1	0	0	0	0	0	0	0	0
+%     0	0	0	0	0	0	0	1	1	0	0	0
+%     0	0	0	0	0	0	1	0	0	0	0	0
+%     0	0	0	0	0	0	1	0	0	0	0	0
+%     0	0	0	0	0	0	0	0	0	0	1	1
+%     0	0	0	0	0	0	0	0	0	1	0	0
+%     0	0	0	0	0	0	0	0	0	1	0	0];
 LocM3=[];
+
 IDM1=1:27;
-IDM2= [1,2,3,1,2,3,4,5,6,7,8,9,4,5,6,4,5,6,7,8,9,10,11,12,10,11,12];
+% IDM2= [1,2,3,1,2,3,4,5,6,7,8,9,4,5,6,4,5,6,7,8,9,10,11,12,10,11,12];
+IDM2 =[1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9];
 IDM3=[];
 
 idm2{1} = IDM1;
@@ -57,9 +60,10 @@ DatasetInject=2;  % 1 Energy 2 syntethic Energy
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\Energy\';
 if (DatasetInject==2)
-    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\';
+    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\';
 end
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
+BaseName='MV_Sync_Motif';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 % Flag to abilitate portions of code
@@ -68,7 +72,7 @@ FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 %% clustering abilitation
 Cluster =  1;%1;%
-
+subclusterflag=0;
 justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 %% Parameter for kmeans: distance measure to use
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
@@ -126,12 +130,12 @@ r= 10; %5 threshould variates
 percent=[0; 0.1;0.25;0.5;0.75;1;2];
 
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for strID =1:size(strategy,2)%9%1:6
+for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
     StrategyClustering= strategy(strID)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
     % 3 - old approach do clustering  then subclustering
-    if(StrategyClustering > 1)
+    if(StrategyClustering > 3)
         FeatureExtractionFlag=0;
         createDependencyScale=0;
     end
@@ -139,10 +143,10 @@ for strID =1:size(strategy,2)%9%1:6
     if StrategyClustering >3
         kindOfClustring= 'DBScan';%
     end
-    for percentid=7:7%1:size(percent,1)
+    for percentid=1:size(percent,1)
         percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
         
-        for MOTIFNUMber =1:3
+        for MOTIFNUMber =1:1
             for pip=1:30   %TSnames
                 for NAME = 1:Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
@@ -151,12 +155,12 @@ for strID =1:size(strategy,2)%9%1:6
                     TimeforPruningClustering =0;%zeros(1,4);
                     TimeforPruningSubClustering=0;%zeros(1,4);
                     timeforSubclustering=0;
-                    TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
+                    TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
                     %TEST=['Motif',num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     
                     
                     %                     %% read location matrix
-                                         TS_name=TEST;
+                    TS_name=TEST;
                     %                     distanceVaraiteTS=[];
                     %                     if DatasetInject == 1 %Energy
                     %                         distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];
@@ -381,19 +385,21 @@ for strID =1:size(strategy,2)%9%1:6
                         csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Centroids_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),mu);
                         csvwrite(strcat(saveFeaturesPath,'Distances',distanceUsed,'\ClusterStrategy_',num2str(StrategyClustering),'\Features_IM_',TS_name,'_DepO_',num2str(USER_OD_targhet),'_TimeO_',num2str(USER_OT_targhet),'.csv'),X);
                         % end
-                        
-                        if (StrategyClustering == 3 | StrategyClustering == 6| StrategyClustering == 9)
-                            saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
-                            depdOverLapThreshold = 1;
-                            timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,num2str(StrategyClustering),distanceUsed,depdOverLapThreshold,USER_OT_targhet,USER_OD_targhet);
+                        if subclusterflag == 1
+                            if (StrategyClustering == 3 | StrategyClustering == 6| StrategyClustering == 9)
+                                saveFeaturesPath=[datasetPath,subfolderPath,'Features_',FeaturesRM,'\',TS_name,'\'];
+                                depdOverLapThreshold = 1;
+                                timeforSubclustering = subCluster_Varaites(saveFeaturesPath,TS_name,num2str(StrategyClustering),distanceUsed,depdOverLapThreshold,USER_OT_targhet,USER_OD_targhet);
+                            end
                         end
-                        
                     end
                     
                     if(pruneCluster==1)
                         if (StrategyClustering == 3 |StrategyClustering == 6|StrategyClustering == 9 )
                             TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);%1);
-                            TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);
+                            if subclusterflag == 1
+                                TimeforPruningSubClustering = VariateAllinedKmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);
+                            end
                             %(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,DictionarySize,histTSImage,FeaturesRM,cleanfeatures,saveMotifAP);%1);
                         else
                             TimeforPruningClustering = KmeansPruning(TS_name,datasetPath,subfolderPath,TS_name,kindOfClustring,num2str(StrategyClustering),prunewith,distanceUsed ,FeaturesRM,USER_OT_targhet,USER_OD_targhet,saveMotifAP);
@@ -420,20 +426,20 @@ for strID =1:size(strategy,2)%9%1:6
                         %             end
                         %             SizeFeaturesforImages=[SizeFeaturesforImages;a];
                         csvwrite(strcat(saveFeaturesPath,'NumFeatures.csv'),SizeFeaturesforImages);
-%                         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
+                        %                         xlswrite(strcat(saveFeaturesPath,'NumFeatures.xls'),SizeFeaturesforImages);
                         
-%                         col_header={char(strcat('OT',num2str(USER_OT_targhet),'_OD',num2str(USER_OD_targhet)))};%{'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
-%                         rowHeader ={'FeatureEstraction';'ComputationDepdScale';'Clustering';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
-csvwrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.csv'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering]);
-%xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
-%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
-%                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
+                        %                         col_header={char(strcat('OT',num2str(USER_OT_targhet),'_OD',num2str(USER_OD_targhet)))};%{'OT1_OD1','OT1_OD2','OT2_OD1','OT2_OD2'};
+                        %                         rowHeader ={'FeatureEstraction';'ComputationDepdScale';'Clustering';'VaraiteAllineament';'PruningStandarDev_V_allined';'PruningStandarDev_Clusters'};
+                        csvwrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.csv'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering]);
+                        %xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),[TIMEFOROCTAVE;TimeComputationDepdScale;Time4Clustering;timeforSubclustering;TimeforPruningSubClustering;TimeforPruningClustering],'TIME','B2');
+                        %                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
+                        %                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
                     end
                     
-%                     pause(1)
-%                     clear('a','ActFeatures','allclusterid','AlltheCluster','AllthefeaturesAllTS','C','Centroids','data','depd1','DepdScopeVector','descr1','frame1','gss1','idm1','idactfeatures',...
-%                         'indexfeaturesGroup','mu','possibleset','rowHeader','X','AlltheCluster','Allthefeatures','col_header')
-%                     
+                    %                     pause(1)
+                    %                     clear('a','ActFeatures','allclusterid','AlltheCluster','AllthefeaturesAllTS','C','Centroids','data','depd1','DepdScopeVector','descr1','frame1','gss1','idm1','idactfeatures',...
+                    %                         'indexfeaturesGroup','mu','possibleset','rowHeader','X','AlltheCluster','Allthefeatures','col_header')
+                    %
                 end
             end
         end

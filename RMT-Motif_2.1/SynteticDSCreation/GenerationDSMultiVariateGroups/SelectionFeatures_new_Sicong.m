@@ -1,19 +1,20 @@
 clc;
 clear;
 
-FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT/';%'/Users/sliu104/Desktop/Motif_Data/Features_RMT/';
-Dset='Mocap';%'BirdSong';%'Energy';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
+
+Dset='Energy';%'Mocap';%'BirdSong';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
+FeaturePath = ['D:\Motif_Results\Datasets\',Dset,'\Features_RMT/'];%'/Users/sliu104/Desktop/Motif_Data/Features_RMT/';
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'/RandomVariate/'];%['/Users/sliu104/Desktop/Motif_Data/SynteticDataset/',Dset,'/'];
 
-MaxVariateSize = 62; % MoCap
-% MaxVariateSize = 27; % Energy
+%MaxVariateSize = 62; % MoCap
+ MaxVariateSize = 27; % Energy
 % MaxVariateSize = 13; % BirdSong
 
 DepO = 2;
 DepT = 2;
 nummotifs = 3; % number of RMT features to be selected
 TSConsidered = 30; % 90;%30
-AllTS = randperm(184,TSConsidered); % randi([1,154],1,TSConsidered);
+AllTS = randperm(100,TSConsidered); % randi([1,154],1,TSConsidered);
 for numberofTS = 1 : TSConsidered
      TS_name = num2str(AllTS(numberofTS));
 %     TS_name = num2str(1);
@@ -35,7 +36,11 @@ for numberofTS = 1 : TSConsidered
      indexfeatureGroup = (X(4,:) == max(X(4,:)));
      X = X(:,indexfeatureGroup) ;
      dpscale = (dpscale(:,indexfeatureGroup));
-    Features = [];
+     indexfeatureGroup  = (X(2,:) >= 29 );
+     X = X(:,indexfeatureGroup) ;
+     dpscale = (dpscale(:,indexfeatureGroup));
+
+     Features = [];
     Dependency = [];
     i = 1;
     if size(X,2) == 0
