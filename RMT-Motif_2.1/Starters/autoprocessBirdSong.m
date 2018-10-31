@@ -7,7 +7,7 @@ DatasetInject=2;  % 1 BirdSong 2 syntethic BirdSong
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\BirdSong\';
 if (DatasetInject==2)
-    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\';%BSONG\';
+    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%BSONG\';
 end
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
@@ -75,9 +75,10 @@ for strategyIDentifier =1:size(strategy,2)
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    for numMotifInjected =1:3
+    BaseName='Motif1numInst_5';%'Motif';%'MV_Sync_Motif';
+    for numMotifInjected =1:1%3
         numMotifInjected
-        for percentid=7:7%1:size(percent,1)
+        for percentid=1:7%1:size(percent,1)
             percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
             for pip=1:30
                 for NAME = 1:Num_SyntSeries
@@ -91,7 +92,8 @@ for strategyIDentifier =1:size(strategy,2)
                     if DatasetInject == 1 % birdsong
                         TEST = [num2str(NAME)];
                     elseif DatasetInject == 2 % synteticBirdsong
-                        TEST=['Motif',num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                        %TEST=['Motif',num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                        TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     end
                     TS_name=TEST;
                     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%

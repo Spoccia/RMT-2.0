@@ -24,8 +24,8 @@ for i = 1 : size(myStatEntry, 1)
     score_VO = myStatEntry(i, 10);
     
     precisionScore(i) = score_TO * score_VO;
-    if( precisionScore(i) >= timeOverlapThreshold && precisionScore(i) >= threshold) %% this is  for using overlapping percentage in both variates and time
-%     if(score_TO >= timeOverlapThreshold && precisionScore(i) >= threshold) %% This is  for usiing just time overlapping
+%    if( precisionScore(i) >= timeOverlapThreshold && precisionScore(i) >= threshold) %% this is  for using overlapping percentage in both variates and time
+     if(score_TO >= timeOverlapThreshold && precisionScore(i) >= threshold) %% This is  for usiing just time overlapping
         precisionScore(i) = 1;
     else
         precisionScore(i) = 0;

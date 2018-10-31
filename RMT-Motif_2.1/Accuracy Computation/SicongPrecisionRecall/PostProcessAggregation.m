@@ -1,14 +1,15 @@
 clear;
 clc;
-DS_Name ='BirdSong';%'Mocap';%'Energy';%
-Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name];
-overlapping='Overlapping';%'';%
+DS_Name ='Mocap';%'Energy';%'BirdSong';%
+Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name,'\RandomVariate\instancesmultisize'];
+overlapping='';%'Overlapping';%
 fprintf('Post procesing precision and recall files... \n');
 testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 % strategy = [1:9];
 % num_of_motif = [1:3];
-num_of_motif = [1:3];
+num_of_motif = 1;%[1:3];
 strategy = [1, 3, 4, 6, 7, 9];
+BaseName='Motif';
 algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 % algorithm_type = {'RMT'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75,0.90,0.95,0.98, 1];
@@ -23,7 +24,7 @@ for i = 1 : size(num_of_motif, 2)
     AllStrategy_Precision=[];
     AllStrategy_Recall=[];
     AllStrategy_Fscore=[];
-    for j = 1 : size(strategy, 2)
+    for j = 2:2: size(strategy, 2)
         PrecisionRWScale=[];
         RecallRWScale=[];
         FscoreRWScale=[];
@@ -48,9 +49,9 @@ for i = 1 : size(num_of_motif, 2)
                     cur_num_of_motif = num_of_motif(i);
                     
                     fprintf('num_of_motif: %d, strategy: %d, algorithm_type: %s, amplitude scale: %f, time overlap threshold: %f . \n', cur_num_of_motif, cur_strategy, cur_algorithm_type, amp_scale(aa), timeOverlapThreshold);
-                    sharedFolder = [Path,'/Result/', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+                    sharedFolder = [Path,'/Result/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
                     if kk==2
-                        sharedFolder = [Path,'/Result/', cur_algorithm_type, '_Motif', num2str(cur_num_of_motif), '/Strategy_1','/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+                        sharedFolder = [Path,'/Result/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_3','/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
                     end
                     
                     precision_file_path = [sharedFolder, '/', cur_algorithm_type, 'Precision_'];

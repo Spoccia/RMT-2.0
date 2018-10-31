@@ -1,14 +1,15 @@
 clear;
 clc;
-Ds_Name= 'BirdSong';%'Energy';%'Mocap';%
-Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name];
- windowSize = 32; % BirdSong configuration
-%windowSize = 58; % Energy dataset configuration
+Ds_Name= 'Mocap';%'Energy';%'BirdSong';%
+Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancesmultisize'];
+% windowSize = 32; % BirdSong configuration
+windowSize = 58; % Energy dataset configuration
 % iterate file to for upload
 testCaseIndex = 1 : 10;
 load([Path,'\data\FeaturesToInject\allTSid.mat']);
 TS_index = AllTS(1:30);
-overlapping='Overlapping';%'';
+overlapping='';%'Overlapping';%
+BaseName='MV_Sync_Motif';
 % MoCap
 % TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 
@@ -21,11 +22,11 @@ overlapping='Overlapping';%'';
 algorithm_type = {'RMT', 'MStamp'};
 % algorithm_type = {'MStamp'};
 strategy = [1, 3, 4, 6, 7, 9];
-num_of_motif = [1:3];
+num_of_motif = 1%[1:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2]; % 0.5 0.75 0 1
 timeOverlapThresholds = [0.1,0.25, 0.5, 0.75, 0.90,0.95,0.98, 1];
 
-GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_Motif'];
+GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_',BaseName];
 %GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/GroundTruthBirdSong/FeaturePosition_Motif'];
 % GroundTruthFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/GroundTruthMocap/FeaturePosition_Motif'];
 % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/AccuracyMotif2_3'];
@@ -37,7 +38,8 @@ GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_Motif']
 
 
 for i = 1 : size(num_of_motif, 2)
-    for ss = 1 : size(strategy, 2)
+    for ss = 2:2 : size(strategy, 2)
+        cur_strategy = strategy(ss);
         for m = 1 : size(amp_scale, 2)
             for tt = 1 : size(timeOverlapThresholds, 2)
                 for kk = 1 : size(algorithm_type, 2)
@@ -56,11 +58,11 @@ for i = 1 : size(num_of_motif, 2)
                         % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/Accuracy'];
                         MotifFilePath = [Path,'\Features_RMT\Accuracy'];
                     end
-                    savePath = [Path,'/Result/', cur_algorithm_type,'_Motif'];
+                    savePath = [Path,'/Result/', cur_algorithm_type,'_',BaseName];
                     % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type,'_Motif'];
                     % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type,'_Motif'];
                     index_count = 1; % keep track of same motif but different number of instances
-                    if(strcmp(cur_algorithm_type,'MStamp') == 1 & ss>1)
+                    if(strcmp(cur_algorithm_type,'MStamp') == 1 & cur_strategy>3)
                         'Mstamp has just one strategy'
                     else
                         for j = 1 : size(TS_index, 2)
@@ -68,9 +70,9 @@ for i = 1 : size(num_of_motif, 2)
                                 %  fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
                                 GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
                                 if(strcmp(cur_algorithm_type,'MStamp') == 1)
-                                    MotifFile = [MotifFilePath, '/Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                                    MotifFile = [MotifFilePath, '/',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                                 else
-                                    MotifFile = [MotifFilePath, '/Strategy_', num2str(strategy(ss)), '/AP_DepO_2_DepT_2_Motif', num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                                    MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                                 end
                                 
                                 threshold = eps; % if it is non-zero
@@ -103,7 +105,7 @@ for i = 1 : size(num_of_motif, 2)
                     
                     
                     index_count = index_count - 1;
-                    cur_strategy = strategy(ss);
+                    
                     cur_num_of_motif = num_of_motif(i);
                     fprintf('Aggregating... \n');
                     

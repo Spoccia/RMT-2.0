@@ -1,8 +1,8 @@
 clc;
 clear;
 
- DataType='Energy';
-%DataType='Mocap';
+% DataType='Energy';
+DataType='Mocap';
 % DataType='BirdSong';
 basepath='D:\Motif_Results\Datasets\SynteticDataset\';%'/Users/sliu104/Desktop/Motif_Data/SynteticDataset/';%
 featuresToInjectPath=[basepath,DataType,'/RandomVariate','/FeaturesToInject/',];
@@ -12,8 +12,8 @@ depdO=2;
 num_of_motif=1;
 delimiter='/';
 DestDataPath = [basepath,DataType,'/RandomVariate'];
- NUM_VARIATE = 27;%Energy
-%NUM_VARIATE = 62;% MoCap
+% NUM_VARIATE = 27;%Energy
+NUM_VARIATE = 62;% MoCap
 % NUM_VARIATE = 13;% BirdSong
 random_walk_instance = 10;
 motif_instances = 10;
@@ -21,13 +21,14 @@ RWlength = 2500;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1, 2, 3, 10];
 %% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
-% length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
-length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1]; 
+ length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
+%length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1]; 
 length_percentage=[];
 for pssMotID =1:num_of_motif%3
     randid= randperm(motif_instances);
     length_percentage=[length_percentage;length_percentage_1(randid)];
 end
+length_percentage= [1,0.75,0.5,1,0.75,0.5,1,0.75,1,0.5];
 %%
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
@@ -52,9 +53,9 @@ for orgID = 1:30 %length(originalTSIDArray)%2
         DepdToInject = csvread([featuresToInjectPath,'depd',num2str(originalTSID),'.csv']);
         
         % MOCAP BirdSong
-        %TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
         % Energy
-         TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
+%          TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
         
         FeatureToInject = FeaturesToInject(:,1:num_of_motif);
         DepdToInject = DepdToInject(:,1:num_of_motif);

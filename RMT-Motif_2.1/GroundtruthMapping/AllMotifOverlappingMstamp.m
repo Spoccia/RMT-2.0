@@ -1,9 +1,9 @@
 clear;
 clc;
 
-path='D:\Motif_Results\Datasets\SynteticDataset\BirdSong\';%Energy\';%Mocap\';%BSONG\';
+path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\RandomVariate\';%BirdSong\';%Energy\';%Mocap\';%BSONG\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-
+BaseName='MV_Sync_Motif';
 %PathMP=[path,'\MStamp\'];
 % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
 dataLocation='data\';
@@ -12,11 +12,11 @@ Name_OriginalSeries = AllTS;
 
 Num_SyntSeries=10; % num of instances of one motif
 PossibleMotifInjected = [1,2,3,10];
-for idmotInj =1:3% size(PossibleMotifInjected,2)-1
+for idmotInj =1:1% size(PossibleMotifInjected,2)-1
     motifinjected = num2str(PossibleMotifInjected(idmotInj));
   %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
     percent=[0; 0.1;0.25;0.5;0.75;1;2];%;
-    for percentid=7:7%size(percent,1)
+    for percentid=1:7%size(percent,1)
         percentagerandomwalk=percent(percentid);
         % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
         %strategy=[1,2,3,4,5,6];
@@ -28,11 +28,11 @@ for idmotInj =1:3% size(PossibleMotifInjected,2)-1
         for pip=1:30%size(Name_OriginalSeries,2)
             for NAME = 1:Num_SyntSeries
                 
-                TEST=['Motif',motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                 FeaturesRM ='MStamp\';%'RMT';%'RME';%
                 testname=TEST;
-                %lenght=58;%Mocap%Energy
-                lenght =32;%BirdSong
+                lenght=58;%Mocap%Energy
+                %lenght =32;%BirdSong
                 len=['Lenght_',num2str(lenght)];
                 
                 

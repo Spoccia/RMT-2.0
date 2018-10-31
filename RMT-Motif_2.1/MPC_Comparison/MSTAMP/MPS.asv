@@ -19,11 +19,11 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%Mocap\numInstances_5_15\';%Energy\numInstances_5_15\';%
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';%Energy\RandomVariate\';%BirdSong\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';%Building_MultiStory\';%BSONG\';
 %'D:\Motif_Results\Datasets\BirdSong\';
 %'D:\Motif_Results\Datasets\Mocap\';%'D:\Motif_Results\Datasets\SynteticDataset\';%
-ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\MStamp\';%Mocap\numInstances_5_15\MStamp\';%Energy\RandomVariate\MStamp\';%Mocap\numInstances_5_15\MStamp\';%Energy\MStamp\';%
+ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\MStamp\';%Energy\RandomVariate\MStamp\';%Mocap\numInstances_5_15\MStamp\';%BirdSong\MStamp\';%Energy\MStamp\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\MStamp\';%Mocap\MStamp\';%Building_MultiStory\MStampB\';%BSONG\MStampB\';
 %'D:\Motif_Results\Datasets\BirdSong\MStampB\';
 %'D:\Motif_Results\Datasets\Mocap\MStampB\';%'D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%
@@ -50,8 +50,7 @@ for prcentid=1:7%4%6%6%size(percent,1)
                 TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
                 
                 TS_name=num2str(TEST);
-                TSbaseRandom= [BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)];
-                %[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)]
+                TSbaseRandom= [BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)]
                 data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
                 data(isnan(data))=0;
 %                 if(prcentid == 6 )

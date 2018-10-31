@@ -1,6 +1,6 @@
 clc;
 clear;
-DatasetTouse= 'Energy';%'BirdSong';%'Mocap';%
+DatasetTouse= 'BirdSong';%'Energy';%'Mocap';%
 featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\BSONG\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];%MOCAP
@@ -13,7 +13,7 @@ TimeSeriesPath = ['D:\Motif_Results\Datasets\',DatasetTouse,'\data\'];
 
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse];
 %\BSONG';
-NUM_VARIATE =27;%Energy;% 13;%BirdSong  %62;%MoCap;% 
+NUM_VARIATE =13;%BirdSong  %62;%MoCap;%27;%Energy;%  
 random_walk_instance = 10;
 motif_instances = 15;%10; % MotifInstances= 10;
 RWlength = 2500;
@@ -50,9 +50,9 @@ for orgID =1:30%length(originalTSIDArray)%2
         DepdToInject = csvread([featuresToInjectPath,'depd',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
         
         %% MOCAP BirdSong
-%         TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+         TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
         %% Energy
-          TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
+%          TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
         
         FeatureToInject= FeaturesToInject(:,1:num_of_motif);
         DepdToInject = DepdToInject(:,1:num_of_motif);

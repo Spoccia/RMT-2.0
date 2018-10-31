@@ -3,7 +3,7 @@ clc;
 clear;
 
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\Building_MultiStory\';
+datasetPath= 'D:\Motif_Results\Datasets\Energy\';
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';%'RME';%
 
@@ -107,28 +107,29 @@ LocM1 =[0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0
 ];
-
-LocM2=[0	1	1	0	0	0	0	0	0	0	0	0
-       1	0	0	0	0	0	0	0	0	0	0	0
-       1	0	0	0	0	0	0	0	0	0	0	0
-       0	0	0	0	1	1	0	0	0	0	0	0
-       0	0	0	1	0	0	0	0	0	0	0	0
-       0	0	0	1	0	0	0	0	0	0	0	0
-       0	0	0	0	0	0	0	1	1	0	0	0
-       0	0	0	0	0	0	1	0	0	0	0	0
-       0	0	0	0	0	0	1	0	0	0	0	0
-       0	0	0	0	0	0	0	0	0	0	1	1
-       0	0	0	0	0	0	0	0	0	1	0	0
-       0	0	0	0	0	0	0	0	0	1	0	0];
+LocM2 = zeros(9,9);
+% LocM2=[0	1	1	0	0	0	0	0	0	0	0	0
+%        1	0	0	0	0	0	0	0	0	0	0	0
+%        1	0	0	0	0	0	0	0	0	0	0	0
+%        0	0	0	0	1	1	0	0	0	0	0	0
+%        0	0	0	1	0	0	0	0	0	0	0	0
+%        0	0	0	1	0	0	0	0	0	0	0	0
+%        0	0	0	0	0	0	0	1	1	0	0	0
+%        0	0	0	0	0	0	1	0	0	0	0	0
+%        0	0	0	0	0	0	1	0	0	0	0	0
+%        0	0	0	0	0	0	0	0	0	0	1	1
+%        0	0	0	0	0	0	0	0	0	1	0	0
+%        0	0	0	0	0	0	0	0	0	1	0	0];
 LocM3=[];
 IDM1=1:27;
-IDM2= [1,2,3,1,2,3,4,5,6,7,8,9,4,5,6,4,5,6,7,8,9,10,11,12,10,11,12];
+% IDM2= [1,2,3,1,2,3,4,5,6,7,8,9,4,5,6,4,5,6,7,8,9,10,11,12,10,11,12];
+IDM2 =[1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9];
 IDM3=[];
 
 idm2{1} = IDM1;
 idm2{2} = IDM2;
 idm2{3} = IDM3;
-for TSnumber = 11:100%183: 709
+for TSnumber = 1:100%183: 709
     TEST =num2str(TSnumber); %'1';%
     TS_name=num2str(TSnumber);%
     distanceVaraiteTS=[datasetPath,'HopMatrix_multistory_aggregate.csv'];%'HopMatrix_multistory.csv'];

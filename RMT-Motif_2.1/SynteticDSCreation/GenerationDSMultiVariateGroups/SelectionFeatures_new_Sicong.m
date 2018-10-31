@@ -2,12 +2,12 @@ clc;
 clear;
 
 
-Dset='Energy';%'Mocap';%'BirdSong';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
+Dset='Mocap';%'Energy';%'BirdSong';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
 FeaturePath = ['D:\Motif_Results\Datasets\',Dset,'\Features_RMT/'];%'/Users/sliu104/Desktop/Motif_Data/Features_RMT/';
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'/RandomVariate/'];%['/Users/sliu104/Desktop/Motif_Data/SynteticDataset/',Dset,'/'];
 
-%MaxVariateSize = 62; % MoCap
- MaxVariateSize = 27; % Energy
+MaxVariateSize = 62; % MoCap
+% MaxVariateSize = 27; % Energy
 % MaxVariateSize = 13; % BirdSong
 
 DepO = 2;

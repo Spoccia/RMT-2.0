@@ -11,7 +11,6 @@ motifFeatureCount = csvread(groundTruthFile);
 %     [num,txt,raw] = xlsread(motifFile, window);
 % end
 
-num = csvread(motifFile);
 
 motifClass = unique(motifFeatureCount(:, 1));
 motifClassCount = [];
@@ -21,6 +20,8 @@ for i = 1 : size(motifClass, 1)
     motifClassCount = [motifClassCount, currentMotifClassCount];
 end
 
+try
+num = csvread(motifFile);
 % loop through classID
 classID = num(:, 1);
 myClassID = unique(classID);
@@ -74,4 +75,14 @@ end
 
 [precisionEntropy, recallEntropy, FScoreEntropy] = computeEntropy(precisionMatrix, recallMatrix, FScoreMatrix);
 MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
+catch
+   % [motifFile,' file do not exists']
+    precisionMatrix = zeros(1, size(motifClassCount, 2));
+    recallMatrix = zeros(1, size(motifClassCount, 2));
+    FScoreMatrix = zeros(1, size(motifClassCount, 2));
+    precisionEntropy=[];
+    recallEntropy=[]; 
+    FScoreEntropy=[];
+    MotifEntropy = [precisionEntropy, recallEntropy, FScoreEntropy];
+    total_index=1;
 end

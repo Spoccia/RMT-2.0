@@ -29,6 +29,7 @@ for pssMotID =1:num_of_motif%3
     length_percentage=[length_percentage;length_percentage_1(randid)];
 end
 %%
+length_percentage= [1,0.75,1,0.5,0.75,0.5,1,0.75,1,0.5];
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
 

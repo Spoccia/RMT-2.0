@@ -16,8 +16,11 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
    while(~isFound)
       ProposedC1=C1;
       Proposedmu=mu1;
-      [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK,'Distance',distance,'Replicates',5);%'Display','final'
-
+      try
+            [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK,'Distance',distance,'Replicates',5);%'Display','final'
+      catch
+            [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK-2,'Distance',distance,'Replicates',5);%'Display','final'
+      end
 %       figure
 %       [silh5,h] = silhouette(features1(11:end,:)',C1,'Euclidean');
 %       meanSilhouette=[meanSilhouette,mean(silh5)];

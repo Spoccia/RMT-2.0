@@ -6,7 +6,7 @@ minGroupID = min(idm{DepdO});
 maxGroupID = max(idm{DepdO});
 DepdO
 for i = minGroupID : maxGroupID
-    groupIndex = find(idm{DepdO}' == i);
+    groupIndex = find(idm{DepdO} == i);
     if(size(groupIndex, 1) == targetVariateSize)
        variateGroup = [variateGroup, groupIndex]; 
     end
