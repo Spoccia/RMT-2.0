@@ -1,9 +1,10 @@
 clc; clear;
 warning off;
-  path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\RandomVariate\';
-%path='D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\';%
-%path ='D:\Motif_Results\Datasets\SynteticDataset\BirdSong\';%Mocap\'
-BaseName='MV_Sync_Motif';
+%path='F:\syntethic motifs  good results\Mocap\numInstances_5_15\';
+% path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';%RandomVariate\';
+path='D:\Motif_Results\Datasets\SynteticDataset\Energy\numInstances_5_15\';%RandomVariate\Same_length\';%
+%path ='D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%
+BaseName='Motif1numInst_5';%'MV_Sync_Motif';
 dataLocation='data\';
 load([path,dataLocation,'FeaturesToInject\allTSid.mat']);
 Num_SyntSeries=10; % num of instances of one motif
@@ -19,14 +20,14 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
         strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
         DepO =2;
         DepT =2;
-        for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
+        for strID =1:size(strategy,2)%1:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
             StrategyClustering= strategy(strID);%3;%2;%
             
             for pip=1:30%size(Name_OriginalSeries,2)
                 for NAME = 1:Num_SyntSeries
                     
-                    TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
-                    %            ['Motif1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]  %['MoCap',num2str(NAME)]
+                    %TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                    TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     
                     FeaturesRM ='RMT';%'RMT';%
                     kindOfClustring= 'AKmeans'; % the algorithm of clustering to use
@@ -39,8 +40,8 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
                     
     %                
                     if (StrategyClustering==3 | StrategyClustering==6| StrategyClustering==9)
-%                         AP_allfeatures_subcluster(path,dataLocation,TEST,FeaturesRM,kindOfClustring,distanceUsed,ClusterAlg,StrategyClustering,num2str(DepO),num2str(DepT));
-                         AP_allfeatures(path,dataLocation,TEST,FeaturesRM,kindOfClustring,distanceUsed,ClusterAlg,StrategyClustering,num2str(DepO),num2str(DepT));
+                         AP_allfeatures_subcluster(path,dataLocation,TEST,FeaturesRM,kindOfClustring,distanceUsed,ClusterAlg,StrategyClustering,num2str(DepO),num2str(DepT));
+                  %       AP_allfeatures(path,dataLocation,TEST,FeaturesRM,kindOfClustring,distanceUsed,ClusterAlg,StrategyClustering,num2str(DepO),num2str(DepT));
                     else
                         AP_allfeatures(path,dataLocation,TEST,FeaturesRM,kindOfClustring,distanceUsed,ClusterAlg,StrategyClustering,num2str(DepO),num2str(DepT));
                     end

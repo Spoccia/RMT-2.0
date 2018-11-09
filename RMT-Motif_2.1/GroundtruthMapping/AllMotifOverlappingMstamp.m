@@ -1,9 +1,10 @@
 clear;
 clc;
 
-path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\RandomVariate\';%BirdSong\';%Energy\';%Mocap\';%BSONG\';
+path='F:\syntethic motifs  good results\BirdSong\numInstances_5_15\';%\Energy\RandomVariate\Multisize\';%Mocap\RandomVariate\';%BirdSong\';%Mocap\';%BSONG\';
+% path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-BaseName='MV_Sync_Motif';
+BaseName='Motif1numInst_5';%'MV_Sync_Motif';
 %PathMP=[path,'\MStamp\'];
 % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
 dataLocation='data\';
@@ -28,11 +29,12 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
         for pip=1:30%size(Name_OriginalSeries,2)
             for NAME = 1:Num_SyntSeries
                 
-                TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+%                 TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
                 FeaturesRM ='MStamp\';%'RMT';%'RME';%
                 testname=TEST;
-                lenght=58;%Mocap%Energy
-                %lenght =32;%BirdSong
+                %lenght=58;%Mocap%Energy
+                lenght =32;%BirdSong
                 len=['Lenght_',num2str(lenght)];
                 
                 

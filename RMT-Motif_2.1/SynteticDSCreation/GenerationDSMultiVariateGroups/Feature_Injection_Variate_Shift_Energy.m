@@ -29,7 +29,7 @@ for pssMotID =1:num_of_motif%3
     length_percentage=[length_percentage;length_percentage_1(randid)];
 end
 %%
-length_percentage= [1,0.75,1,0.5,0.75,0.5,1,0.75,1,0.5];
+%length_percentage= [1,0.75,1,0.5,0.75,0.5,1,0.75,1,0.5];
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
 
@@ -86,6 +86,11 @@ for orgID = 1:30 %length(originalTSIDArray)%2
         LabelMotif = [];
         MotifsVariateSet=[];
         
+        %% compute random variate sets
+        randomVariateSet= randperm(27);
+        randomVariateSet=[randomVariateSet,randperm(27)];
+        randomVariateSet= reshape(randomVariateSet(1:30),[3,10]);
+        
         offSpace=0;
         for MotifId =1: num_of_motif
             timescope= FeatureToInject(4,MotifId)*3; % 29
@@ -94,7 +99,7 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             %             MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
             MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
             LabelMotif=[LabelMotif,ones(1,motif_instances)*MotifId];
-            MotifsVariateSet{MotifId}= [1 4 7 10 13 16 19 22 25 7; 2 5 8 11 14 17 20 22 26 8; 3 6 9 12 15 18 21 24 27 9];
+            MotifsVariateSet{MotifId}= randomVariateSet;%[1 4 7 10 13 16 19 22 25 7; 2 5 8 11 14 17 20 22 26 8; 3 6 9 12 15 18 21 24 27 9];
 %             [7	1	13	10	22	7	1	13	10	22
 %                                         8	2	14	11	23	8	2	14	11	23
 %                                         9	3	15	12	24	9	3	15	12	24

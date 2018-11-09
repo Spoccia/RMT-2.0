@@ -10,16 +10,17 @@ datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
-BaseName='Motif1numInst_5';%'Motif';%'MV_Sync_Motif';
+%for BN =5:10:15
+BaseName='Motif1numInst_5'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
-createDependencyScale = 1;%1;
+FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
+createDependencyScale = 0;%1;
 %% clustering abilitation
 Cluster =  1;%1;%
-subclusterflag=0;
+subclusterflag=1;
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for strID =6:6%2:2:6%5:size(strategy,2);%1:6
+for strID =6:6%2:2:size(strategy,2);%1:6
     StrategyClustering= strategy(strID);%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -81,7 +82,7 @@ for strID =6:6%2:2:6%5:size(strategy,2);%1:6
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    for percentid=2:size(percent,1)
+    for percentid=6:7%2:size(percent,1)%1:1
         percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
         for MOTIFNUMber =1:1%2:3
             for pip=1:30   %TSnames
@@ -385,5 +386,6 @@ for strID =6:6%2:2:6%5:size(strategy,2);%1:6
             end
         end
     end
-    FeatureExtractionFlag = 0;
+   
 end
+% end
