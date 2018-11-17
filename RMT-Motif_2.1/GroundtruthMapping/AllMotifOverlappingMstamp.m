@@ -1,10 +1,14 @@
 clear;
 clc;
 
-path='F:\syntethic motifs  good results\BirdSong\numInstances_5_15\';%\Energy\RandomVariate\Multisize\';%Mocap\RandomVariate\';%BirdSong\';%Mocap\';%BSONG\';
+path='F:\syntethic motifs  good results\Mocap\ICMR RMT-Mstamp-RME\';%\10_Motifs_MM_rebuttal\';
+%samesize10inst\';
+%'F:\syntethic motifs  good results\Energy\numInstances_5_15\';
+%'F:\syntethic motifs  good results\Mocap\random shift variates 1M Mocap\samesize\';
+%'F:\syntethic motifs  good results\BirdSong\numInstances_5_15\';%\Energy\RandomVariate\Multisize\';%Mocap\RandomVariate\';%BirdSong\';%Mocap\';%BSONG\';
 % path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';
 kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-BaseName='Motif1numInst_5';%'MV_Sync_Motif';
+BaseName='Motif1';%'Motif1numInst_10';%'MV_Sync_Motif';%
 %PathMP=[path,'\MStamp\'];
 % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
 dataLocation='data\';
@@ -15,9 +19,9 @@ Num_SyntSeries=10; % num of instances of one motif
 PossibleMotifInjected = [1,2,3,10];
 for idmotInj =1:1% size(PossibleMotifInjected,2)-1
     motifinjected = num2str(PossibleMotifInjected(idmotInj));
-  %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
+    %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
     percent=[0; 0.1;0.25;0.5;0.75;1;2];%;
-    for percentid=1:7%size(percent,1)
+    for percentid=1:1%7%size(percent,1)
         percentagerandomwalk=percent(percentid);
         % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
         %strategy=[1,2,3,4,5,6];
@@ -26,18 +30,21 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
         %       for strID =3:3%1:size(strategy,2)
         %           StrategyClustering= strategy(strID);%3;%2;%
         
-        for pip=1:30%size(Name_OriginalSeries,2)
+        for pip=1:4%30%size(Name_OriginalSeries,2)
             for NAME = 1:Num_SyntSeries
                 
 %                 TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+%                 TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+%old
+                     TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];
+                
                 FeaturesRM ='MStamp\';%'RMT';%'RME';%
                 testname=TEST;
-                %lenght=58;%Mocap%Energy
-                lenght =32;%BirdSong
+                lenght=58;%Mocap%Energy
+%                 lenght =32;%BirdSong
                 len=['Lenght_',num2str(lenght)];
                 
-                
+                try
                 load([path,FeaturesRM,TEST,'\Motif_output_',TEST,len,'.mat']);
                 Feature_Pos_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',testname,'.csv']);%\',testname,'
                 Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',testname,'.csv']);%\',testname,'
@@ -85,10 +92,10 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
                 end
                 col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'};
                 
-                try
+%                 try
                     csvwrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances);
-%                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances,len,'A2');
-%                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],col_header,len,'A1');%'_MStamp',
+                    %                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances,len,'A2');
+                    %                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],col_header,len,'A1');%'_MStamp',
                 catch
                     'problem at'
                     TEST

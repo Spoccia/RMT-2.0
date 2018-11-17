@@ -1,16 +1,22 @@
 clear;
 clc;
-DS_Name ='Mocap';%'Energy';%'BirdSong';%
-Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name,'\RandomVariate\instancesmultisize'];
-overlapping='';%'Overlapping';%
+Ds_Name ='Mocap';%'BirdSong';%'Energy';%
+Path=['F:\syntethic motifs  good results\',Ds_Name,'\ICMR RMT-Mstamp-RME'];%'\10_Motifs_MM_rebuttal'];
+% Path='D:\Motif_Results\Datasets\SynteticDataset\Energy\Coherent Shift Variate 1M Energy\instanceMultisize';
+% Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
+
+%Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name,'\RandomVariate\instancesmultisize'];
+% overlapping='';%
+overlapping='Overlapping';%
 fprintf('Post procesing precision and recall files... \n');
 testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
 % strategy = [1:9];
 % num_of_motif = [1:3];
 num_of_motif = 1;%[1:3];
 strategy = [1, 3, 4, 6, 7, 9];
+%BaseName='MV_Sync_Motif';%'Motif1numInst_15';%
 BaseName='Motif';
-algorithm_type = {'RMT', 'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
+algorithm_type = {'RMT','RME' ,'MStamp'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 % algorithm_type = {'RMT'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
 timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75,0.90,0.95,0.98, 1];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2];
@@ -24,11 +30,11 @@ for i = 1 : size(num_of_motif, 2)
     AllStrategy_Precision=[];
     AllStrategy_Recall=[];
     AllStrategy_Fscore=[];
-    for j = 2:2: size(strategy, 2)
+    for j = 1: 2%size(strategy, 2)
         PrecisionRWScale=[];
         RecallRWScale=[];
         FscoreRWScale=[];
-        for aa = 1 : size(amp_scale, 2)
+        for aa = 1 : 1%size(amp_scale, 2)
             PrecisionAggregatedMAtrix = [];
             RecallAggregatedMAtrix = [];
             FscoreAggregatedMAtrix = [];

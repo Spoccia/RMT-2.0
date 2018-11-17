@@ -7,7 +7,7 @@ DatasetInject=2;  % 1 BirdSong 2 syntethic BirdSong
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\BirdSong\';
 if (DatasetInject==2)
-    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%BSONG\';
+    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\samesize10inst\';%BSONG\';
 end
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
@@ -40,7 +40,7 @@ justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
 distanceUsed='Descriptor';% use just descriptors to  cluster
 % the algorithm of clustering to use
-for strategyIDentifier =1:size(strategy,2)
+for strategyIDentifier =6:size(strategy,2)
     clc;
     StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
@@ -75,10 +75,10 @@ for strategyIDentifier =1:size(strategy,2)
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    BaseName='Motif1numInst_5';%'Motif';%'MV_Sync_Motif';
+    BaseName='Motif1numInst_10';%'Motif';%'MV_Sync_Motif';
     for numMotifInjected =1:1%3
         numMotifInjected
-        for percentid=1:7%1:size(percent,1)
+        for percentid=6:7%1:size(percent,1)
             percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
             for pip=1:30
                 for NAME = 1:Num_SyntSeries

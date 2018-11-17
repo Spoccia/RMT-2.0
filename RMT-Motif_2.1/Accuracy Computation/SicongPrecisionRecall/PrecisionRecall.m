@@ -1,15 +1,20 @@
 clear;
 clc;
 Ds_Name= 'Mocap';%'Energy';%'BirdSong';%
-Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancesmultisize'];
+Path=['F:\syntethic motifs  good results\',Ds_Name,'\ICMR RMT-Mstamp-RME'];%10_Motifs_MM_rebuttal'];
+% Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
+% Path='D:\Motif_Results\Datasets\SynteticDataset\Energy\Coherent Shift Variate 1M Energy\instanceMultisize\';
+%Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancesmultisize'];
+
 % windowSize = 32; % BirdSong configuration
 windowSize = 58; % Energy dataset configuration
+
 % iterate file to for upload
 testCaseIndex = 1 : 10;
 load([Path,'\data\FeaturesToInject\allTSid.mat']);
-TS_index = AllTS(1:30);
+TS_index = AllTS;%(1:30);
 overlapping='';%'Overlapping';%
-BaseName='MV_Sync_Motif';
+BaseName='Motif1';%'Motif1numInst_10';%'MV_Sync_Motif';%
 % MoCap
 % TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 
@@ -19,7 +24,7 @@ BaseName='MV_Sync_Motif';
 % BirdSong dataset
 %TS_index = [3, 6, 8, 11, 21, 24, 32, 50, 53, 55, 59, 64, 70, 76, 79, 91, 93, 94, 95, 100, 101, 105, 114, 116, 124, 126, 133, 139, 149, 153]; % BirdSong Dataset
 
-algorithm_type = {'RMT', 'MStamp'};
+algorithm_type = {'RMT','RME', 'MStamp'};
 % algorithm_type = {'MStamp'};
 strategy = [1, 3, 4, 6, 7, 9];
 num_of_motif = 1%[1:3];
@@ -38,9 +43,9 @@ GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_',BaseN
 
 
 for i = 1 : size(num_of_motif, 2)
-    for ss = 2:2 : size(strategy, 2)
+    for ss = 1: 2%size(strategy, 2)
         cur_strategy = strategy(ss);
-        for m = 1 : size(amp_scale, 2)
+        for m = 1 : 1%size(amp_scale, 2)
             for tt = 1 : size(timeOverlapThresholds, 2)
                 for kk = 1 : size(algorithm_type, 2)
                     
@@ -68,11 +73,21 @@ for i = 1 : size(num_of_motif, 2)
                         for j = 1 : size(TS_index, 2)
                             for k = 1 : size(testCaseIndex, 2)
                                 %  fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
-                                GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
+%                                 GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
+%                                 GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
+%% old files 
+                                GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '.csv'];
+                                
                                 if(strcmp(cur_algorithm_type,'MStamp') == 1)
-                                    MotifFile = [MotifFilePath, '/',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+%                                     MotifFile = [MotifFilePath, '/',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+%                                  MotifFile = [MotifFilePath, '/',BaseName,  '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                                 %oldfiles
+                                MotifFile = [MotifFilePath, '/',BaseName,  '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '.csv'];
                                 else
-                                    MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+%                                     MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+%                                 MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                                %oldfiles
+                                MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '.csv'];
                                 end
                                 
                                 threshold = eps; % if it is non-zero

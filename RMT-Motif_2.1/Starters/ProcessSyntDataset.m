@@ -5,22 +5,23 @@ clear;
 DatasetInject=2;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';           %'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Motif1RME\';
+%F:\syntethic motifs  good results\Mocap\10_Motifs_MM_rebuttal\';%'D:\Motif_Results\Datasets\SynteticDataset\Mocap\samesize10inst\';
 %'D:\Motif_Results\Datasets\SynteticDataset\Mocap\';%Energy\';
 subfolderPath= '';%'Z_A_Temp_C\';%
-FeaturesRM ='RMT';
+FeaturesRM ='RME';%'RMT';%
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
 %for BN =5:10:15
-BaseName='Motif1numInst_5'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
+BaseName='Motif';%'Motif1numInst_10'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
+FeatureExtractionFlag = 1;% 1; % 1 do it others  skip
+createDependencyScale = 1;
 %% clustering abilitation
 Cluster =  1;%1;%
 subclusterflag=1;
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for strID =6:6%2:2:size(strategy,2);%1:6
+for strID =1:2%2:2:size(strategy,2);%1:6
     StrategyClustering= strategy(strID);%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -82,7 +83,7 @@ for strID =6:6%2:2:size(strategy,2);%1:6
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    for percentid=6:7%2:size(percent,1)%1:1
+    for percentid=1:size(percent,1)%1:1
         percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
         for MOTIFNUMber =1:1%2:3
             for pip=1:30   %TSnames
@@ -93,20 +94,16 @@ for strID =6:6%2:2:size(strategy,2);%1:6
                     TimeforPruningClustering =0;%zeros(1,4);
                     TimeforPruningSubClustering=0;%zeros(1,4);
                     timeforSubclustering=0;
-                    %TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
-                    TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
+%                     TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)]%,'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
+                    TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
+                    %TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
                     if DatasetInject == 1 %Energy
                         
                     elseif DatasetInject == 2 % MoCap
-                        %       TEST=['Mocap_test',num2str(NAME)]%'Mocap_test11';
-                        %         TEST=['MoCap',num2str(NAME)]
-%                         TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                        TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+%                         TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)]%,'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
+                        TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+%                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                         
-                        %       TEST=['MotifShift1_2_instance_',num2str(NAME)]
-                        
-                        %         TEST=['Motif_15_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)] %'35','_instance_',num2str(NAME)]%85
-                        %   TEST=['100_Motif_10_1_',num2str(pippo(pip)),'_instance_',num2str(NAME)]
                     end
                     
                     %% read location matrix
@@ -152,6 +149,10 @@ for strID =6:6%2:2:size(strategy,2);%1:6
                         p=tic;
                         if(strcmp(FeaturesRM,'RMT')) % we can add other  features methods
                             [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_Silv(data',RELATION, DeOctTime, DeOctDepd,...
+                                DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
+                                DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
+                        elseif(strcmp(FeaturesRM,'RME'))
+                            [frames1,descr1,gss1,dogss1,depd1,idm1, time, timee, timeDescr] = sift_gaussianSmooth_entropy(data',RELATION, DeOctTime, DeOctDepd,...
                                 DeLevelTime, DeLevelDepd, DeSigmaTime ,DeSigmaDepd,...
                                 DeSpatialBins, DeGaussianThres, r, sBoundary, eBoundary);
                         end
@@ -218,7 +219,7 @@ for strID =6:6%2:2:size(strategy,2);%1:6
                             Centroids =[];
                             allclusterid=0;
                             for classidlabel= 1:size(possibleset,2) % for each set of varaites  create a cluster
-                                idactfeatures= frame1(1,:)==possibleset(classidlabel);
+                                idactfeatures= X(1,:)==possibleset(classidlabel);
                                 ActFeatures = X(:,idactfeatures);
                                 if(strcmp(kindOfClustring,'AKmeans')==1)
                                     if(size(ActFeatures,2)<=2)
