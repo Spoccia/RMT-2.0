@@ -1,7 +1,9 @@
 clear;
 clc;
-Ds_Name= 'Mocap';%'Energy';%'BirdSong';%
-Path=['F:\syntethic motifs  good results\',Ds_Name,'\ICMR RMT-Mstamp-RME'];%10_Motifs_MM_rebuttal'];
+Ds_Name= 'Mocap';%'BirdSong';%'Energy';%
+Path=['F:\syntethic motifs  good results\',Ds_Name,'\Motif1RME'];%'\samesize10inst'];
+Path=['F:\syntethic motifs  good results\',Ds_Name,'\Coherent Shift Variate 1M Mocap\instancessamesize'];
+%10_Motifs_MM_rebuttal'];%ICMR RMT-Mstamp-RME'];%
 % Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
 % Path='D:\Motif_Results\Datasets\SynteticDataset\Energy\Coherent Shift Variate 1M Energy\instanceMultisize\';
 %Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancesmultisize'];
@@ -12,9 +14,9 @@ windowSize = 58; % Energy dataset configuration
 % iterate file to for upload
 testCaseIndex = 1 : 10;
 load([Path,'\data\FeaturesToInject\allTSid.mat']);
-TS_index = AllTS;%(1:30);
+TS_index = sort(AllTS(1:30));
 overlapping='';%'Overlapping';%
-BaseName='Motif1';%'Motif1numInst_10';%'MV_Sync_Motif';%
+BaseName='MV_Sync_Motif1';%'Motif1';%numInst_10';%'MV_Sync_Motif';%'Motif10';%
 % MoCap
 % TS_index = [17, 20, 33, 37, 38, 40, 52, 59, 61, 69, 71, 81, 83, 86, 91, 92, 100, 104, 113, 115, 121, 130, 132, 133, 138, 141, 142, 143, 148, 151]; % MoCap Dataset
 
@@ -24,10 +26,11 @@ BaseName='Motif1';%'Motif1numInst_10';%'MV_Sync_Motif';%
 % BirdSong dataset
 %TS_index = [3, 6, 8, 11, 21, 24, 32, 50, 53, 55, 59, 64, 70, 76, 79, 91, 93, 94, 95, 100, 101, 105, 114, 116, 124, 126, 133, 139, 149, 153]; % BirdSong Dataset
 
-algorithm_type = {'RMT','RME', 'MStamp'};
+algorithm_type = {'RMT', 'MStamp'};%'RME',
 % algorithm_type = {'MStamp'};
-strategy = [1, 3, 4, 6, 7, 9];
-num_of_motif = 1%[1:3];
+strategy = [3,6,9];
+% strategy = [1, 3, 4, 6, 7, 9];
+num_of_motif = 1;%[1:3];
 amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2]; % 0.5 0.75 0 1
 timeOverlapThresholds = [0.1,0.25, 0.5, 0.75, 0.90,0.95,0.98, 1];
 
@@ -43,9 +46,9 @@ GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_',BaseN
 
 
 for i = 1 : size(num_of_motif, 2)
-    for ss = 1: 2%size(strategy, 2)
+    for ss = 1:2%: 2:size(strategy, 2)
         cur_strategy = strategy(ss);
-        for m = 1 : 1%size(amp_scale, 2)
+        for m = 1 : size(amp_scale, 2)
             for tt = 1 : size(timeOverlapThresholds, 2)
                 for kk = 1 : size(algorithm_type, 2)
                     
@@ -58,6 +61,8 @@ for i = 1 : size(num_of_motif, 2)
                         % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/MStampMoCap'];
                         %                         MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/MStampBirdSong'];
                         MotifFilePath = [Path,'\MStamp\Accuracy'];
+                    elseif(strcmp(cur_algorithm_type,'RME') == 1)
+                        MotifFilePath = [Path,'\Features_RME\Accuracy'];
                     else
                         % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Accuracy_Motif2_3'];
                         % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_8_BirdSong/Accuracy'];
@@ -67,29 +72,29 @@ for i = 1 : size(num_of_motif, 2)
                     % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_18_MoCap/Result_', cur_algorithm_type,'_Motif'];
                     % savePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/Result_', cur_algorithm_type,'_Motif'];
                     index_count = 1; % keep track of same motif but different number of instances
-                    if(strcmp(cur_algorithm_type,'MStamp') == 1 & cur_strategy>3)
+                    if(strcmp(cur_algorithm_type,'MStamp') == 1 & cur_strategy>=3)
                         'Mstamp has just one strategy'
                     else
-                        for j = 1 : size(TS_index, 2)
+                        for j = 1 :size(TS_index, 2)
                             for k = 1 : size(testCaseIndex, 2)
                                 %  fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
 %                                 GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
-%                                 GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
+                                GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
 %% old files 
-                                GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '.csv'];
+%                                 GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '.csv'];
                                 
                                 if(strcmp(cur_algorithm_type,'MStamp') == 1)
 %                                     MotifFile = [MotifFilePath, '/',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
-%                                  MotifFile = [MotifFilePath, '/',BaseName,  '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                                 MotifFile = [MotifFilePath, '/',BaseName,  '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                                  %oldfiles
-                                MotifFile = [MotifFilePath, '/',BaseName,  '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '.csv'];
+%                                 MotifFile = [MotifFilePath, '/',BaseName,  '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '.csv'];
                                 else
 %                                     MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
-%                                 MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
+                                MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m)), '.csv'];
                                 %oldfiles
-                                MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '.csv'];
+%                                 MotifFile = [MotifFilePath, '/Strategy_', num2str(cur_strategy), '/AP_DepO_2_DepT_2_',BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '.csv'];
                                 end
-                                
+                                Namecheck=[BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m))];
                                 threshold = eps; % if it is non-zero
                                 timeOverlapThreshold = timeOverlapThresholds(tt);
                                 
@@ -97,18 +102,18 @@ for i = 1 : size(num_of_motif, 2)
                                 algorithmType = algorithm_type{kk};
                                 [currentMotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(GroundTruthFile, MotifFile, algorithmType, windowSize, threshold, timeOverlapThreshold);
                                 
-                                %                                                         sharedFolder = [savePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
-                                %                                                         if(exist(sharedFolder,'dir')==0)
-                                %                                                             mkdir(sharedFolder);
-                                %                                                         end
-                                %                                                         savePathPrecision = [sharedFolder, '/Precision_', num2str(index_count), '.csv'];
-                                %                                                         savePathRecall = [sharedFolder, '/Recall_', num2str(index_count), '.csv'];
-                                %                                                         savePathFScore = [sharedFolder, '/FScore_', num2str(index_count), '.csv'];
-                                %                                                         savePathRemainIndex = [sharedFolder, '/RemainIndex', num2str(index_count), '.csv'];
-                                %                                                         csvwrite(savePathPrecision, precisionMatrix);
-                                %                                                         csvwrite(savePathRecall, recallMatrix);
-                                %                                                         csvwrite(savePathFScore, FScoreMatrix);
-                                %                                                         csvwrite(savePathRemainIndex, total_index);
+                                                                                        sharedFolder = [savePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+                                                                                        if(exist(sharedFolder,'dir')==0)
+                                                                                            mkdir(sharedFolder);
+                                                                                        end
+                                                                                        savePathPrecision = [sharedFolder, '/Precision_',Namecheck,'.csv'];% BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+                                                                                        savePathRecall = [sharedFolder, '/Recall_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+                                                                                        savePathFScore = [sharedFolder, '/FScore_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+                                                                                        savePathRemainIndex = [sharedFolder, '/RemainIndex_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+                                                                                        csvwrite(savePathPrecision, precisionMatrix);
+                                                                                        csvwrite(savePathRecall, recallMatrix);
+                                                                                        csvwrite(savePathFScore, FScoreMatrix);
+                                                                                        csvwrite(savePathRemainIndex, total_index);
                                 %
                                 current_iteration_precision{index_count} = precisionMatrix;
                                 current_iteration_recall{index_count} = recallMatrix;

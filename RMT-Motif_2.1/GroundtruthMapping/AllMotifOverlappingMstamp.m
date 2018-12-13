@@ -30,7 +30,7 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
         %       for strID =3:3%1:size(strategy,2)
         %           StrategyClustering= strategy(strID);%3;%2;%
         
-        for pip=1:4%30%size(Name_OriginalSeries,2)
+        for pip=1:30%size(Name_OriginalSeries,2)
             for NAME = 1:Num_SyntSeries
                 
 %                 TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
@@ -70,7 +70,8 @@ for idmotInj =1:1% size(PossibleMotifInjected,2)-1
                                 %           InjectedTimePeriod = Position_F_Injected(injectedID,2):Position_F_Injected(injectedID,3);
                                 DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,2))>0,Feature_Pos_Injected(injectedID,2));
                                 %           InjectedDependency = Dependency_Injected(injectedID,1);
-                                TimeOverlapping    = computeTimeOverlap(motifsStart(instance),motifsStart(instance)+lenght-1,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
+                                TimeOverlapping    = computeTimeOverlap(motifsStart(instance),motifsStart(instance)+lenght,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
+
                                 variateOverlapping = size(intersect(DI,motifvariate),1)/size(DI,1);%union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
                                 if(TimeOverlapping >0 & variateOverlapping >0)
                                     % condition to modify the score

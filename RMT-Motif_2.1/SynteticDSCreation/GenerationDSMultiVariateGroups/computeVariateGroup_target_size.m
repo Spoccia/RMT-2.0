@@ -4,10 +4,12 @@ variateGroup = [];
 totalVariate = size(depdScale, 1);
 minGroupID = min(idm{DepdO});
 maxGroupID = max(idm{DepdO});
-DepdO
+DepdO;
 for i = minGroupID : maxGroupID
     groupIndex = find(idm{DepdO} == i);
     if(size(groupIndex, 1) == targetVariateSize)
        variateGroup = [variateGroup, groupIndex]; 
     end
+   
 end
+ variateGroup= [variateGroup, [49;50;51]];

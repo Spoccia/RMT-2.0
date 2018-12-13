@@ -19,11 +19,13 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%Mocap\numInstances_5_15\';%Energy\numInstances_5_15\';%
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';
+%'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%Mocap\numInstances_5_15\';%Energy\numInstances_5_15\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';%Building_MultiStory\';%BSONG\';
 %'D:\Motif_Results\Datasets\BirdSong\';
 %'D:\Motif_Results\Datasets\Mocap\';%'D:\Motif_Results\Datasets\SynteticDataset\';%
-ImageSavingPath='D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\MStamp\';%Mocap\numInstances_5_15\MStamp\';%Energy\RandomVariate\MStamp\';%Mocap\numInstances_5_15\MStamp\';%Energy\MStamp\';%
+ImageSavingPath=[datasetPath,'MStamp\'];
+%'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\MStamp\';%Mocap\numInstances_5_15\MStamp\';%Energy\RandomVariate\MStamp\';%Mocap\numInstances_5_15\MStamp\';%Energy\MStamp\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\MStamp\';%Mocap\MStamp\';%Building_MultiStory\MStampB\';%BSONG\MStampB\';
 %'D:\Motif_Results\Datasets\BirdSong\MStampB\';
 %'D:\Motif_Results\Datasets\Mocap\MStampB\';%'D:\Motif_Results\Datasets\SynteticDataset\MStamp\';%
@@ -34,16 +36,16 @@ Name_OriginalSeries = AllTS;%[1,3,6,7];%ENERGY %[23,35,86,111];% MOCap Motif10[6
 % for NAME =23:154 %100:105%71:72%39:39%%46:57%34:45%34:39
 percent=[0; 0.1;0.25;0.5;0.75;1;2];% 0.1;0.5;0.75;1];
 % for percentid=1:size(percent,1)
-BaseName='Motif1numInst_5';%'MV_Sync_Motif';
+BaseName='MV_Sync_Motif1';%'Motif1numInst_5';%
 for prcentid=1:7%4%6%6%size(percent,1)
     percentagerandomwalk=percent(prcentid);
     for numMotifInjected =1:1%2:3%10:10%3
-        for pip=1:30
+        for pip=17:30
             for NAME = 1:10
                 MotifBag_mstamp=[];
                 %      try
                 FeaturesRM='MStamp';
-                sublenght= 58;%MOCAP%32;%Bsong% 58;%ENERGY %58;%ENERGY % 29;  %[29,58];77;%12;%
+                sublenght= 59;%MOCAP%32;%Bsong% 58;%ENERGY %58;%ENERGY % 29;  %[29,58];77;%12;%
                 
                 %           TEST=[NAME]
                 %TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
@@ -56,7 +58,7 @@ for prcentid=1:7%4%6%6%size(percent,1)
                 data(isnan(data))=0;
 %                 if(prcentid == 6 )
                  data1= csvread([datasetPath,'data\',TSbaseRandom,'.csv'])';
-                 data(1:2500,[34,46]) = data1(:,[34,46]);%,25,26
+                 data(:,[34,46]) = data1(:,[34,46]);%,25,26
 %                 end
 %                          data(1,:)=1;
 %                          data(end,:)=1;
