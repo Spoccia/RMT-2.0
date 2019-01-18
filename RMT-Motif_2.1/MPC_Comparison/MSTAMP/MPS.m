@@ -19,7 +19,9 @@ saveMotifImages=0;
 
 %% alternative 1.a: the basic version
 %
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';
+datasetPath= 'F:\syntethic motifs  good results\Mocap\ICMR RMT-Mstamp-RME\';%'D:\Motif_Results\Datasets\SynteticDataset\Energy\Coherent Shift Variate 1M Energy\instancessamesize\';
+%Energy\numInstances_5_15\';
+%'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';%RandomVariate\instancessamesize\';
 %'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\numInstances_5_15\';%Mocap\numInstances_5_15\';%Energy\numInstances_5_15\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Energy\';%Mocap\';%Building_MultiStory\';%BSONG\';
 %'D:\Motif_Results\Datasets\BirdSong\';
@@ -36,29 +38,29 @@ Name_OriginalSeries = AllTS;%[1,3,6,7];%ENERGY %[23,35,86,111];% MOCap Motif10[6
 % for NAME =23:154 %100:105%71:72%39:39%%46:57%34:45%34:39
 percent=[0; 0.1;0.25;0.5;0.75;1;2];% 0.1;0.5;0.75;1];
 % for percentid=1:size(percent,1)
-BaseName='MV_Sync_Motif1';%'Motif1numInst_5';%
-for prcentid=1:7%4%6%6%size(percent,1)
+BaseName='Motif1';%'MV_Sync_Motif1';%'Motif1numInst_5';%
+for prcentid=1:1%7%4%6%6%size(percent,1)
     percentagerandomwalk=percent(prcentid);
     for numMotifInjected =1:1%2:3%10:10%3
-        for pip=17:30
+        for pip=1:30
             for NAME = 1:10
                 MotifBag_mstamp=[];
                 %      try
                 FeaturesRM='MStamp';
-                sublenght= 59;%MOCAP%32;%Bsong% 58;%ENERGY %58;%ENERGY % 29;  %[29,58];77;%12;%
+                sublenght= 58;%MOCAP%32;%Bsong% 58;%ENERGY %58;%ENERGY % 29;  %[29,58];77;%12;%
                 
                 %           TEST=[NAME]
                 %TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
-                TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
-                
+                %TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+                TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];
                 TS_name=num2str(TEST);
                 TSbaseRandom= [BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)];
                 %[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)]
                 data=csvread([datasetPath,'data\',TS_name,'.csv'])';%csvread('D:\Motif_Results\Datasets\SynteticDataset\data\Mocap_test1.csv');
                 data(isnan(data))=0;
 %                 if(prcentid == 6 )
-                 data1= csvread([datasetPath,'data\',TSbaseRandom,'.csv'])';
-                 data(:,[34,46]) = data1(:,[34,46]);%,25,26
+%                  data1= csvread([datasetPath,'data\',TSbaseRandom,'.csv'])';
+%                  data(:,[34,46]) = data1(:,[34,46]);%,25,26
 %                 end
 %                          data(1,:)=1;
 %                          data(end,:)=1;
@@ -80,13 +82,13 @@ for prcentid=1:7%4%6%6%size(percent,1)
                 %     for j= 1:2
                 
                 %         sub_len=sublenght(j);
-                sub_len=sublenght;
+                sub_len=sublenght+1;
                 must_dim = [];
                 exc_dim =[];%[34,46]; %[];%[];%% for mocap we have o exclude flat timeseries
                 % if big portion of the timeseries is flat we have perhaps to exclude that variates
                 
-                if(exist([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\'],'dir')==0)
-                    mkdir([ImageSavingPath,TS_name,'\Lenght_',num2str(sub_len),'\']);
+                if(exist([ImageSavingPath,TS_name,'\Lenght_',num2str(sublenght),'\'],'dir')==0)
+                    mkdir([ImageSavingPath,TS_name,'\Lenght_',num2str(sublenght),'\']);
                 end
                 datasave= [ImageSavingPath,TS_name,'\'];
                 tic;
@@ -186,8 +188,8 @@ for prcentid=1:7%4%6%6%size(percent,1)
                 %             % scan in all the matrtix profile for the motif to find all the minimum till the end of the  timeseries
                 %         end
                 
-                save ([datasave,'Motif_output_',TS_name,'Lenght_',num2str(sub_len),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag_mstamp');
-                csvwrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],TIME');
+                save ([datasave,'Motif_output_',TS_name,'Lenght_',num2str(sublenght),'.mat'],'pro_mul','pro_idx','motif_dim','motif_idx','MotifBag_mstamp');
+                csvwrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sublenght),'.xls'],TIME');
 %                 col_header={'MSTAMP_58'};
 %                 rowHeader ={'MSTAMP';'FindMotifInstance';'AKmedoids'};
 %                 xlswrite([datasave,'Time_',TS_name,'BoM_',num2str(i),'Lenght_',num2str(sub_len),'.xls'],TIME','TIME','B2');
@@ -196,7 +198,7 @@ for prcentid=1:7%4%6%6%size(percent,1)
                 clear('pro_mul','pro_idx','motif_dim','motif_idx','MotifBag_mstamp','motif_idx', 'motif_dim','TIME','data');
 %                clc;
                 else
-                xlswrite([ImageSavingPath,'Problem_',TS_name,'Lenght_',num2str(sub_len),'.xls'],'Problem with this file');    
+                xlswrite([ImageSavingPath,'Problem_',TS_name,'Lenght_',num2str(sublenght),'.xls'],'Problem with this file');    
                 end
                 %      catch
                 %      end

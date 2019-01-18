@@ -1,4 +1,4 @@
-function [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID, relevantSize, currentRetrievedSize, threshold, timeOverlapThreshold)
+function [precision, recall] = groupFeatureScores(statEntry, currentInjectedClassID, relevantSize, currentRetrievedSize, threshold, timeOverlapThreshold,overlapping )
 
 myStatEntry = statEntry(statEntry(:, 5) == currentInjectedClassID, :);
 [uniqueRows, firstIndex, membershipIndex] = unique( myStatEntry(:,[7 8]), 'rows');
@@ -12,23 +12,39 @@ for i = 1 : uniqueSize
     bestVO = max(myStatEntry(resultIndex, 10));
     
     recallBestScore(i) = bestTO * bestVO;
-    if(bestTO >= timeOverlapThreshold && recallBestScore(i) >= threshold)
-        recallBestScore(i) = 1;
+    if(strcmp(overlapping,'Overlapping')==1)
+        if(recallBestScore(i)  >= timeOverlapThreshold )
+            recallBestScore(i) = 1;
+        else
+            recallBestScore(i) = 0;
+        end
     else
-        recallBestScore(i) = 0;
+        if(bestTO >= timeOverlapThreshold && recallBestScore(i) >= threshold)
+            recallBestScore(i) = 1;
+        else
+            recallBestScore(i) = 0;
+        end
     end
 end
-
 for i = 1 : size(myStatEntry, 1)
     score_TO = myStatEntry(i, 9);
     score_VO = myStatEntry(i, 10);
     
     precisionScore(i) = score_TO * score_VO;
-%      if( precisionScore(i) >= timeOverlapThreshold && precisionScore(i) >= threshold) %% this is  for using overlapping percentage in both variates and time
-   if(score_TO >= timeOverlapThreshold && precisionScore(i) >= threshold) %% This is  for usiing just time overlapping
-        precisionScore(i) = 1;
+    if(strcmp(overlapping,'Overlapping')==1)
+        if( precisionScore(i) >= timeOverlapThreshold) %% this is  for using overlapping percentage in both variates and time
+            %    if(score_TO >= timeOverlapThreshold && precisionScore(i) >= threshold) %% This is  for usiing just time overlapping
+            precisionScore(i) = 1;
+        else
+            precisionScore(i) = 0;
+        end
     else
-        precisionScore(i) = 0;
+        %if( precisionScore(i) >= timeOverlapThreshold && precisionScore(i) >= threshold) %% this is  for using overlapping percentage in both variates and time
+        if(score_TO >= timeOverlapThreshold && precisionScore(i) >= threshold) %% This is  for usiing just time overlapping
+            precisionScore(i) = 1;
+        else
+            precisionScore(i) = 0;
+        end
     end
 end
 

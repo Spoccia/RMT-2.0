@@ -5,14 +5,14 @@ clear;
 DataType='Mocap';
 % DataType='BirdSong';
 basepath='D:\Motif_Results\Datasets\SynteticDataset\';%'/Users/sliu104/Desktop/Motif_Data/SynteticDataset/';%
-featuresToInjectPath=[basepath,DataType,'/RandomVariate','/instancessamesize/data/FeaturesToInject/'];
-randomWalkPath = [basepath,DataType,'/RandomVariate','/instancessamesize/data/RW_0_1/RW_'];
+featuresToInjectPath=[basepath,DataType,'/RandomVariate','/instancesmultisize/data/FeaturesToInject/'];
+randomWalkPath = [basepath,DataType,'/RandomVariate','/instancesmultisize/data/RW_0_1/RW_'];
 TimeSeriesPath = ['D:\Motif_Results\Datasets\',DataType,'/data/'];%['/Users/sliu104/Desktop/Motif_Data/TimeSeries/',DataType,'/data/'];
 depdO=2;
 coherentinjectionFlag = 0;% 1;% if coherent;
 num_of_motif=1;
 delimiter='/';
-DestDataPath = [basepath,DataType,'/RandomVariate','/instancessamesize/data/'];
+DestDataPath = [basepath,DataType,'/RandomVariate','/instancesmultisize/data/'];
 % NUM_VARIATE = 27;%Energy
 NUM_VARIATE = 62;% MoCap
 % NUM_VARIATE = 13;% BirdSong
@@ -23,13 +23,13 @@ random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1, 2, 3, 10];
 %% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
 length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
-%length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1];
+% length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1];
 length_percentage=[];
 for pssMotID =1:num_of_motif%3
     randid= randperm(motif_instances);
     length_percentage=[length_percentage;length_percentage_1(randid)];
 end
-%length_percentage= [1,0.75,0.5,1,0.75,0.5,1,0.75,1,0.5];
+% length_percentage= [1,0.75,0.5,1,0.75,0.5,1,0.75,1,0.5];
 %%
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
@@ -104,16 +104,28 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             MotifsSections{MotifId}.depd = deploc;
             LabelMotif=[LabelMotif,ones(1,motif_instances)*MotifId];
             %% coherent injection
+            MotifsVariateSet_Support=[];
             if coherentinjectionFlag == 1
-                [~,~,MotifsVariateSet{MotifId}]= featureInject(FeatureToInject(:,MotifId), DepdToInject(:,MotifId), sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO,MotifId);
+                [~,~,MotifsVariateSet_Support{MotifId}]= featureInject(FeatureToInject(:,MotifId), DepdToInject(:,MotifId), sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO,MotifId);
+                
+                selectVaraiteGroupsrandom=     randi(size(MotifsVariateSet_Support{MotifId},2),1,motif_instances);
+                MotifsVariateSet{MotifId}= MotifsVariateSet_Support{MotifId}(:,selectVaraiteGroupsrandom);
+                
             else
             %% random injection
+            TempRandomVariateSet=[];
             MoCap_avoidingflatvariate= [1:33,35:45,47:62];
+            numofRandomVariateToInject = size (MotifsSections{MotifId}.depd(MotifsSections{MotifId}.depd(:,1)>0,1),1);
+            for  intI=1:motif_instances
                 randomVariateSet= randperm(60);
-                a=size(DepdToInject(DepdToInject(:,MotifId)>0,MotifId),1)*10;
-                randomVariateSet= reshape(MoCap_avoidingflatvariate(randomVariateSet(1:a)),[size(DepdToInject(DepdToInject(:,MotifId)>0,MotifId),1),10]);
-                MotifsVariateSet{MotifId} = randomVariateSet;
+                TempRandomVariateSet = [TempRandomVariateSet,MoCap_avoidingflatvariate(randomVariateSet(1:numofRandomVariateToInject))'];
+%                 a=size(DepdToInject(DepdToInject(:,MotifId)>0,MotifId),1)*10;
+%                 TempRandomVariateSet= [TempRandomVariateSet,reshape(MoCap_avoidingflatvariate(randomVariateSet(1:a)),[size(DepdToInject(DepdToInject(:,MotifId)>0,MotifId),1),10])];
             end
+%                 selectVaraiteGroupsrandom = randi(size(TempRandomVariateSet{MotifId},2),1,motif_instances);
+                MotifsVariateSet{MotifId} = TempRandomVariateSet;%(:,selectVaraiteGroupsrandom);
+            end
+            
         end
         LabelMotif = LabelMotif( randperm(length(LabelMotif))) ; %%this label  ahve to be readed and used to inject  a motif instance selecting gthe variate assigned to the specific istance
         %%

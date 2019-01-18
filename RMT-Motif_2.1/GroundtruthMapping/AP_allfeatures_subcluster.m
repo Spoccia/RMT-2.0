@@ -43,7 +43,7 @@ for i=1: nCluster
     D = Dependencypruned(:, Clusterpruned == clusterLabel(i));
     timescopeF= F(4,:)*3;
     for iii=1: size(F,2)
-        Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),round(F(2,iii)-timescopeF(iii)) , round(F(2,iii)+timescopeF(iii))]];
+        Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),floor(F(2,iii)-timescopeF(iii)) , ceil(F(2,iii)+timescopeF(iii))]];
     end 
     FeatureSortedbyCluster=[FeatureSortedbyCluster,F];
     DescriptorSortedbyCluster=[DescriptorSortedbyCluster,D];

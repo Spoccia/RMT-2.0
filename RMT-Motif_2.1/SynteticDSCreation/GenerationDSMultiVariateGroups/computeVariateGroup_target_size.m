@@ -12,4 +12,4 @@ for i = minGroupID : maxGroupID
     end
    
 end
- variateGroup= [variateGroup, [49;50;51]];
+ variateGroup= [variateGroup];% [25;26;27], [49;50;51]];

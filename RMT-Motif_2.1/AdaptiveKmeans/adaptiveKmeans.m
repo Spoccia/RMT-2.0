@@ -17,7 +17,11 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
       ProposedC1=C1;
       Proposedmu=mu1;
       try
+%           if(size(features1(11:size(features1,1),:),2)-1<=(startK-1))
+%               [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK-2,'Distance',distance,'Replicates',5);%'Display','final'
+%           else
             [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK,'Distance',distance,'Replicates',5);%'Display','final'
+%           end
       catch
             [C1,mu1,SUMD, D]=kmeans(features1(11:size(features1,1),:)',startK-2,'Distance',distance,'Replicates',5);%'Display','final'
       end

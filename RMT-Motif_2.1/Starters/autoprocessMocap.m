@@ -9,22 +9,22 @@ FeaturesRM ='RMT';%'RME';%
 
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
-FeatureExtractionFlag = 0;%1;% 1; % 1 do it others  skip
-createDependencyScale = 0;%1;
-Cluster = 1;%1;%
-CreateSubCluster=1;
+FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
+createDependencyScale = 1;%1;
+Cluster = 0;%1;%
+CreateSubCluster=0;
 
 % motifidentificationBP = 0; %2;% work on all the features
 % pruneCluster = 0;
 
-motifidentificationBP_MatlabDescr = 1;%1
-pruneClusterDescrMatlab = 1;%1;%0
+motifidentificationBP_MatlabDescr = 0;%1
+pruneClusterDescrMatlab = 0;%1;%0
 
 % motifidentification = 0; % work on pruned features
-savecaracteristics = 1;
+savecaracteristics = 0;
 showOriginalImage = 0;
-mapdataintograyscale = 1;
-saveTSasImage = 1;
+mapdataintograyscale = 0;
+saveTSasImage = 0;
 
 % To report the  center variate to the right one in hte index
 PruningEntropy = 0;%1;%
@@ -51,7 +51,7 @@ K_valuesCalc=SizeofK;
 
 KindofFeatures= 0; % 1 for DoG 0 for DoE
 
-for TSnumber = 100: 184
+for TSnumber = 1: 184
     TEST =num2str(TSnumber) %'1';%
     TS_name=TEST;%num2str(TSnumber); % to iterate from 1 to k
     distanceVaraiteTS=[datasetPath,'location\',TS_name,'_Coordinates.csv'];%'HopMatrix_multistory.csv'];
@@ -75,7 +75,7 @@ for TSnumber = 100: 184
     DeSigmaTime = 4*sqrt(2)/2;%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%%1.6*2^(1/(DeLevelTime));
     %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
-    DeGaussianThres = 0.1;%6;%10;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
+    DeGaussianThres = 0.1;%0.05;%.1;%6;%10;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     

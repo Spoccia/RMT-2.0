@@ -1,4 +1,4 @@
-function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold, timeOverlapThreshold)
+function [MotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(groundTruthFile, motifFile, algorithmType, windowSize, threshold, timeOverlapThreshold,overlapping)
 % MotifEntropy: precisionEntropy, recallEntropy, FScoreEntropy
 
 motifFeatureCount = csvread(groundTruthFile);
@@ -47,7 +47,7 @@ for i = 1 : size(myClassID, 1)
         % update statMatrix
         % group feature scores
         relevantSize = motifClassCount(j); % for this precision of current class
-        [precision, recall] = groupFeatureScores(statEntry, j, relevantSize, currentRetrievedSize, threshold, timeOverlapThreshold);
+        [precision, recall] = groupFeatureScores(statEntry, j, relevantSize, currentRetrievedSize, threshold, timeOverlapThreshold,overlapping);
         
         precisionMatrix(i, j) = precision;
         recallMatrix(i, j) = recall;

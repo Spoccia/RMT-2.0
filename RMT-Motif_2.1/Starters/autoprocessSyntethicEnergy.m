@@ -30,7 +30,7 @@ LocM1 =[0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
     0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0
     ];
 
-%LocM2 = zeros(9,9);
+% LocM2 = zeros(9,9);
 LocM2=[0	1	1	0	0	0	0	0	0	0	0	0
     1	0	0	0	0	0	0	0	0	0	0	0
     1	0	0	0	0	0	0	0	0	0	0	0
@@ -47,7 +47,7 @@ LocM3=[];
 
 IDM1=1:27;
 IDM2= [1,2,3,1,2,3,4,5,6,7,8,9,4,5,6,4,5,6,7,8,9,10,11,12,10,11,12];
-%IDM2 =[1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9];
+% IDM2 =[1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9];
 IDM3=[];
 
 idm2{1} = IDM1;
@@ -60,10 +60,10 @@ DatasetInject=2;  % 1 Energy 2 syntethic Energy
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\Energy\';
 if (DatasetInject==2)
-    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\\samesize10inst\';%RandomVariate\';
+    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\instancessamesize\';%samesize10inst\';%
 end
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
-BaseName='Motif1numInst_10';%'MV_Sync_Motif';
+BaseName='MV_Sync_Motif1';%'Motif1numInst_10';%
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 % Flag to abilitate portions of code
@@ -72,7 +72,7 @@ FeatureExtractionFlag = 1;%1;% 1; % 1 do it others  skip
 createDependencyScale = 1;%1;
 %% clustering abilitation
 Cluster =  1;%1;%
-subclusterflag=1;
+subclusterflag=0;
 justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 %% Parameter for kmeans: distance measure to use
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
@@ -130,12 +130,12 @@ r= 10; %5 threshould variates
 percent=[0; 0.1;0.25;0.5;0.75;1;2];
 
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for strID =2:2%2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
+for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
     StrategyClustering= strategy(strID)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
     % 3 - old approach do clustering  then subclustering
-    if(StrategyClustering > 1)
+    if(StrategyClustering > 3)
         FeatureExtractionFlag=0;
         createDependencyScale=0;
     end
@@ -143,7 +143,7 @@ for strID =2:2%2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
     if StrategyClustering >3
         kindOfClustring= 'DBScan';%
     end
-    for percentid=7:7%:size(percent,1)%
+    for percentid=1:7%:size(percent,1)%
         percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
         
         for MOTIFNUMber =1:1

@@ -2,16 +2,17 @@
 
 
 
-FeaturePath = 'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
+
              %'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
-Dset='Mocap';%'BirdSong';%'Energy';%'BirdSong';%Bird Song %'ASL';%'data';%for Mocap
-DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\'];
+Dset='Energy';%'Mocap';%'BirdSong';%
+DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\Coherent Shift Variate 1M Energy\instancemultisize\'];
+FeaturePath = ['D:\Motif_Results\Datasets\',Dset,'\Features_RMT\'];
 %DestDataPath = 'D:\Motif_Results\Datasets\BirdSong\';%Energy\';%Mocap\';
 DepO=2;
 DepT=2;
 nummotifs=3;
-TSCOnsidered=90;
-AllTS= randperm(154,TSCOnsidered);%randi([1,154],1,TSCOnsidered);
+TSCOnsidered=30;
+AllTS= randperm(100,TSCOnsidered);%randi([1,154],1,TSCOnsidered);
 for numberofTS=1:TSCOnsidered
     TS_name = num2str(AllTS(numberofTS));
     

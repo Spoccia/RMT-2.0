@@ -5,34 +5,36 @@ DataType='Energy';
 %DataType='Mocap';
 % DataType='BirdSong';
 basepath='D:\Motif_Results\Datasets\SynteticDataset\';%'/Users/sliu104/Desktop/Motif_Data/SynteticDataset/';%
-featuresToInjectPath=[basepath,DataType,'/Coherent Shift Variate 1M Energy\instanceMultisize\data','/FeaturesToInject/',];
-randomWalkPath = [basepath,DataType,'/Coherent Shift Variate 1M Energy\instanceMultisize\data','/RW_0_1/RW_'];
-TimeSeriesPath = ['D:\Motif_Results\Datasets\',DataType,'/data/'];%['/Users/sliu104/Desktop/Motif_Data/TimeSeries/',DataType,'/data/'];
+featuresToInjectPath=[basepath,DataType,'\RandomVariate\instancessamesize\data','\FeaturesToInject\',];
+randomWalkPath = [basepath,DataType,'\RandomVariate\instancessamesize\data','\RW_0_1\RW_'];
+TimeSeriesPath = ['D:\Motif_Results\Datasets\',DataType,'\data\'];%['/Users/sliu104/Desktop/Motif_Data/TimeSeries/',DataType,'/data/'];
 depdO=2;
 num_of_motif=1;
 delimiter='/';
-DestDataPath = [basepath,DataType,'/Coherent Shift Variate 1M Energy\instanceMultisize\data'];
+DestDataPath = [basepath,DataType,'\RandomVariate\instancessamesize\data'];
 NUM_VARIATE = 27;%Energy
 %NUM_VARIATE = 62;% MoCap
 % NUM_VARIATE = 13;% BirdSong
+coherentinjectionFlag = 0  %% coherent
 random_walk_instance = 10;
 motif_instances = 10;
 RWlength = 2500-59;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1, 2, 3, 10];
 %% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
-% length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
-length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1];
+length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
+% length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1];
 length_percentage=[];
 for pssMotID =1:num_of_motif%3
     randid= randperm(motif_instances);
     length_percentage=[length_percentage;length_percentage_1(randid)];
 end
 %%
-length_percentage= [1,0.75,1,0.5,0.75,0.5,1,0.75,1,0.5];
+%length_percentage= [1,0.75,1,0.5,0.75,0.5,1,0.75,1,0.5];
+%D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\instanceMultisize\FeaturesToInject
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
-FeatureSelectionalID=csvread([DestDataPath,'/FeaturesToInject/featureselectedinfiles.csv']);%[];
+FeatureSelectionalID=[];%csvread([DestDataPath,'/FeaturesToInject/featureselectedinfiles.csv']);%
 for orgID = 1:30 %length(originalTSIDArray)%2
     originalTSID = originalTSIDArray(orgID);
     load(['D:\Motif_Results\Datasets\',DataType,'\Features_RMT\',num2str(originalTSID),'\feature_',num2str(originalTSID),'.mat']);
@@ -56,17 +58,17 @@ for orgID = 1:30 %length(originalTSIDArray)%2
         %TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
         % Energy
         TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
-
-        F_select =FeatureSelectionalID(1,orgID);%randi(3);
-        V_select=FeatureSelectionalID(2,orgID);%randi(6);
+        
+        F_select =randi(3);%FeatureSelectionalID(1,orgID);%
+        %         V_select=FeatureSelectionalID(2,orgID);%randi(6);
         %FeatureSelectionalID=[FeatureSelectionalID,[F_select;V_select]];
         FeatureToInject = FeaturesToInject(:,F_select);
-        
-        if(V_select>3)
-            DepdToInject = DepdToInject(4:6,F_select);
-        else
-            DepdToInject = DepdToInject(1:3,F_select);
-        end
+        DepdToInject = DepdToInject(DepdToInject(:,F_select)>0,F_select);
+        %         if(V_select>3)
+        %             DepdToInject = DepdToInject(4:6,F_select);
+        %         else
+        %             DepdToInject = DepdToInject(1:3,F_select);
+        %         end
         %         TEST_1 = [DataType,'MVSyncMotif',num2str(num_of_motif),'_' ,num2str(originalTSID)];
         %
         % read random walk files
@@ -89,10 +91,19 @@ for orgID = 1:30 %length(originalTSIDArray)%2
         MotifsVariateSet=[];
         
         %% compute random variate sets
-        randomVariateSet= randperm(27);
-        randomVariateSet=[randomVariateSet,randperm(27)];
-        randomVariateSet= reshape(randomVariateSet(1:30),[3,10]);
-        
+        %         randomVariateSet= randperm(27);
+        %         randomVariateSet=[randomVariateSet,randperm(27)];
+        %         randomVariateSet= reshape(randomVariateSet(1:30),[3,10]);
+        PossibleMotifs2rooms= [ 1  2  3  4  5  6
+            7  8  9 13 14 15
+            13 14 15 16 17 18
+            10 11 12 19 20 21
+            22 23 24 25 26 27
+            6  5  4  3  2  1
+            15 14 13  9  8  7
+            18 17 16 15 14 13
+            21 20 19 12 11 10
+            27 26 25 24 23 22]';
         offSpace=0;
         for MotifId =1: num_of_motif
             timescope= FeatureToInject(4,MotifId)*3; % 29
@@ -101,10 +112,18 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             %             MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
             MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
             LabelMotif=[LabelMotif,ones(1,motif_instances)*MotifId];
-            %% Random
-            %MotifsVariateSet{MotifId}= randomVariateSet;
-            %% coherent
-            MotifsVariateSet{MotifId}= [1 4 7 10 13 16 19 22 25 7; 2 5 8 11 14 17 20 22 26 8; 3 6 9 12 15 18 21 24 27 9];
+            SetOfVaraite=zeros(size(PossibleMotifs2rooms,1),motif_instances);
+            
+            
+            if coherentinjectionFlag == 1  %% coherent
+                SetOfVaraite = PossibleMotifs2rooms(:,randi(size(PossibleMotifs2rooms,2),1,motif_instances));
+            else  %% Random
+                for instanceMOTIFVariate =1: motif_instances                    
+                    SetOfVaraite(:,instanceMOTIFVariate) = randperm(27,size(PossibleMotifs2rooms,1));
+                end
+            end
+            MotifsVariateSet{MotifId}= SetOfVaraite;
+            %MotifsVariateSet{MotifId}= [1 4 7 10 13 16 19 22 25 7; 2 5 8 11 14 17 20 22 26 8; 3 6 9 12 15 18 21 24 27 9];
             %             [7	1	13	10	22	7	1	13	10	22
             %                                         8	2	14	11	23	8	2	14	11	23
             %                                         9	3	15	12	24	9	3	15	12	24
@@ -171,18 +190,7 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             end
         end
         csvwrite([DestDataPath,'/FeaturesToInject/featureselectedinfiles.csv'],FeatureSelectionalID);
-        %[rndWalks1, FeatPositions1, injectedVariates1] = featureInject(FeatureToInject, DepdToInject, sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO);
-        % dpscale_injected = [ dpscale_injected, patternVariates];
         
-        %         if(exist([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter], 'dir')==0)
-        %             mkdir([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter]);
-        %         end
-        %
-        %         csvwrite([DestDataPath, delimiter, TEST_1,'.csv'], rndWalks1);
-        %         csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'FeaturePosition_', TEST_1, '.csv'], FeatPositions1);
-        %         csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'dpscale_', TEST_1, '.csv'], injectedVariates1);
-        %         csvwrite([DestDataPath, delimiter, 'IndexEmbeddedFeatures', delimiter, TEST_1, delimiter, 'FeaturesEmbedded_', TEST_1, '.csv'], patternFeature);
-        %
         
     end
     

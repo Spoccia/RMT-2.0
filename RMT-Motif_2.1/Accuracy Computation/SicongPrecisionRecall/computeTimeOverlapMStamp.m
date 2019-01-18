@@ -1,8 +1,8 @@
-function [timeOverlap] = computeTimeOverlap(timeStart, timeEnd, injectedTimeStart, injectedTimeEnd)
+function [timeOverlap] = computeTimeOverlapMStamp(timeStart, timeEnd, injectedTimeStart, injectedTimeEnd)
 % timeOverlap = zeros(size(timeStart, 1), 1);
-% if(timeStart>=injectedTimeStart & timeEnd<=injectedTimeEnd)
-%     timeOverlap=1;
-% else
+if(timeStart>=injectedTimeStart & timeEnd<=injectedTimeEnd)
+    timeOverlap=1;
+else
 minEnd = min(timeEnd, injectedTimeEnd);
 maxStart = max(timeStart, injectedTimeStart);
 minStart = min(timeStart, injectedTimeStart);
