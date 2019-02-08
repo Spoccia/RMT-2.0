@@ -4,9 +4,11 @@ DS_List ={'Energy','Mocap','BirdSong'};
 for DSIdx =2:2
     Ds_Name= DS_List{DSIdx};%'BirdSong';%'Energy';%'Mocap';%
 %      path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%Coherent Shift Variate 1M Energy\instancesmultisize\'];%'\Mocap M 1 2 3\'];%'\numInstances_5_15\'];
-    path=['F:\syntethic motifs  good results\',Ds_Name,'\10_Motifs_MM_rebuttal\'];%'\numInstances_5_15\'];%'\samesize10inst\'];%random shift variates 1M ',Ds_Name ,'\instancesmultisize\']%
+
+%     path=['F:\syntethic motifs  good results\',Ds_Name,'\10_Motifs_MM_rebuttal\'];%'\numInstances_5_15\'];%'\samesize10inst\'];%random shift variates 1M ',Ds_Name ,'\instancesmultisize\']%
     %'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%,Ds_Name,' M 1 2 3\'];
-    %'F:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';%Energy\Energy M 1 2 3\';%BirdSong\
+    path='F:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%Energy\Energy M 1 2 3\';%BirdSong\
+
     %\10_Motifs_MM_rebuttal\';
     %'F:\syntethic motifs  good results\Energy\numInstances_5_15\';
     %'F:\syntethic motifs  good results\Mocap\random shift variates 1M Mocap\samesize\';
@@ -17,7 +19,7 @@ for DSIdx =2:2
       instancesInjecte = [10,5,15];
 %       for fivefifteen=2:3
 %      BaseName=['Motif1numInst_', num2str(instancesInjecte(fivefifteen))];%
-    BaseName='Motif10';%'MV_Sync_Motif1';%'MV_Sync_Motif1';%
+    BaseName='MV_Sync_Motif1';%'Motif10';%
     %1numInst_10';%'Motif1';%
     %PathMP=[path,'\MStamp\'];
     % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
@@ -32,11 +34,11 @@ for DSIdx =2:2
     
     Num_SyntSeries=10; % num of instances of one motif
     PossibleMotifInjected = [1,2,3,10];
-    for idmotInj =4: 4%size(PossibleMotifInjected,2)-1
+    for idmotInj =1: 1%3%size(PossibleMotifInjected,2)-1
         motifinjected = num2str(PossibleMotifInjected(idmotInj));
         %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
         percent=[0; 0.1;0.25;0.5;0.75;1;2];%;
-        for percentid=1:1%7%size(percent,1)
+        for percentid=1:7%size(percent,1)
             percentagerandomwalk=percent(percentid);
             % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
             %strategy=[1,2,3,4,5,6];

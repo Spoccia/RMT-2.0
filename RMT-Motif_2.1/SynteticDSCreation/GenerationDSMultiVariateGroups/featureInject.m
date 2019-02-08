@@ -40,8 +40,8 @@ if(sameVariateGroup == 0)
         rndWalks(mypatternDepdScale, starter : starter + motifColumn - 1) = patternTimeSeriesData; % inject the features into random walk time series data
         pStep = pStep + Step;
     end
-    index = randperm(NumInstances);
-    injectedDepdScale = injectedDepdScale(:,index);
+%     index = randperm(NumInstances);
+    injectedDepdScale = injectedDepdScale(:,1:9);%index);
 else
     
     for i = 1 : NumInstances

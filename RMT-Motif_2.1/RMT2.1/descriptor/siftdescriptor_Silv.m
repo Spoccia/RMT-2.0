@@ -198,7 +198,11 @@ for dxi = max(-W_Depd,1-xi): min(+W_Depd, N-2-xi) % VARIATE to do the preincreme
                         off_dbinT = mod((bint+dbint),NBO);%ceil((bint+dbint) / NBO);
                         offsetDescriptor =  off_dbinT * binto + off_dbinY*binyo + off_dbinX * binxo;
                         idx_inDescriptor = dpt+offsetDescriptor;
+%                         try
                         descr(idx_inDescriptor,1) =descr(idx_inDescriptor,1) + weight;
+%                         catch
+%                             ''
+%                         end
 %                         Parametercheck = [Parametercheck;...
 %                             [dx,dy,weight,dbinx,dbiny,dbint,dpt,off_dbinX,off_dbinY,off_dbinT,offsetDescriptor,idx_inDescriptor]];
                     end

@@ -7,7 +7,8 @@ DatasetInject=2;  % 1 BirdSong 2 syntethic BirdSong
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\BirdSong\';
 if (DatasetInject==2)
-    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\samesize10inst\';%BSONG\';
+    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\BirdSong Motifs 1 2 3 same variate multisize\';
+    %'D:\Motif_Results\Datasets\SynteticDataset\BirdSong\samesize10inst\';%BSONG\';
 end
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
@@ -40,7 +41,7 @@ justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
 distanceUsed='Descriptor';% use just descriptors to  cluster
 % the algorithm of clustering to use
-for strategyIDentifier =6:size(strategy,2)
+for strategyIDentifier =1:size(strategy,2)
     clc;
     StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
@@ -75,10 +76,10 @@ for strategyIDentifier =6:size(strategy,2)
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    BaseName='Motif1numInst_10';%'Motif';%'MV_Sync_Motif';
-    for numMotifInjected =1:1%3
+    BaseName='Motif';%'Motif1numInst_10';%'MV_Sync_Motif';
+    for numMotifInjected =1:3
         numMotifInjected
-        for percentid=6:7%1:size(percent,1)
+        for percentid=7:7%1:size(percent,1)
             percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
             for pip=1:30
                 for NAME = 1:Num_SyntSeries
@@ -92,12 +93,25 @@ for strategyIDentifier =6:size(strategy,2)
                     if DatasetInject == 1 % birdsong
                         TEST = [num2str(NAME)];
                     elseif DatasetInject == 2 % synteticBirdsong
-                        %TEST=['Motif',num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                        TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                        TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+%                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     end
                     TS_name=TEST;
                     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%
-                    data(isnan(data))=0;
+                    %%      This section is to  do the complement 1 to the data
+                      minValues = min(data');
+                      %shift data of the minimum values
+                      for variateind=1:size(data,1);
+                          data(variateind,:)=data(variateind,:)-minValues(variateind);
+                      end
+                     maxValues= max(data');
+                  
+                    basicMatrix = ones(size(data));
+                    for variateind =1:size(basicMatrix,1)
+                        basicMatrix(variateind,:)= basicMatrix(variateind,:)*maxValues(variateind);
+                    end
+                     data=basicMatrix - data;%+abs(minimum)+1;
+                     
                     
                     if(StrategyClustering > 1)
                         FeatureExtractionFlag=0;

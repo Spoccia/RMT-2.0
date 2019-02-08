@@ -75,7 +75,7 @@ for TSnumber = 1: 184
     DeSigmaTime = 4*sqrt(2)/2;%4*sqrt(2);%(1.6*2^(1/DeLevelTime))/2;%%1.6*2^(1/(DeLevelTime));
     %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
     thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
-    DeGaussianThres = 0.1;%0.05;%.1;%6;%10;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
+    DeGaussianThres = 0.05;%0.1;%Set This %6;%10;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of the distance matrix should be  between 0 and 1
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     

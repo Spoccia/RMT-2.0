@@ -5,7 +5,7 @@ clear;
 DatasetInject=2;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';           %'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Mocap Motifs 1 2 3 same variate multisize\';
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Mocap Motifs 1 2 3 same variate multisize\';%Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Mocap\RandomVariate\instancessamesize\';
 %'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Motif1RME\';
 %F:\syntethic motifs  good results\Mocap\10_Motifs_MM_rebuttal\';%'D:\Motif_Results\Datasets\SynteticDataset\Mocap\samesize10inst\';
@@ -14,7 +14,7 @@ subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';%'RME';%
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
 %for BN =5:10:15
-BaseName='Motif';%'MV_Sync_Motif';%'Motif1numInst_10'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
+BaseName='Motif';%'MV_Sync_Motif';%'MV_Sync_Motif';%'Motif1numInst_10'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;% 1; % 1 do it others  skip
@@ -85,9 +85,9 @@ for strID =1:size(strategy,2);%1:6
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    for percentid=1:size(percent,1)%1:1
+    for percentid=7:size(percent,1)%1:1
         percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
-        for MOTIFNUMber =2:3%2:3
+        for MOTIFNUMber =1:3
             for pip=1:30   %TSnames
                 for NAME = 1:Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
@@ -126,7 +126,22 @@ for strID =1:size(strategy,2);%1:6
                     RELATION=coordinates;
                     
                     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-                    if(StrategyClustering >= 3)
+%%      This section is to  do the complement 1 to the data
+                      minValues = min(data');
+                      %shift data of the minimum values
+                      for variateind=1:size(data,1);
+                          data(variateind,:)=data(variateind,:)-minValues(variateind);
+                      end
+                     maxValues= max(data');
+                  
+                    basicMatrix = ones(size(data));
+                    for variateind =1:size(basicMatrix,1)
+                        basicMatrix(variateind,:)= basicMatrix(variateind,:)*maxValues(variateind);
+                    end
+                     data=basicMatrix - data;%+abs(minimum)+1;
+%                     [ii,jj]=find(isnan(data)| isinf(data));
+%%
+                    if(StrategyClustering > 3)
                         FeatureExtractionFlag=0;
                         createDependencyScale=0;
                     end 

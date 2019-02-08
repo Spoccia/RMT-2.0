@@ -3,16 +3,16 @@
 
 
 
-             %'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
-Dset='Energy';%'Mocap';%'BirdSong';%
-DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\Coherent Shift Variate 1M Energy\instancemultisize\'];
+%'D:\Motif_Results\Datasets\Mocap\Features_RMT\';
+Dset='Mocap';%'BirdSong';%'Energy';%
+DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\Coherent Shift Variate 1M ',Dset,'\instancemultisize\'];
 FeaturePath = ['D:\Motif_Results\Datasets\',Dset,'\Features_RMT\'];
 %DestDataPath = 'D:\Motif_Results\Datasets\BirdSong\';%Energy\';%Mocap\';
 DepO=2;
 DepT=2;
 nummotifs=3;
 TSCOnsidered=30;
-AllTS= randperm(100,TSCOnsidered);%randi([1,154],1,TSCOnsidered);
+AllTS= randperm(184,TSCOnsidered);%randi([1,154],1,TSCOnsidered);
 for numberofTS=1:TSCOnsidered
     TS_name = num2str(AllTS(numberofTS));
     
@@ -25,19 +25,26 @@ for numberofTS=1:TSCOnsidered
     
     indexfeatureGroup = (frame1(6,:)==2 & frame1(5,:)==2);
     X=frame1(:,indexfeatureGroup);
-    Check= sum(X(11:end,:)>eps);
-    X(:,Check<=64)=[];
+%% DeComment this
+%     Check= sum(X(11:end,:)>eps);
+%     X(:,Check<=64)=[];
+
     [rows,colmn]= size(X);
     dpscale = csvread(strcat(FeaturePath,TS_name,'/DistancesDescriptor\DepdScale_IM_',TS_name,'_DepO_',num2str(DepO),'_TimeO_',num2str(DepT),'.csv'));
-    dpscale(:,Check<=64)=[];
-    indexfeatureGroup= (X(4,:)==max(X(4,:)));
-    X=X(:,indexfeatureGroup) ;
+%% DeComment this
+%     dpscale(:,Check<=64)=[];
+%     indexfeatureGroup= (X(4,:)==max(X(4,:)));
+%     X=X(:,indexfeatureGroup) ;
     dpscale=(dpscale(:,indexfeatureGroup)); 
+%% Comment this for not=rmal feature selection this section is for  multi variate groups    
+    depcount = sum(dpscale>0);
+    dpscale=dpscale(:,depcount==3);
+    X=X(:,depcount==3);
+%%
     Features=[];
     Dependency=[];
     i=1;
     if size(X,2)==0
-     
      TS_name
     end
     try

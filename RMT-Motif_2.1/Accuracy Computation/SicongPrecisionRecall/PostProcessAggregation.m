@@ -1,16 +1,19 @@
 clear;
 clc;
 DS_List ={'Energy','Mocap','BirdSong'};
-for DSIdx =3:3
+for DSIdx =2:3
     Ds_Name= DS_List{DSIdx};%
     % Ds_Name ='BirdSong';%'Energy';%'Mocap';%
 %     Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancessamesize\'];%'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];
 %     Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
 %     Path=['F:\syntethic motifs  good results\',Ds_Name,'\',Ds_Name,' M 1 2 3\'];
-%     Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
-      Path=['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];%'\10_Motifs_MM_rebuttal\'];%'\ICMR RMT-Mstamp-RME\'];%'\samesize10inst\'];%'\random shift variates 1M ',Ds_Name ,'\instancessamesize\'];%
+%    Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
+
+%       Path=['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];%'\10_Motifs_MM_rebuttal\'];%'\ICMR RMT-Mstamp-RME\'];%'\samesize10inst\'];%'\random shift variates 1M ',Ds_Name ,'\instancessamesize\'];%
      %'\',Ds_Name,' M 1 2 3\']%
-    %Path=['F:\syntethic motifs  good results\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];
+%       Path='G:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';%['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
+ Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%
+     %Path=['F:\syntethic motifs  good results\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];
     %,'\samesize10inst\'];
     %'\samesize10inst'];%'\Mocap M 1 2 3'];%'\numInstances_5_15'];
     %['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];
@@ -29,15 +32,15 @@ for DSIdx =3:3
         fprintf('Post procesing precision and recall files... \n');
         testCaseIndex = 1 : 300; % 30 time series used, 10 instances each
         
-        instancesInjecte = [10,5,15];
-        for fivefifteen=2:3
+%         instancesInjecte = [10,5,15];
+%         for fivefifteen=2:3
             % strategy = [1:9];
             % num_of_motif = [1:3];
             num_of_motif = [1:3];%
             strategy = [1, 3, 4, 6, 7, 9];%[3,6,9];%
             % BaseName='MV_Sync_Motif';%'Motif1numInst_15';%
             BaseName='Motif';
-            algorithm_type = {'RMT','MStamp'};%'RME' , %% MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
+            algorithm_type = {'RMT'};%,'MStamp'};%'RME' , %% MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
             %  algorithm_type = {'RMT'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
             timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75,0.90,0.95,0.98, 1];
             amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2];
@@ -53,7 +56,7 @@ for DSIdx =3:3
             end
             allresults=[];
             
-            for i = 1 :1% size(num_of_motif, 2)
+            for i = 1 : size(num_of_motif, 2)
                 AllStrategy_Precision=[];
                 AllStrategy_Recall=[];
                 AllStrategy_Fscore=[];
@@ -61,7 +64,7 @@ for DSIdx =3:3
                     PrecisionRWScale=[];
                     RecallRWScale=[];
                     FscoreRWScale=[];
-                    for aa = 1 : size(amp_scale, 2)
+                    for aa = 7 : size(amp_scale, 2)
                         PrecisionAggregatedMAtrix = [];
                         RecallAggregatedMAtrix = [];
                         FscoreAggregatedMAtrix = [];
@@ -82,11 +85,11 @@ for DSIdx =3:3
                                 cur_num_of_motif = num_of_motif(i);
                                 
                                 fprintf('num_of_motif: %d, strategy: %d, algorithm_type: %s, amplitude scale: %f, time overlap threshold: %f . \n', cur_num_of_motif, cur_strategy, cur_algorithm_type, amp_scale(aa), timeOverlapThreshold);
-%                                 sharedFolder = [Path,'/Result/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
-                                sharedFolder = [Path,'/Result',num2str(instancesInjecte(fivefifteen)),'/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+                                sharedFolder = [Path,'/Result/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+%                                 sharedFolder = [Path,'/Result',num2str(instancesInjecte(fivefifteen)),'/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_', num2str(cur_strategy), '/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
                                 if strcmp(cur_algorithm_type,'MStamp') == 1%kk==2
-%                                     sharedFolder = [Path,'/Result/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_3','/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
-                                    sharedFolder = [Path,'/Result',num2str(instancesInjecte(fivefifteen)),'/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_3','/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+                                    sharedFolder = [Path,'/Result/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_3','/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
+%                                     sharedFolder = [Path,'/Result',num2str(instancesInjecte(fivefifteen)),'/', cur_algorithm_type, '_',BaseName, num2str(cur_num_of_motif), '/Strategy_3','/amp_scale_', num2str(amp_scale(aa)), '_TO_', num2str(timeOverlapThreshold)];
                                 end
                                 
                                 precision_file_path = [sharedFolder, '/', cur_algorithm_type, 'Precision_'];
@@ -119,8 +122,8 @@ for DSIdx =3:3
                     AllStrategy_Recall=[AllStrategy_Recall;[ones(size(PrecisionAggregatedMAtrix,1),1)*strategy(j),RecallRWScale]];
                     AllStrategy_Fscore=[AllStrategy_Fscore;[ones(size(PrecisionAggregatedMAtrix,1),1)*strategy(j),FscoreRWScale]];
                 end
-%                 finalpath = [Path,'/Result/', 'Motif', num2str(cur_num_of_motif)];
-                finalpath = [Path,'/Result',num2str(instancesInjecte(fivefifteen)),'/', 'Motif', num2str(cur_num_of_motif)];
+                finalpath = [Path,'/Result/', 'Motif', num2str(cur_num_of_motif)];
+%                 finalpath = [Path,'/Result',num2str(instancesInjecte(fivefifteen)),'/', 'Motif', num2str(cur_num_of_motif)];
                 label = Labels1;
                 if (i==2)
                     label = Labels2;
@@ -140,5 +143,5 @@ for DSIdx =3:3
             end
         end
     end
-end
+% end
 fprintf('All done .\n');

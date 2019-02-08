@@ -60,10 +60,11 @@ DatasetInject=2;  % 1 Energy 2 syntethic Energy
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 datasetPath= 'D:\Motif_Results\Datasets\Energy\';
 if (DatasetInject==2)
-    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\instancessamesize\';%samesize10inst\';%
+    datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Energy\Energy Motifs 1 2 3 same variate multisize\';
+    %'D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\instancessamesize\';%samesize10inst\';%
 end
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
-BaseName='MV_Sync_Motif1';%'Motif1numInst_10';%
+BaseName='Motif';%'MV_Sync_Motif1';%'Motif1numInst_10';%
 subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';
 % Flag to abilitate portions of code
@@ -130,7 +131,7 @@ r= 10; %5 threshould variates
 percent=[0; 0.1;0.25;0.5;0.75;1;2];
 
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
+for strID =1:size(strategy,2)%1:size(strategy,2)%9%1:6
     StrategyClustering= strategy(strID)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -143,10 +144,11 @@ for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
     if StrategyClustering >3
         kindOfClustring= 'DBScan';%
     end
-    for percentid=1:7%:size(percent,1)%
+    for percentid=7:7%:size(percent,1)%
         percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
         
-        for MOTIFNUMber =1:1
+        for MOTIFNUMber =1:3
+            
             for pip=1:30   %TSnames
                 for NAME = 1:Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
@@ -155,8 +157,8 @@ for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
                     TimeforPruningClustering =0;%zeros(1,4);
                     TimeforPruningSubClustering=0;%zeros(1,4);
                     timeforSubclustering=0;
-                    %TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
-                    TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
+                    TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
+%                     TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];%TEST = ['Energy_test',num2str(NAME)];
                     
                     
                     %                     %% read location matrix
@@ -177,6 +179,15 @@ for strID =2:2:size(strategy,2)%1:size(strategy,2)%9%1:6
                     %                     RELATION=coordinates;
                     
                     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
+                    
+                    maxValues= max(data');
+                    
+                    basicMatrix = ones(size(data));
+                    for variateind =1:size(basicMatrix,1)
+                        basicMatrix(variateind,:)= basicMatrix(variateind,:)*maxValues(variateind);
+                    end
+                    data=basicMatrix - data;
+                    
                     
                     %% Features Extraction
                     if(FeatureExtractionFlag==1)

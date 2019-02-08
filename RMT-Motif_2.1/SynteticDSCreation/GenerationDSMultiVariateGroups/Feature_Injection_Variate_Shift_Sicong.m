@@ -5,14 +5,14 @@ clear;
 DataType='Mocap';
 % DataType='BirdSong';
 basepath='D:\Motif_Results\Datasets\SynteticDataset\';%'/Users/sliu104/Desktop/Motif_Data/SynteticDataset/';%
-featuresToInjectPath=[basepath,DataType,'/RandomVariate','/instancesmultisize/data/FeaturesToInject/'];
-randomWalkPath = [basepath,DataType,'/RandomVariate','/instancesmultisize/data/RW_0_1/RW_'];
+featuresToInjectPath=[basepath,DataType,'\Coherent Shift Variate 1M ',DataType,'\instancesmultisize\data/FeaturesToInject/'];%,'/RandomVariate','/instancesmultisize/data/FeaturesToInject/'];
+randomWalkPath = [basepath,DataType,'\Coherent Shift Variate 1M ',DataType,'\instancesmultisize/data/RW_0_1/RW_'];
 TimeSeriesPath = ['D:\Motif_Results\Datasets\',DataType,'/data/'];%['/Users/sliu104/Desktop/Motif_Data/TimeSeries/',DataType,'/data/'];
 depdO=2;
-coherentinjectionFlag = 0;% 1;% if coherent;
+coherentinjectionFlag =  1;% 0;%if coherent;
 num_of_motif=1;
 delimiter='/';
-DestDataPath = [basepath,DataType,'/RandomVariate','/instancesmultisize/data/'];
+DestDataPath = [basepath,DataType,'\Coherent Shift Variate 1M ',DataType,'\instancesmultisize\data/'];
 % NUM_VARIATE = 27;%Energy
 NUM_VARIATE = 62;% MoCap
 % NUM_VARIATE = 13;% BirdSong
@@ -33,7 +33,7 @@ end
 %%
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
-FeatureSelectionalID = csvread([DestDataPath,'/FeaturesToInject/featureselectedinfiles.csv']);%[];   
+FeatureSelectionalID = 1;% csvread([DestDataPath,'/FeaturesToInject/featureselectedinfiles.csv']);%[];   
 for orgID = 1:30 %length(originalTSIDArray)%2
     originalTSID = originalTSIDArray(orgID);
     load(['D:\Motif_Results\Datasets\',DataType,'\Features_RMT\',num2str(originalTSID),'\feature_',num2str(originalTSID),'.mat']);
@@ -106,7 +106,11 @@ for orgID = 1:30 %length(originalTSIDArray)%2
             %% coherent injection
             MotifsVariateSet_Support=[];
             if coherentinjectionFlag == 1
-                [~,~,MotifsVariateSet_Support{MotifId}]= featureInject(FeatureToInject(:,MotifId), DepdToInject(:,MotifId), sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO,MotifId);
+                load('D:\Motif_Results\Datasets\SynteticDataset\Mocap\Coherent Shift Variate 1M Mocap\allPossibleVariatesGroups.mat');
+                TempPossVariates= orderedDepdBySize{3};
+                MotifsVariateSet_Support{MotifId}= TempPossVariates(1:3,:);
+                %%old
+                %[~,~,MotifsVariateSet_Support{MotifId}]= featureInject(FeatureToInject(:,MotifId), DepdToInject(:,MotifId), sameVariateGroup, motif_instances, rndWalks1, FeatPositions, data, idm1, depdO,MotifId);
                 
                 selectVaraiteGroupsrandom=     randi(size(MotifsVariateSet_Support{MotifId},2),1,motif_instances);
                 MotifsVariateSet{MotifId}= MotifsVariateSet_Support{MotifId}(:,selectVaraiteGroupsrandom);
