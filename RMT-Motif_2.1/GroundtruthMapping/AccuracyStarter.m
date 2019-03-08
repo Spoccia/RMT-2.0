@@ -5,7 +5,7 @@ for DSIdx =3:3
     Ds_Name= DS_List{DSIdx};%
     % Ds_Name= 'Energy';%'Mocap';%'BirdSong';%
     
-    path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%RandomVariate\instancessamesize\'];%BirdSong\samesize10inst\';%Coherent Shift Variate 1M Energy\instancessamesize\';%
+    path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancessamesize\'];%RandomVariate\instancessamesize\'];%BirdSong\samesize10inst\';%Coherent Shift Variate 1M Energy\instancessamesize\';%
    %   path=['F:\syntethic motifs  good results\',Ds_Name,'\samesize10inst\'];%'\numInstances_5_15\'];%'\',Ds_Name,' M 1 2 3\'];%
     %Mocap\numInstances_5_15\';%10_Motifs_MM_rebuttal\';%Motif1RME\';%ICMR RMT-Mstamp-RME\';%
     % path='D:\Motif_Results\Datasets\SynteticDataset\Energy\Coherent Shift Variate 1M Energy\instanceMultisize\';
@@ -28,13 +28,13 @@ for DSIdx =3:3
         %     Name_OriginalSeries = [23,35,86,111];% MOCap Motif10%
         Name_OriginalSeries = AllTS;%[1,3,6,7];%ENERGY [64,70,80,147];Bsong%[85,35,127,24];Mocap % name of the original  series from with we  got the  motif instances to inject
         percent=[0; 0.1;0.25;0.5;0.75;1;2];
-        for percentid=7:size(percent,1)
+        for percentid=4:size(percent,1)
             percentagerandomwalk=percent(percentid);
             % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
             strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
             DepO =2;
             DepT =2;
-            for strID =1:size(strategy,2)%1:size(strategy,2)%1:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
+            for strID =1:2%size(strategy,2)%1:size(strategy,2)%1:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
                 StrategyClustering= strategy(strID);%3;%2;%
                 
                 for pip=1:30%size(Name_OriginalSeries,2)

@@ -1,7 +1,7 @@
 clear;
 clc;
 DS_List ={'Energy','Mocap','BirdSong'};
-for DSIdx =2:3
+for DSIdx =3:3
     Ds_Name= DS_List{DSIdx};%
     % Ds_Name ='BirdSong';%'Energy';%'Mocap';%
 %     Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancessamesize\'];%'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];
@@ -12,7 +12,7 @@ for DSIdx =2:3
 %       Path=['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];%'\10_Motifs_MM_rebuttal\'];%'\ICMR RMT-Mstamp-RME\'];%'\samesize10inst\'];%'\random shift variates 1M ',Ds_Name ,'\instancessamesize\'];%
      %'\',Ds_Name,' M 1 2 3\']%
 %       Path='G:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';%['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
- Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%
+ Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];%
      %Path=['F:\syntethic motifs  good results\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];
     %,'\samesize10inst\'];
     %'\samesize10inst'];%'\Mocap M 1 2 3'];%'\numInstances_5_15'];
@@ -22,7 +22,7 @@ for DSIdx =2:3
     % Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
     
     %Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name,'\RandomVariate\instancesmultisize'];
-    for overlapid=1:2
+    for overlapid=1:1
         overlapping='';%
         if overlapid==2
             overlapping='Overlapping';%
@@ -60,11 +60,11 @@ for DSIdx =2:3
                 AllStrategy_Precision=[];
                 AllStrategy_Recall=[];
                 AllStrategy_Fscore=[];
-                for j = 1: size(strategy, 2)
+                for j = 1:2% size(strategy, 2)
                     PrecisionRWScale=[];
                     RecallRWScale=[];
                     FscoreRWScale=[];
-                    for aa = 7 : size(amp_scale, 2)
+                    for aa = 4 : size(amp_scale, 2)
                         PrecisionAggregatedMAtrix = [];
                         RecallAggregatedMAtrix = [];
                         FscoreAggregatedMAtrix = [];

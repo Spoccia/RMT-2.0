@@ -36,6 +36,7 @@ try
     FScoreMatrix = zeros(size(myClassID, 1), size(motifClassCount, 2));
     
     for i = 1 : size(myClassID, 1)
+        checkthis=myClassID(i);
         currentClassIndex = classID == myClassID(i);
         statEntry = num(currentClassIndex, :);
         

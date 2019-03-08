@@ -12,9 +12,9 @@ MaxVariateSize = 62; % MoCap
 
 DepO = 2;
 DepT = 2;
-nummotifs = 3; % number of RMT features to be selected
+nummotifs = 2; % number of RMT features to be selected
 TSConsidered = 30; % 90;%30
-AllTS = randperm(100,TSConsidered); % randi([1,154],1,TSConsidered);
+AllTS = randperm(183,TSConsidered)+1; % randi([1,154],1,TSConsidered);
 for numberofTS = 1 : TSConsidered
      TS_name = num2str(AllTS(numberofTS));
 %     TS_name = num2str(1);

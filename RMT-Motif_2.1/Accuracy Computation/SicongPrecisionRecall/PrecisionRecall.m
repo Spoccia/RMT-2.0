@@ -1,15 +1,15 @@
 clear;
 clc;
 DS_List ={'Energy','Mocap','BirdSong'};
-for DSIdx =2:2
+for DSIdx =3:3
     Ds_Name= DS_List{DSIdx};%'Energy';%'Mocap';%'BirdSong';%
    % Path=['F:\Motif_Results\Motif1 CoherentShift\',Ds_Name,'\SameLength'];
 %          Path='G:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';
         %['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];%'\10_Motifs_MM_rebuttal\'];%'\ICMR RMT-Mstamp-RME\'];%'\samesize10inst\'];%'\random shift variates 1M ',Ds_Name ,'\instancessamesize\']%'\',Ds_Name,' M 1 2 3\'];%
     %10_Motifs_MM_rebuttal'];%
     % Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
-%      Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
-      Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%['F:\Motif_Results\Motif 1 2 3 multisize\',Ds_Name,'\']
+      Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancessamesize\'];%
+      %      Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%['F:\Motif_Results\Motif 1 2 3 multisize\',Ds_Name,'\']
      %'D:\Motif_Results\Datasets\SynteticDataset\Energy\Coherent Shift Variate 1M Energy\instanceMultisize\';
     %Path = ['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancesmultisize'];
     
@@ -23,7 +23,7 @@ for DSIdx =2:2
     testCaseIndex = 1 : 10;
     load([Path,'\data\FeaturesToInject\allTSid.mat']);
     TS_index = sort(AllTS(1:30));
-    for overlapid=2:2
+    for overlapid=1:2
         overlapping='';%
         if overlapid==2
             overlapping='Overlapping';%
@@ -64,12 +64,12 @@ for DSIdx =2:2
         % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
         
         
-        for i = 3 : size(num_of_motif, 2)-1
+        for i = 1 : size(num_of_motif, 2)-1
             BaseName= ['Motif',num2str(i)];%['MV_Sync_Motif',num2str(i)];%
             GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_',BaseName];
-            for ss = 1:size(strategy, 2)
+            for ss = 1:2%size(strategy, 2)
                 cur_strategy = strategy(ss);
-                for m = 7 : size(amp_scale, 2)
+                for m = 4 : size(amp_scale, 2)
                     for tt = 1 : size(timeOverlapThresholds, 2)
                         for kk = 1 : size(algorithm_type, 2)
                             
@@ -122,20 +122,22 @@ for DSIdx =2:2
                                         
                                         algorithmType = algorithm_type{kk};
                                         [currentMotifEntropy, precisionMatrix, recallMatrix, FScoreMatrix, total_index] = motifEvaluation(GroundTruthFile, MotifFile, algorithmType, windowSize, threshold, timeOverlapThreshold, overlapping);
-                                        %                                                                          Namecheck=[BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m))];
-                                        %                                                                                                                                 sharedFolder = [savePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
-                                        %                                                                                                                                 if(exist(sharedFolder,'dir')==0)
-                                        %                                                                                                                                     mkdir(sharedFolder);
-                                        %                                                                                                                                 end
-                                        %                                                                                                                                 savePathPrecision = [sharedFolder, '/Precision_',Namecheck,'.csv'];% BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
-                                        %                                                                                                                                 savePathRecall = [sharedFolder, '/Recall_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
-                                        %                                                                                                                                 savePathFScore = [sharedFolder, '/FScore_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
-                                        %                                                                                                                                 savePathRemainIndex = [sharedFolder, '/RemainIndex_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
-                                        %                                                                                                                                 csvwrite(savePathPrecision, precisionMatrix);
-                                        %                                                                                                                                 csvwrite(savePathRecall, recallMatrix);
-                                        %                                                                                                                                 csvwrite(savePathFScore, FScoreMatrix);
-                                        %                                                                                                                                 csvwrite(savePathRemainIndex, total_index);
-                                        %                                 %
+                                  
+%                                             Namecheck=[BaseName, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(k)), '_', num2str(amp_scale(m))];
+%                                             shFolder = [savePath, num2str(num_of_motif(i)), '/Strategy_', num2str(strategy(ss)), '/amp_scale_', num2str(amp_scale(m)), '_TO_', num2str(timeOverlapThreshold)];
+%                                             if(exist(shFolder,'dir')==0)
+%                                                 mkdir(shFolder);
+%                                             end
+%                                             savePathPrecision = [shFolder, '/Precision_',Namecheck,'.csv'];% BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+%                                             savePathRecall = [shFolder, '/Recall_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+%                                             savePathFScore = [shFolder, '/FScore_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+%                                             savePathRemainIndex = [shFolder, '/RemainIndex_',Namecheck,'.csv'];%,BaseName,'_', num2str(TS_index(j)), num2str(index_count), '.csv'];
+%                                             csvwrite(savePathPrecision, precisionMatrix);
+%                                             csvwrite(savePathRecall, recallMatrix);
+%                                             csvwrite(savePathFScore, FScoreMatrix);
+%                                             csvwrite(savePathRemainIndex, total_index);
+                                            
+                                            
                                         current_iteration_precision{index_count} = precisionMatrix;
                                         current_iteration_recall{index_count} = recallMatrix;
                                         current_iteration_FScore{index_count} = FScoreMatrix;

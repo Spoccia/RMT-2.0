@@ -5,7 +5,7 @@ clear;
 DatasetInject=2;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';           %'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Mocap Motifs 1 2 3 same variate multisize\';%Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%
+datasetPath= 'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';%Mocap\Mocap Motifs 1 2 3 same variate multisize\';%
 %'D:\Motif_Results\Datasets\SynteticDataset\Mocap\RandomVariate\instancessamesize\';
 %'D:\Motif_Results\Datasets\SynteticDataset\Mocap\Motif1RME\';
 %F:\syntethic motifs  good results\Mocap\10_Motifs_MM_rebuttal\';%'D:\Motif_Results\Datasets\SynteticDataset\Mocap\samesize10inst\';
@@ -14,16 +14,16 @@ subfolderPath= '';%'Z_A_Temp_C\';%
 FeaturesRM ='RMT';%'RME';%
 load([datasetPath,'data\FeaturesToInject\allTSid.mat']);
 %for BN =5:10:15
-BaseName='Motif';%'MV_Sync_Motif';%'MV_Sync_Motif';%'Motif1numInst_10'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
+BaseName='MV_Sync_Motif';%'Motif';%'MV_Sync_Motif';%'Motif1numInst_10'%,num2str(BN)]%'Motif';%'MV_Sync_Motif';
 % Flag to abilitate portions of code
 CreateRelation = 0;%1;
 FeatureExtractionFlag = 1;% 1; % 1 do it others  skip
 createDependencyScale = 1;
 %% clustering abilitation
 Cluster =  1;%1;%
-subclusterflag=1;
+subclusterflag=0;
 strategy=[1,3,4,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for strID =1:size(strategy,2);%1:6
+for strID =2:2%:size(strategy,2);%1:6
     StrategyClustering= strategy(strID);%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
     % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -79,15 +79,15 @@ for strID =1:size(strategy,2);%1:6
     elseif DatasetInject == 2 % MoCap
         DeSigmaDepd = 0.5;%1.6*2^(1/(DeLevelTime));%0.3;%0.4;%0.6;%0.5;%0.4;%
         DeSigmaTime = 4*sqrt(2)/2;%
-        DeGaussianThres = 0.1;%0.05;%
+        DeGaussianThres = 0;%0.1;%0.05;%
     end
     thresh = 0.04 / DeLevelTime / 2 ;%0.04;%
     DeSpatialBins = 4; %NUMBER OF BINs
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
-    for percentid=7:size(percent,1)%1:1
+    for percentid=1:size(percent,1)%1:1
         percentagerandomwalk=percent(percentid);%0; %0.1;%0.5;%0.75;%
-        for MOTIFNUMber =1:3
+        for MOTIFNUMber =1:1
             for pip=1:30   %TSnames
                 for NAME = 1:Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);

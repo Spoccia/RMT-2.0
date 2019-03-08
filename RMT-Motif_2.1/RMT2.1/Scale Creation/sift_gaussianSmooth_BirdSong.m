@@ -99,8 +99,10 @@ odepd = Od;
         oframes=oframes(:,sel) ;
         %% pruning Features Extrcted on the base of curvature
      %   ofra =oframes;
-        oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,gss.sminT,thresh,r,0) ;
-     %% this is my function more allined with the original code   
+
+     oframes = siftrefinemx_directed(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,gss.sminT,thresh,r,0) ;
+
+        %% this is my function more allined with the original code   
      %  oframes = siftrefinemx_directed_Silv(oframes, -dogss.octave{otime, odepd}{3},HY,HY2,gss.sminT,thresh,r,0) ;
      % The last term 0 I think refer to the starting octave in hte original
      % code there is no that term

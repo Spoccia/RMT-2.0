@@ -41,7 +41,7 @@ justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
 distanceUsed='Descriptor';% use just descriptors to  cluster
 % the algorithm of clustering to use
-for strategyIDentifier =1:size(strategy,2)
+for strategyIDentifier =1:2%size(strategy,2)
     clc;
     StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
     % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
@@ -94,24 +94,27 @@ for strategyIDentifier =1:size(strategy,2)
                         TEST = [num2str(NAME)];
                     elseif DatasetInject == 2 % synteticBirdsong
                         TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-%                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                        %                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     end
                     TS_name=TEST;
                     data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%
                     %%      This section is to  do the complement 1 to the data
-                      minValues = min(data');
-                      %shift data of the minimum values
-                      for variateind=1:size(data,1);
-                          data(variateind,:)=data(variateind,:)-minValues(variateind);
-                      end
-                     maxValues= max(data');
-                  
+                    %                       minValues = min(data');
+                    %                       %shift data of the minimum values
+                    %                       for variateind=1:size(data,1);
+                    %                           data(variateind,:)=data(variateind,:)-minValues(variateind);
+                    %                       end
+                    %                      maxValues= max(data');
+                    %
+                    %                     basicMatrix = ones(size(data));
+                    maxGlobal= max(data(:));
                     basicMatrix = ones(size(data));
-                    for variateind =1:size(basicMatrix,1)
-                        basicMatrix(variateind,:)= basicMatrix(variateind,:)*maxValues(variateind);
-                    end
-                     data=basicMatrix - data;%+abs(minimum)+1;
-                     
+                    %                     for variateind =1:size(basicMatrix,1)
+                    %                         basicMatrix(variateind,:)= basicMatrix(variateind,:)*maxValues(variateind);
+                    %                     end
+                    
+                    data=basicMatrix - data;%+abs(minimum)+1;
+                    
                     
                     if(StrategyClustering > 1)
                         FeatureExtractionFlag=0;
