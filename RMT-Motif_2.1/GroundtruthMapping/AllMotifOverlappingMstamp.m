@@ -1,31 +1,33 @@
 clear;
 clc;
 DS_List ={'Energy','Mocap','BirdSong'};
-for DSIdx =2:2
+for DSIdx =3:3
     Ds_Name= DS_List{DSIdx};%'BirdSong';%'Energy';%'Mocap';%
-%      path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%Coherent Shift Variate 1M Energy\instancesmultisize\'];%'\Mocap M 1 2 3\'];%'\numInstances_5_15\'];
-
-%     path=['F:\syntethic motifs  good results\',Ds_Name,'\10_Motifs_MM_rebuttal\'];%'\numInstances_5_15\'];%'\samesize10inst\'];%random shift variates 1M ',Ds_Name ,'\instancesmultisize\']%
+    %      path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%Coherent Shift Variate 1M Energy\instancesmultisize\'];%'\Mocap M 1 2 3\'];%'\numInstances_5_15\'];
+    
+    %     path=['F:\syntethic motifs  good results\',Ds_Name,'\10_Motifs_MM_rebuttal\'];%'\numInstances_5_15\'];%'\samesize10inst\'];%random shift variates 1M ',Ds_Name ,'\instancesmultisize\']%
     %'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%,Ds_Name,' M 1 2 3\'];
-    path='F:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%Energy\Energy M 1 2 3\';%BirdSong\
-
+    
+    %     path='F:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%Energy\Energy M 1 2 3\';%BirdSong\
+    path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%
+    
     %\10_Motifs_MM_rebuttal\';
     %'F:\syntethic motifs  good results\Energy\numInstances_5_15\';
     %'F:\syntethic motifs  good results\Mocap\random shift variates 1M Mocap\samesize\';
     %'F:\syntethic motifs  good results\BirdSong\numInstances_5_15\';%\Energy\RandomVariate\Multisize\';%Mocap\RandomVariate\';%BirdSong\';%Mocap\';%BSONG\';
     % path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';
     kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-
-      instancesInjecte = [10,5,15];
-%       for fivefifteen=2:3
-%      BaseName=['Motif1numInst_', num2str(instancesInjecte(fivefifteen))];%
-    BaseName='MV_Sync_Motif1';%'Motif10';%
+    
+    instancesInjecte = [10,5,15];
+    %       for fivefifteen=2:3
+    %      BaseName=['Motif1numInst_', num2str(instancesInjecte(fivefifteen))];%
+    BaseName='Motif1';%'MV_Sync_Motif1';%'Motif10';%
     %1numInst_10';%'Motif1';%
     %PathMP=[path,'\MStamp\'];
     % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
     dataLocation='data\';
     load([path,'data\FeaturesToInject\allTSid.mat']);
-    Name_OriginalSeries = AllTS;
+    Name_OriginalSeries = sort(AllTS(1:30));
     
     lenght = 58; % Energy dataset configuration
     if strcmp(Ds_Name,'BirdSong')==1
@@ -47,13 +49,13 @@ for DSIdx =2:2
             %       for strID =3:3%1:size(strategy,2)
             %           StrategyClustering= strategy(strID);%3;%2;%
             
-            for pip=1:30%size(Name_OriginalSeries,2)
-                for NAME = 1:Num_SyntSeries
+            for pip=1:1%30%size(Name_OriginalSeries,2)
+                for NAME = 1:1%Num_SyntSeries
                     
-%                     TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                    %                     TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                     TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
                     %old
-%                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];
+                    %                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];
                     
                     FeaturesRM ='MStamp\';%'RMT';%'RME';%
                     testname=TEST;
@@ -87,12 +89,12 @@ for DSIdx =2:2
                                         DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,2))>0,Feature_Pos_Injected(injectedID,2));
                                         %           InjectedDependency = Dependency_Injected(injectedID,1);
                                         TimeOverlapping    = computeTimeOverlapMStamp(motifsStart(instance),motifsStart(instance)+lenght,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
-%                                         if TimeOverlapping==1
-%                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),3)= Feature_Pos_Injected(injectedID,3);
-%                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4);
-%                                         else
-%                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4)+1;
-%                                         end
+                                        %                                         if TimeOverlapping==1
+                                        %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),3)= Feature_Pos_Injected(injectedID,3);
+                                        %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4);
+                                        %                                         else
+                                        %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4)+1;
+                                        %                                         end
                                         variateOverlapping = size(intersect(DI,motifvariate),1)/size(DI,1);%union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
                                         if(TimeOverlapping >0 & variateOverlapping >0)
                                             % condition to modify the score
@@ -123,8 +125,8 @@ for DSIdx =2:2
                         TEST
                     end
                 end
-                   end
             end
-%         end
+        end
+        %         end
     end
 end

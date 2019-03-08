@@ -28,13 +28,13 @@ prunewith='Descriptor';% use this strategy to prune  the outbound features ina  
 
 %% printing functionality
 saveMotifBP = 0; % show the clusters before pruning
-saveMotifAP = 0; % show the clusters after  pruning
+saveMotifAP = 1; % show the clusters after  pruning
 
 savecaracteristics = 1;
 
 %% Parameters
 Num_SyntSeries=10;%154; % num of instances of one motif
-Name_OriginalSeries = AllTS;
+Name_OriginalSeries = sort(AllTS(1:30));
 % Name_OriginalSeries = [64,70,80,147]; % name of the original  series from with we  got the  motif instances to inject
 justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
 %% Parameter for kmeans: distance measure to use
@@ -77,12 +77,12 @@ for strategyIDentifier =1:2%size(strategy,2)
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
     BaseName='Motif';%'Motif1numInst_10';%'MV_Sync_Motif';
-    for numMotifInjected =1:3
+    for numMotifInjected =1:1%3
         numMotifInjected
-        for percentid=7:7%1:size(percent,1)
+        for percentid=1:7%1:size(percent,1)
             percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
-            for pip=1:30
-                for NAME = 1:Num_SyntSeries
+            for pip=1:1%30
+                for NAME = 1:1%Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
                     TIMEFOROCTAVE=0;%zeros(1,4);
                     TimeComputationDepdScale =0;% zeros(1,4);
@@ -106,15 +106,15 @@ for strategyIDentifier =1:2%size(strategy,2)
                     %                       end
                     %                      maxValues= max(data');
                     %
-                    %                     basicMatrix = ones(size(data));
-                    maxGlobal= max(data(:));
-                    basicMatrix = ones(size(data));
+                    %                     basicMatrix = ones(size(data));                    
                     %                     for variateind =1:size(basicMatrix,1)
                     %                         basicMatrix(variateind,:)= basicMatrix(variateind,:)*maxValues(variateind);
                     %                     end
-                    
-                    data=basicMatrix - data;%+abs(minimum)+1;
-                    
+%                     %% Negative
+%                     maxGlobal= max(data(:));
+%                     basicMatrix = ones(size(data));                    
+%                     data=basicMatrix - data;%+abs(minimum)+1;
+%                     
                     
                     if(StrategyClustering > 1)
                         FeatureExtractionFlag=0;
