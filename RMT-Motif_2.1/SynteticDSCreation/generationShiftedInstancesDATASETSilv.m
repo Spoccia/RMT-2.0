@@ -14,7 +14,7 @@ TimeSeriesPath = ['D:\Motif_Results\Datasets\',DatasetTouse,'\data\'];
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\BirdSong Motifs 1 2 3 same variate multisize\data'];
 %\BSONG';
 NUM_VARIATE =13;%BirdSong  % 62;%MoCap;%27;%Energy;%
-random_walk_instance = 1;
+random_walk_instance = 10;
 motif_instances = 10;%15;% % MotifInstances= 10;
 RWlength = 2500;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
@@ -26,8 +26,9 @@ possibleMotifNUM=[1,2,3,10];%AllTS;%
 length_percentage_1 =[1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5];%[1,0.75,0.5];[1,1,1,1,1,1,1,1,1,1,1];%
 
 length_percentage=[];
-for pssMotID =1:1%3
-    randid= randperm(motif_instances);
+for pssMotID =1:3
+    randid= randperm(size(length_percentage_1,2));
+    randid=randid(:,1:motif_instances);
     length_percentage=[length_percentage;length_percentage_1(randid)];
 end
 
@@ -36,11 +37,11 @@ end
 %originalTSIDArray=[23,35,86,111];%[1,3,6,7];%Energy %[64,70,80,147];%BirdSong; %[85,24,35,127];%Mocap
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=sort(AllTS(1:30));
-for orgID =1:1%30%length(originalTSIDArray)%2
+for orgID =2:30%length(originalTSIDArray)%2
     originalTSID=originalTSIDArray(orgID)%85;%127;%[24,35,85,127];85;%24;%35;%
     %\data'; %for MOCAP
     
-    for pssMotID = 1:1% 3%length(possibleMotifNUM)%4:4
+    for pssMotID = 1:1%length(possibleMotifNUM)-1%4:4
         num_of_motif = possibleMotifNUM(pssMotID);%3; % NumOfMotifs = 1;
         
         
@@ -72,7 +73,7 @@ for orgID =1:1%30%length(originalTSIDArray)%2
             MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
         end
         startInj=30;
-        Step= floor( RWlength/(motif_instances*num_of_motif));
+        Step= floor( (RWlength-60)/(motif_instances*num_of_motif));
         startTime =zeros(1,motif_instances*num_of_motif);
         starterTime(1) = startInj ;
         LabelMotif = [];

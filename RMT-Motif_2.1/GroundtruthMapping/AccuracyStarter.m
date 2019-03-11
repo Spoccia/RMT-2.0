@@ -22,7 +22,7 @@ for DSIdx =3:3
     Num_SyntSeries=10; % num of instances of one motif
     FeaturesRM ='RMT';%'RME';%
     PossibleMotifInjected = [1,2,3,10];
-    for idmotInj =1: 1%size(PossibleMotifInjected,2)-1
+    for idmotInj =1: size(PossibleMotifInjected,2)-1
         motifinjected = num2str(PossibleMotifInjected(idmotInj));
         BaseName=['Motif', num2str(motifinjected)];%['MV_Sync_Motif',num2str(motifinjected)];%
         %     Name_OriginalSeries = [23,35,86,111];% MOCap Motif10%
@@ -37,8 +37,8 @@ for DSIdx =3:3
             for strID =1:2%size(strategy,2)%1:size(strategy,2)%1:size(strategy,2)%9%5:6%4:6%4:6%1:size(strategy,2)
                 StrategyClustering= strategy(strID);%3;%2;%
                 
-                for pip=1:1%30%size(Name_OriginalSeries,2)
-                    for NAME = 1:1%Num_SyntSeries
+                for pip=1:30%size(Name_OriginalSeries,2)
+                    for NAME = 1:Num_SyntSeries
                         
 %                         TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];

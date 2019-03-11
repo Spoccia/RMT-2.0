@@ -22,7 +22,7 @@ for DSIdx =3:3
     % Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
     
     %Path = ['D:\Motif_Results\Datasets\SynteticDataset\',DS_Name,'\RandomVariate\instancesmultisize'];
-    for overlapid=1:1
+    for overlapid=1:2
         overlapping='';%
         if overlapid==2
             overlapping='Overlapping';%
@@ -40,7 +40,7 @@ for DSIdx =3:3
             strategy = [1, 3, 4, 6, 7, 9];%[3,6,9];%
             % BaseName='MV_Sync_Motif';%'Motif1numInst_15';%
             BaseName='Motif';
-            algorithm_type = {'RMT'};%,'MStamp'};%'RME' , %% MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
+            algorithm_type = {'RMT','MStamp'};%'RME' , %% MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
             %  algorithm_type = {'RMT'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
             timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75,0.90,0.95,0.98, 1];
             amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2];
@@ -56,7 +56,7 @@ for DSIdx =3:3
             end
             allresults=[];
             
-            for i = 1 : size(num_of_motif, 2)
+            for i = 1 : 1%size(num_of_motif, 2)
                 AllStrategy_Precision=[];
                 AllStrategy_Recall=[];
                 AllStrategy_Fscore=[];
@@ -64,7 +64,7 @@ for DSIdx =3:3
                     PrecisionRWScale=[];
                     RecallRWScale=[];
                     FscoreRWScale=[];
-                    for aa = 4 : size(amp_scale, 2)
+                    for aa = 1 : size(amp_scale, 2)
                         PrecisionAggregatedMAtrix = [];
                         RecallAggregatedMAtrix = [];
                         FscoreAggregatedMAtrix = [];
@@ -99,11 +99,27 @@ for DSIdx =3:3
                                 aggregated_precision_file = csvread([precision_file_path, overlapping,'aggregated.csv']);
                                 aggregated_recall_file = csvread([recall_file_path, overlapping,'aggregated.csv']);
                                 aggregated_FScore_file = csvread([FScore_file_path, overlapping,'aggregated.csv']);
-                                meantemp= mean(aggregated_precision_file);
+                                meantemp=0;                            
+%                                 meantemp= mean(aggregated_precision_file);
+                                if (size(aggregated_precision_file,1)~=1)                                 
+                                    meantemp= mean(aggregated_precision_file);
+                                else
+                                    meantemp=aggregated_precision_file;
+                                end
                                 PrecisionforPercentage = [PrecisionforPercentage,meantemp(:,2:end-1)];
-                                meantemp= mean(aggregated_recall_file)
+%                                 meantemp= mean(aggregated_recall_file);
+                                if (size(aggregated_precision_file,1)~=1)                                 
+                                    meantemp= mean(aggregated_recall_file);
+                                else
+                                    meantemp=aggregated_recall_file;
+                                end                           
                                 RecallforPercentage = [RecallforPercentage,meantemp(:,2:end-1)];
-                                meantemp=mean(aggregated_FScore_file);
+%                                 meantemp=mean(aggregated_FScore_file);
+                                if (size(aggregated_precision_file,1)~=1)                                 
+                                    meantemp=mean(aggregated_FScore_file);
+                                else
+                                    meantemp=aggregated_FScore_file;
+                                end
                                 FscoreforPercentage = [FscoreforPercentage,meantemp(:,2:end-1)];
                                 
                                 

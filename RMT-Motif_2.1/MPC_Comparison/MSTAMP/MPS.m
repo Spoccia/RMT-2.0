@@ -10,7 +10,7 @@ close all;
 clear
 clc
 
-saveMotifImages=1;
+saveMotifImages=0;
 % load('toy_data.mat');
 
 %% compute the multidimensional matrix profile
@@ -39,11 +39,11 @@ for DSIdx =3:3
     % for percentid=1:size(percent,1)
     BaseName='Motif';%'Motif1numInst_10';%'MV_Sync_Motif';%
     for numMotifInjected =1:1%3%10:10%3
-        for prcentid=2:7%4%6%6%size(percent,1)
+        for prcentid=1:7%4%6%6%size(percent,1)
             percentagerandomwalk=percent(prcentid);
             
-            for pip=1:1%30
-                for NAME = 1:1%10
+            for pip=2:30
+                for NAME = 1:10
                     MotifBag_mstamp=[];
                     %      try
                     FeaturesRM='MStamp';

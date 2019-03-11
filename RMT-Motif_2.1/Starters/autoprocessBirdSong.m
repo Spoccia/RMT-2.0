@@ -28,7 +28,7 @@ prunewith='Descriptor';% use this strategy to prune  the outbound features ina  
 
 %% printing functionality
 saveMotifBP = 0; % show the clusters before pruning
-saveMotifAP = 1; % show the clusters after  pruning
+saveMotifAP = 0; % show the clusters after  pruning
 
 savecaracteristics = 1;
 
@@ -77,12 +77,12 @@ for strategyIDentifier =1:2%size(strategy,2)
     r= 10; %5 threshould variates
     percent=[0; 0.1;0.25;0.5;0.75;1;2];
     BaseName='Motif';%'Motif1numInst_10';%'MV_Sync_Motif';
-    for numMotifInjected =1:1%3
+    for numMotifInjected =2:3%3
         numMotifInjected
         for percentid=1:7%1:size(percent,1)
             percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
-            for pip=1:1%30
-                for NAME = 1:1%Num_SyntSeries
+            for pip=1:30
+                for NAME = 1:10%Num_SyntSeries
                     Time4Clustering=0;%zeros(1,4);
                     TIMEFOROCTAVE=0;%zeros(1,4);
                     TimeComputationDepdScale =0;% zeros(1,4);
@@ -363,7 +363,7 @@ for strategyIDentifier =1:2%size(strategy,2)
                         savepath7 = [saveFeaturesPath,'/ScaleTime_',TS_name,'.csv'];
                         savepath8 = [saveFeaturesPath,'/DescrTime_',TS_name,'.csv'];
                         
-                        save(savepath1,'data', 'gss1', 'frame1','depd1');
+                        save(savepath1, 'data','gss1', 'frame1','depd1');%
                         save(savepath2,'idm1');
                         save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
                         save(savepath5, 'depd1');
