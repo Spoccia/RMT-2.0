@@ -65,9 +65,9 @@ end
 
 [combinationScale,minidx]= min([numT_scale,numD_scale]);
 
-for i = 2 : combinationScale-1
-    for y = 2 : depdStep - 1
-        for x = 2 : timeStep - 1        
+for i = 4 : combinationScale-1
+    for y = 11 : depdStep - 1
+        for x = 38 : timeStep - 1        
             % key points index: (x, y, i, j)
             is_greaterDepd=true;
             is_greaterTime=true;

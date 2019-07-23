@@ -186,7 +186,7 @@ for definitiveindex =1:1
                 kindOfClustring= 'DBScan';%
             end
             for percentid=percentageStart:size(percent,1)%
-                percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
+                percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%          
                 for pip=1:30   %TSnames
                     for NAME = 1:Num_SyntSeries
                         Time4Clustering=0;%zeros(1,4);
@@ -200,18 +200,14 @@ for definitiveindex =1:1
                         %                             TSbaseRandom= [BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(0)];
                         TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
                         TSbaseRandom= [BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)];
-                        if definitiveindex < 5
-                            TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
-                            TSbaseRandom= [BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(0)];
-                        end
                         TS_name=TEST;
                         
                         data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
                         
-                        %                         sanitycheck= std(data');
-                        %                         idxVariate= sanitycheck==0;
-                        %                         data1= csvread([datasetPath,'data\',TSbaseRandom,'.csv']);
-                        %                         data(idxVariate,:) = data1(idxVariate,:);
+%                         sanitycheck= std(data');
+%                         idxVariate= sanitycheck==0;
+%                         data1= csvread([datasetPath,'data\',TSbaseRandom,'.csv']);
+%                         data(idxVariate,:) = data1(idxVariate,:);                        
                         
                         %% Features Extraction
                         if(FeatureExtractionFlag==1)
@@ -270,7 +266,7 @@ for definitiveindex =1:1
                             save(savepath1,'data', 'gss1', 'frame1','depd1');
                             save(savepath2,'idm1');
                             save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
-                            %                            save(savepath5, 'depd1');
+%                            save(savepath5, 'depd1');
                         end
                         %% create dependency
                         if(createDependencyScale==1)
@@ -314,8 +310,8 @@ for definitiveindex =1:1
                                             mu=ActFeatures(11:end,1)';
                                         else
                                             if StrategyClustering==10
-                                                [C,mu,inertia,tryK,startK]= adaptiveKmeansNormDistances(ActFeatures,2,0.02,2,'sqeuclidean');
-                                                %                                                 [C,mu,inertia,tryK,startK]= adaptiveKmeans(ActFeatures,2,0.02,1,'sqeuclidean');
+                                                 [C,mu,inertia,tryK,startK]= adaptiveKmeansNormDistances(ActFeatures,2,0.02,2,'sqeuclidean');
+                                                [C,mu,inertia,tryK,startK]= adaptiveKmeans(ActFeatures,2,0.02,1,'sqeuclidean');
                                             else
                                                 [C,mu,inertia,tryK,startK]= adaptiveKmeans(ActFeatures,2,0.02,2,'sqeuclidean');
                                             end
@@ -434,7 +430,6 @@ for definitiveindex =1:1
                                     else
                                         [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
                                     end
-                                    
                                 elseif(strcmp(kindOfClustring,'DBScan')==1) % strategy==6
                                     C=[];
                                     varType=[];
@@ -510,6 +505,11 @@ for definitiveindex =1:1
                             %                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),rowHeader,'TIME','A2');
                             %                         xlswrite(strcat(saveFeaturesPath,'Strategy_',num2str(StrategyClustering),'_TIME1.xls'),col_header,'TIME','B1');
                         end
+                        
+                        %                     pause(1)
+                        %                     clear('a','ActFeatures','allclusterid','AlltheCluster','AllthefeaturesAllTS','C','Centroids','data','depd1','DepdScopeVector','descr1','frame1','gss1','idm1','idactfeatures',...
+                        %                         'indexfeaturesGroup','mu','possibleset','rowHeader','X','AlltheCluster','Allthefeatures','col_header')
+                        %
                     end
                 end
             end

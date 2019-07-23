@@ -23,9 +23,17 @@ Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',T
 
 %% read the clusters to check the motifs.
 featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',ClusterAlg,'\AP\',kindofCluster,'\'];
+featurespathBP=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',ClusterAlg];
+depBPPath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure];
 % load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat'])
 % load([path,kindofinj,'Features\',TEST,'\DistancesDescriptors\',kindofCluster,measure,'\afterPruning\',ClusterAlg,'\datacluster_1_DepO_',DepO,'_DepT_',DepT,'.mat']);
  try
+     %% for Before Pruning
+% Dependencypruned = csvread([depBPPath,'\DepdScale_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);
+% Featurepruned    = csvread([featurespathBP,'\Features_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);
+% Clusterpruned = csvread([featurespathBP,'\Cluster_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);
+% Centroidpruned = csvread([featurespathBP,'\Centroids_IM_',TEST,'_DepO_',DepO,'_TimeO_',DepT,'.csv']);
+     
 Dependencypruned = csvread([featurespath,'\PrunedDepScaleFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
 Featurepruned    = csvread([featurespath,'\PrunedFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
 Clusterpruned = csvread([featurespath,'\PrunedCluster_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
@@ -42,7 +50,7 @@ for i=1: nCluster
     D = Dependencypruned(:, Clusterpruned == clusterLabel(i));
     timescopeF= F(4,:)*3;
     for iii=1: size(F,2)
-        Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),round(F(2,iii)-timescopeF(iii)) , round(F(2,iii)+timescopeF(iii))]];
+        Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),floor(F(2,iii)-timescopeF(iii)) , ceil(F(2,iii)+timescopeF(iii))]];
     end 
     FeatureSortedbyCluster=[FeatureSortedbyCluster,F];
     DescriptorSortedbyCluster=[DescriptorSortedbyCluster,D];

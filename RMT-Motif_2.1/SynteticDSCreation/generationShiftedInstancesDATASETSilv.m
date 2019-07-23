@@ -1,47 +1,59 @@
 clc;
 clear;
-DatasetTouse= 'BirdSong';%'Mocap';%'Energy';%
-featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\BirdSong Motifs 1 2 3 same variate multisize\data\FeaturesToInject\'];
+DS_List ={'Mocap','Energy','BirdSong'};
+% Ds_Name= DS_List{1};%
+for DSIdx =1:3%3
+DatasetTouse= DS_List{DSIdx};%'Mocap';%'Energy';%'BirdSong';%
+experimentFolder=' Motif 1 same length';%' Motif1 inst5-15';%' Motifs 1 2 3 same variate multisize';%' Motif 10 multilength';%' Motif 1 same length';%' Motifs 1 2 3 same variate multisize';%
+featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\',DatasetTouse,experimentFolder,'\data\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\BSONG\FeaturesToInject\'];
 %['D:\Motif_Results\Datasets\SynteticDataset\data\FeaturesToInject\'];%MOCAP
-randomWalkPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\BirdSong Motifs 1 2 3 same variate multisize\data\RW_0_1\RW_'];
+randomWalkPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\',DatasetTouse,experimentFolder,'\data\RW_0_1\RW_'];
 %['D:\Motif_Results\Datasets\SynteticDataset\BSONG\RW_0_1\RW_'];
 % ['D:\Motif_Results\Datasets\SynteticDataset\data\RW_0_1\RW_'];
 TimeSeriesPath = ['D:\Motif_Results\Datasets\',DatasetTouse,'\data\'];
 %['D:\Motif_Results\Datasets\BirdSong\data\'];
 %['D:\Motif_Results\Datasets\Mocap\data\'];
 
-DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\BirdSong Motifs 1 2 3 same variate multisize\data'];
+DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\',DatasetTouse,experimentFolder,'\data'];
 %\BSONG';
-NUM_VARIATE =13;%BirdSong  % 62;%MoCap;%27;%Energy;%
+NUM_VARIATE=0;
+if strcmp(DatasetTouse,'Mocap')==1
+    NUM_VARIATE = 62;%MoCap;%27;%Energy;%13;%BirdSong  %
+elseif strcmp(DatasetTouse,'BirdSong')==1
+    NUM_VARIATE = 13;
+elseif strcmp(DatasetTouse,'Energy')==1
+    NUM_VARIATE = 27;
+end
 random_walk_instance = 10;
-motif_instances = 10;%15;% % MotifInstances= 10;
-RWlength = 2500;
+motif_instances = 10;%10;%15;% % MotifInstances= 10;
+TotalRWlength =2500;
+RWlength = TotalRWlength-100;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1,2,3,10];%AllTS;%
 
 % support= randi(3,1,motif_instances);
 % possMotifScaleTime= [1,0.75,0.5];
 % length_percentage = possMotifScaleTime(support);
-length_percentage_1 =[1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5];%[1,0.75,0.5];[1,1,1,1,1,1,1,1,1,1,1];%
-
-length_percentage=[];
-for pssMotID =1:3
-    randid= randperm(size(length_percentage_1,2));
-    randid=randid(:,1:motif_instances);
-    length_percentage=[length_percentage;length_percentage_1(randid)];
-end
-
+% 
+%length_percentage_1 =[1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1];%,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5];%[1,0.75,0.5];%
+ length_percentage_1 = [1 1 1 1 1 1 1 1 1 1];
 %                      0.75,0.5,1;
 %                      1,0.5,0.75];%0.5;% length_percentage =
 %originalTSIDArray=[23,35,86,111];%[1,3,6,7];%Energy %[64,70,80,147];%BirdSong; %[85,24,35,127];%Mocap
 load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=sort(AllTS(1:30));
-for orgID =2:30%length(originalTSIDArray)%2
+for orgID =1:30%length(originalTSIDArray)%2
+    length_percentage=[];
+    for pssMotID =1:10
+        randid= randperm(size(length_percentage_1,2));
+        randid=randid(:,1:motif_instances);
+        length_percentage=[length_percentage;length_percentage_1(randid)];
+    end
     originalTSID=originalTSIDArray(orgID)%85;%127;%[24,35,85,127];85;%24;%35;%
     %\data'; %for MOCAP
     
-    for pssMotID = 1:1%length(possibleMotifNUM)-1%4:4
+    for pssMotID = 1:1%3%length(possibleMotifNUM)-1%4:4
         num_of_motif = possibleMotifNUM(pssMotID);%3; % NumOfMotifs = 1;
         
         
@@ -50,14 +62,23 @@ for orgID =2:30%length(originalTSIDArray)%2
         
         id_test_name='Motif';
         % testNAME = ['100_Motif_',num2str(motif_instances),'_',num2str(num_of_motif)];
-        testNAME = [id_test_name,num2str(num_of_motif)];%,'numInst_',num2str(motif_instances)];%,'_',num2str(originalTSID)];%num2str(motif_instances),'_',num2str(num_of_motif)];
+        
+        %testNAME = [id_test_name,num2str(num_of_motif)];%,'_',num2str(originalTSID)];%num2str(motif_instances),'_',num2str(num_of_motif)];
+        testNAME = [id_test_name,num2str(num_of_motif)];%,'numInst_',num2str(motif_instances)];
         
         % load  the features and the data
         FeaturesToInject = csvread([featuresToInjectPath,'Features',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
         DepdToInject = csvread([featuresToInjectPath,'depd',num2str(originalTSID),'.csv']);%,'_',num2str(descr_non_zero_entry),'.csv']);
-        
+        TSdata=[];
+        if strcmp(DatasetTouse,'Mocap')==1
+            TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+        elseif strcmp(DatasetTouse,'BirdSong')==1
+            TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+        elseif strcmp(DatasetTouse,'Energy')==1
+            TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
+        end
         %% MOCAP BirdSong
-        TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
+        %         TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv'])';
         %% Energy
         %           TSdata = csvread([TimeSeriesPath,num2str(originalTSID),'.csv']);% remove ' for Energy;
         
@@ -68,9 +89,15 @@ for orgID =2:30%length(originalTSIDArray)%2
         for MotifId =1: num_of_motif
             timescope= FeatureToInject(4,MotifId)*3; % 29
             intervaltime=(round((FeatureToInject(2,MotifId)-timescope)) : (round((FeatureToInject(2,MotifId)+timescope+offSpace))));
+                        if(size(intervaltime,2)<33)
+                        ['Features',num2str(originalTSID),'.csv']  
+                        'check'
+                        end
             MotifsSections{MotifId}.data = TSdata(:,intervaltime((intervaltime>0 & intervaltime<=size(TSdata,2))));
+
             MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
             MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
+            
         end
         startInj=30;
         Step= floor( (RWlength-60)/(motif_instances*num_of_motif));
@@ -85,15 +112,18 @@ for orgID =2:30%length(originalTSIDArray)%2
         for i=1:motif_instances*num_of_motif
             motifclmn = MotifsSections{LabelMotif(i)}.cols;
             starterTime (i)= randi([startInj+pStep,startInj+pStep+Step-motifclmn],1,1);
+            if mod (starterTime(i), 2) == 0
+                starterTime(i)=starterTime(i)-1;
+            end
             pStep=pStep+Step;
         end
         % Counter =1;
         TSNAMEFIX=testNAME;
-        for rwscale = 1 : size(random_walk_scale,2)
+        for rwscale = 7 : size(random_walk_scale,2)
             for i =1 : random_walk_instance
                 % read the 0-1 randomwalk
                 
-                testNAME = [TSNAMEFIX,'_',num2str(originalTSID),'_instance_',num2str(i)];
+                testNAME = [TSNAMEFIX,'_',num2str(originalTSID),'_',num2str(motif_instances),'_instance_',num2str(i)];
                 
                 
                 EachInstanceDependency=[];
@@ -111,7 +141,7 @@ for orgID =2:30%length(originalTSIDArray)%2
                 %         Motif1RW = scaleRW(randomwalkData,maxvalueTS,minvalueTS,random_walk_scale(rwscale));
                 
                 FeatPositions = zeros(motif_instances*num_of_motif,4);%NEW
-                idxMotifID(:)=ones(3,1);%NEW
+                idxMotifID=ones(num_of_motif,1)';%NEW
                 for motifInstance = 1: motif_instances*num_of_motif
                     MotifID=LabelMotif(motifInstance);
                     
@@ -127,18 +157,21 @@ for orgID =2:30%length(originalTSIDArray)%2
                     listvariates=MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1);
                     MotifInstanceShifted=M1;
                     StartRWvalues=Motif1RW(:,starterTime(motifInstance));
-                    RwtoShift= Motif1RW(:,starterTime(motifInstance):RWlength);
+                    RwtoShift= Motif1RW(:,starterTime(motifInstance)-1:TotalRWlength);
                     for varaitetouse=1:size(listvariates)
                         VariateShift= MotifInstanceShifted(listvariates(varaitetouse),1)-StartRWvalues(listvariates(varaitetouse));
                         MotifInstanceShifted(listvariates(varaitetouse),:)= MotifInstanceShifted(listvariates(varaitetouse),:)-VariateShift;
+                        RWShiftedvalue = RwtoShift(listvariates(varaitetouse),1)- MotifInstanceShifted(listvariates(varaitetouse),end);
+                        RwtoShift(listvariates(varaitetouse),:)= RwtoShift(listvariates(varaitetouse),1:end) - RWShiftedvalue;
                     end
                     Motif1RW(MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1),starterTime(motifInstance):starterTime(motifInstance)+scalingTime-1) = ...
-                        MotifInstanceShifted(MotifsSections{MotifID}.depd(MotifsSections{MotifID}.depd(:,1)>0,1),:);                 
-                    Motif1RW(MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1),starterTime(motifInstance)+scalingTime:RWlength)= ...
-                    RwtoShift(MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1),1:end-scalingTime);
+                        MotifInstanceShifted(MotifsSections{MotifID}.depd(MotifsSections{MotifID}.depd(:,1)>0,1),:);
+                    Motif1RW(MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1),starterTime(motifInstance)+scalingTime:TotalRWlength)= ...
+                        RwtoShift(MotifsSections{MotifID}.depd((MotifsSections{MotifID}.depd(:,1)>0),1),2:end-scalingTime);
                     
                     FeatPositions(motifInstance,:)=[MotifID,motifInstance,starterTime(motifInstance),starterTime(motifInstance)+scalingTime-1];
                     EachInstanceDependency=[EachInstanceDependency, MotifsSections{MotifID}.depd ];
+                    clear('MotifInstanceShifted');
                 end
                 
                 if(exist([DestDataPath,'\IndexEmbeddedFeatures\'],'dir')==0)
@@ -155,4 +188,5 @@ for orgID =2:30%length(originalTSIDArray)%2
             %     mkdir([DestDataPath,'\IndexEmbeddedFeatures\Mocap_test',num2str(name+6),'\']);
         end
     end
+end
 end

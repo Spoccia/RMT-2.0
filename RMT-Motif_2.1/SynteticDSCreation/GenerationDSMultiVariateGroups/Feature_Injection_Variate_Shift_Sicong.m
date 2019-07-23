@@ -5,7 +5,8 @@ clear;
 DataType='Mocap';
 % DataType='BirdSong';
 basepath='D:\Motif_Results\Datasets\SynteticDataset\';%'/Users/sliu104/Desktop/Motif_Data/SynteticDataset/';%
-featuresToInjectPath=[basepath,DataType,'\Coherent Shift Variate 1M ',DataType,'\instancessamesize\data/FeaturesToInject/'];%,'/RandomVariate','/instancesmultisize/data/FeaturesToInject/'];
+featuresToInjectPath=[basepath,DataType,'\Coherent Shift Variate 1M ',DataType,'\instancessamesize\data/FeaturesToInject/'];
+%,'/RandomVariate','/instancesmultisize/data/FeaturesToInject/'];
 randomWalkPath = [basepath,DataType,'\Coherent Shift Variate 1M ',DataType,'\instancessamesize/data/RW_0_1/RW_'];
 TimeSeriesPath = ['D:\Motif_Results\Datasets\',DataType,'/data/'];%['/Users/sliu104/Desktop/Motif_Data/TimeSeries/',DataType,'/data/'];
 depdO=2;

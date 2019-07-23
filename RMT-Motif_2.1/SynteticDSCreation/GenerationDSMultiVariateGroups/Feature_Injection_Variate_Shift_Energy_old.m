@@ -21,14 +21,7 @@ motif_instances = 10;
 RWlength = 2500-59;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1, 2, 3, 10];
-%% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
-length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
-% length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1];
-length_percentage=[];
-for pssMotID =1:num_of_motif%3
-    randid= randperm(motif_instances);
-    length_percentage=[length_percentage;length_percentage_1(randid)];
-end
+
 %%
 %length_percentage= [1,0.75,1,0.5,0.75,0.5,1,0.75,1,0.5];
 %D:\Motif_Results\Datasets\SynteticDataset\Energy\RandomVariate\instanceMultisize\FeaturesToInject
@@ -36,6 +29,14 @@ load([featuresToInjectPath,'allTSid.mat']);
 originalTSIDArray=AllTS;
 FeatureSelectionalID=[];%csvread([DestDataPath,'/FeaturesToInject/featureselectedinfiles.csv']);%
 for orgID = 1:30 %length(originalTSIDArray)%2
+    %% for each posible motifs to inject prepare a random semlection of the possible reduced time sizes.
+length_percentage_1 = [1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%[1,0.75,0.5];
+% length_percentage_1 =[1,1,1,1,1,1,1,1,1,1,1,1];
+length_percentage=[];
+for pssMotID =1:num_of_motif%3
+    randid= randperm(motif_instances);
+    length_percentage=[length_percentage;length_percentage_1(randid)];
+end
     originalTSID = originalTSIDArray(orgID);
     load(['D:\Motif_Results\Datasets\',DataType,'\Features_RMT\',num2str(originalTSID),'\feature_',num2str(originalTSID),'.mat']);
     load(['D:\Motif_Results\Datasets\',DataType,'\Features_RMT\',num2str(originalTSID),'\idm_',num2str(originalTSID),'.mat']);

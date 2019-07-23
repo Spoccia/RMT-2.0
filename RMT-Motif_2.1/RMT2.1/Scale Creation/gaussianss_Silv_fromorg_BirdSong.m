@@ -186,6 +186,9 @@ for otact=1: Ot
   odact=1;
 end
 
+  SS.octave{1,2}=[];
+  SS.octave{2,1}=[];
+  SS.octave{1,1}=[];
 function [SS] = Smooth_Asyn(SS, CurrentTimeOct, CurrentDepdOct, ktime, kdepd,stmin,sdmin, stmax, sdmax,sigmaTscaleStep,sigmaDscaleStep,depd, Smatrix,soT,soD)
 for sd=sdmin:sdmax 
 

@@ -18,6 +18,7 @@ function [TimeforPruningSubClustering ] = VariateAllinedKmeansPruning(TEST, imag
 %     pause;
 %         return;
 %     end
+% try
 Matlab=1;
 TimeforPruningSubClustering=0;
 
@@ -170,6 +171,7 @@ csvwrite(strcat(PrunedClusterPath,'\Centroids_IM_',imagename,'_DepO_',num2str(j)
 csvwrite(strcat(PrunedClusterPath,'\Centroids_subCluster_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),SubclusterDescriptors);
 csvwrite(strcat(PrunedClusterPath,'\PrunedFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedFeaturesCluster);
 csvwrite(strcat(PrunedClusterPath,'\PrunedDepScaleFeatures_IM_',imagename,'_DepO_',num2str(j),'_DepT_',num2str(k),'.csv'),prunedDepScale);
-
+% catch
+% end
 end
 

@@ -25,7 +25,7 @@ Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',T
 featurespath=[path,'Features_',FeaturesRM,'\',TEST,'\Distances',measure,'\',ClusterAlg,'\SplitVariate\AP_VA\',kindofCluster,'\'];
 % load([featurespath,'datacluster_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.mat'])
 % load([path,kindofinj,'Features\',TEST,'\DistancesDescriptors\',kindofCluster,measure,'\afterPruning\',ClusterAlg,'\datacluster_1_DepO_',DepO,'_DepT_',DepT,'.mat']);
-
+try
 Dependencypruned = csvread([featurespath,'\PrunedDepScaleFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
 Featurepruned    = csvread([featurespath,'\PrunedFeatures_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
 Clusterpruned = csvread([featurespath,'\PrunedCluster_IM_',TEST,'_DepO_',DepO,'_DepT_',DepT,'.csv']);
@@ -43,7 +43,7 @@ for i=1: nCluster
     D = Dependencypruned(:, Clusterpruned == clusterLabel(i));
     timescopeF= F(4,:)*3;
     for iii=1: size(F,2)
-        Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),round(F(2,iii)-timescopeF(iii)) , round(F(2,iii)+timescopeF(iii))]];
+        Interv_Features_Cluster=[Interv_Features_Cluster;[clusterLabel(i),floor(F(2,iii)-timescopeF(iii)) , ceil(F(2,iii)+timescopeF(iii))]];
     end 
     FeatureSortedbyCluster=[FeatureSortedbyCluster,F];
     DescriptorSortedbyCluster=[DescriptorSortedbyCluster,D];
@@ -83,6 +83,10 @@ end
 %col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'}; 
 FileName=[path,'Features_',FeaturesRM,'\Accuracy\Strategy_',num2str(StrategyClustering),'\','AP_','DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];%'\',TEST,%'_AllFeatureFound_DepO_',DepO,'_DepT_',DepT,'_',TEST,'.csv'];
 csvwrite(FileName,FeatureClassCount);
+ catch
+                    'problem at'
+                     TEST
+ end
 %xlswrite(FileName,FeatureClassCount,'AP_all_SubC','A2');
 %xlswrite(FileName,col_header,'AP_all_SubC','A1');
 

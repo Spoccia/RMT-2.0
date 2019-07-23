@@ -1,7 +1,7 @@
-function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturation,Step,distance)
+function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeansNormDistances(features1,K_start,saturation,Step,distance)
    isFound=false;
    inertia=[];
-%   inertiatest=[];
+ %  inertiatest=[];
    AllFeaturesDistances = pdist2(features1(11:end,:)',features1(11:end,:)');
    maxdistance2instances= max(AllFeaturesDistances(:));
    if Step==0
@@ -64,8 +64,8 @@ function  [C1,mu1,inertia,tryK,startK]=adaptiveKmeans(features1,K_start,saturati
       MeanD2 = SUMD2./NumofIntancesforClusters;
       MD2=max(MeanD2);
       mean3  = sum(SUMD2)/sum(NumofIntancesforClusters);
- %     meanD3= sum(SUMD3)/sum(NumofIntancesforClusters);
-       MeasureToUse=mean3;%mean2;%MD2;%sum(SUMD2)%sum(SUMD1);%;%mean(mean3);%MeanD2);% sum(SUMD2);%
+   %   meanD3= sum(SUMD3)/sum(NumofIntancesforClusters);
+       MeasureToUse=sum(SUMD2);%mean3;%mean2;%MD2;%sum(SUMD2)%sum(SUMD1);%;%mean(mean3);%MeanD2);% sum(SUMD2);%
 %        MeasureToUse=sum(MeanD2);
 %         saturation = /mean(NumofIntancesforClusters);
 

@@ -125,11 +125,12 @@ for definitiveindex =1:1
                         if DatasetInject == 1 % birdsong
                             TEST = [num2str(NAME)];
                         elseif DatasetInject == 2 % synteticBirdsong'numInst_15_',
-                            if definitiveindex < 5
-                                TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(NumInstancesInjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                            else
-                                TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                            end
+                            if definitiveindex
+                            TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(NumInstancesInjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                            TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                            %TEST=[BaseName,num2str(numMotifInjected),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
+                            %'numInst_5',
+                            %                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                         end
                         TS_name=TEST;
                         OrgInstanceData = csvread([PathORGFeature,num2str(Name_OriginalSeries(pip)),'.csv']);
