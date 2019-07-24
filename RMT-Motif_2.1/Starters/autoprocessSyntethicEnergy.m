@@ -64,6 +64,7 @@ SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDif
 strategy=[1,3,10,11,4,20,6,7,9];%[1,2,3,4,5,6,7,8,9];
 for definitiveindex =1:1
     experimentFolder= '';
+    numInstancesinjected=10;
     if definitiveindex==1
         experimentFolder=' Motifs 1 2 3 same variate multisize\';%%'CoherentShift\MultiSize\';
         numMotifs=3;
