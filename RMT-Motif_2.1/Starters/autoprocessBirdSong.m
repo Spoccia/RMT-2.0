@@ -7,7 +7,7 @@ DatasetInject=2;  % 1 BirdSong 2 syntethic BirdSong
 %     SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 %     datasetPath= 'D:\Motif_Results\Datasets\BirdSong\';
 %     PathORGFeature=[datasetPath,'data\'];
-    strategy=[1,3,10,11,4,20,6,7,9];%[1,2,3,4,5,6,7,8,9];
+strategy=[1,3,10,11,4,20,6,7,9];%[1,2,3,4,5,6,7,8,9];
 for definitiveindex =1:1
     experimentFolder= '';
     if definitiveindex==1
@@ -40,7 +40,7 @@ for definitiveindex =1:1
     end
     
     datasetPath= ['D:\Motif_Results\Datasets\SynteticDataset\BirdSong\BirdSong',experimentFolder];
-            
+    
     subfolderPath= '';%'Z_A_Temp_C\';%
     FeaturesRM ='RMT';
     
@@ -72,45 +72,46 @@ for definitiveindex =1:1
     kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
     distanceUsed='Descriptor';% use just descriptors to  cluster
     % the algorithm of clustering to use
-    for strategyIDentifier =1:4
-
-        StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
-        % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
-        % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
-        % 3 - old approach do clustering  then subclustering
-        
-        kindOfClustring= 'AKmeans';
-        if StrategyClustering >3  & StrategyClustering < 10
-            kindOfClustring= 'DBScan';%
-        end
-        
-        
-        %% sift parameters
-        % x - variate
-        % y - time
-        % oframes - octaves
-        % sigmad - sigma dependency (variate)
-        % sigmat - sigma time (time)
-        % pricur - principle curvature
-        USER_OT_targhet=2;
-        USER_OD_targhet=2;
-        
-        DeOctTime = USER_OT_targhet;
-        DeOctDepd = USER_OD_targhet;
-        DeLevelTime = 4;%6;%
-        DeLevelDepd = 4;%6;%
-        DeSigmaDepd = 0.5;%0.4;%0.6;
-        DeSigmaTime = 1.6149;%4*sqrt(2)/2;%3.2298;%4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%4*sqrt(2)/2;%
-        %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
-        thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
-        DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
-        DeSpatialBins = 4; %NUMBER OF BINs
-        r= 10; %5 threshould variates
-        percent=[0; 0.1;0.25;0.5;0.75;1;2];
-        BaseName='Motif';%'MV_Sync_Motif';%'Motif1numInst_10';%'MV_Sync_Motif';
-        
-        for numMotifInjected =1:numMotifs
-            numMotifInjected
+    for numMotifInjected =1:numMotifs
+        numMotifInjected
+        for strategyIDentifier =1:4
+            
+            StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
+            % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
+            % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
+            % 3 - old approach do clustering  then subclustering
+            
+            kindOfClustring= 'AKmeans';
+            if StrategyClustering >3  & StrategyClustering < 10
+                kindOfClustring= 'DBScan';%
+            end
+            
+            
+            %% sift parameters
+            % x - variate
+            % y - time
+            % oframes - octaves
+            % sigmad - sigma dependency (variate)
+            % sigmat - sigma time (time)
+            % pricur - principle curvature
+            USER_OT_targhet=2;
+            USER_OD_targhet=2;
+            
+            DeOctTime = USER_OT_targhet;
+            DeOctDepd = USER_OD_targhet;
+            DeLevelTime = 4;%6;%
+            DeLevelDepd = 4;%6;%
+            DeSigmaDepd = 0.5;%0.4;%0.6;
+            DeSigmaTime = 1.6149;%4*sqrt(2)/2;%3.2298;%4*sqrt(2);%1.6*2^(1/(DeLevelTime));%(1.6*2^(1/DeLevelTime))/2;%1.6*2^(1/(DeLevelTime));%4*sqrt(2)/2;%
+            %4*sqrt(2);%2.5*2^(1/DeLevelTime);%1.6*2^(1/DeLevelTime);%4*sqrt(2);%2*1.6*2^(1/DeLevelTime);%  8;%4*sqrt(2);%1.2*2^(1/DeLevelTime);%
+            thresh = 0.04 / (DeLevelTime) / 2 ;%0.04;%
+            DeGaussianThres = 6;%0.1;%0.001;%0.7;%0.3;%1;%0.6;%2;%6; % TRESHOLD with the normalization of hte distance matrix should be  between 0 and 1
+            DeSpatialBins = 4; %NUMBER OF BINs
+            r= 10; %5 threshould variates
+            percent=[0; 0.1;0.25;0.5;0.75;1;2];
+            BaseName='Motif';%'MV_Sync_Motif';%'Motif1numInst_10';%'MV_Sync_Motif';
+            
+            
             for percentid=1:size(percent,1)
                 percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
                 for pip=1:30
@@ -618,24 +619,24 @@ for definitiveindex =1:1
                                 C=AlltheCluster;
                                 mu=Centroids;
                                 X=Allthefeatures;
-%                             elseif(StrategyClustering == 20)
-%                                 Method   = 'UPGMA';
-%                                 Metric   = @(X,Y)pdist([X;Y],'euclidean');%@(X,Y)abs(X-Y);
-%                                 Limit    = 0.2;
-%                                 Colormap = 'Cool';
-%                                 [Figure, Tree, Clusters, Roots] = hierarchicalcluster(frame(11:end,:)',Method,Metric,'Limit',Limit,Colormap);
-%                                 allclusterid=1;
-%                                 for clusi=1:size(Clusters,1)
-%                                     FeaturesIDX=Clusters{clusi,1};
-%                                     if size(Clusters{clusi,1},2)>1
-%                                         C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
-%                                         mu = mean(X(11:end,FeaturesIDX)');
-%                                     else
-%                                         C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
-%                                         mu= X(11:end,FeaturesIDX);
-%                                     end
-%                                     allclusterid=allclusterid+1;
-%                                 end
+                                %                             elseif(StrategyClustering == 20)
+                                %                                 Method   = 'UPGMA';
+                                %                                 Metric   = @(X,Y)pdist([X;Y],'euclidean');%@(X,Y)abs(X-Y);
+                                %                                 Limit    = 0.2;
+                                %                                 Colormap = 'Cool';
+                                %                                 [Figure, Tree, Clusters, Roots] = hierarchicalcluster(frame(11:end,:)',Method,Metric,'Limit',Limit,Colormap);
+                                %                                 allclusterid=1;
+                                %                                 for clusi=1:size(Clusters,1)
+                                %                                     FeaturesIDX=Clusters{clusi,1};
+                                %                                     if size(Clusters{clusi,1},2)>1
+                                %                                         C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
+                                %                                         mu = mean(X(11:end,FeaturesIDX)');
+                                %                                     else
+                                %                                         C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
+                                %                                         mu= X(11:end,FeaturesIDX);
+                                %                                     end
+                                %                                     allclusterid=allclusterid+1;
+                                %                                 end
                             elseif(StrategyClustering == 2 | StrategyClustering == 5 | StrategyClustering == 8) %% we are interested  into croup of feature on similar variates then we apply  a clustering to get  this groups
                                 % we first use the depdscopevector to cluster  the features
                                 % with similar depepndency scope  hten we use the
@@ -687,36 +688,36 @@ for definitiveindex =1:1
                                 
                             elseif((StrategyClustering == 3 | StrategyClustering == 6 | StrategyClustering == 9| StrategyClustering ==11|StrategyClustering ==20) & justSubCluster==0)% classic strategy  we cluster all the features
                                 if(strcmp(kindOfClustring,'AKmeans')==1)
-                                      if StrategyClustering ==20
-                                            Method   = 'UPGMA';
-                                            Metric   = @(X,Y)pdist([X;Y],'euclidean');%@(X,Y)abs(X-Y);
-                                            Limit    = 0.2;
-                                            Colormap = 'Cool';
-                                            %[Figure,
-                                            [Tree, Clusters, Roots] = hierarchicalcluster(X(11:end,:)',Method,Metric,'Limit',Limit,Colormap);
-                                            allclusterid=0;
-                                            Centroids=[];
-                                            AlltheCluster=[];
-                                            IDXfeatures= [];
-                                            for clusi=1:size(Clusters,1)
-                                                FeaturesIDX=Clusters{clusi,1};
+                                    if StrategyClustering ==20
+                                        Method   = 'UPGMA';
+                                        Metric   = @(X,Y)pdist([X;Y],'euclidean');%@(X,Y)abs(X-Y);
+                                        Limit    = 0.2;
+                                        Colormap = 'Cool';
+                                        %[Figure,
+                                        [Tree, Clusters, Roots] = hierarchicalcluster(X(11:end,:)',Method,Metric,'Limit',Limit,Colormap);
+                                        allclusterid=0;
+                                        Centroids=[];
+                                        AlltheCluster=[];
+                                        IDXfeatures= [];
+                                        for clusi=1:size(Clusters,1)
+                                            FeaturesIDX=Clusters{clusi,1};
+                                            
+                                            if size(Clusters{clusi,1},2)>1
+                                                C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
+                                                mu = mean(X(11:end,FeaturesIDX)')';
                                                 
-                                                if size(Clusters{clusi,1},2)>1
-                                                    C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
-                                                    mu = mean(X(11:end,FeaturesIDX)')';
-                                                    
-                                                else
-                                                    C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
-                                                    mu= X(11:end,FeaturesIDX);
-                                                end
-                                                IDXfeatures=[IDXfeatures,Clusters{clusi,1}];
-                                                Centroids=[Centroids,mu];
-                                                AlltheCluster=[AlltheCluster,C'];
-                                                allclusterid=allclusterid+1;
+                                            else
+                                                C=ones(size(Clusters{clusi,1},2),1)+allclusterid;
+                                                mu= X(11:end,FeaturesIDX);
                                             end
-                                            C=AlltheCluster(IDXfeatures)';
-                                            mu=Centroids';
-                                        elseif StrategyClustering ==11
+                                            IDXfeatures=[IDXfeatures,Clusters{clusi,1}];
+                                            Centroids=[Centroids,mu];
+                                            AlltheCluster=[AlltheCluster,C'];
+                                            allclusterid=allclusterid+1;
+                                        end
+                                        C=AlltheCluster(IDXfeatures)';
+                                        mu=Centroids';
+                                    elseif StrategyClustering ==11
                                         [C,mu,inertia,tryK,startK]= adaptiveKmeansNormDistances(X,3,0.15,2,'sqeuclidean');
                                     else
                                         [C,mu,inertia,tryK,startK]= adaptiveKmeans(X,3,0.02,2,'sqeuclidean');%'cosine');%4th parameter will fix the step to 2 as default 0.02
