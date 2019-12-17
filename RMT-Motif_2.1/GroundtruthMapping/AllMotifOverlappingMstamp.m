@@ -1,154 +1,168 @@
 clear;
 clc;
-DS_List ={'Energy','BirdSong','Mocap'};
+DS_List ={'Energy','Mocap','BirdSong'};
 numInstancesinjected=10;
-for DSIdx =2:2
+SecondClustering=0; % 1 on second clustering 0 not on
+for DSIdx =3:3%3%3
     Ds_Name= DS_List{DSIdx};%'BirdSong';%'Energy';%'Mocap';%
     %      path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%Coherent Shift Variate 1M Energy\instancesmultisize\'];%'\Mocap M 1 2 3\'];%'\numInstances_5_15\'];
-    
-    %     path=['F:\syntethic motifs  good results\',Ds_Name,'\10_Motifs_MM_rebuttal\'];%'\numInstances_5_15\'];%'\samesize10inst\'];%random shift variates 1M ',Ds_Name ,'\instancesmultisize\']%
-    %'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%,Ds_Name,' M 1 2 3\'];
-    
-    %     path='F:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%Energy\Energy M 1 2 3\';%BirdSong\
-    path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motif 1 same length\'];
-    %' Motif1 inst5-15\'];
-    %'CoherentShift\SameSize\'];
-    %' Motifs 1 2 3 same variate multisize\'];%'RandomShift\SameSize\'];
-    %' Motif 1 same length\'];
-    %' Motif 1 same length\'];%
-    %
-    
-    %\10_Motifs_MM_rebuttal\';
-    %'F:\syntethic motifs  good results\Energy\numInstances_5_15\';
-    %'F:\syntethic motifs  good results\Mocap\random shift variates 1M Mocap\samesize\';
-    %'F:\syntethic motifs  good results\BirdSong\numInstances_5_15\';%\Energy\RandomVariate\Multisize\';%Mocap\RandomVariate\';%BirdSong\';%Mocap\';%BSONG\';
-    % path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';
-    kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
-    
-    instancesInjecte = [10,5,15];
-    %       for fivefifteen=2:3
-    %      BaseName=['Motif1numInst_', num2str(instancesInjecte(fivefifteen))];%
-    BaseNameBasic='Motif';%'MV_Sync_Motif';%'Motif10';%
-%     if DSIdx==2
-%         BaseNameBasic='MV_Sync_Motif';%'Motif10';%
-%     end
-    %1numInst_10';%'Motif1';%
-    %PathMP=[path,'\MStamp\'];
-    % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
-    dataLocation='data\';
-    load([path,'data\FeaturesToInject\allTSid.mat']);
-    Name_OriginalSeries = sort(AllTS(1:30));
-    
-    lenght = 58; % Energy dataset configuration
-    if strcmp(Ds_Name,'BirdSong')==1
-        lenght = 32; % BirdSong configuration
-    end
-    
-    Num_SyntSeries=10; % num of instances of one motif
-    PossibleMotifInjected = [1,2,3,10];
-    for idmotInj =1:1%size(PossibleMotifInjected,2)-1
+    for multisame=1:1
+        %     path=['F:\syntethic motifs  good results\',Ds_Name,'\10_Motifs_MM_rebuttal\'];%'\numInstances_5_15\'];%'\samesize10inst\'];%random shift variates 1M ',Ds_Name ,'\instancesmultisize\']%
+        %'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize\'];%,Ds_Name,' M 1 2 3\'];
         
-        motifinjected = num2str(PossibleMotifInjected(idmotInj));
-        BaseName=[BaseNameBasic,num2str(motifinjected)];%,'numInst_5'];
-        %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
-        percent=[0; 0.1;0.25;0.5;0.75;1;2];%;
-        for percentid=1:size(percent,1)
-            percentagerandomwalk=percent(percentid);
-            % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
-            %strategy=[1,2,3,4,5,6];
-            DepO =2;
-            DepT =2;
-            %       for strID =3:3%1:size(strategy,2)
-            %           StrategyClustering= strategy(strID);%3;%2;%
+        %     path='F:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancesmultisize\';%Energy\Energy M 1 2 3\';%BirdSong\
+        path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%'CoherentShift\SameSize\'];%
+        %' Motif 10 multilength\'];%'RandomShift\SameSize\'];%' Motif1 inst5-15\'];%' Motif 1 same length\'];%
+        if multisame==2
+            path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,'CoherentShift\MultiSize\'];
+            %'RandomShift\MultiSize\'];
+        end
+        %
+        %
+        %
+        %
+        %
+        %' Motif 1 same length\'];
+        %' Motif 1 same length\'];%
+        %
+        
+        %\10_Motifs_MM_rebuttal\';
+        %'F:\syntethic motifs  good results\Energy\numInstances_5_15\';
+        %'F:\syntethic motifs  good results\Mocap\random shift variates 1M Mocap\samesize\';
+        %'F:\syntethic motifs  good results\BirdSong\numInstances_5_15\';%\Energy\RandomVariate\Multisize\';%Mocap\RandomVariate\';%BirdSong\';%Mocap\';%BSONG\';
+        % path='D:\Motif_Results\Datasets\SynteticDataset\Mocap\numInstances_5_15\';
+        kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
+        
+        instancesInjecte = [10,5,15];
+        
+        for fivefifteen=1:1
+            numInstancesinjected = instancesInjecte(fivefifteen);
+            %      BaseName=['Motif1numInst_', num2str(instancesInjecte(fivefifteen))];%
+            BaseNameBasic='Motif';%'MV_Sync_Motif';%'Motif10';%
+            %     if DSIdx==2
+            %         BaseNameBasic='MV_Sync_Motif';%'Motif10';%
+            %     end
+            %1numInst_10';%'Motif1';%
+            %PathMP=[path,'\MStamp\'];
+            % pippo = [23,35,86,111];%[1,3,6,7];%ENERGY[64,70,80,147];%Bsong[24,35,85,127];Mocap
+            dataLocation='data\';
+            load([path,'data\FeaturesToInject\allTSid.mat']);
+            Name_OriginalSeries = sort(AllTS(1:30));
             
-            for pip=1:30%size(Name_OriginalSeries,2)
-                for NAME = 1:Num_SyntSeries
+            lenght = 58; % Energy dataset configuration
+            if strcmp(Ds_Name,'BirdSong')==1
+                lenght = 32; % BirdSong configuration
+            end
+            
+            Num_SyntSeries=10; % num of instances of one motif
+            PossibleMotifInjected = [1,2,3,10];
+            for idmotInj =1:1%size(PossibleMotifInjected,2)-1
+                
+                motifinjected = num2str(PossibleMotifInjected(idmotInj));
+                BaseName=[BaseNameBasic,num2str(motifinjected)];%,'numInst_5'];
+                %  Name_OriginalSeries = [1,3,6,7];%ENERGY[23,35,86,111];%[64,70,80,147];%[85,35,127,24]; % name of the original  series from with we  got the  motif instances to inject
+                percent=[0; 0.1;0.25;0.5;0.75;1;2];%;
+                for percentid=1:size(percent,1)
+                    percentagerandomwalk=percent(percentid);
+                    % percentagerandomwalk=0.75;%1;%0; %0.1;%0.5;%
+                    %strategy=[1,2,3,4,5,6];
+                    DepO =2;
+                    DepT =2;
+                    %       for strID =3:3%1:size(strategy,2)
+                    %           StrategyClustering= strategy(strID);%3;%2;%
                     
-                    %                     TEST=[BaseName,motifinjected,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
-                     TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
-                    %TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
-                    %old
-                    %                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];
-                    
-                    FeaturesRM ='MStamp\';%'RMT';%'RME';%
-                    testname=TEST;
-                    
-                    len=['Lenght_',num2str(lenght)];
-                    
-                    try
-                        load([path,FeaturesRM,TEST,'\Motif_output_',TEST,len,'.mat']);
-                        Feature_Pos_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',testname,'.csv']);%\',testname,'
-                        Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',testname,'.csv']);%\',testname,'
-                        [fi_n,fi_m] = size(Feature_Pos_Injected);
-                        
-                        [n,m]= size(MotifBag_mstamp);
-                        
-                        ListofInstances=[];
-                        for MID = 1:m
+                    for pip=1:30%size(Name_OriginalSeries,2)
+                        for NAME = 1:Num_SyntSeries
+                                              
+                            TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+%                             TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+                            %old
+                            %                         TEST=[BaseName,'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME)];
                             
-                            motifsStart  = MotifBag_mstamp{MID}.startIdx;
+                            FeaturesRM ='MStamp\';%'RMT';%'RME';%
+                            testname=TEST;
                             
-                            if size(motifsStart,1)>0
-                                for instance =1: size(motifsStart,1)
-                                    MotifInstanceIdentification=[MID,instance,motifsStart(instance),motifsStart(instance)+lenght];
-                                    motifvariate = MotifBag_mstamp{MID}.depd{instance};
-                                    TimeScore =0;
-                                    Varaitescore =-1;
-                                    InjectedIDentifcation=[0,0,0,0,TimeScore,Varaitescore];
-                                    %         IdentifiedTimePeriod=motifsStart(instance): motifsStart(instance)+lenght-1;
-                                    
-                                    for injectedID =1:fi_n
-                                        %           InjectedTimePeriod = Position_F_Injected(injectedID,2):Position_F_Injected(injectedID,3);
-                                        DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,2))>0,Feature_Pos_Injected(injectedID,2));
-                                        %           InjectedDependency = Dependency_Injected(injectedID,1);
-                                        TimeOverlapping    = computeTimeOverlapMStamp(motifsStart(instance),motifsStart(instance)+lenght,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
-                                        %                                         if TimeOverlapping==1
-                                        %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),3)= Feature_Pos_Injected(injectedID,3);
-                                        %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4);
-                                        %                                         else
-                                        %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4)+1;
-                                        %                                         end
-%                                         if(TimeOverlapping==1)
-%                                             MotifInstanceIdentification=[MID,instance,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4)];
-%                                         else
-%                                             if(motifsStart(instance)+lenght ==2500)
-%                                             MotifInstanceIdentification=[MID,instance,motifsStart(instance)-1,motifsStart(instance)+lenght];
-%                                             else
-%                                             MotifInstanceIdentification=[MID,instance,motifsStart(instance),motifsStart(instance)+lenght+1];    
-%                                             end
-%                                         end
-                                        variateOverlapping = size(intersect(DI,motifvariate),1)/size(DI,1);%union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
-                                        if(TimeOverlapping >0 & variateOverlapping >0)
-                                            % condition to modify the score
-                                            if (TimeOverlapping *variateOverlapping > TimeScore*Varaitescore)
-                                                TimeScore=TimeOverlapping;
-                                                Varaitescore= variateOverlapping;
-                                                InjectedIDentifcation=[Feature_Pos_Injected(injectedID,1),Feature_Pos_Injected(injectedID,2),Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4),TimeScore,Varaitescore];
-                                            end
-                                        end
-                                    end
-                                    ListofInstances=[ListofInstances;[MotifInstanceIdentification,InjectedIDentifcation]];
+                            len=['Lenght_',num2str(lenght)];
+                            
+                            try
+                                if SecondClustering==1
+                                load([path,FeaturesRM,TEST,'\','Method2_Motif_output_',TEST,len,'.mat']); 
+                                else
+                                load([path,FeaturesRM,TEST,'\Motif_output_',TEST,len,'.mat']);
                                 end
-                            else
-                                'Non dovrei essere qui'
+                                Feature_Pos_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',testname,'.csv']);%\',testname,'
+                                Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',testname,'.csv']);%\',testname,'
+                                [fi_n,fi_m] = size(Feature_Pos_Injected);
+                                
+                                [n,m]= size(MotifBag_mstamp);
+                                
+                                ListofInstances=[];
+                                for MID = 1:m
+                                    
+                                    motifsStart  = MotifBag_mstamp{MID}.startIdx;
+                                    
+                                    if size(motifsStart,1)>0
+                                        for instance =1: size(motifsStart,1)
+                                            MotifInstanceIdentification=[MID,instance,motifsStart(instance),motifsStart(instance)+lenght];
+                                            motifvariate = MotifBag_mstamp{MID}.depd{instance};
+                                            TimeScore =0;
+                                            Varaitescore =-1;
+                                            InjectedIDentifcation=[0,0,0,0,TimeScore,Varaitescore];
+                                            %         IdentifiedTimePeriod=motifsStart(instance): motifsStart(instance)+lenght-1;
+                                            
+                                            for injectedID =1:fi_n
+                                                %           InjectedTimePeriod = Position_F_Injected(injectedID,2):Position_F_Injected(injectedID,3);
+                                                DI=Dependency_Injected(Dependency_Injected(:,Feature_Pos_Injected(injectedID,2))>0,Feature_Pos_Injected(injectedID,2));
+                                                %           InjectedDependency = Dependency_Injected(injectedID,1);
+                                                TimeOverlapping    = computeTimeOverlapMStamp(motifsStart(instance),motifsStart(instance)+lenght,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4));
+                                                %                                         if TimeOverlapping==1
+                                                %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),3)= Feature_Pos_Injected(injectedID,3);
+                                                %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4);
+                                                %                                         else
+                                                %                                             MotifInstanceIdentification(size(MotifInstanceIdentification,1),4)=Feature_Pos_Injected(injectedID,4)+1;
+                                                %                                         end
+                                                %                                         if(TimeOverlapping==1)
+                                                %                                             MotifInstanceIdentification=[MID,instance,Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4)];
+                                                %                                         else
+                                                %                                             if(motifsStart(instance)+lenght ==2500)
+                                                %                                             MotifInstanceIdentification=[MID,instance,motifsStart(instance)-1,motifsStart(instance)+lenght];
+                                                %                                             else
+                                                %                                             MotifInstanceIdentification=[MID,instance,motifsStart(instance),motifsStart(instance)+lenght+1];
+                                                %                                             end
+                                                %                                         end
+                                                variateOverlapping = size(intersect(DI,motifvariate),1)/size(DI,1);%union(DI,motifvariate),1);%computeVariateScore(motifvariate,DI);
+                                                if(TimeOverlapping >0 & variateOverlapping >0)
+                                                    % condition to modify the score
+                                                    if (TimeOverlapping *variateOverlapping > TimeScore*Varaitescore)
+                                                        TimeScore=TimeOverlapping;
+                                                        Varaitescore= variateOverlapping;
+                                                        InjectedIDentifcation=[Feature_Pos_Injected(injectedID,1),Feature_Pos_Injected(injectedID,2),Feature_Pos_Injected(injectedID,3),Feature_Pos_Injected(injectedID,4),TimeScore,Varaitescore];
+                                                    end
+                                                end
+                                            end
+                                            ListofInstances=[ListofInstances;[MotifInstanceIdentification,InjectedIDentifcation]];
+                                        end
+                                    else
+                                        'Non dovrei essere qui'
+                                    end
+                                end
+                                if(exist(strcat(path,FeaturesRM,'\Accuracy\'),'dir')==0)
+                                    mkdir(strcat(path,FeaturesRM,'\Accuracy\'));
+                                end
+                                col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'};
+                                
+                                %                 try
+                                csvwrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances);
+                                %                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances,len,'A2');
+                                %                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],col_header,len,'A1');%'_MStamp',
+                            catch
+                                'problem at'
+                                TEST
                             end
                         end
-                        if(exist(strcat(path,FeaturesRM,'\Accuracy\'),'dir')==0)
-                            mkdir(strcat(path,FeaturesRM,'\Accuracy\'));
-                        end
-                        col_header={'Class','ID','Start','End','ClassInj','IDinj','StartInj','EndInj','Time_Score','dep_Overlapping'};
-                        
-                        %                 try
-                        csvwrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances);
-                        %                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],ListofInstances,len,'A2');
-                        %                     xlswrite([path,'',FeaturesRM,'\Accuracy\',testname,'.csv'],col_header,len,'A1');%'_MStamp',
-                    catch
-                        'problem at'
-                        TEST
                     end
                 end
             end
         end
-        %         end
     end
 end

@@ -2,20 +2,20 @@ clc;
 clear;
 DS_List ={'Mocap','Energy','BirdSong'};
 
-experimentFolder=' Motif 1 same length';%' Motif 10 multilength';%' Motifs 1 2 3 same variate multisize';%' Motif 10 multilength';' Motif1 inst5-15';%
-% length_percentage_1 =[1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5,1,0.75,0.5];%,1];%,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5];%[1,0.75,0.5];%
-     length_percentage_1 = [1 1 1 1 1 1 1 1 1 1];
+experimentFolder=' Motifs 1 2 3 same variate multisize';%' Motif 10 multilength';' Motif 1 same length';%' Motif1 inst5-15';%' Motif 10 multilength';%
+  length_percentage_1 =[1,0.75,0.5,1,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5,1,0.75,0.5];%,1];%,0.75,0.5,1,0.75,0.5,1,0.75,0.5];%,1,0.75,0.5];%[1,0.75,0.5];%
+%      length_percentage_1 = [1 1 1 1 1 1 1 1 1 1];
 
 random_walk_instance = 10;
-motif_instances = 10;%5;% %15 MotifInstances= 10;
+motif_instances =  10;%5%15;% MotifInstances= 10;
 TotalRWlength =2500;%8000;%
 RWlength = TotalRWlength-100;
 random_walk_scale = [0,0.1,0.25,0.5,0.75,1,2];%0.1;% randomWalkScale =
 possibleMotifNUM=[1,2,3,10];
-MaxNumMotifs=1;
+MaxNumMotifs=3;
 length_percentage=[];
 
-for DSIdx =1:3
+for DSIdx =3:3
     DatasetTouse= DS_List{DSIdx};
     featuresToInjectPath=['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\',DatasetTouse,experimentFolder,'\data\FeaturesToInject\'];
     randomWalkPath = ['D:\Motif_Results\Datasets\SynteticDataset\',DatasetTouse,'\',DatasetTouse,experimentFolder,'\data\RW_0_1\RW_'];
@@ -116,6 +116,7 @@ for DSIdx =1:3
                 MotifsSections{MotifId}.depd = DepdToInject(:,MotifId);
                 MotifsSections{MotifId}.cols = size(MotifsSections{MotifId}.data,2);
                 if(MotifsSections{MotifId}.cols~=motifclmn)
+                    MotifId
                     'look at this'
                 end
             end
@@ -126,6 +127,7 @@ for DSIdx =1:3
                     testNAME = [TSNAMEFIX,'_',num2str(originalTSID),'_',num2str(motif_instances),'_instance_',num2str(i)];
                     EachInstanceDependency=[];
                     randomwalkData = csvread([randomWalkPath,num2str(i),'.csv']);
+%                     randomwalkData=randomwalkData(1:13,:)
                     NormInterval=[zeros(NUM_VARIATE,1),ones(NUM_VARIATE,1)];
                     AllAVGDispM1=[];
                     AllAVGDispRW0=[];
@@ -134,25 +136,66 @@ for DSIdx =1:3
                     %% if Random Walk scale is different from 0 then  look to the average displacement
                     if random_walk_scale(rwscale)~=0
                         for allVaraitesiter=1:size(TSdata,1);
+                            
                             AVGDISPLACEMENT_RW= mean(abs(randomwalkData(allVaraitesiter,1:end-1)-randomwalkData(allVaraitesiter,2:end)));
                             AllAVGDispRW0=[AllAVGDispRW0;AVGDISPLACEMENT_RW];
                             AVGDisplacement_Motif=0;
                             AVG_MotifAmplitude=0;
                             if pssMotID==1
-                                AVGDisplacement_Motif_1= mean(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
+                                motiflength=size(MotifsSections{1}.data,2);
+                                motifinstforavgdisplacement=zeros(1,motiflength-1);
+                                for idavgmotifs=1:motiflength-1
+                                    motifinstforavgdisplacement(idavgmotifs)=mean([MotifsSections{1}.data(allVaraitesiter,idavgmotifs),MotifsSections{1}.data(allVaraitesiter,idavgmotifs+1)]);
+                                end
+                                AVGDisplacement_Motif_1= mean(abs(motifinstforavgdisplacement(1,1:end-1)-motifinstforavgdisplacement(1,2:end)));
+%                                  AVGDisplacement_MotifCheck= mean(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
+%                                  AVGDisplacement_Motif_1= mean(abs(TSdata(allVaraitesiter,1:end-1)-TSdata(allVaraitesiter,2:end)));
+                                 
+%                                  AVGDisplacement_Motif_1= median(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
                                 AVGDisplacement_Motif=AVGDisplacement_Motif_1;
-                                AVG_MotifAmplitude = mean(MotifsSections{1}.data(allVaraitesiter,:));
+                                AVG_MotifAmplitude = mean([max(MotifsSections{1}.data(allVaraitesiter,:)),min(MotifsSections{1}.data(allVaraitesiter,:))]);
                             elseif pssMotID==2
-                                AVGDisplacement_Motif_1= mean(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
-                                AVGDisplacement_Motif_2= mean(abs(MotifsSections{2}.data(allVaraitesiter,1:end-1)-MotifsSections{2}.data(allVaraitesiter,2:end)));
+                                motiflength1=size(MotifsSections{1}.data,2);
+                                motifinstforavgdisplacement1=zeros(1,motiflength-1);
+                                motiflength2=size(MotifsSections{2}.data,2);
+                                motifinstforavgdisplacement2=zeros(1,motiflength-1);
+                                for idavgmotifs=1:motiflength1-1
+                                    motifinstforavgdisplacement1(idavgmotifs)=mean([MotifsSections{1}.data(allVaraitesiter,idavgmotifs),MotifsSections{1}.data(allVaraitesiter,idavgmotifs+1)]);                                    
+                                end                                
+                                for idavgmotifs=1:motiflength2-1
+                                    motifinstforavgdisplacement2(idavgmotifs)=mean([MotifsSections{2}.data(allVaraitesiter,idavgmotifs),MotifsSections{2}.data(allVaraitesiter,idavgmotifs+1)]);                                    
+                                end
+                                AVGDisplacement_Motif_1= mean(abs(motifinstforavgdisplacement1(1,1:end-1)-motifinstforavgdisplacement1(1,2:end)));
+%                                 AVGDisplacement_Motif_1= mean(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
+                                AVGDisplacement_Motif_2= mean(abs(motifinstforavgdisplacement2(1,1:end-1)-motifinstforavgdisplacement2(1,2:end)));
+%                                 AVGDisplacement_Motif_2= mean(abs(MotifsSections{2}.data(allVaraitesiter,1:end-1)-MotifsSections{2}.data(allVaraitesiter,2:end)));
                                 AVGDisplacement_Motif=   max([AVGDisplacement_Motif_1,AVGDisplacement_Motif_2]);
-                                AVG_MotifAmplitude = mean([MotifsSections{1}.data(allVaraitesiter,:),MotifsSections{2}.data(allVaraitesiter,:)]);
+                                AVG_MotifAmplitude = mean([min(MotifsSections{1}.data(allVaraitesiter,:)),max(MotifsSections{1}.data(allVaraitesiter,:)),min(MotifsSections{2}.data(allVaraitesiter,:)),max(MotifsSections{2}.data(allVaraitesiter,:))]);
                             elseif pssMotID==3
-                                AVGDisplacement_Motif_1= mean(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
-                                AVGDisplacement_Motif_2= mean(abs(MotifsSections{2}.data(allVaraitesiter,1:end-1)-MotifsSections{2}.data(allVaraitesiter,2:end)));
-                                AVGDisplacement_Motif_3= mean(abs(MotifsSections{3}.data(allVaraitesiter,1:end-1)-MotifsSections{3}.data(allVaraitesiter,2:end)));
+                                motiflength1=size(MotifsSections{1}.data,2);
+                                motifinstforavgdisplacement1=zeros(1,motiflength-1);
+                                motiflength2=size(MotifsSections{2}.data,2);
+                                motifinstforavgdisplacement2=zeros(1,motiflength-1);
+                                motiflength3=size(MotifsSections{3}.data,2);
+                                motifinstforavgdisplacement3=zeros(1,motiflength-1);
+                                for idavgmotifs=1:motiflength1-1
+                                    motifinstforavgdisplacement1(idavgmotifs)=mean([MotifsSections{1}.data(allVaraitesiter,idavgmotifs),MotifsSections{1}.data(allVaraitesiter,idavgmotifs+1)]);                                    
+                                end                                
+                                for idavgmotifs=1:motiflength2-1
+                                    motifinstforavgdisplacement2(idavgmotifs)=mean([MotifsSections{2}.data(allVaraitesiter,idavgmotifs),MotifsSections{2}.data(allVaraitesiter,idavgmotifs+1)]);                                    
+                                end
+                                for idavgmotifs=1:motiflength3-1
+                                    motifinstforavgdisplacement3(idavgmotifs)=mean([MotifsSections{3}.data(allVaraitesiter,idavgmotifs),MotifsSections{3}.data(allVaraitesiter,idavgmotifs+1)]);                                    
+                                end
+                                AVGDisplacement_Motif_1= mean(abs(motifinstforavgdisplacement1(1,1:end-1)-motifinstforavgdisplacement1(1,2:end)));
+                                AVGDisplacement_Motif_2= mean(abs(motifinstforavgdisplacement2(1,1:end-1)-motifinstforavgdisplacement2(1,2:end)));
+                                AVGDisplacement_Motif_3= mean(abs(motifinstforavgdisplacement3(1,1:end-1)-motifinstforavgdisplacement3(1,2:end)));
+%                                 AVGDisplacement_Motif_1= mean(abs(MotifsSections{1}.data(allVaraitesiter,1:end-1)-MotifsSections{1}.data(allVaraitesiter,2:end)));
+%                                 AVGDisplacement_Motif_2= mean(abs(MotifsSections{2}.data(allVaraitesiter,1:end-1)-MotifsSections{2}.data(allVaraitesiter,2:end)));
+%                                 AVGDisplacement_Motif_3= mean(abs(MotifsSections{3}.data(allVaraitesiter,1:end-1)-MotifsSections{3}.data(allVaraitesiter,2:end)));
                                 AVGDisplacement_Motif=max([AVGDisplacement_Motif_1,AVGDisplacement_Motif_2,AVGDisplacement_Motif_3]);
-                                AVG_MotifAmplitude = mean([MotifsSections{1}.data(allVaraitesiter,:),MotifsSections{2}.data(allVaraitesiter,:),MotifsSections{3}.data(allVaraitesiter,:)]);
+                                AVG_MotifAmplitude = mean([min(MotifsSections{1}.data(allVaraitesiter,:)),min(MotifsSections{2}.data(allVaraitesiter,:)),min(MotifsSections{3}.data(allVaraitesiter,:)),...
+                                                           max(MotifsSections{1}.data(allVaraitesiter,:)),max(MotifsSections{2}.data(allVaraitesiter,:)),max(MotifsSections{3}.data(allVaraitesiter,:))]);
                             elseif pssMotID==10
                                 AVGDisplacementM10=[];
                                 AVGM10=[];
@@ -164,7 +207,7 @@ for DSIdx =1:3
                                 AVG_MotifAmplitude= mean(AVGM10);
                             end
                             AllAVGDispM1=[AllAVGDispM1;AVGDisplacement_Motif];
-                            AVGDisplacement_TS= mean(abs((TSdata(allVaraitesiter,1:end-1)-min(TSdata(allVaraitesiter,1:end)))-(TSdata(allVaraitesiter,2:end)+min(TSdata(allVaraitesiter,1:end)))));
+                            AVGDisplacement_TS= mean(abs((TSdata(allVaraitesiter,1:end-1))-(TSdata(allVaraitesiter,2:end))));
                             Bha = (AVGDisplacement_Motif/AVGDISPLACEMENT_RW)* random_walk_scale(rwscale);
                             if Bha==0
                                 Bha=1;
@@ -173,8 +216,10 @@ for DSIdx =1:3
                             %+ min(MotifsSections{1}.data(allVaraitesiter,1:end));
                             AVGDISPLACEMENT_RW1= mean(abs(randomwalkData(allVaraitesiter,1:end-1)-randomwalkData(allVaraitesiter,2:end)));
                             AllAVGDispNEWRW=[AllAVGDispNEWRW;AVGDISPLACEMENT_RW1];
-                            
-                            randomwalkData(allVaraitesiter,:)= randomwalkData(allVaraitesiter,:)*Bha - (randomwalkData(allVaraitesiter,1)*Bha - AVG_MotifAmplitude);
+%                              avgTSdata= (min(TSdata(allVaraitesiter,:))+max(TSdata(allVaraitesiter,:)))/2;
+                            randomwalkData(allVaraitesiter,:)= randomwalkData(allVaraitesiter,:)*Bha- (randomwalkData(allVaraitesiter,1)*Bha - AVG_MotifAmplitude);
+%                              avgRW = (min(randomwalkData(allVaraitesiter,:))+max(randomwalkData(allVaraitesiter,:)))/2;
+%                              randomwalkData(allVaraitesiter,:)=randomwalkData(allVaraitesiter,:)- (avgRW-avgTSdata);
                         end
                         %% end of Random Walk AVG displacement computation
                     else
@@ -287,7 +332,13 @@ for DSIdx =1:3
                     if(exist([DestDataPath,'\IndexEmbeddedFeatures\'],'dir')==0)
                         mkdir([DestDataPath,'\IndexEmbeddedFeatures\']);
                     end
-                    csvwrite([DestDataPath,'\',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],Motif1RW);
+                    data=Motif1RW;
+                    save([DestDataPath,'\',testNAME,'_',num2str(random_walk_scale(rwscale)),'.mat'],'data');
+                    clear('data');
+% if(size(Motif1RW,1)~=62)
+%     'what a fuck'
+% end
+%                     csvwrite([DestDataPath,'\',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],Motif1RW);
                     csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','FeaturePosition_',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],FeatPositions);
                     csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','dpscale_',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],EachInstanceDependency);
                     csvwrite([DestDataPath,'\IndexEmbeddedFeatures\','Parameters_',testNAME,'_',num2str(random_walk_scale(rwscale)),'.csv'],[originalTSID;num_of_motif;motif_instances;i;random_walk_scale(rwscale)]);

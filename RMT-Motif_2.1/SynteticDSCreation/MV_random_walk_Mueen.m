@@ -18,9 +18,12 @@ for timeid =2: length_of_ts
     elseif ((p(1,timeid-1) - r) >= statistics(1,1)) & ((p(1,timeid-1) - r) <= statistics(2,1));%band of random walk
         c(1,timeid) = p(1,timeid-1) - r;
         data(1,timeid) = c(1,timeid);
+    elseif ((p(1,timeid-1) + r) >= statistics(1,1)) & ((p(1,timeid-1) + r) <= statistics(2,1));%band of random walk
+        c(1,timeid) = p(1,timeid-1) + r;
+        data(1,timeid) = c(1,timeid);
     else
-temp =(p(1,timeid-1) + r);
-temp2=(p(1,timeid-1) - r);
+        temp =(p(1,timeid-1) + r);
+        temp2=(p(1,timeid-1) - r);
         'WTF no values suitable'
     end
     p(1,timeid) = c(1,timeid);
@@ -32,6 +35,9 @@ temp2=(p(1,timeid-1) - r);
         elseif ((p(variateid,timeid-1) - r )>= statistics(1,variateid)) &(( p(variateid,timeid-1) - r )<= statistics(2,variateid));%band of random walk
             c(variateid,timeid) = p(variateid,timeid-1) - r;
             data(variateid,timeid) = c(variateid,timeid);
+        elseif ((p(variateid,timeid-1) + r )>= statistics(1,variateid)) &(( p(variateid,timeid-1) + r )<= statistics(2,variateid));%band of random walk
+            c(variateid,timeid) = p(variateid,timeid-1) + r;
+            data(variateid,timeid) = c(variateid,timeid);
         else
             temp =(p(variateid,timeid-1) + r);
             temp2=(p(variateid,timeid-1) - r);
@@ -41,6 +47,7 @@ temp2=(p(1,timeid-1) - r);
         
     end
 end
+'End'
 % for i = 1 : number_of_ts
 %     data(i) = 0;
 %     p = 0;

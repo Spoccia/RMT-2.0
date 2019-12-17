@@ -1,7 +1,7 @@
 clear;
 clc;
 DS_List ={'Mocap','Energy','BirdSong'};
-numInstancesinjected=10;%5;%15;
+numInstancesinjected=10;%5;%15;%
 for DSIdx =3:3
     Ds_Name= DS_List{DSIdx};%'Energy';%'Mocap';%'BirdSong';%
     % Path=['F:\Motif_Results\Motif1 CoherentShift\',Ds_Name,'\SameLength'];
@@ -9,14 +9,22 @@ for DSIdx =3:3
     %['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];%'\10_Motifs_MM_rebuttal\'];%'\ICMR RMT-Mstamp-RME\'];%'\samesize10inst\'];%'\random shift variates 1M ',Ds_Name ,'\instancessamesize\']%'\',Ds_Name,' M 1 2 3\'];%
     %10_Motifs_MM_rebuttal'];%
     % Path=['F:\syntethic motifs  good results\',Ds_Name,'\random shift variates 1M ',Ds_Name,'\instancesmultisize'];%'\instancessamesize'];%
-    for ksizes=1:1%2
-        Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motif 1 same length\'];%' Motif1 inst5-15\'];%'CoherentShift\SameSize'];
-        numInstancesinjected=10;
+    for ksizes=1:1
+%         Path=['D:\Motif_Results\Datasets\SynteticDataset\Mocap\Mocap Motif 10 multilength\'];
+        Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%'CoherentShift\SameSize'];%%
+        %'RandomShift\SameSize\'];
+        %' Motif 1 same length\'];%' Motif1 inst5-15\'];
+        % 
+        %
+        %       
+        %' Motif1 inst5-15\'];%'CoherentShift\SameSize'];
+%         numInstancesinjected=5;
         if ksizes==2
-            Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motif1 inst5-15\'];%'CoherentShift\MultiSize'];
-       %     numInstancesinjected=10;
+            Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,'CoherentShift\MultiSize'];%'RandomShift\MultiSize\'];
+            %' Motif1 inst5-15\'];%
+            numInstancesinjected=10;
             %
-            %' Motifs 1 2 3 same variate multisize\'];
+            %
             %
             %'CoherentShift\MultiSize\'];
         end
@@ -62,7 +70,7 @@ for DSIdx =3:3
             % BirdSong dataset
             %TS_index = [3, 6, 8, 11, 21, 24, 32, 50, 53, 55, 59, 64, 70, 76, 79, 91, 93, 94, 95, 100, 101, 105, 114, 116, 124, 126, 133, 139, 149, 153]; % BirdSong Dataset
             
-            algorithm_type = {'RMT','MStamp'};%,'RME'};%,};%
+            algorithm_type = {'MStamp'};%'RMT'};%,};%,'RME'};%
             % algorithm_type = {'MStamp'};
             % strategy = [3,6,9];
             strategy = [1, 3,10,11, 4,20, 6, 7, 9];
@@ -81,13 +89,13 @@ for DSIdx =3:3
             % MotifFilePath = ['/Users/sliu104/Desktop/MyMotif/Silvestro_Sep_24_Energy/MStampEnergy'];
             
             
-            for i = 1:1% size(num_of_motif, 2)-1
-                BaseName= ['Motif',num2str(i)];%['MV_Sync_Motif',num2str(i)];%,'numInst_15'];%
+            for i = 1:3% size(num_of_motif, 2)-1
+                BaseName= ['Motif',num2str(num_of_motif (i))];%['MV_Sync_Motif',num2str(i)];%,'numInst_15'];%
 %                  if strcmp(Ds_Name,'BirdSong')==1
 %                      BaseName= ['MV_Sync_Motif',num2str(i)];%
 %                 end
                 GroundTruthFilePath = [Path,'\data\IndexEmbeddedFeatures\FeaturePosition_',BaseName];
-                for ss = 1:3%:2%size(strategy, 2)
+                for ss = 1:4%size(strategy, 2)
                     cur_strategy = strategy(ss);
                     for m = 1 :  size(amp_scale, 2)
                         for tt = 1 : size(timeOverlapThresholds, 2)
@@ -116,12 +124,10 @@ for DSIdx =3:3
                                 if(strcmp(cur_algorithm_type,'MStamp') == 1 & cur_strategy>3)
                                     'Mstamp has just one strategy'
                                 else
-                                    for j = 1 :size(TS_index, 2)
+                                    for j = 1 :30%size(TS_index, 2)
                                         for k = 1 : size(testCaseIndex, 2)
-                                            %  fprintf('Num of motif: %d, Strategy: %d, TS index: %d, instance: %d, amp scale: %f, timeOverlapThreshold: %f .\n', num_of_motif(i), strategy(ss), TS_index(j), testCaseIndex(k), amp_scale(m), timeOverlapThresholds(tt));
-                                            %                                             GroundTruthFile = [GroundTruthFilePath, num2str(num_of_motif(i)), '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
-                                            GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)),'_',num2str(numInstancesinjected), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
-%                                              GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
+                                           GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)),'_',num2str(numInstancesinjected), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
+%                                           GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '_', num2str(amp_scale(m)), '.csv'];
                                             %% old files
                                             %                                               GroundTruthFile = [GroundTruthFilePath, '_', num2str(TS_index(j)), '_instance_', num2str(testCaseIndex(i)), '.csv'];
                                             

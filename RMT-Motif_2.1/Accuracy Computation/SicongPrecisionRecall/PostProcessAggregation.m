@@ -1,7 +1,7 @@
 clear;
 clc;
-DS_List ={'Energy','Mocap','BirdSong'};
-for DSIdx =1:3
+DS_List ={'Mocap','Energy','BirdSong'};
+for DSIdx =3:3%2:3
     Ds_Name= DS_List{DSIdx};%
     % Ds_Name ='BirdSong';%'Energy';%'Mocap';%
     %     Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\RandomVariate\instancessamesize\'];%'\Coherent Shift Variate 1M ',Ds_Name,'\instancesmultisize'];
@@ -12,17 +12,25 @@ for DSIdx =1:3
     %       Path=['F:\syntethic motifs  good results\',Ds_Name,'\numInstances_5_15'];%'\10_Motifs_MM_rebuttal\'];%'\ICMR RMT-Mstamp-RME\'];%'\samesize10inst\'];%'\random shift variates 1M ',Ds_Name ,'\instancessamesize\'];%
     %'\',Ds_Name,' M 1 2 3\']%
     %       Path='G:\syntethic motifs  good results\Mocap\Coherent Shift Variate 1M Mocap\instancessamesize\';%['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];
-    for ksizes=1:2
-        Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,'CoherentShift\SameSize\'];
+    for ksizes=1:1
+%         Path =['D:\Motif_Results\Datasets\SynteticDataset\Mocap\Mocap Motif 10 multilength\'];
+        Path =['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,' Motifs 1 2 3 same variate multisize\'];%'CoherentShift\SameSize\'];%
+        %'RandomShift\SameSize\'];%'CoherentShift\SameSize\'];
+        %
+        %
         if ksizes==2
-            Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,'CoherentShift\MultiSize\'];
-            %' Motif 1 same length\'];%
-            %' Motifs 1 2 3 same variate multisize\'];
-            %' Motif1 inst5-15\'];
+            Path=['D:\Motif_Results\Datasets\SynteticDataset\',Ds_Name,'\',Ds_Name,'CoherentShift\MultiSize\'];%'RandomShift\MultiSize\'];%' Motif1 inst5-15\'];
+            %' Motif 1 same length\'];
+            %
+            %
+            %
+            %
+            %
+            %
             %'CoherentShift\MultiSize\'];
         end
         % 
-        %'RandomShift\SameSize\'];
+        %
         %
         % 
         
@@ -52,11 +60,11 @@ for DSIdx =1:3
             %         for fivefifteen=2:3
             % strategy = [1:9];
             % num_of_motif = [1:3];
-            num_of_motif = [1:3];%
+            num_of_motif =[1:3];% 10;%
             strategy = [1, 3,10,11, 4,20, 6, 7, 9];%[3,6,9];%
             % BaseName='MV_Sync_Motif';%'Motif1numInst_15';%
             BaseName='Motif';
-            algorithm_type = {'RMT','MStamp'};%'RME' , %% MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
+            algorithm_type = {'RMT','MStamp'};%'RME' ,' %% MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
             %  algorithm_type = {'RMT'}; % MStamp, MatrixProfile, RMT, RME, cleanmatlabentropy09
             timeOverlapThresholds = [0.1, 0.25, 0.5, 0.75,0.90,0.95,0.98, 1];
             amp_scale = [0, 0.1, 0.25, 0.5, 0.75, 1, 2];
@@ -72,11 +80,11 @@ for DSIdx =1:3
             end
             allresults=[];
             
-            for i =1 :1%3% size(num_of_motif, 2)
+            for i =1 :size(num_of_motif, 2)
                 AllStrategy_Precision=[];
                 AllStrategy_Recall=[];
                 AllStrategy_Fscore=[];
-                for j = 2:2:6% size(strategy, 2)
+                for j = 1:4%1:2% size(strategy, 2)
                     PrecisionRWScale=[];
                     RecallRWScale=[];
                     FscoreRWScale=[];

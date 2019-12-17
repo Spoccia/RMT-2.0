@@ -6,8 +6,9 @@ DatasetInject=2;  % 1 Energy 2 Mocap
 
 SubDSPath='data\';           %'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 strategy=[1,3,10,11,4,20,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for definitiveindex =1:1
+for definitiveindex =5:6
     experimentFolder= '';
+    numInstancesinjected=10;
     if definitiveindex==1
         experimentFolder=' Motifs 1 2 3 same variate multisize\';%%'CoherentShift\MultiSize\';
         numMotifs=3;
@@ -49,11 +50,10 @@ for definitiveindex =1:1
     createDependencyScale = 1;
     %% clustering abilitation
     Cluster =  1;%1;%
-    subclusterflag=1;%1;
+    subclusterflag=0;%1;
     
-    for strID =1:4%:size(strategy,2);%1:6
-        for MOTIFNUMber =1:numMotifs
-            
+    for MOTIFNUMber =1:numMotifs
+        for strID =2:2:4%:size(strategy,2);%1:6
             
             StrategyClustering= strategy(strID);%2;%1;%3;%
             % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
@@ -131,9 +131,9 @@ for definitiveindex =1:1
                         
                         
                         TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
-%                         if definitiveindex < 5
-%                           TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
-%                         end
+                        %                         if definitiveindex < 5
+                        %                           TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]%TEST = ['Energy_test',num2str(NAME)];
+                        %                         end
                         TSbaseRandom='';
                         
                         if DatasetInject == 1 %Energy
@@ -167,8 +167,8 @@ for definitiveindex =1:1
                         RELATION=coordinates;
                         
                         data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-%                         data1= csvread([datasetPath,SubDSPath,TSbaseRandom,'.csv']);
-%                         data([34,46],:) = data1([34,46],:);
+                        %                         data1= csvread([datasetPath,SubDSPath,TSbaseRandom,'.csv']);
+                        %                         data([34,46],:) = data1([34,46],:);
                         
                         % %%      This section is to  do the complement 1 to the data
                         %                       minValues = min(data');
@@ -185,7 +185,7 @@ for definitiveindex =1:1
                         %                      data=basicMatrix - data;%+abs(minimum)+1;
                         %                     [ii,jj]=find(isnan(data)| isinf(data));
                         %%
-                        if(StrategyClustering >= 3 )%| StrategyClustering ~= 20)
+                        if(StrategyClustering > 3 )%| StrategyClustering ~= 20)
                             FeatureExtractionFlag=0;
                             createDependencyScale=0;
                         end
@@ -244,7 +244,7 @@ for definitiveindex =1:1
                             save(savepath1,'data', 'gss1', 'frame1','depd1');
                             save(savepath2,'idm1');
                             save(savepath3,'DeOctTime', 'DeOctDepd', 'DeSigmaTime','DeSigmaDepd', 'DeLevelTime','DeLevelDepd', 'DeGaussianThres', 'DeSpatialBins', 'r', 'descr1' );
-%                             save(savepath5, 'depd1');
+                            %                             save(savepath5, 'depd1');
                         end
                         %% create dependency
                         if(createDependencyScale==1)
@@ -289,7 +289,7 @@ for definitiveindex =1:1
                                         else
                                             if StrategyClustering==10
                                                 [C,mu,inertia,tryK,startK]= adaptiveKmeansNormDistances(ActFeatures,2,0.02,2,'sqeuclidean');
-                                        %        adaptiveKmeans(ActFeatures,2,0.02,1,'sqeuclidean');
+                                                %        adaptiveKmeans(ActFeatures,2,0.02,1,'sqeuclidean');
                                             else
                                                 [C,mu,inertia,tryK,startK]= adaptiveKmeans(ActFeatures,2,0.02,2,'sqeuclidean');
                                             end

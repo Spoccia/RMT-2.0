@@ -1,6 +1,6 @@
 %% Accuracy best timeoverlapping
 % clc; clear;
-function  AP_allfeatures_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,StrategyClustering,DepO,DepT)
+function  AP_allfeatures_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster,measure,ClusterAlg,StrategyClustering,DepO,DepT,Dataset)
 % %% Analize Results
 % path='D:\Motif_Results\Datasets\SynteticDataset\';
 % kindofinj='data\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
@@ -15,7 +15,12 @@ function  AP_allfeatures_subcluster(path,kindofinj,TEST,FeaturesRM,kindofCluster
 % DepT=num2str(2);
 
 %% data injected and groundtruth
+if strcmp(Dataset,'Energy')==1 | strcmp(Dataset,'BirdSong')==1
+     load([path,kindofinj,TEST,'.mat']);
+%    data = csvread([path,kindofinj,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
+else
 data = csvread([path,kindofinj,TEST,'.csv']);%csvread([path,kindofinj,'Embeddedfeature.csv']);
+end
 Position_F_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturePosition_',TEST,'.csv']);
 % Feature_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\FeaturesEmbedded_',TEST,'.csv']);
 Dependency_Injected = csvread([path,kindofinj,'IndexEmbeddedFeatures\dpscale_',TEST,'.csv']);

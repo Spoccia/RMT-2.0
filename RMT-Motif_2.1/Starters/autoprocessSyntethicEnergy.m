@@ -62,7 +62,7 @@ idm2{3} = IDM3;
 DatasetInject=2;  % 1 Energy 2 syntethic Energy
 SubDSPath='data\';%'FlatTS_MultiFeatureDiffClusters\';%'CosineTS_MultiFeatureDiffClusters\';%'MultiFeatureDiffClusters\';
 strategy=[1,3,10,11,4,20,6,7,9];%[1,2,3,4,5,6,7,8,9];
-for definitiveindex =1:1
+for definitiveindex =5:6
     experimentFolder= '';
     numInstancesinjected=10;
     if definitiveindex==1
@@ -106,7 +106,7 @@ for definitiveindex =1:1
     createDependencyScale = 1;
     %% clustering abilitation
     Cluster =  1;%
-    subclusterflag=1;
+    subclusterflag=0;
     justSubCluster=0; % in the case of strategy 3  we can do just  subclusteringt
     %% Parameter for kmeans: distance measure to use
     kmeans_Descmetric='euclidean';%'cosine';%'cityblock';%
@@ -166,7 +166,7 @@ for definitiveindex =1:1
     
     
     for MOTIFNUMber =1:numMotifs
-        for strID =1:4%size(strategy,2)%1:size(strategy,2)%9%1:6
+        for strID =2:2:4%size(strategy,2)%1:size(strategy,2)%9%1:6
             StrategyClustering= strategy(strID)%2;%1;%3;%
             % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
             % 2 - create cluster of feature  on similar variates using Adaptive Kmeans then  for each cluster use adaptive kmeans on descriptors
@@ -175,7 +175,7 @@ for definitiveindex =1:1
             %             if strID==1 & instNUMINJECTED==1
             %                 percentageStart=5;
             %             end
-            if(StrategyClustering >= 3 )
+            if(StrategyClustering > 3 )
                 FeatureExtractionFlag=0;
                 createDependencyScale=0;
             else
@@ -199,16 +199,16 @@ for definitiveindex =1:1
                         %                     'numInst_10_',
                         %                             TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
                         %                             TSbaseRandom= [BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(0)];
-                        TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+                        TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                         TSbaseRandom= [BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_instance_',num2str(NAME),'_',num2str(0)];
                         if definitiveindex < 5
-                            TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)]
+                            TEST=[BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(percentagerandomwalk)];
                             TSbaseRandom= [BaseName,num2str(MOTIFNUMber),'_',num2str(Name_OriginalSeries(pip)),'_',num2str(numInstancesinjected),'_instance_',num2str(NAME),'_',num2str(0)];
                         end
                         TS_name=TEST;
                         
-                        data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
-                        
+                        %load([datasetPath,SubDSPath,TS_name,'.mat']);%double(imread([imagepath,specificimagepath,imagename,'.jpg']));%
+                        data = csvread([datasetPath,SubDSPath,TS_name,'.csv']);
                         %                         sanitycheck= std(data');
                         %                         idxVariate= sanitycheck==0;
                         %                         data1= csvread([datasetPath,'data\',TSbaseRandom,'.csv']);
