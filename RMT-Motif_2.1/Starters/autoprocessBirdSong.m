@@ -16,7 +16,7 @@ if DatasetInject~=1
         
         if definitiveindex==1
             experimentFolder=' Motifs 1 2 3 same variate multisize\';%%'CoherentShift\MultiSize\';
-            numMotifs=3;
+            numMotifs=1;
             numInstancesinjected=10;
         elseif definitiveindex==2
             experimentFolder= ' Motif1 inst5-15\';
@@ -82,7 +82,7 @@ if DatasetInject~=1
         % the algorithm of clustering to use
         for numMotifInjected =1:numMotifs
             numMotifInjected
-            for strategyIDentifier =1:4
+            for strategyIDentifier =1:2%4
                 
                 StrategyClustering= strategy(strategyIDentifier)%2;%1;%3;%
                 % 1 - create cluster of feature for the very same  varaites then  in each cluster do  adaptive kmeans on descriptors
@@ -120,7 +120,7 @@ if DatasetInject~=1
                 BaseName='Motif';%'MV_Sync_Motif';%'Motif1numInst_10';%'MV_Sync_Motif';
                 
                 
-                for percentid=7:size(percent,1)
+                for percentid=1:size(percent,1)
                     percentagerandomwalk=percent(percentid)%0; %0.1;%0.5;%0.75;%
                     for pip=1:30%10:5:15%1:1%11:2:15%
                         for NAME = 1:10%Num_SyntSeries

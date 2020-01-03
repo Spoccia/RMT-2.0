@@ -223,8 +223,12 @@ for DSIdx =3:3
                         end
                         %% end of Random Walk AVG displacement computation
                     else
+                        %% adapt the random walk to start and end as the average of the motif instance 
                         AVG_MotifAmplitude = mean(MotifsSections{1}.data');
                         for allVaraitesiter=1:size(TSdata,1)
+%                             GenearalBisrction
+%                             StartRWAVGSereis=AVG_MotifAmplitude(allVaraitesiter);
+%                             EndRWAVGSereis =AVG_MotifAmplitude(allVaraitesiter);
                             randomwalkData(allVaraitesiter,:)= randomwalkData(allVaraitesiter,:) -(randomwalkData(allVaraitesiter,1)- AVG_MotifAmplitude(allVaraitesiter));
                         end
                     end

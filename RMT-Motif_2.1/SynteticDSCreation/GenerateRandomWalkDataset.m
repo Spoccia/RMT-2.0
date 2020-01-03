@@ -32,16 +32,21 @@ for i=1:sizeDS
     DS_Statistics(i,:,3)=std(data); 
     DS_Statistics(i,:,4)=mean((abs(data(1:end-1,:)-data(2:end,:)))); % AVG Displacement
     DS_Statistics(i,:,5)=(DS_Statistics(i,:,1)+DS_Statistics(i,:,2))/2;  % AVG timeseries
+    DS_Statistics(i,:,6)= DS_Statistics(i,:,2)-DS_Statistics(i,:,1);   % intervalseries
 end
 %% this are the rules
 DsAVG_statistics=zeros(5,Vnumber);
 for i=1:5
     DsAVG_statistics (i,:)= mean(DS_Statistics(:,:,i));
 end
+
+%% get hte minimum intervalscope
+DsAVG_statistics (6,:)= min(DS_Statistics(:,:,6));
+% DsAVG_statistics (5,:)= mean([DsAVG_statistics(1,:);DsAVG_statistics(2,:)]);
 %% get minofMAX
-DsAVG_statistics (7,:)= min(DS_Statistics(:,:,2)); 
+DsAVG_statistics (8,:)= min(DS_Statistics(:,:,2)); 
 %% get maxofMin
-DsAVG_statistics (6,:)= max(DS_Statistics(:,:,1));
+DsAVG_statistics (7,:)= max(DS_Statistics(:,:,1));
 %%
 DestDataPath = ['D:\Motif_Results\Datasets\SynteticDataset\',Dset,'\constrainedRW_0_1\'];
 numInstances= 10;
